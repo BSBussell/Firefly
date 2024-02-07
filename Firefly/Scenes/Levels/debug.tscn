@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxpfadjfys05l"]
+
+[ext_resource type="Script" path="res://Scripts/misc/debug.gd" id="1_iuwvq"]
+[ext_resource type="PackedScene" uid="uid://0i6hi8n7bfx3" path="res://Scenes/Player/scrimblo.tscn" id="2_xvtqf"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_iuwvq")
+
+[node name="shadow" type="Polygon2D" parent="."]
+texture_repeat = 2
+color = Color(0, 0, 0, 1)
+offset = Vector2(-5, 5)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(8, 0, 8, 152, 64, 152, 64, 144, 88, 144, 88, 168, 144, 176, 168, 168, 168, 136, 192, 144, 192, 168, 240, 184, 240, 136, 272, 128, 312, 128, 312, 0, 320, 0, 320, 192, 0, 192, 0, 0)
+
+[node name="Polygon2D" type="Polygon2D" parent="StaticBody2D/CollisionPolygon2D"]
+texture_repeat = 2
+
+[node name="Scrimblo" parent="." instance=ExtResource("2_xvtqf")]
+position = Vector2(40, 128)
