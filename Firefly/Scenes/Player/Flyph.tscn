@@ -1,10 +1,15 @@
-[gd_scene load_steps=50 format=3 uid="uid://0i6hi8n7bfx3"]
+[gd_scene load_steps=51 format=3 uid="uid://0i6hi8n7bfx3"]
 
 [ext_resource type="Script" path="res://Scripts/Player/scrimblo.gd" id="1_h0unw"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_5i2ib"]
 [ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_21lrw"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="2_qbat7"]
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Effect:MISC./dust_particle.png" id="3_kojbe"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_yj4kt"]
+
+[sub_resource type="Gradient" id="Gradient_xmxui"]
+offsets = PackedFloat32Array(0.555256, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpwsx"]
 atlas = ExtResource("2_qbat7")
@@ -341,10 +346,6 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="Gradient" id="Gradient_xmxui"]
-offsets = PackedFloat32Array(0, 0.094518, 1)
-colors = PackedColorArray(0.0798479, 0.0798479, 0.0798479, 1, 0.203347, 0.203347, 0.203347, 1, 1, 1, 1, 1)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ebm"]
 size = Vector2(6, 16)
 
@@ -354,30 +355,29 @@ floor_snap_length = 2.0
 script = ExtResource("1_h0unw")
 movement_data = ExtResource("2_5i2ib")
 
+[node name="Dust" type="CPUParticles2D" parent="."]
+position = Vector2(2.38419e-07, -2)
+amount = 15
+lifetime = 0.5
+texture = ExtResource("3_kojbe")
+emission_shape = 3
+emission_rect_extents = Vector2(1, 2.5)
+gravity = Vector2(0, 0)
+scale_amount_min = 0.15
+scale_amount_max = 0.25
+color = Color(0.403922, 1, 0.521569, 1)
+color_ramp = SubResource("Gradient_xmxui")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = ExtResource("2_21lrw")
 position = Vector2(2.38419e-07, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
 animation = &"running"
 autoplay = "idle"
-frame_progress = 0.545709
-flip_h = true
-
-[node name="Dust" type="CPUParticles2D" parent="AnimatedSprite2D"]
-visible = false
-z_index = -1
-position = Vector2(0, 30)
-amount = 7
-lifetime = 0.5
-emission_shape = 3
-emission_rect_extents = Vector2(1, 2.5)
-gravity = Vector2(200, -20)
-scale_amount_min = 2.05
-scale_amount_max = 4.0
-color = Color(1, 0.768627, 0.0470588, 0.517647)
-color_ramp = SubResource("Gradient_xmxui")
+frame_progress = 0.617021
 
 [node name="Collider" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_l0ebm")
 

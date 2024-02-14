@@ -4,7 +4,7 @@ extends CharacterBody2D
 @export var movement_data : PlayerMovementData
 
 @onready var animated = $AnimatedSprite2D
-@onready var dust = $AnimatedSprite2D/Dust
+@onready var dust = $Dust
 
 # Timers, fun because as the game gets faster the grace period will still be there
 @onready var coyote_time = $CoyoteTime
@@ -44,7 +44,6 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var hz_direction = Input.get_axis("Left", "Right")
 	var vc_direction = Input.get_axis("Down", "Up")
-	print(vc_direction)
 	
 	# Start Jump Timer
 	if (Input.is_action_just_pressed("Jump")):
@@ -248,9 +247,11 @@ func update_state(direction):
 		
 	# Change direction when on floor
 	if direction > 0 and is_on_floor():
-			animated.flip_h = false
+		animated.flip_h = false
+		#dust.gravity.x = -200
 	elif direction < 0 and is_on_floor():
 		animated.flip_h = true
+		#dust.gravity.x *= 200
 	
 	if direction and not is_on_floor() and animation_state != STATE.CROUCH:
 		animation_state = STATE.FALLING
@@ -260,7 +261,7 @@ func update_state(direction):
 		if abs(velocity.x) >= movement_data.SPEED/1.5:
 			print("RUNNING!")
 			animation_state = STATE.RUNNING
-			#dust.emitting = true
+			dust.emitting = true
 		else:
 			print("WALKING!")
 			animation_state = STATE.WALKING
@@ -283,7 +284,8 @@ func update_state(direction):
 	if animation_state == STATE.CROUCH and Input.is_action_just_released("Down"):
 		animation_state = STATE.STAND
 		
-	
+	if animation_state != STATE.RUNNING:
+		dust.emitting = false
 
 func get_which_wall_collided():
 
@@ -294,9 +296,6 @@ func get_which_wall_collided():
 
 
 func _on_animated_sprite_2d_animation_finished():
-	
-	#if animation_state == STATE.RUNNING:
-		#dust.emitting = false
 	
 	if animation_state == STATE.JUMPING:
 		#animated.play("falling")
