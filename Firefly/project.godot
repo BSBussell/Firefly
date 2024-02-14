@@ -66,6 +66,14 @@ Down={
 ]
 }
 
+[layer_names]
+
+2d_render/layer_1="Environment Light"
+2d_render/layer_2="Player Light"
+2d_physics/layer_1="Collidable"
+2d_physics/layer_2="Hitbox"
+2d_physics/layer_3="Event"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

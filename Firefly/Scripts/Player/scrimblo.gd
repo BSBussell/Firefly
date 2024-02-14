@@ -126,7 +126,7 @@ func walljump_logic(delta, direction, vc_direction):
 	if in_walljump:
 		if velocity.y > 0:
 			movement_data.AIR_DRIFT_MULTIPLIER = cache_airdrift
-			print("falling")
+			#print("falling")
 	
 	if is_on_wall_only():
 		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
@@ -259,11 +259,9 @@ func update_state(direction):
 	# If set to running/walking from grounded state
 	if direction and is_on_floor() and (animation_state == STATE.IDLE or animation_state == STATE.RUNNING or animation_state == STATE.WALKING):
 		if abs(velocity.x) >= movement_data.SPEED/1.5:
-			print("RUNNING!")
 			animation_state = STATE.RUNNING
 			dust.emitting = true
 		else:
-			print("WALKING!")
 			animation_state = STATE.WALKING
 			
 	# Set to idle from walking
@@ -299,15 +297,15 @@ func _on_animated_sprite_2d_animation_finished():
 	
 	if animation_state == STATE.JUMPING:
 		#animated.play("falling")
-		print("Falling!")
+		#print("Falling!")
 		animation_state = STATE.FALLING
 		
 	if animation_state == STATE.FALLING and is_on_floor():
-		print("Landing!")
+		#print("Landing!")
 		animation_state = STATE.LANDING
 
 	if animation_state == STATE.LANDING and is_on_floor():
-		print("Landed!")
+		#print("Landed!")
 		animated.speed_scale = 1
 		
 		
