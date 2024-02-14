@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_5i2ib"]
 [ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_21lrw"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="2_qbat7"]
-[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Effect-MISC./dust_particle.png" id="3_kojbe"]
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Lightmaps/dust_particle.png" id="3_hv2w6"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_yj4kt"]
 
 [sub_resource type="Gradient" id="Gradient_xmxui"]
@@ -360,7 +360,7 @@ position = Vector2(2.38419e-07, -2)
 emitting = false
 amount = 20
 lifetime = 0.5
-texture = ExtResource("3_kojbe")
+texture = ExtResource("3_hv2w6")
 emission_shape = 3
 emission_rect_extents = Vector2(1, 2.5)
 gravity = Vector2(0, -50)
