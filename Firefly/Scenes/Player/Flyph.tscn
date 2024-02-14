@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_5i2ib"]
 [ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_21lrw"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="2_qbat7"]
-[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Lightmaps/dust.png" id="3_v8iir"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/Effect:MISC./dust_particle.png" id="3_kojbe"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_yj4kt"]
 
 [sub_resource type="Gradient" id="Gradient_xmxui"]
@@ -358,17 +358,15 @@ movement_data = ExtResource("2_5i2ib")
 [node name="Dust" type="CPUParticles2D" parent="."]
 position = Vector2(2.38419e-07, -2)
 emitting = false
-amount = 20
+amount = 15
 lifetime = 0.5
-texture = ExtResource("3_v8iir")
+texture = ExtResource("3_kojbe")
 emission_shape = 3
 emission_rect_extents = Vector2(1, 2.5)
-gravity = Vector2(0, -50)
-angle_min = -180.0
-angle_max = 180.0
+gravity = Vector2(0, 0)
 scale_amount_min = 0.15
 scale_amount_max = 0.25
-color = Color(0.858824, 1, 0.870588, 1)
+color = Color(0.403922, 1, 0.521569, 1)
 color_ramp = SubResource("Gradient_xmxui")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
