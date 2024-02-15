@@ -31,16 +31,11 @@ shadow_filter = 1
 shadow_filter_smooth = 10.0
 height = 1.0
 
-[node name="Parallax BKG" type="Node2D" parent="." node_paths=PackedStringArray("follow_target")]
+[node name="Parallax BKG" type="Node2D" parent="." node_paths=PackedStringArray("Player")]
 position = Vector2(266.605, 34.82)
 scale = Vector2(2, 2)
 script = ExtResource("2_etud3")
-follow_target = NodePath("../Flyph")
-godrays_parallax_strength = 0.125
-layer2_parallax_strength = 0.15
-layer3_parallax_strength = 0.175
-layer4_parallax_strength = 0.0
-vertical_parallax_strength_modifier = 0.01
+Player = NodePath("../Flyph")
 
 [node name="Layer 4" type="Sprite2D" parent="Parallax BKG"]
 texture = ExtResource("3_263tg")
@@ -81,7 +76,7 @@ offset_bottom = -23.0
 text = "Nice!"
 
 [node name="Flyph" parent="." instance=ExtResource("2_xvtqf")]
-position = Vector2(56, 160)
+position = Vector2(55, 160)
 
 [node name="Leaves" type="CPUParticles2D" parent="."]
 position = Vector2(168, -88)

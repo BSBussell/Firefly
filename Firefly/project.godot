@@ -21,7 +21,8 @@ window/size/viewport_width=320
 window/size/viewport_height=180
 window/size/window_width_override=1920
 window/size/window_height_override=1080
-window/stretch/mode="canvas_items"
+window/stretch/mode="viewport"
+window/stretch/scale_mode="integer"
 
 [input]
 
@@ -74,7 +75,13 @@ Down={
 2d_physics/layer_2="Hitbox"
 2d_physics/layer_3="Event"
 
+[physics]
+
+2d/run_on_separate_thread=true
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
