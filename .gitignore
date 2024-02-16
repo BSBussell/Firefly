@@ -16,3 +16,4 @@ mono_crash.*.json
 
 # Exports - These would be too big for github
 Exports/
+.DS_Store
