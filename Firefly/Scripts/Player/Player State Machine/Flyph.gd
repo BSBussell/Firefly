@@ -58,6 +58,8 @@ var landings_buffer = []
 var average_speed = 0
 var average_ff_landings = 0
 
+var tmp_modifier = 0
+
 # I'm Being really annoying about this btw
 func _ready() -> void:
 	
@@ -115,7 +117,7 @@ func _process(delta: float) -> void:
 	# Let each component do their frame stuff
 	StateMachine.process_frame(delta)
 
-	score = (0.4 * average_ff_landings + 0.6 * average_speed)
+	score = (0.4 * average_ff_landings + 0.6 * average_speed) + tmp_modifier
 	debug_info.text = "%.02f" % score
 	#print("Average FF: ", average_ff_landings)
 	#print("Average Speed: ", average_speed)
@@ -157,8 +159,6 @@ func update_animations():
 		
 		
 		
-		
-		
 func _on_animated_sprite_2d_animation_finished():
 	
 	StateMachine.animation_end()
@@ -184,7 +184,8 @@ func update_ff_landings(did_ff_land):
 func update_score():
 	
 	score = (0.4 * average_ff_landings + 0.6 * average_speed)
-
+	score += tmp_modifier
+	
 	if score > 0.6:
 		
 		
@@ -204,3 +205,10 @@ func update_score():
 func _on_momentum_time_timeout():
 	update_score()
 	
+# A public facing method that can be called by other scripts (ex, collectibles) in order to increase
+# 	Player's momentum value
+func add_momentum(amount: float, weight: float) -> void:
+	tmp_modifier += amount
+	await get_tree().create_timer(weight).timeout
+	tmp_modifier -= amount
+
