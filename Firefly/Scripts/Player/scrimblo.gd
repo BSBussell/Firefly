@@ -3,20 +3,33 @@ extends CharacterBody2D
 @export_category("Movement Resource")
 @export var movement_data : PlayerMovementData
 
+# ALL
 @onready var animated = $AnimatedSprite2D
+
+
+# GROUNDED
 @onready var dust = $Dust
 
 # Timers, fun because as the game gets faster the grace period will still be there
+
+# DO IN AERIAL, START ON AERIAL ENTER
 @onready var coyote_time = $CoyoteTime
+
+# GROUNDED, AIR
 @onready var jump_buffer = $JumpBuffer
 
 
 # Calculating some constants
 # Note these need to be switched when changing movement datas
+# FLYPH
 @onready var FF_Vel = movement_data.JUMP_VELOCITY / movement_data.FASTFALL_MULTIPLIER
 
 
+# ANIMATION STATESs
 enum STATE {IDLE, WALKING, RUNNING, JUMPING, FALLING, LANDING, BEND, CROUCH, STAND}
+
+#
+# ALL
 var animation_state = STATE.IDLE
 
 # In fast fall
@@ -36,32 +49,41 @@ var momentum_stage = 0
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready():
+	# Flyph Script
 	FF_Vel = movement_data.JUMP_VELOCITY / movement_data.FASTFALL_MULTIPLIER
 
 func _physics_process(delta):
 	
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
+	
+	# NEEDED IN ALL STATES
 	var hz_direction = Input.get_axis("Left", "Right")
 	var vc_direction = Input.get_axis("Down", "Up")
 	
-	# Start Jump Timer
+	# Start Jump Timer When jump pressed in air
 	if (Input.is_action_just_pressed("Jump")):
 		jump_buffer.start()
 	
 	# Add the gravity, direction used to calculate wall slide gravity
+	
+	# AIR STATE, WALL STATE
 	apply_gravity(delta, hz_direction)
 
 	# Handle jump.
+	# GROUNDED STATE
 	jump_logic(delta, hz_direction)
+	
+	# WALL STATE
 	hz_direction = walljump_logic(delta, hz_direction, vc_direction)
 	
 
 	# Handles Simple movement
+	# ALL STATES
 	handle_acceleration(delta, hz_direction)
 	apply_friction(delta, hz_direction)
 
-	
+	# Handles animation states
 	update_state(hz_direction)
 	update_animations(hz_direction)
 	
@@ -74,6 +96,7 @@ func _physics_process(delta):
 	
 func apply_gravity(delta, direction):
 	
+	# WALL STATE
 	if is_on_wall() and not Input.is_action_pressed("Jump"):
 		if velocity.y > 0 and Input.is_action_pressed(get_which_wall_collided()):  # Ensure we're moving downwards
 			velocity.y += gravity * delta * (1/movement_data.WALL_FRICTION_MULTIPLIER)  # Reduce the gravity's effect to slow down descent
@@ -85,6 +108,7 @@ func apply_gravity(delta, direction):
 				velocity.y += gravity * movement_data.FASTFALL_MULTIPLIER * delta	
 	
 	# If we are just in the air use normal gravity
+	# AIR STATE
 	elif not is_on_floor():
 		if not is_ff:
 			velocity.y += gravity * delta
@@ -126,7 +150,7 @@ func walljump_logic(delta, direction, vc_direction):
 	if in_walljump:
 		if velocity.y > 0:
 			movement_data.AIR_DRIFT_MULTIPLIER = cache_airdrift
-			print("falling")
+			
 	
 	if is_on_wall_only():
 		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
@@ -259,11 +283,9 @@ func update_state(direction):
 	# If set to running/walking from grounded state
 	if direction and is_on_floor() and (animation_state == STATE.IDLE or animation_state == STATE.RUNNING or animation_state == STATE.WALKING):
 		if abs(velocity.x) >= movement_data.SPEED/1.5:
-			print("RUNNING!")
 			animation_state = STATE.RUNNING
 			dust.emitting = true
 		else:
-			print("WALKING!")
 			animation_state = STATE.WALKING
 			
 	# Set to idle from walking
@@ -299,15 +321,15 @@ func _on_animated_sprite_2d_animation_finished():
 	
 	if animation_state == STATE.JUMPING:
 		#animated.play("falling")
-		print("Falling!")
+		#print("Falling!")
 		animation_state = STATE.FALLING
 		
 	if animation_state == STATE.FALLING and is_on_floor():
-		print("Landing!")
+		#print("Landing!")
 		animation_state = STATE.LANDING
 
 	if animation_state == STATE.LANDING and is_on_floor():
-		print("Landed!")
+		#print("Landed!")
 		animated.speed_scale = 1
 		
 		

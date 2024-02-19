@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="PlayerMovementData" load_steps=2 format=3 uid="uid://csjt8cboxggev"]
+
+[ext_resource type="Script" path="res://Scripts/Player/MovementData.gd" id="1_2nc3b"]
+
+[resource]
+script = ExtResource("1_2nc3b")
+SPEED = 200.0
+ACCEL = 350.0
+FRICTION = 600.0
+TURN_FRICTION = 1000.0
+JUMP_VELOCITY = -300.0
+AIR_RESISTANCE = 0.85
+AIR_DRIFT_MULTIPLIER = 0.8
+FASTFALL_MULTIPLIER = 3.0
+WALL_FRICTION_MULTIPLIER = 5.0
+WALL_DRIFT_MULTIPLIER = 10.3
+NEUTRAL_WJ_VECTOR = Vector2(10, 0.9)
+AWAY_WJ_VECTOR = Vector2(25, 0.8)
+DISABLE_DRIFT = false
+RUN_THRESHOLD = 150
