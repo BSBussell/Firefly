@@ -2,6 +2,7 @@
 extends "res://Scripts/Events/base_event.gd"
 
 @export var Text: Control
+@onready var nice = $"Nice!"
 
 func _ready():
 	Text.visible = false
@@ -16,11 +17,11 @@ func _physics_process(delta):
 	
 	# Check if we're on floor
 	if enter_body and enter_body.is_on_floor():
-		Text.visible = true
+		nice.play("drop_in")
 		set_physics_process(false)
 
 func on_enter(body):
 	set_physics_process(true)
 
 func on_exit(body):
-	Text.visible = false
+	nice.play("fall_out")

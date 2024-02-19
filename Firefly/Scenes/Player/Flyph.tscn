@@ -351,21 +351,6 @@ animations = [{
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Animation" id="Animation_068hy"]
-resource_name = "turn_up"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:energy")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1.93187, 1.93187),
-"update": 0,
-"values": [0.8, 1.2]
-}
-
 [sub_resource type="Animation" id="Animation_j6ma2"]
 length = 0.001
 tracks/0/type = "value"
@@ -394,6 +379,21 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1.86607),
 "update": 0,
 "values": [1.2, 0.8]
+}
+
+[sub_resource type="Animation" id="Animation_068hy"]
+resource_name = "turn_up"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1.93187, 1.93187),
+"update": 0,
+"values": [0.8, 1.2]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hpbxt"]
