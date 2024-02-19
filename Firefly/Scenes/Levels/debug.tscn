@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=19 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="Script" path="res://Scripts/misc/debug.gd" id="1_iuwvq"]
 [ext_resource type="Script" path="res://Scripts/misc/Parallax.gd" id="2_etud3"]
@@ -19,6 +19,88 @@ size = Vector2(122, 234)
 [sub_resource type="LabelSettings" id="LabelSettings_8boug"]
 font = ExtResource("10_h2c7k")
 font_size = 8
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(2, 1)
+
+[sub_resource type="Animation" id="Animation_pevmi"]
+resource_name = "drop_in"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-51, 70), Vector2(-36, -16), Vector2(-36, -11), Vector2(-36, -16)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_f8vxs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-57, -68)]
+}
+
+[sub_resource type="Animation" id="Animation_vcsj0"]
+resource_name = "fall_out"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-36, -16), Vector2(-51, 70)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7vltr"]
+_data = {
+"RESET": SubResource("Animation_f8vxs"),
+"drop_in": SubResource("Animation_pevmi"),
+"fall_out": SubResource("Animation_vcsj0")
+}
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_iuwvq")
@@ -75,15 +157,21 @@ shape = SubResource("RectangleShape2D_2bp1o")
 
 [node name="Label" type="Label" parent="Nice_Event"]
 visible = false
-offset_left = -25.0
-offset_top = -46.0
-offset_right = 15.0
-offset_bottom = -23.0
+offset_left = -57.0
+offset_top = -68.0
+offset_right = 91.0
+offset_bottom = -8.0
+scale = Vector2(2, 2)
 text = "Nice!"
 label_settings = SubResource("LabelSettings_8boug")
 
+[node name="Nice!" type="AnimationPlayer" parent="Nice_Event"]
+libraries = {
+"": SubResource("AnimationLibrary_7vltr")
+}
+
 [node name="Flyph" parent="." instance=ExtResource("11_dm2r0")]
-position = Vector2(74, 160)
+position = Vector2(96, 157)
 
 [node name="Music" type="AudioStreamPlayer2D" parent="Flyph"]
 position = Vector2(-19, -8)

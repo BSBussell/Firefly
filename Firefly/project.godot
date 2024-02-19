@@ -13,7 +13,8 @@ config_version=5
 config/name="Firefly"
 run/main_scene="res://Scenes/Levels/debug.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/image="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png"
+config/icon="res://Assets/BOOT/flyph-export_big.png"
 
 [display]
 
