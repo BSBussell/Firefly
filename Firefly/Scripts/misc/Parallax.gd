@@ -37,7 +37,6 @@ func _ready():
 
 func _process(delta):
 	if camera and camera.global_position != previous_camera_pos:
-		print("Camera move")
 		update_parallax()
 		previous_camera_pos = camera.global_position
 
