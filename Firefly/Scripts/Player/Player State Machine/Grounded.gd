@@ -43,7 +43,7 @@ func exit() -> void:
 	pass
 
 # Processing input in this state, returns nil or new state
-func process_input(event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> State:
 	return null
 
 
@@ -51,11 +51,7 @@ func process_input(event: InputEvent) -> State:
 func process_physics(delta: float) -> State:
 	
 	
-	var new_state: State =  null
-	
-	new_state = jump_logic(delta, parent.horizontal_axis)
-	#if new_state:
-		#return new_state
+	jump_logic(delta)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_friction(delta, parent.horizontal_axis)
@@ -72,7 +68,7 @@ func process_physics(delta: float) -> State:
 	return null
 	
 # TODO: Add jump lag in order to show the crouch animation
-func jump_logic(delta, direction) -> State:
+func jump_logic(_delta):
 	
 	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 		
@@ -86,7 +82,7 @@ func jump_logic(delta, direction) -> State:
 		
 		# Prevent silly interactions between jumping and wall jumping
 		jump_buffer.stop()
-		jump_buffer.wait_time = -1
+		#jump_buffer.wait_time = -1
 		
 		print("Jump Math")
 		parent.velocity.y = parent.movement_data.JUMP_VELOCITY
@@ -96,10 +92,6 @@ func jump_logic(delta, direction) -> State:
 		if (parent.current_animation != parent.ANI_STATES.CRAWL):
 			parent.current_animation = parent.ANI_STATES.FALLING
 			
-		
-		
-			
-	return null
 	
 
 	

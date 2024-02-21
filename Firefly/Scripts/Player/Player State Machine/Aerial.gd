@@ -35,7 +35,7 @@ func exit() -> void:
 		parent.update_ff_landings(0.0)
 
 # Processing input in this state, returns nil or new state
-func process_input(event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> State:
 	
 	if Input.is_action_just_pressed("Down"):
 		parent.fastFalling = true
@@ -46,15 +46,11 @@ func process_input(event: InputEvent) -> State:
 	
 	return null
 
-# Processing Frames in this state, returns nil or new state
-func process_frame(delta: float) -> State:
-	return null
-
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> State:
 	
 	
-	apply_gravity(delta, parent.horizontal_axis)
+	apply_gravity(delta)
 	
 	# Short hops
 	handle_coyote(delta)
@@ -84,7 +80,7 @@ func animation_end() -> State:
 	
 	return null
 	
-func handle_coyote(delta):
+func handle_coyote(_delta):
 	if coyote_time.time_left > 0.0:
 		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 			
@@ -104,7 +100,7 @@ func handle_coyote(delta):
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):
 				parent.current_animation = parent.ANI_STATES.FALLING
 	
-func handle_sHop(delta):
+func handle_sHop(_delta):
 	if Input.is_action_just_released("Jump") and parent.velocity.y < parent.FF_Vel:
 			
 				parent.FF_Vel = parent.movement_data.JUMP_VELOCITY / parent.movement_data.FASTFALL_MULTIPLIER
@@ -113,7 +109,7 @@ func handle_sHop(delta):
 				#if (parent.current_animation != parent.ANI_STATES.CROUCH):
 					#parent.current_animation = parent.ANI_STATES.FALLING
 
-func apply_gravity(delta, direction):
+func apply_gravity(delta):
 	
 	
 	# If we are just in the air use normal gravity
@@ -139,7 +135,7 @@ func handle_acceleration(delta, direction):
 	
 	if direction:
 		# AIR ACCEL
-		parent.velocity.x  = move_toward(parent.velocity.x, parent.movement_data.SPEED*direction, (parent.movement_data.ACCEL * parent.movement_data.AIR_DRIFT_MULTIPLIER) * delta)
+		parent.velocity.x  = move_toward(parent.velocity.x, parent.movement_data.SPEED*direction, (parent.movement_data.ACCEL * airDrift) * delta)
 	
 
 func apply_airResistance(delta, direction):

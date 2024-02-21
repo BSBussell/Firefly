@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=66 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://Scenes/Player/trail.gd" id="7_se6t7"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Grounded.gd" id="7_x3sml"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="8_shld8"]
+[ext_resource type="Script" path="res://Scenes/Player/CameraAnchor.gd" id="9_rkr2i"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Aerial.gd" id="9_vj5hi"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wall.gd" id="10_eck16"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
@@ -414,6 +415,7 @@ font = ExtResource("10_nb4h7")
 font_size = 8
 
 [node name="Flyph" type="CharacterBody2D"]
+position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 3
 floor_constant_speed = true
@@ -435,8 +437,10 @@ scale_amount_min = 0.15
 scale_amount_max = 0.25
 color = Color(0.403922, 1, 0.521569, 1)
 color_ramp = SubResource("Gradient_xmxui")
+metadata/_edit_lock_ = true
 
 [node name="JumpDustSpawner" type="Marker2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = ExtResource("4_sf87b")
@@ -444,6 +448,7 @@ position = Vector2(2.38419e-07, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
 animation = &"crawl"
 autoplay = "idle"
+metadata/_edit_lock_ = true
 
 [node name="Trail" type="Line2D" parent="."]
 show_behind_parent = true
@@ -452,12 +457,15 @@ width_curve = SubResource("Curve_w5yy1")
 default_color = Color(0.960784, 0.898039, 0, 1)
 script = ExtResource("7_se6t7")
 length = 0
+metadata/_edit_lock_ = true
 
 [node name="LandingDustSpawner" type="Marker2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="Spotlight" type="PointLight2D" parent="."]
 position = Vector2(0, -11)
 color = Color(1, 0.980392, 0.803922, 1)
+range_layer_min = -100
 range_item_cull_mask = 3
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
@@ -465,6 +473,7 @@ shadow_filter = 2
 shadow_filter_smooth = 10.0
 shadow_item_cull_mask = 2
 texture = ExtResource("6_bo4q8")
+metadata/_edit_lock_ = true
 
 [node name="light_animator" type="AnimationPlayer" parent="Spotlight"]
 libraries = {
@@ -474,21 +483,27 @@ libraries = {
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_l0ebm")
+metadata/_edit_lock_ = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Marker2D" type="Marker2D" parent="." node_paths=PackedStringArray("Player")]
+script = ExtResource("9_rkr2i")
+Player = NodePath("..")
+speed = 0.1
+
+[node name="Camera2D" type="Camera2D" parent="Marker2D"]
 offset = Vector2(0, -35)
 process_callback = 0
 limit_smoothed = true
-position_smoothing_speed = 4.0
+position_smoothing_speed = 7.0
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
-drag_top_margin = 0.25
-drag_bottom_margin = 0.13
+drag_bottom_margin = 0.25
 editor_draw_drag_margin = true
+metadata/_edit_lock_ = true
 
-[node name="UI_FX" type="CanvasLayer" parent="Camera2D"]
+[node name="UI_FX" type="CanvasLayer" parent="Marker2D/Camera2D"]
 
-[node name="Star" type="CPUParticles2D" parent="Camera2D/UI_FX"]
+[node name="Star" type="CPUParticles2D" parent="Marker2D/Camera2D/UI_FX"]
 position = Vector2(159, 0)
 emitting = false
 amount = 16
@@ -505,7 +520,7 @@ angle_max = 180.0
 color = Color(1, 1, 0.337255, 1)
 color_ramp = SubResource("Gradient_k6x1h")
 
-[node name="debug info" type="Label" parent="Camera2D/UI_FX"]
+[node name="debug info" type="Label" parent="Marker2D/Camera2D/UI_FX"]
 anchors_preset = -1
 anchor_right = 0.044
 anchor_bottom = 0.032

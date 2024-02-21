@@ -15,15 +15,15 @@ func exit() -> void:
 	pass
 
 # Processing input in this state, returns nil or new state
-func process_input(event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> State:
 	return null
 
 # Processing Frames in this state, returns nil or new state
-func process_frame(delta: float) -> State:
+func process_frame(_delta: float) -> State:
 	return null
 
 # Processing Physics in this state, returns nil or new state
-func process_physics(delta: float) -> State:
+func process_physics(_delta: float) -> State:
 	return null
 	
 func animation_end() -> State:

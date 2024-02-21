@@ -7,8 +7,8 @@ extends CharacterBody2D
 
 @onready var animation = $AnimatedSprite2D
 @onready var StateMachine = $StateMachine
-@onready var star = $Camera2D/UI_FX/Star
-@onready var debug_info = $"Camera2D/UI_FX/debug info"
+@onready var star = $Marker2D/Camera2D/UI_FX/Star
+@onready var debug_info = $"Marker2D/Camera2D/UI_FX/debug info"
 @onready var spotlight = $Spotlight
 @onready var light_animator = $Spotlight/light_animator
 @onready var trail = $Trail
@@ -191,7 +191,7 @@ func update_score():
 		
 		if movement_data != speed_movement:
 			movement_data = speed_movement
-			star.emitting = true
+			star.emitting = true 
 			light_animator.play("turn_up")
 			trail.length = 10
 	else:

@@ -20,21 +20,21 @@ func exit() -> void:
 	pass
 
 # Processing input in this state, returns nil or new state
-func process_input(event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> State:
 	if Input.is_action_just_pressed("Down"):
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
 	return null
 
 # Processing Frames in this state, returns nil or new state
-func process_frame(delta: float) -> State:
+func process_frame(_delta: float) -> State:
 	return null
 
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> State:
 	
 	apply_gravity(delta, parent.horizontal_axis)
-	handle_walljump(delta, parent.horizontal_axis, parent.vertical_axis)
+	handle_walljump(delta, parent.vertical_axis)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
@@ -57,7 +57,7 @@ func animation_end() -> State:
 	return null
 
 
-func apply_gravity(delta, direction):
+func apply_gravity(delta, _direction):
 	
 	# WALL STATE
 	# Priortize fast falling
@@ -73,7 +73,7 @@ func apply_gravity(delta, direction):
 		parent.velocity.y += gravity * delta
 		
 
-func handle_walljump(delta, direction, vc_direction):	
+func handle_walljump(delta, vc_direction):	
 	
 	
 	# In walljump
@@ -96,7 +96,7 @@ func handle_walljump(delta, direction, vc_direction):
 			var wall_normal = parent.get_wall_normal()	
 			# Prevent silly interactions between jumping and wall jumping
 			jump_buffer.stop()
-			jump_buffer.wait_time = -1
+			#jump_buffer.wait_time = -1
 			
 			# TODO: Walljump Animation (Crouch overrides all)
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):
