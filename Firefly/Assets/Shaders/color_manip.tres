@@ -10,5 +10,5 @@ shader_parameter/saturation = 1.0
 shader_parameter/redVal = 1.0
 shader_parameter/greenVal = 1.0
 shader_parameter/blueVal = 1.0
-shader_parameter/tint_color = Color(1, 1, 1, 1)
-shader_parameter/tint_effect_factor = 0.0
+shader_parameter/tint_color = Color(1, 1, 1, 0.584314)
+shader_parameter/tint_effect_factor = 1.0

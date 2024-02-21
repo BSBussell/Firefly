@@ -1,19 +1,21 @@
-[gd_scene load_steps=66 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=68 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="3_endwo"]
 [ext_resource type="Resource" uid="uid://csjt8cboxggev" path="res://Scenes/Player/Movement_Presets/Stage1Movement.tres" id="3_w3b7s"]
-[ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="4_sf87b"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="5_63g2f"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/StateMachine.gd" id="6_6qmi7"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="6_bo4q8"]
 [ext_resource type="Script" path="res://Scenes/Player/trail.gd" id="7_se6t7"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Grounded.gd" id="7_x3sml"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="8_shld8"]
+[ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="9_b353c"]
 [ext_resource type="Script" path="res://Scenes/Player/CameraAnchor.gd" id="9_rkr2i"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Aerial.gd" id="9_vj5hi"]
+[ext_resource type="Texture2D" uid="uid://bury6i0qclg2g" path="res://Assets/Graphics/Camera/cursor.png" id="10_1qvia"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wall.gd" id="10_eck16"]
+[ext_resource type="Script" path="res://Scenes/Player/Margin.gd" id="10_gciil"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
 
 [sub_resource type="Gradient" id="Gradient_xmxui"]
@@ -414,7 +416,7 @@ colors = PackedColorArray(1, 0.772549, 0, 1, 1, 1, 1, 1)
 font = ExtResource("10_nb4h7")
 font_size = 8
 
-[node name="Flyph" type="CharacterBody2D"]
+[node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info")]
 position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 3
@@ -423,6 +425,8 @@ floor_snap_length = 5.0
 script = ExtResource("1_hphyi")
 base_movement = ExtResource("2_tlkrj")
 speed_movement = ExtResource("3_w3b7s")
+star = NodePath("CameraTarget/Camera2D/UI_FX/Star")
+debug_info = NodePath("CameraTarget/Camera2D/UI_FX/debug info")
 
 [node name="DashDust" type="CPUParticles2D" parent="."]
 position = Vector2(2.38419e-07, -2)
@@ -443,7 +447,6 @@ metadata/_edit_lock_ = true
 metadata/_edit_lock_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-material = ExtResource("4_sf87b")
 position = Vector2(2.38419e-07, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
 animation = &"crawl"
@@ -485,12 +488,19 @@ position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_l0ebm")
 metadata/_edit_lock_ = true
 
-[node name="Marker2D" type="Marker2D" parent="." node_paths=PackedStringArray("Player")]
+[node name="CameraTarget" type="Marker2D" parent="." node_paths=PackedStringArray("Player")]
 script = ExtResource("9_rkr2i")
 Player = NodePath("..")
-speed = 0.1
+max_offset = 100
+smoothing = 0.6
+horizontal_strength = 0.7
+vertical_strength = 0.1
 
-[node name="Camera2D" type="Camera2D" parent="Marker2D"]
+[node name="Cursor" type="Sprite2D" parent="CameraTarget"]
+material = ExtResource("9_b353c")
+texture = ExtResource("10_1qvia")
+
+[node name="Camera2D" type="Camera2D" parent="CameraTarget"]
 offset = Vector2(0, -35)
 process_callback = 0
 limit_smoothed = true
@@ -499,11 +509,12 @@ drag_horizontal_enabled = true
 drag_vertical_enabled = true
 drag_bottom_margin = 0.25
 editor_draw_drag_margin = true
+script = ExtResource("10_gciil")
 metadata/_edit_lock_ = true
 
-[node name="UI_FX" type="CanvasLayer" parent="Marker2D/Camera2D"]
+[node name="UI_FX" type="CanvasLayer" parent="CameraTarget/Camera2D"]
 
-[node name="Star" type="CPUParticles2D" parent="Marker2D/Camera2D/UI_FX"]
+[node name="Star" type="CPUParticles2D" parent="CameraTarget/Camera2D/UI_FX"]
 position = Vector2(159, 0)
 emitting = false
 amount = 16
@@ -520,7 +531,7 @@ angle_max = 180.0
 color = Color(1, 1, 0.337255, 1)
 color_ramp = SubResource("Gradient_k6x1h")
 
-[node name="debug info" type="Label" parent="Marker2D/Camera2D/UI_FX"]
+[node name="debug info" type="Label" parent="CameraTarget/Camera2D/UI_FX"]
 anchors_preset = -1
 anchor_right = 0.044
 anchor_bottom = 0.032

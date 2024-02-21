@@ -5,10 +5,12 @@ extends CharacterBody2D
 @export var base_movement : PlayerMovementData
 @export var speed_movement: PlayerMovementData
 
+@export var star: CPUParticles2D
+@export var debug_info: Label
+
+
 @onready var animation = $AnimatedSprite2D
 @onready var StateMachine = $StateMachine
-@onready var star = $Marker2D/Camera2D/UI_FX/Star
-@onready var debug_info = $"Marker2D/Camera2D/UI_FX/debug info"
 @onready var spotlight = $Spotlight
 @onready var light_animator = $Spotlight/light_animator
 @onready var trail = $Trail
