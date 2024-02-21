@@ -43,7 +43,10 @@ func move_cursor(delta):
 	smoothed.y = velocity.y * vertical_strength
 	
 	if smoothed.length() > max_offset:
+		# Get the normalized value
 		smoothed = smoothed.normalized()
+		
+		# Set the length to now be the max offset
 		smoothed *= max_offset
 	
 	print(smoothed)

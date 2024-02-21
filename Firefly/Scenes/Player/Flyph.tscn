@@ -491,8 +491,8 @@ metadata/_edit_lock_ = true
 [node name="CameraTarget" type="Marker2D" parent="." node_paths=PackedStringArray("Player")]
 script = ExtResource("9_rkr2i")
 Player = NodePath("..")
-max_offset = 100
-smoothing = 0.6
+max_offset = 75
+smoothing = 0.9
 horizontal_strength = 0.7
 vertical_strength = 0.1
 

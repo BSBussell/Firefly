@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccr2xe8e6ns1a"]
+
+[ext_resource type="PackedScene" uid="uid://bxpfadjfys05l" path="res://Scenes/Levels/debug.tscn" id="1_uvhp8"]
+
+[node name="GameViewer" type="Node2D"]
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+snap_2d_transforms_to_pixel = true
+size = Vector2i(320, 180)
+
+[node name="World" parent="SubViewport" instance=ExtResource("1_uvhp8")]
