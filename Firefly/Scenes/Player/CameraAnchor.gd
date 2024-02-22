@@ -3,6 +3,8 @@ extends Marker2D
 @onready var camera_2d = $Camera2D
 
 enum process {Physics, Draw}
+
+# ALL HAIL GERBLESH
 enum curve {Linear, Cubic, Gerblesh}
 
 @export_category("Player Cam Settings")
@@ -16,6 +18,14 @@ enum curve {Linear, Cubic, Gerblesh}
 @export var smoothing: float = 4.0
 
 @export_group("Nerd Shit")
+
+# Whether or not we should move the camera
+@export var horizontal_threshold: float = 30.0
+
+# Threshold needed to be exceeded for 
+@export var vertical_threshold: float = 30.0
+
+
 # How responsive the camera is to the players horizontal velocity
 @export var horizontal_strength: float = 0.8
 
@@ -35,6 +45,8 @@ enum curve {Linear, Cubic, Gerblesh}
 
 
 @onready var actual_cam_pos := global_position
+
+var cameraSpeed: Vector2 = Vector2(0,0)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -87,6 +99,7 @@ func move_cursor(delta):
 	target_position += offset
 	print("Target afer adding velocity: ", target_position)
 	
+	
 	# Smoothly move the marker towards the target position
 	if curve_type == curve.Linear:
 		actual_cam_pos = actual_cam_pos.lerp(target_position, smoothing * delta)
@@ -101,7 +114,8 @@ func move_cursor(delta):
 		actual_cam_pos = actual_cam_pos.cubic_interpolate(target_position, actual_cam_pos, target_position, smoothing * delta)
 
 	
-	if sub_pixel_smoothing:
+	# LMAO Spend a day developing subpixel smoothing than fucking Gerblesh over here solves all my problems
+	if sub_pixel_smoothing and curve_type != curve.Gerblesh:
 	
 		# Calculate the "subpixel" position of the new camera position
 		var cam_subpixel_pos = actual_cam_pos.round() - actual_cam_pos
@@ -121,9 +135,12 @@ func move_cursor(delta):
 	else:
 		position = actual_cam_pos.round()
 		
+	# BTW spent the day debugging this code trying to fix it just to find
+	# Someone on github be like "yeah doing this makes it work btw"
 	camera_2d.align()
 	
 
+# Magic function made by Gerblesh on github from https://github.com/godotengine/godot-proposals/issues/6389
 static func lerpi(origin: float, target: float, weight: float) -> float:
 	target = floorf(target)
 	origin = floorf(origin)
