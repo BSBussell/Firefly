@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://chji8mvt4o3jg"]
+
+[ext_resource type="Script" path="res://Scenes/Player/CameraAnchor.gd" id="1_hjjau"]
+[ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_f7duo"]
+[ext_resource type="Texture2D" uid="uid://bury6i0qclg2g" path="res://Assets/Graphics/Camera/cursor.png" id="3_2gg2l"]
+[ext_resource type="Script" path="res://Scenes/Player/Margin.gd" id="4_iuoxv"]
+
+[node name="CameraTarget" type="Marker2D"]
+script = ExtResource("1_hjjau")
+max_offset = 75
+horizontal_strength = 0.7
+vertical_strength = 0.1
+
+[node name="Cursor" type="Sprite2D" parent="."]
+material = ExtResource("2_f7duo")
+texture = ExtResource("3_2gg2l")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(0, -35)
+process_callback = 0
+limit_smoothed = true
+position_smoothing_speed = 7.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.25
+drag_top_margin = 0.3
+drag_right_margin = 0.25
+drag_bottom_margin = 0.25
+editor_draw_drag_margin = true
+script = ExtResource("4_iuoxv")
+metadata/_edit_lock_ = true
