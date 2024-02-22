@@ -1,11 +1,9 @@
 extends Marker2D
 
 @onready var camera_2d = $Camera2D
+@onready var camera_hit_box = $CameraHitBox
 
 enum process {Physics, Draw}
-
-# ALL HAIL GERBLESH
-enum curve {Linear, Cubic, Gerblesh}
 
 @export_category("Player Cam Settings")
 # The player the camera is based around
@@ -19,12 +17,6 @@ enum curve {Linear, Cubic, Gerblesh}
 
 @export_group("Nerd Shit")
 
-# Whether or not we should move the camera
-@export var horizontal_threshold: float = 30.0
-
-# Threshold needed to be exceeded for 
-@export var vertical_threshold: float = 30.0
-
 
 # How responsive the camera is to the players horizontal velocity
 @export var horizontal_strength: float = 0.8
@@ -32,25 +24,21 @@ enum curve {Linear, Cubic, Gerblesh}
 # How responsive the camera is to the players vertical velocity
 @export var vertical_strength: float = 0.3
 
-# The type of camera smoothing to use
-@export var curve_type: curve = curve.Cubic
-
 # Where the camera position is processed at
 @export var processor: process
 
-# Broken lmao
-@export var sub_pixel_smoothing: bool = false
-
-@export var use_global_position: bool = false
 
 
+@onready var startingPos: Vector2 = position
 @onready var actual_cam_pos := global_position
 
-var cameraSpeed: Vector2 = Vector2(0,0)
+var prevTarget: Vector2 = Vector2(0,0)
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	position = Vector2.ZERO
 	pass # Replace with function body.
 
 
@@ -67,17 +55,15 @@ func _process(delta):
 func move_cursor(delta):
 	
 	# Our Center / Starting Position
-	var target_position = Vector2.ZERO
-	
-	if use_global_position: 
-		target_position = Player.global_position
-	
+	var target_position = Player.global_position
 	
 	# The vector we are basing everything off of
 	var velocity = Player.velocity
 	
 	# This is how far we will offset from our center
-	var offset: Vector2
+	var offset: Vector2 = Vector2.ZERO
+
+	
 	offset.x = velocity.x * horizontal_strength
 	
 	if velocity.y > -40:
@@ -92,52 +78,39 @@ func move_cursor(delta):
 		
 		# Set the length to now be the max offset
 		offset *= max_offset
-	
-	print(offset)
-	
+		
 	# Add our offset to the target position
 	target_position += offset
-	print("Target afer adding velocity: ", target_position)
-	
 	
 	# Smoothly move the marker towards the target position
-	if curve_type == curve.Linear:
-		actual_cam_pos = actual_cam_pos.lerp(target_position, smoothing * delta)
-		
-		
-	elif curve_type == curve.Gerblesh:
-		actual_cam_pos.x = lerpi(actual_cam_pos.x, target_position.x, smoothing * delta)
-		actual_cam_pos.y = lerpi(actual_cam_pos.y, target_position.y, smoothing * delta)
-		
-	# Use cubic interpolation for smoother camera movement
-	else:
-		actual_cam_pos = actual_cam_pos.cubic_interpolate(target_position, actual_cam_pos, target_position, smoothing * delta)
-
+	actual_cam_pos.x = lerpi(actual_cam_pos.x, target_position.x, smoothing * delta)
+	actual_cam_pos.y = lerpi(actual_cam_pos.y, target_position.y, smoothing * delta)
 	
-	# LMAO Spend a day developing subpixel smoothing than fucking Gerblesh over here solves all my problems
-	if sub_pixel_smoothing and curve_type != curve.Gerblesh:
-	
-		# Calculate the "subpixel" position of the new camera position
-		var cam_subpixel_pos = actual_cam_pos.round() - actual_cam_pos
-		
-		# I'll work on this once i have subpixel working at any amount of smoothness lmao
-		#cam_subpixel_pos = snapped(cam_subpixel_pos, Vector2(0.01,0.01))
-
-		# Update the Main ViewportContainer's shader uniform
-		_viewports.game_viewport_container.material.set_shader_parameter("sub_pixel_offset", cam_subpixel_pos)
-		print("SubPixel: ", cam_subpixel_pos)
-	
+	prevTarget = target_position
 	
 	
 	# Set the global position to a rounded position of the actual cam
-	if use_global_position:
-		global_position = actual_cam_pos.round()
-	else:
-		position = actual_cam_pos.round()
-		
+	global_position = actual_cam_pos.round()
+			
 	# BTW spent the day debugging this code trying to fix it just to find
 	# Someone on github be like "yeah doing this makes it work btw"
 	camera_2d.align()
+	
+	
+func has_escape_margin():
+	var player_pos = Player.global_position
+	var camera_pos = camera_2d.global_position
+	var camera_size = Vector2(320, 180)
+	
+	
+	var left_margin = camera_pos.x - camera_2d.drag_left_margin * camera_size.x / 2
+	var right_margin = camera_pos.x + camera_2d.drag_right_margin * camera_size.x / 2
+	var top_margin = camera_pos.y - camera_2d.drag_top_margin * camera_size.y / 2
+	var bottom_margin = camera_pos.y + camera_2d.drag_bottom_margin * camera_size.y / 2
+
+	return player_pos.x < left_margin || player_pos.x > right_margin || player_pos.y < top_margin || player_pos.y > bottom_margin
+
+	
 	
 
 # Magic function made by Gerblesh on github from https://github.com/godotengine/godot-proposals/issues/6389

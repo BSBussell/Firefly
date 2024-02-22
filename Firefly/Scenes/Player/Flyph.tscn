@@ -486,12 +486,10 @@ shape = SubResource("RectangleShape2D_l0ebm")
 metadata/_edit_lock_ = true
 
 [node name="CameraTarget" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("8_8t35w")]
+position = Vector2(0, -10)
 Player = NodePath("..")
-smoothing = 0.3
-horizontal_strength = 1.0
-vertical_strength = 0.0
-curve_type = 2
-sub_pixel_smoothing = true
+max_offset = 80
+vertical_strength = 0.2
 
 [node name="UI_FX" type="CanvasLayer" parent="."]
 

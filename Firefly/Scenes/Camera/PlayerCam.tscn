@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://chji8mvt4o3jg"]
+[gd_scene load_steps=6 format=3 uid="uid://chji8mvt4o3jg"]
 
 [ext_resource type="Script" path="res://Scenes/Player/CameraAnchor.gd" id="1_hjjau"]
 [ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_f7duo"]
 [ext_resource type="Texture2D" uid="uid://bury6i0qclg2g" path="res://Assets/Graphics/Camera/cursor.png" id="3_2gg2l"]
 [ext_resource type="Script" path="res://Scenes/Player/Margin.gd" id="4_iuoxv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yl0eo"]
+radius = 4.12311
 
 [node name="CameraTarget" type="Marker2D"]
 script = ExtResource("1_hjjau")
@@ -29,3 +32,11 @@ drag_bottom_margin = 0.25
 editor_draw_drag_margin = true
 script = ExtResource("4_iuoxv")
 metadata/_edit_lock_ = true
+
+[node name="CameraHitBox" type="CharacterBody2D" parent="."]
+collision_layer = 8
+collision_mask = 9
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraHitBox"]
+shape = SubResource("CircleShape2D_yl0eo")

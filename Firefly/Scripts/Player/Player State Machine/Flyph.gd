@@ -97,20 +97,16 @@ func _process(delta: float) -> void:
 		animation.set_frame_and_progress(0,0)
 	
 	
-	if (current_animation == ANI_STATES.CRAWL):
-		print("crawl Prev_animation: ", prev_animation)
-		print("crawl current animation: ", current_animation)
-	
 	# Only update animations if we've changed animations
 	if prev_animation != current_animation or restart_animation:
 		
-		print("craw: Updating animations")
-		if (current_animation == ANI_STATES.CROUCH):
-			print("crouch animation being updated")
-		elif (current_animation == ANI_STATES.STANDING_UP):
-			print("STANIDNG UP UPDATED")
-		elif (current_animation == ANI_STATES.CRAWL):
-			print("SO IT DOES EXIST!!!")
+		#print("craw: Updating animations")
+		#if (current_animation == ANI_STATES.CROUCH):
+			#print("crouch animation being updated")
+		#elif (current_animation == ANI_STATES.STANDING_UP):
+			#print("STANIDNG UP UPDATED")
+		#elif (current_animation == ANI_STATES.CRAWL):
+			#print("SO IT DOES EXIST!!!")
 		update_animations()
 		restart_animation = false
 		
@@ -140,7 +136,7 @@ func update_animations():
 		
 		# Crouch Animations
 		ANI_STATES.CRAWL:
-			print("crawl: played")
+			#print("crawl: played")
 			animation.play("crawl")
 		ANI_STATES.CROUCH:
 			animation.play("crouch")
