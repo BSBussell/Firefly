@@ -1,8 +1,9 @@
 extends Marker2D
 
+@onready var camera_2d = $Camera2D
 
 enum process {Physics, Draw}
-enum curve {Linear, Cubic}
+enum curve {Linear, Cubic, Gerblesh}
 
 @export_category("Player Cam Settings")
 # The player the camera is based around
@@ -27,6 +28,10 @@ enum curve {Linear, Cubic}
 # Where the camera position is processed at
 @export var processor: process
 
+# Broken lmao
+@export var sub_pixel_smoothing: bool = false
+
+@export var use_global_position: bool = false
 
 
 @onready var actual_cam_pos := global_position
@@ -50,7 +55,10 @@ func _process(delta):
 func move_cursor(delta):
 	
 	# Our Center / Starting Position
-	var target_position = Player.global_position
+	var target_position = Vector2.ZERO
+	
+	if use_global_position: 
+		target_position = Player.global_position
 	
 	
 	# The vector we are basing everything off of
@@ -82,23 +90,42 @@ func move_cursor(delta):
 	# Smoothly move the marker towards the target position
 	if curve_type == curve.Linear:
 		actual_cam_pos = actual_cam_pos.lerp(target_position, smoothing * delta)
-	
+		
+		
+	elif curve_type == curve.Gerblesh:
+		actual_cam_pos.x = lerpi(actual_cam_pos.x, target_position.x, smoothing * delta)
+		actual_cam_pos.y = lerpi(actual_cam_pos.y, target_position.y, smoothing * delta)
+		
 	# Use cubic interpolation for smoother camera movement
 	else:
 		actual_cam_pos = actual_cam_pos.cubic_interpolate(target_position, actual_cam_pos, target_position, smoothing * delta)
 
 	
-	# Calculate the "subpixel" position of the new camera position
-	var cam_subpixel_pos = actual_cam_pos.round() - actual_cam_pos
+	if sub_pixel_smoothing:
 	
-	# I'll work on this once i have subpixel working at any amount of smoothness lmao
-	#cam_subpixel_pos = snapped(cam_subpixel_pos, Vector2(0.01,0.01))
+		# Calculate the "subpixel" position of the new camera position
+		var cam_subpixel_pos = actual_cam_pos.round() - actual_cam_pos
+		
+		# I'll work on this once i have subpixel working at any amount of smoothness lmao
+		#cam_subpixel_pos = snapped(cam_subpixel_pos, Vector2(0.01,0.01))
 
-	# Update the Main ViewportContainer's shader uniform
-	#_viewports.game_viewport_container.material.set_shader_parameter("sub_pixel_offset", cam_subpixel_pos)
-	print("SubPixel: ", cam_subpixel_pos)
+		# Update the Main ViewportContainer's shader uniform
+		_viewports.game_viewport_container.material.set_shader_parameter("sub_pixel_offset", cam_subpixel_pos)
+		print("SubPixel: ", cam_subpixel_pos)
 	
 	
 	
 	# Set the global position to a rounded position of the actual cam
-	global_position = actual_cam_pos.round()
+	if use_global_position:
+		global_position = actual_cam_pos.round()
+	else:
+		position = actual_cam_pos.round()
+		
+	camera_2d.align()
+	
+
+static func lerpi(origin: float, target: float, weight: float) -> float:
+	target = floorf(target)
+	origin = floorf(origin)
+	var distance: float = ceilf(absf(target - origin) * weight)
+	return move_toward(origin, target, distance)

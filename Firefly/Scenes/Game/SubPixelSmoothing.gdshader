@@ -1,5 +1,8 @@
 shader_type canvas_item;
 
+precision highp float;
+
+
 // Used in order to give a small subpixel offset for camera movements
 uniform vec2 sub_pixel_offset = vec2(0.0, 0.0);
 

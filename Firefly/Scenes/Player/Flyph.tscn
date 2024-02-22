@@ -487,10 +487,10 @@ metadata/_edit_lock_ = true
 
 [node name="CameraTarget" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("8_8t35w")]
 Player = NodePath("..")
-max_offset = 100
-smoothing = 7.0
 vertical_strength = 0.2
-processor = 1
+curve_type = 2
+sub_pixel_smoothing = true
+use_global_position = true
 
 [node name="UI_FX" type="CanvasLayer" parent="."]
 
