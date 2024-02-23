@@ -1,8 +1,8 @@
-extends "res://Scripts/Player/Player State Machine/State.gd"
+extends PlayerState
 
 @export_subgroup("TRANSITIONAL STATES")
-@export var WALL_STATE: State = null
-@export var GROUNDED_STATE: State = null
+@export var WALL_STATE: PlayerState = null
+@export var GROUNDED_STATE: PlayerState = null
 
 # Timers
 @export_subgroup("Input Assistance Timers")
@@ -35,7 +35,7 @@ func exit() -> void:
 		parent.update_ff_landings(0.0)
 
 # Processing input in this state, returns nil or new state
-func process_input(_event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> PlayerState:
 	
 	if Input.is_action_just_pressed("Down"):
 		parent.fastFalling = true
@@ -47,7 +47,7 @@ func process_input(_event: InputEvent) -> State:
 	return null
 
 # Processing Physics in this state, returns nil or new state
-func process_physics(delta: float) -> State:
+func process_physics(delta: float) -> PlayerState:
 	
 	
 	apply_gravity(delta)
@@ -69,7 +69,7 @@ func process_physics(delta: float) -> State:
 		return WALL_STATE
 	return null
 	
-func animation_end() -> State:
+func animation_end() -> PlayerState:
 
 	
 	if (parent.current_animation == parent.ANI_STATES.JUMP):
@@ -123,15 +123,15 @@ func handle_acceleration(delta, direction):
 	
 	var airDrift = 0
 	
-	if parent.wallJumping:
+	if parent.airDriftDisabled:
 		airDrift = 0
 	else:
 		airDrift = parent.movement_data.AIR_DRIFT_MULTIPLIER
 	
 	# If we are in wall jump then we have no air drift, this restores this when we start falling
-	if parent.wallJumping and parent.velocity.y > 0:
+	if parent.airDriftDisabled and parent.velocity.y > 0:
 			print("Restoring Air Drift")
-			parent.wallJumping = false
+			parent.airDriftDisabled = false
 	
 	if direction:
 		# AIR ACCEL

@@ -1,7 +1,7 @@
-extends State
+extends PlayerState
 
 @export_subgroup("TRANSITIONAL STATES")
-@export var AERIAL_STATE: State = null
+@export var AERIAL_STATE: PlayerState = null
 
 # And check the jump buffer on landing
 @export_subgroup("Input Assists")
@@ -26,7 +26,13 @@ func enter() -> void:
 	#if Input.is_action_pressed("Down"):
 		#parent.current_animation = parent.ANI_STATES.CROUCH
 	#else:	
-	parent.current_animation = parent.ANI_STATES.LANDING
+	if abs(parent.velocity.x) >= parent.movement_data.RUN_THRESHOLD:
+		parent.current_animation = parent.ANI_STATES.RUNNING
+		dust.emitting = true
+	else:
+		parent.current_animation = parent.ANI_STATES.LANDING
+	
+	parent.wallJumping = false
 	
 	# Give dust on landing
 	var new_cloud = parent.LANDING_DUST.instantiate()
@@ -43,12 +49,12 @@ func exit() -> void:
 	pass
 
 # Processing input in this state, returns nil or new state
-func process_input(_event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> PlayerState:
 	return null
 
 
 # Processing Physics in this state, returns nil or new state
-func process_physics(delta: float) -> State:
+func process_physics(delta: float) -> PlayerState:
 	
 	
 	jump_logic(delta)
@@ -157,7 +163,7 @@ func update_state(direction):
 	if parent.current_animation != parent.ANI_STATES.RUNNING:
 		dust.emitting = false
 		
-func animation_end() -> State:
+func animation_end() -> PlayerState:
 	
 	# If we've stopped landing then we go to idle animations
 	if parent.current_animation == parent.ANI_STATES.LANDING:

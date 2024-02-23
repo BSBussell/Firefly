@@ -1,20 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://chji8mvt4o3jg"]
+[gd_scene load_steps=9 format=3 uid="uid://chji8mvt4o3jg"]
 
 [ext_resource type="Script" path="res://Scenes/Player/CameraAnchor.gd" id="1_hjjau"]
 [ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_f7duo"]
 [ext_resource type="Texture2D" uid="uid://bury6i0qclg2g" path="res://Assets/Graphics/Camera/cursor.png" id="3_2gg2l"]
 [ext_resource type="Script" path="res://Scenes/Player/Margin.gd" id="4_iuoxv"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_yl0eo"]
-radius = 4.12311
+[ext_resource type="Script" path="res://Scripts/State_Machine/StateMachine.gd" id="5_67mh8"]
+[ext_resource type="Script" path="res://Scenes/Camera/Idle.gd" id="6_nr75o"]
+[ext_resource type="Script" path="res://Scenes/Camera/Follow.gd" id="6_ylrcd"]
+[ext_resource type="Script" path="res://Scenes/Camera/LookAhead.gd" id="8_lrpws"]
 
 [node name="CameraTarget" type="Marker2D"]
 script = ExtResource("1_hjjau")
-max_offset = 75
-horizontal_strength = 0.7
-vertical_strength = 0.1
 
 [node name="Cursor" type="Sprite2D" parent="."]
+visible = false
 material = ExtResource("2_f7duo")
 texture = ExtResource("3_2gg2l")
 
@@ -33,10 +32,24 @@ editor_draw_drag_margin = true
 script = ExtResource("4_iuoxv")
 metadata/_edit_lock_ = true
 
-[node name="CameraHitBox" type="CharacterBody2D" parent="."]
-collision_layer = 8
-collision_mask = 9
-motion_mode = 1
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
+script = ExtResource("5_67mh8")
+starting_state = NodePath("Idle")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraHitBox"]
-shape = SubResource("CircleShape2D_yl0eo")
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW")]
+script = ExtResource("6_nr75o")
+FOLLOW = NodePath("../Follow")
+
+[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("IDLE", "LOOKAHEAD", "timer")]
+script = ExtResource("6_ylrcd")
+IDLE = NodePath("../Idle")
+LOOKAHEAD = NodePath("../LookAhead")
+timer = NodePath("../../FollowTimer")
+
+[node name="LookAhead" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW")]
+script = ExtResource("8_lrpws")
+FOLLOW = NodePath("../Follow")
+
+[node name="FollowTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true

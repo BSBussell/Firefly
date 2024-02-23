@@ -1,8 +1,8 @@
-extends State
+extends PlayerState
 
 @export_subgroup("TRANSITIONAL STATES")
-@export var GROUNDED_STATE: State = null
-@export var AERIAL_STATE: State = null
+@export var GROUNDED_STATE: PlayerState = null
+@export var AERIAL_STATE: PlayerState = null
 
 # And check the jump buffer on landing
 @export_subgroup("Input Assists")
@@ -20,18 +20,18 @@ func exit() -> void:
 	pass
 
 # Processing input in this state, returns nil or new state
-func process_input(_event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> PlayerState:
 	if Input.is_action_just_pressed("Down"):
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
 	return null
 
 # Processing Frames in this state, returns nil or new state
-func process_frame(_delta: float) -> State:
+func process_frame(_delta: float) -> PlayerState:
 	return null
 
 # Processing Physics in this state, returns nil or new state
-func process_physics(delta: float) -> State:
+func process_physics(delta: float) -> PlayerState:
 	
 	apply_gravity(delta, parent.horizontal_axis)
 	handle_walljump(delta, parent.vertical_axis)
@@ -47,7 +47,7 @@ func process_physics(delta: float) -> State:
 		return AERIAL_STATE
 	return null
 	
-func animation_end() -> State:
+func animation_end() -> PlayerState:
 	
 	if (parent.current_animation == parent.ANI_STATES.JUMP):
 		parent.current_animation = parent.ANI_STATES.FALLING
@@ -116,6 +116,9 @@ func handle_walljump(delta, vc_direction):
 				else:
 					parent.animation.flip_h = (jump_dir < 0)
 				
+				
+				parent.wallJumping = true
+				
 			# else itll launch you away
 			else:
 				parent.velocity.y = parent.movement_data.JUMP_VELOCITY * awayY
@@ -128,13 +131,11 @@ func handle_walljump(delta, vc_direction):
 				
 				
 				if parent.movement_data.DISABLE_DRIFT:
-					parent.wallJumping = true
-					#parent.cacheAirdrift = parent.movement_data.AIR_DRIFT_MULTIPLIER
-					#parent.movement_data.AIR_DRIFT_MULTIPLIER = 0.0
+					parent.airDriftDisabled = true
 					print("Removing AirDrift")
 			
 				parent.horizontal_axis = jump_dir
-			
+	
 
 
 func handle_acceleration(delta, direction):
