@@ -1,19 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://chji8mvt4o3jg"]
+[gd_scene load_steps=8 format=3 uid="uid://chji8mvt4o3jg"]
 
 [ext_resource type="Script" path="res://Scenes/Player/CameraAnchor.gd" id="1_hjjau"]
 [ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_f7duo"]
 [ext_resource type="Texture2D" uid="uid://bury6i0qclg2g" path="res://Assets/Graphics/Camera/cursor.png" id="3_2gg2l"]
-[ext_resource type="Script" path="res://Scenes/Player/Margin.gd" id="4_iuoxv"]
 [ext_resource type="Script" path="res://Scripts/State_Machine/StateMachine.gd" id="5_67mh8"]
-[ext_resource type="Script" path="res://Scenes/Camera/Idle.gd" id="6_nr75o"]
-[ext_resource type="Script" path="res://Scenes/Camera/Follow.gd" id="6_ylrcd"]
-[ext_resource type="Script" path="res://Scenes/Camera/LookAhead.gd" id="8_lrpws"]
+[ext_resource type="Script" path="res://Scripts/Camera/Idle.gd" id="5_mfikc"]
+[ext_resource type="Script" path="res://Scripts/Camera/Follow.gd" id="6_y5nkv"]
+[ext_resource type="Script" path="res://Scripts/Camera/LookAhead.gd" id="7_pjrc4"]
 
 [node name="CameraTarget" type="Marker2D"]
 script = ExtResource("1_hjjau")
 
 [node name="Cursor" type="Sprite2D" parent="."]
 visible = false
+z_index = 100
 material = ExtResource("2_f7duo")
 texture = ExtResource("3_2gg2l")
 
@@ -29,7 +29,6 @@ drag_top_margin = 0.4
 drag_right_margin = 0.25
 drag_bottom_margin = 0.25
 editor_draw_drag_margin = true
-script = ExtResource("4_iuoxv")
 metadata/_edit_lock_ = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
@@ -37,18 +36,24 @@ script = ExtResource("5_67mh8")
 starting_state = NodePath("Idle")
 
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW")]
-script = ExtResource("6_nr75o")
+script = ExtResource("5_mfikc")
 FOLLOW = NodePath("../Follow")
+deceleration_speed = 1.0
 
-[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("IDLE", "LOOKAHEAD", "timer")]
-script = ExtResource("6_ylrcd")
+[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("IDLE", "LOOKAHEAD", "follow_timer")]
+script = ExtResource("6_y5nkv")
 IDLE = NodePath("../Idle")
 LOOKAHEAD = NodePath("../LookAhead")
-timer = NodePath("../../FollowTimer")
+follow_timer = NodePath("../../FollowTimer")
+Minimum_Speed = 0.01
+acceleration = 0.5
 
-[node name="LookAhead" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW")]
-script = ExtResource("8_lrpws")
+[node name="LookAhead" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW", "IDLE")]
+script = ExtResource("7_pjrc4")
 FOLLOW = NodePath("../Follow")
+IDLE = NodePath("../Idle")
+speed = 4.0
+horizontal_weight = 1.0
 
 [node name="FollowTimer" type="Timer" parent="."]
 wait_time = 0.5

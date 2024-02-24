@@ -208,7 +208,7 @@ libraries = {
 position = Vector2(97, 160)
 
 [node name="Music" type="AudioStreamPlayer2D" parent="Flyph"]
-position = Vector2(-19, -8)
+position = Vector2(-1, -10)
 stream = ExtResource("11_tymp7")
 volume_db = -5.501
 autoplay = true
@@ -216,7 +216,7 @@ autoplay = true
 [node name="CameraTarget" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("12_mdqvq")]
 position = Vector2(96, 150)
 Player = NodePath("../Flyph")
-smoothing = 5.0
+velocity_smoothing = 0.8
 
 [node name="Leaves" type="CPUParticles2D" parent="."]
 position = Vector2(168, -88)

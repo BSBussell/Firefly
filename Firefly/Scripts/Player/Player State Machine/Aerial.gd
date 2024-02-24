@@ -31,6 +31,7 @@ func exit() -> void:
 		
 		parent.fastFalling = false
 		parent.animation.speed_scale = 1.0
+		
 	else:
 		parent.update_ff_landings(0.0)
 
@@ -86,10 +87,12 @@ func handle_coyote(_delta):
 			
 			# Prevent silly interactions between jumping and wall jumping
 			jump_buffer.stop()
-			jump_buffer.wait_time = -1
+			#jump_buffer.wait_time = -1
 			
+			# Apply Velocity
 			parent.velocity.y = parent.movement_data.JUMP_VELOCITY
 			
+			# Play Jump Cloud
 			var new_cloud = parent.JUMP_DUST.instantiate()
 			new_cloud.set_name("jump_dust_temp")
 			$"../../JumpDustSpawner".add_child(new_cloud)

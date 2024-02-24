@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Firefly"
-run/main_scene="res://Scenes/Game/GameViewer.tscn"
+run/main_scene="res://Core/Game/GameViewer.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/image="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png"
 config/icon="res://Assets/BOOT/flyph-export_big.png"
@@ -20,11 +20,13 @@ config/icon="res://Assets/BOOT/flyph-export_big.png"
 
 _viewports="*res://Scripts/Globals/_viewports.gd"
 _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
+_shake="*res://Scripts/Globals/_shake.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=3
 window/size/resizable=false
 window/size/window_width_override=1920
 window/size/window_height_override=1080

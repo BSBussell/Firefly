@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=65 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -347,8 +347,13 @@ animations = [{
 }]
 
 [sub_resource type="Curve" id="Curve_w5yy1"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, -0.703651, 0, 0, Vector2(1, 1), -0.36911, 0.0, 0, 0]
 point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_nk0tk"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.475504, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0.670588, 1)
 
 [sub_resource type="Animation" id="Animation_j6ma2"]
 length = 0.001
@@ -454,6 +459,7 @@ show_behind_parent = true
 width = 6.0
 width_curve = SubResource("Curve_w5yy1")
 default_color = Color(0.960784, 0.898039, 0, 1)
+gradient = SubResource("Gradient_nk0tk")
 script = ExtResource("7_se6t7")
 length = 0
 metadata/_edit_lock_ = true
@@ -504,7 +510,6 @@ color = Color(1, 1, 0.337255, 1)
 color_ramp = SubResource("Gradient_k6x1h")
 
 [node name="debug info" type="Label" parent="UI_FX"]
-visible = false
 anchors_preset = -1
 anchor_right = 0.044
 anchor_bottom = 0.032

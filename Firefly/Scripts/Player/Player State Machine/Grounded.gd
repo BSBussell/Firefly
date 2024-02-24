@@ -113,12 +113,15 @@ func handle_acceleration(delta, direction):
 	
 func apply_friction(delta, direction):
 	
+	parent.turningAround = false	
+	
+	
 	# Ok this makes the game really slippery when changing direction
 	if direction == 0:
 			parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.FRICTION*delta)
 		
-			
 	elif not direction * parent.velocity.x > 0:
+		parent.turningAround = true
 		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.TURN_FRICTION*delta)
 		
 # Updates animation states based on changes in physics

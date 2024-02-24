@@ -39,6 +39,7 @@ enum ANI_STATES {
 var fastFalling = false
 var airDriftDisabled = false
 var wallJumping = false
+var turningAround = false
 
 @onready var cacheAirdrift = movement_data.AIR_DRIFT_MULTIPLIER
 
