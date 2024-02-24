@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=64 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -347,13 +347,8 @@ animations = [{
 }]
 
 [sub_resource type="Curve" id="Curve_w5yy1"]
-_data = [Vector2(0, 0), 0.0, -0.703651, 0, 0, Vector2(1, 1), -0.36911, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
-
-[sub_resource type="Gradient" id="Gradient_nk0tk"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0.475504, 1)
-colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0.670588, 1)
 
 [sub_resource type="Animation" id="Animation_j6ma2"]
 length = 0.001
@@ -436,124 +431,4 @@ amount = 15
 lifetime = 0.5
 texture = ExtResource("3_endwo")
 emission_shape = 3
-emission_rect_extents = Vector2(1, 2.5)
-gravity = Vector2(0, 0)
-scale_amount_min = 0.15
-scale_amount_max = 0.25
-color = Color(0.403922, 1, 0.521569, 1)
-color_ramp = SubResource("Gradient_xmxui")
-metadata/_edit_lock_ = true
-
-[node name="JumpDustSpawner" type="Marker2D" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(2.38419e-07, -32)
-sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"crawl"
-autoplay = "idle"
-metadata/_edit_lock_ = true
-
-[node name="Trail" type="Line2D" parent="."]
-show_behind_parent = true
-width = 6.0
-width_curve = SubResource("Curve_w5yy1")
-default_color = Color(0.960784, 0.898039, 0, 1)
-gradient = SubResource("Gradient_nk0tk")
-script = ExtResource("7_se6t7")
-length = 0
-metadata/_edit_lock_ = true
-
-[node name="LandingDustSpawner" type="Marker2D" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="Spotlight" type="PointLight2D" parent="."]
-position = Vector2(0, -11)
-color = Color(1, 0.980392, 0.803922, 1)
-range_layer_min = -100
-range_item_cull_mask = 3
-shadow_enabled = true
-shadow_color = Color(0, 0, 0, 1)
-shadow_filter = 2
-shadow_filter_smooth = 10.0
-shadow_item_cull_mask = 2
-texture = ExtResource("6_bo4q8")
-metadata/_edit_lock_ = true
-
-[node name="light_animator" type="AnimationPlayer" parent="Spotlight"]
-libraries = {
-"": SubResource("AnimationLibrary_hpbxt")
-}
-
-[node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, -8)
-shape = SubResource("RectangleShape2D_l0ebm")
-metadata/_edit_lock_ = true
-
-[node name="UI_FX" type="CanvasLayer" parent="."]
-
-[node name="Star" type="CPUParticles2D" parent="UI_FX"]
-position = Vector2(159, 0)
-emitting = false
-amount = 16
-one_shot = true
-explosiveness = 0.78
-local_coords = true
-texture = ExtResource("8_shld8")
-emission_shape = 3
-emission_rect_extents = Vector2(180, 1)
-damping_min = 8.908
-damping_max = 8.908
-angle_min = -180.0
-angle_max = 180.0
-color = Color(1, 1, 0.337255, 1)
-color_ramp = SubResource("Gradient_k6x1h")
-
-[node name="debug info" type="Label" parent="UI_FX"]
-anchors_preset = -1
-anchor_right = 0.044
-anchor_bottom = 0.032
-offset_left = 257.0
-offset_top = 157.0
-offset_right = 298.92
-offset_bottom = 169.24
-text = "Score"
-label_settings = SubResource("LabelSettings_iomiv")
-
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
-script = ExtResource("10_amheu")
-starting_state = NodePath("Grounded")
-
-[node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "jump_buffer", "coyote_time")]
-script = ExtResource("7_x3sml")
-AERIAL_STATE = NodePath("../Aerial")
-jump_buffer = NodePath("../../JumpBuffer")
-coyote_time = NodePath("../../CoyoteTime")
-
-[node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "GROUNDED_STATE", "coyote_time", "jump_buffer")]
-script = ExtResource("9_vj5hi")
-WALL_STATE = NodePath("../Wall")
-GROUNDED_STATE = NodePath("../Grounded")
-coyote_time = NodePath("../../CoyoteTime")
-jump_buffer = NodePath("../../JumpBuffer")
-
-[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer")]
-script = ExtResource("10_eck16")
-GROUNDED_STATE = NodePath("../Grounded")
-AERIAL_STATE = NodePath("../Aerial")
-jump_buffer = NodePath("../../JumpBuffer")
-
-[node name="CoyoteTime" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
-
-[node name="JumpBuffer" type="Timer" parent="."]
-wait_time = 0.125
-one_shot = true
-
-[node name="MomentumTime" type="Timer" parent="."]
-wait_time = 3.0
-autostart = true
-
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="timeout" from="MomentumTime" to="." method="_on_momentum_time_timeout"]
+emission_rect_extents = Ve

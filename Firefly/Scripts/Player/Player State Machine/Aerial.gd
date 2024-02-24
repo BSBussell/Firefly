@@ -1,8 +1,8 @@
-extends "res://Scripts/Player/Player State Machine/State.gd"
+extends PlayerState
 
 @export_subgroup("TRANSITIONAL STATES")
-@export var WALL_STATE: State = null
-@export var GROUNDED_STATE: State = null
+@export var WALL_STATE: PlayerState = null
+@export var GROUNDED_STATE: PlayerState = null
 
 # Timers
 @export_subgroup("Input Assistance Timers")
@@ -31,11 +31,12 @@ func exit() -> void:
 		
 		parent.fastFalling = false
 		parent.animation.speed_scale = 1.0
+		
 	else:
 		parent.update_ff_landings(0.0)
 
 # Processing input in this state, returns nil or new state
-func process_input(event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> PlayerState:
 	
 	if Input.is_action_just_pressed("Down"):
 		parent.fastFalling = true
@@ -46,15 +47,11 @@ func process_input(event: InputEvent) -> State:
 	
 	return null
 
-# Processing Frames in this state, returns nil or new state
-func process_frame(delta: float) -> State:
-	return null
-
 # Processing Physics in this state, returns nil or new state
-func process_physics(delta: float) -> State:
+func process_physics(delta: float) -> PlayerState:
 	
 	
-	apply_gravity(delta, parent.horizontal_axis)
+	apply_gravity(delta)
 	
 	# Short hops
 	handle_coyote(delta)
@@ -73,7 +70,7 @@ func process_physics(delta: float) -> State:
 		return WALL_STATE
 	return null
 	
-func animation_end() -> State:
+func animation_end() -> PlayerState:
 
 	
 	if (parent.current_animation == parent.ANI_STATES.JUMP):
@@ -84,16 +81,18 @@ func animation_end() -> State:
 	
 	return null
 	
-func handle_coyote(delta):
+func handle_coyote(_delta):
 	if coyote_time.time_left > 0.0:
 		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 			
 			# Prevent silly interactions between jumping and wall jumping
 			jump_buffer.stop()
-			jump_buffer.wait_time = -1
+			#jump_buffer.wait_time = -1
 			
+			# Apply Velocity
 			parent.velocity.y = parent.movement_data.JUMP_VELOCITY
 			
+			# Play Jump Cloud
 			var new_cloud = parent.JUMP_DUST.instantiate()
 			new_cloud.set_name("jump_dust_temp")
 			$"../../JumpDustSpawner".add_child(new_cloud)
@@ -104,7 +103,7 @@ func handle_coyote(delta):
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):
 				parent.current_animation = parent.ANI_STATES.FALLING
 	
-func handle_sHop(delta):
+func handle_sHop(_delta):
 	if Input.is_action_just_released("Jump") and parent.velocity.y < parent.FF_Vel:
 			
 				parent.FF_Vel = parent.movement_data.JUMP_VELOCITY / parent.movement_data.FASTFALL_MULTIPLIER
@@ -113,7 +112,7 @@ func handle_sHop(delta):
 				#if (parent.current_animation != parent.ANI_STATES.CROUCH):
 					#parent.current_animation = parent.ANI_STATES.FALLING
 
-func apply_gravity(delta, direction):
+func apply_gravity(delta):
 	
 	
 	# If we are just in the air use normal gravity
@@ -127,19 +126,19 @@ func handle_acceleration(delta, direction):
 	
 	var airDrift = 0
 	
-	if parent.wallJumping:
+	if parent.airDriftDisabled:
 		airDrift = 0
 	else:
 		airDrift = parent.movement_data.AIR_DRIFT_MULTIPLIER
 	
 	# If we are in wall jump then we have no air drift, this restores this when we start falling
-	if parent.wallJumping and parent.velocity.y > 0:
+	if parent.airDriftDisabled and parent.velocity.y > 0:
 			print("Restoring Air Drift")
-			parent.wallJumping = false
+			parent.airDriftDisabled = false
 	
 	if direction:
 		# AIR ACCEL
-		parent.velocity.x  = move_toward(parent.velocity.x, parent.movement_data.SPEED*direction, (parent.movement_data.ACCEL * parent.movement_data.AIR_DRIFT_MULTIPLIER) * delta)
+		parent.velocity.x  = move_toward(parent.velocity.x, parent.movement_data.SPEED*direction, (parent.movement_data.ACCEL * airDrift) * delta)
 	
 
 func apply_airResistance(delta, direction):

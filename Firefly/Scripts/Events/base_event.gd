@@ -19,8 +19,8 @@ func _on_body_exited(body):
 	on_exit(body)
 
 # Override these functions in derived scripts for specific behavior
-func on_enter(body):
+func on_enter(_body):
 	pass
 
-func on_exit(body):
+func on_exit(_body):
 	pass

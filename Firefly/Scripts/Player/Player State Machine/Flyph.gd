@@ -5,10 +5,12 @@ extends CharacterBody2D
 @export var base_movement : PlayerMovementData
 @export var speed_movement: PlayerMovementData
 
+@export var star: CPUParticles2D
+@export var debug_info: Label
+
+
 @onready var animation = $AnimatedSprite2D
 @onready var StateMachine = $StateMachine
-@onready var star = $Camera2D/UI_FX/Star
-@onready var debug_info = $"Camera2D/UI_FX/debug info"
 @onready var spotlight = $Spotlight
 @onready var light_animator = $Spotlight/light_animator
 @onready var trail = $Trail
@@ -35,7 +37,9 @@ enum ANI_STATES {
 }
 
 var fastFalling = false
+var airDriftDisabled = false
 var wallJumping = false
+var turningAround = false
 
 @onready var cacheAirdrift = movement_data.AIR_DRIFT_MULTIPLIER
 
@@ -95,20 +99,16 @@ func _process(delta: float) -> void:
 		animation.set_frame_and_progress(0,0)
 	
 	
-	if (current_animation == ANI_STATES.CRAWL):
-		print("crawl Prev_animation: ", prev_animation)
-		print("crawl current animation: ", current_animation)
-	
 	# Only update animations if we've changed animations
 	if prev_animation != current_animation or restart_animation:
 		
-		print("craw: Updating animations")
-		if (current_animation == ANI_STATES.CROUCH):
-			print("crouch animation being updated")
-		elif (current_animation == ANI_STATES.STANDING_UP):
-			print("STANIDNG UP UPDATED")
-		elif (current_animation == ANI_STATES.CRAWL):
-			print("SO IT DOES EXIST!!!")
+		#print("craw: Updating animations")
+		#if (current_animation == ANI_STATES.CROUCH):
+			#print("crouch animation being updated")
+		#elif (current_animation == ANI_STATES.STANDING_UP):
+			#print("STANIDNG UP UPDATED")
+		#elif (current_animation == ANI_STATES.CRAWL):
+			#print("SO IT DOES EXIST!!!")
 		update_animations()
 		restart_animation = false
 		
@@ -138,7 +138,7 @@ func update_animations():
 		
 		# Crouch Animations
 		ANI_STATES.CRAWL:
-			print("crawl: played")
+			#print("crawl: played")
 			animation.play("crawl")
 		ANI_STATES.CROUCH:
 			animation.play("crouch")
@@ -191,7 +191,7 @@ func update_score():
 		
 		if movement_data != speed_movement:
 			movement_data = speed_movement
-			star.emitting = true
+			star.emitting = true 
 			light_animator.play("turn_up")
 			trail.length = 10
 	else:

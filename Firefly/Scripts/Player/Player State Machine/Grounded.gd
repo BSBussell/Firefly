@@ -1,7 +1,7 @@
-extends State
+extends PlayerState
 
 @export_subgroup("TRANSITIONAL STATES")
-@export var AERIAL_STATE: State = null
+@export var AERIAL_STATE: PlayerState = null
 
 # And check the jump buffer on landing
 @export_subgroup("Input Assists")
@@ -26,7 +26,13 @@ func enter() -> void:
 	#if Input.is_action_pressed("Down"):
 		#parent.current_animation = parent.ANI_STATES.CROUCH
 	#else:	
-	parent.current_animation = parent.ANI_STATES.LANDING
+	if abs(parent.velocity.x) >= parent.movement_data.RUN_THRESHOLD:
+		parent.current_animation = parent.ANI_STATES.RUNNING
+		dust.emitting = true
+	else:
+		parent.current_animation = parent.ANI_STATES.LANDING
+	
+	parent.wallJumping = false
 	
 	# Give dust on landing
 	var new_cloud = parent.LANDING_DUST.instantiate()
@@ -43,19 +49,15 @@ func exit() -> void:
 	pass
 
 # Processing input in this state, returns nil or new state
-func process_input(event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> PlayerState:
 	return null
 
 
 # Processing Physics in this state, returns nil or new state
-func process_physics(delta: float) -> State:
+func process_physics(delta: float) -> PlayerState:
 	
 	
-	var new_state: State =  null
-	
-	new_state = jump_logic(delta, parent.horizontal_axis)
-	#if new_state:
-		#return new_state
+	jump_logic(delta)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_friction(delta, parent.horizontal_axis)
@@ -72,7 +74,7 @@ func process_physics(delta: float) -> State:
 	return null
 	
 # TODO: Add jump lag in order to show the crouch animation
-func jump_logic(delta, direction) -> State:
+func jump_logic(_delta):
 	
 	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 		
@@ -86,7 +88,7 @@ func jump_logic(delta, direction) -> State:
 		
 		# Prevent silly interactions between jumping and wall jumping
 		jump_buffer.stop()
-		jump_buffer.wait_time = -1
+		#jump_buffer.wait_time = -1
 		
 		print("Jump Math")
 		parent.velocity.y = parent.movement_data.JUMP_VELOCITY
@@ -96,10 +98,6 @@ func jump_logic(delta, direction) -> State:
 		if (parent.current_animation != parent.ANI_STATES.CRAWL):
 			parent.current_animation = parent.ANI_STATES.FALLING
 			
-		
-		
-			
-	return null
 	
 
 	
@@ -115,12 +113,15 @@ func handle_acceleration(delta, direction):
 	
 func apply_friction(delta, direction):
 	
+	parent.turningAround = false	
+	
+	
 	# Ok this makes the game really slippery when changing direction
 	if direction == 0:
 			parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.FRICTION*delta)
 		
-			
 	elif not direction * parent.velocity.x > 0:
+		parent.turningAround = true
 		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.TURN_FRICTION*delta)
 		
 # Updates animation states based on changes in physics
@@ -165,7 +166,7 @@ func update_state(direction):
 	if parent.current_animation != parent.ANI_STATES.RUNNING:
 		dust.emitting = false
 		
-func animation_end() -> State:
+func animation_end() -> PlayerState:
 	
 	# If we've stopped landing then we go to idle animations
 	if parent.current_animation == parent.ANI_STATES.LANDING:

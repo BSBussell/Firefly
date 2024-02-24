@@ -1,4 +1,4 @@
-class_name State
+class_name PlayerState
 extends Node
 
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -15,16 +15,16 @@ func exit() -> void:
 	pass
 
 # Processing input in this state, returns nil or new state
-func process_input(event: InputEvent) -> State:
+func process_input(_event: InputEvent) -> PlayerState:
 	return null
 
 # Processing Frames in this state, returns nil or new state
-func process_frame(delta: float) -> State:
+func process_frame(_delta: float) -> PlayerState:
 	return null
 
 # Processing Physics in this state, returns nil or new state
-func process_physics(delta: float) -> State:
+func process_physics(_delta: float) -> PlayerState:
 	return null
 	
-func animation_end() -> State:
+func animation_end() -> PlayerState:
 	return null

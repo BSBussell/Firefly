@@ -13,15 +13,15 @@ func _ready():
 	set_physics_process(false)
 	
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	# Check if we're on floor
 	if enter_body and enter_body.is_on_floor():
 		nice.play("drop_in")
 		set_physics_process(false)
 
-func on_enter(body):
+func on_enter(_body):
 	set_physics_process(true)
 
-func on_exit(body):
+func on_exit(_body):
 	nice.play("fall_out")
