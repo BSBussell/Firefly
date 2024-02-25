@@ -14,6 +14,7 @@ extends CharacterBody2D
 @onready var spotlight = $Spotlight
 @onready var light_animator = $Spotlight/light_animator
 @onready var trail = $Trail
+@onready var starting_position = global_position
 
 
 @onready var movement_data = base_movement
@@ -212,3 +213,7 @@ func add_momentum(amount: float, weight: float) -> void:
 	await get_tree().create_timer(weight).timeout
 	tmp_modifier -= amount
 
+
+
+func _on_hazard_detector_area_entered(area):
+	global_position = starting_position
