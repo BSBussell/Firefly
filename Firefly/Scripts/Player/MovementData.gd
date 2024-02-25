@@ -27,3 +27,7 @@ extends Resource
 @export_subgroup("Wall Jump Properties")
 @export var NEUTRAL_WJ_VECTOR = Vector2(8.0, 0.9) # The vector an neutral wall jump will launch at
 @export var AWAY_WJ_VECTOR = Vector2(20, 0.8)		# The vector an away wall jump will launch at
+@export var DISABLE_DRIFT: bool = true
+
+@export_subgroup("Animation Properties")
+@export var RUN_THRESHOLD = 150
