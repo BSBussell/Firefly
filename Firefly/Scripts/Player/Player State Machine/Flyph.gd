@@ -244,6 +244,7 @@ func change_state():
 
 func kill():
 	
+	trail.clear_points()
 	global_position = starting_position
 
 func _on_hazard_detector_area_entered(area):

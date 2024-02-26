@@ -77,11 +77,6 @@ func apply_gravity(delta, _direction):
 
 func handle_walljump(delta, vc_direction):	
 	
-	
-	# In walljump
-	
-			#print("falling")
-	
 	if parent.is_on_wall_only():
 		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 		
@@ -121,10 +116,28 @@ func handle_walljump(delta, vc_direction):
 				
 				parent.wallJumping = true
 				
+			# Secret Downward WallJump :3
+			elif vc_direction < 0:
+				
+				parent.velocity.y = parent.jump_velocity * awayY * -1
+				parent.velocity.x = move_toward(parent.velocity.x, (parent.movement_data.SPEED * awayX) * jump_dir, (parent.movement_data.ACCEL * awayX) * delta)
+			
+				# Face away from the wall we jumping off of
+				parent.animation.flip_h = (jump_dir < 0)
+				
+				
+				
+				
+				if parent.movement_data.DISABLE_DRIFT:
+					parent.airDriftDisabled = true
+					print("Removing AirDrift")
+			
+				parent.horizontal_axis = jump_dir
+				
 			# else itll launch you away
 			else:
 				parent.velocity.y = parent.jump_velocity * awayY
-				parent.velocity.x = move_toward(parent.velocity.x, (parent.movement_data.SPEED * awayX) * jump_dir, (parent.movement_data.ACCEL * awayX * 1.5) * delta)
+				parent.velocity.x = move_toward(parent.velocity.x, (parent.movement_data.SPEED * awayX) * jump_dir, (parent.movement_data.ACCEL * awayX) * delta)
 			
 				# Face away from the wall we jumping off of
 				parent.animation.flip_h = (jump_dir < 0)

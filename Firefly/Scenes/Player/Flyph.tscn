@@ -429,7 +429,7 @@ position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 3
 floor_constant_speed = true
-floor_snap_length = 5.0
+floor_snap_length = 7.0
 script = ExtResource("1_hphyi")
 base_movement = ExtResource("2_tlkrj")
 speed_movement = ExtResource("3_w3b7s")
@@ -437,23 +437,23 @@ star = NodePath("UI_FX/Star")
 debug_info = NodePath("UI_FX/debug info")
 
 [node name="Collider_rect" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_l0ebm")
-disabled = true
-debug_color = Color(0, 0.6, 0.701961, 0.419608)
+debug_color = Color(0.733333, 0.764706, 0, 0.419608)
 metadata/_edit_lock_ = true
 
 [node name="Collider_rounded" type="CollisionShape2D" parent="."]
+visible = false
 z_index = 1
 position = Vector2(0, -8)
 shape = SubResource("CapsuleShape2D_gou6u")
+disabled = true
 debug_color = Color(0.733333, 0.764706, 0, 0.419608)
 metadata/_edit_lock_ = true
 
 [node name="Visuals" type="Node2D" parent="."]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
+[node name="0_1" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
 animation = &"crawl"
@@ -590,6 +590,6 @@ one_shot = true
 wait_time = 3.0
 autostart = true
 
-[connection signal="animation_finished" from="Visuals/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="animation_finished" from="Visuals/0_1" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
 [connection signal="timeout" from="Timers/MomentumTime" to="." method="_on_momentum_time_timeout"]
