@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="11_dm2r0"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="11_tymp7"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="12_mdqvq"]
-[ext_resource type="Texture2D" uid="uid://b3syyq30c6tau" path="res://Assets/Graphics/Demo/measuring_background.png" id="13_ogiw0"]
+[ext_resource type="PackedScene" uid="uid://wcqgun3wahbf" path="res://Scenes/Hazards/spikes.tscn" id="13_ieshq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2bp1o"]
 size = Vector2(122, 234)
@@ -215,7 +215,7 @@ libraries = {
 }
 
 [node name="Flyph" parent="." instance=ExtResource("11_dm2r0")]
-position = Vector2(97, 160)
+position = Vector2(103, 160)
 
 [node name="Music" type="AudioStreamPlayer2D" parent="Flyph"]
 position = Vector2(-1, -10)
@@ -254,6 +254,12 @@ scale_amount_max = 1.5
 color = Color(0, 0.490196, 0, 1)
 hue_variation_min = 0.6
 hue_variation_max = 0.94
+
+[node name="Spikes" parent="." instance=ExtResource("13_ieshq")]
+position = Vector2(220, 176)
+
+[node name="Spikes2" parent="." instance=ExtResource("13_ieshq")]
+position = Vector2(211, 176)
 
 [connection signal="body_entered" from="Nice_Event" to="Nice_Event" method="_on_body_entered"]
 [connection signal="body_exited" from="Nice_Event" to="Nice_Event" method="_on_body_exited"]

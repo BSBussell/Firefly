@@ -14,6 +14,7 @@ extends CharacterBody2D
 @onready var spotlight = $Spotlight
 @onready var light_animator = $Spotlight/light_animator
 @onready var trail = $Trail
+@onready var starting_position = global_position
 
 
 @onready var movement_data = base_movement
@@ -239,4 +240,9 @@ func change_state():
 	# The velocity of our ff
 	ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
 	ff_gravity = fall_gravity * movement_data.FASTFALL_MULTIPLIER
+
+
+
+func _on_hazard_detector_area_entered(area):
+	global_position = starting_position
 

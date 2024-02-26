@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=66 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -417,6 +417,9 @@ colors = PackedColorArray(1, 0.772549, 0, 1, 1, 1, 1, 1)
 font = ExtResource("10_nb4h7")
 font_size = 8
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_polx2"]
+size = Vector2(6.5, 10.5)
+
 [node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info")]
 position = Vector2(160, 125)
 collision_layer = 5
@@ -486,6 +489,7 @@ libraries = {
 }
 
 [node name="Collider" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_l0ebm")
 metadata/_edit_lock_ = true
@@ -555,5 +559,13 @@ one_shot = true
 wait_time = 3.0
 autostart = true
 
+[node name="HazardDetector" type="Area2D" parent="."]
+collision_mask = 17
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HazardDetector"]
+position = Vector2(-1, -7)
+shape = SubResource("RectangleShape2D_polx2")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="MomentumTime" to="." method="_on_momentum_time_timeout"]
+[connection signal="area_entered" from="HazardDetector" to="." method="_on_hazard_detector_area_entered"]
