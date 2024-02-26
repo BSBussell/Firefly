@@ -59,18 +59,20 @@ func animation_end() -> PlayerState:
 
 func apply_gravity(delta, _direction):
 	
+	var silly_grav = AERIAL_STATE.get_gravity()
+	
 	# WALL STATE
 	# Priortize fast falling
-	if parent.fastFalling:
-		parent.velocity.y += gravity * parent.movement_data.FASTFALL_MULTIPLIER * delta
+	#if parent.fastFalling:
+		#parent.velocity.y += gravity * parent.movement_data.FASTFALL_MULTIPLIER * delta
 
-	# If holding into wall slow our fall
-	elif parent.velocity.y > 0 and Input.is_action_pressed(get_which_wall_collided()):  # Ensure we're moving downwards
-		parent.velocity.y += gravity * delta * (1/parent.movement_data.WALL_FRICTION_MULTIPLIER)  # Reduce the gravity's effect to slow down descent
+	# If holding into wall and falling, slow our fall
+	if parent.velocity.y > 0 and Input.is_action_pressed(get_which_wall_collided()):  # Ensure we're moving downwards
+		parent.velocity.y -= silly_grav * delta * (1/parent.movement_data.WALL_FRICTION_MULTIPLIER)  # Reduce the gravity's effect to slow down descent
 	
 	# otherwise just fall normally
 	else:
-		parent.velocity.y += gravity * delta
+		parent.velocity.y -= silly_grav * delta
 		
 
 func handle_walljump(delta, vc_direction):	
@@ -107,7 +109,7 @@ func handle_walljump(delta, vc_direction):
 				
 			# Ok so if you are up on a walljump it'll launch you up
 			if vc_direction > 0:
-				parent.velocity.y = parent.movement_data.JUMP_VELOCITY * neutralY
+				parent.velocity.y = parent.jump_velocity * neutralY
 				parent.velocity.x = move_toward(parent.velocity.x, (parent.movement_data.SPEED * neutralX) * jump_dir, (parent.movement_data.ACCEL * neutralX) * delta) 
 				
 				# Facing the fall we're jumping up
@@ -121,7 +123,7 @@ func handle_walljump(delta, vc_direction):
 				
 			# else itll launch you away
 			else:
-				parent.velocity.y = parent.movement_data.JUMP_VELOCITY * awayY
+				parent.velocity.y = parent.jump_velocity * awayY
 				parent.velocity.x = move_toward(parent.velocity.x, (parent.movement_data.SPEED * awayX) * jump_dir, (parent.movement_data.ACCEL * awayX * 1.5) * delta)
 			
 				# Face away from the wall we jumping off of

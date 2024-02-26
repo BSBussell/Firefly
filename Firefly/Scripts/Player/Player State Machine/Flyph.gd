@@ -9,11 +9,11 @@ extends CharacterBody2D
 @export var debug_info: Label
 
 
-@onready var animation = $AnimatedSprite2D
+@onready var animation = $Visuals/AnimatedSprite2D
 @onready var StateMachine = $StateMachine
-@onready var spotlight = $Spotlight
-@onready var light_animator = $Spotlight/light_animator
-@onready var trail = $Trail
+@onready var spotlight = $Visuals/Spotlight
+@onready var light_animator = $Visuals/Spotlight/light_animator
+@onready var trail = $Visuals/Trail
 @onready var starting_position = global_position
 
 
@@ -242,7 +242,10 @@ func change_state():
 	ff_gravity = fall_gravity * movement_data.FASTFALL_MULTIPLIER
 
 
+func kill():
+	
+	global_position = starting_position
 
 func _on_hazard_detector_area_entered(area):
-	global_position = starting_position
+	kill()
 

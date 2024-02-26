@@ -9,6 +9,8 @@ extends PlayerState
 @export var coyote_time: Timer
 @export var jump_buffer: Timer
 
+@onready var jump_dust = $"../../Particles/JumpDustSpawner"
+
 var shopped: bool = false
 
 
@@ -97,7 +99,7 @@ func handle_coyote(_delta):
 			# Play Jump Cloud
 			var new_cloud = parent.JUMP_DUST.instantiate()
 			new_cloud.set_name("jump_dust_temp")
-			$"../../JumpDustSpawner".add_child(new_cloud)
+			jump_dust.add_child(new_cloud)
 			var animation = new_cloud.get_node("AnimationPlayer")
 			animation.play("free")
 			
@@ -117,14 +119,6 @@ func handle_sHop(_delta):
 					#parent.current_animation = parent.ANI_STATES.FALLING
 func get_gravity() -> float:
 
-	parent.jump_velocity = ((-2.0 *parent. jump_actual_height) / parent.movement_data.JUMP_RISE_TIME)
-
-	parent.jump_gravity = (-2.0 * parent.jump_actual_height) / (parent.movement_data.JUMP_RISE_TIME * parent.movement_data.JUMP_RISE_TIME)
-
-	parent.fall_gravity = (-2.0 * parent.jump_actual_height) / (parent.movement_data.JUMP_FALL_TIME * parent.movement_data.JUMP_FALL_TIME)
-
-	parent.ff_gravity = parent.fall_gravity * parent.movement_data.FASTFALL_MULTIPLIER
-	
 	var gravity_to_apply = parent.fall_gravity
 	print(shopped)
 	if parent.velocity.y <= 0 and not shopped:

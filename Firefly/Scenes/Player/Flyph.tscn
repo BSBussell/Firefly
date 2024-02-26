@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=67 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -14,9 +14,12 @@
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wall.gd" id="10_eck16"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
 
-[sub_resource type="Gradient" id="Gradient_xmxui"]
-offsets = PackedFloat32Array(0.555256, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ebm"]
+size = Vector2(6, 15)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gou6u"]
+radius = 3.0
+height = 15.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpwsx"]
 atlas = ExtResource("5_63g2f")
@@ -407,8 +410,12 @@ _data = {
 "turn_up": SubResource("Animation_068hy")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ebm"]
-size = Vector2(6, 15)
+[sub_resource type="Gradient" id="Gradient_xmxui"]
+offsets = PackedFloat32Array(0.555256, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_polx2"]
+size = Vector2(6.5, 10.5)
 
 [sub_resource type="Gradient" id="Gradient_k6x1h"]
 colors = PackedColorArray(1, 0.772549, 0, 1, 1, 1, 1, 1)
@@ -416,9 +423,6 @@ colors = PackedColorArray(1, 0.772549, 0, 1, 1, 1, 1, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_iomiv"]
 font = ExtResource("10_nb4h7")
 font_size = 8
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_polx2"]
-size = Vector2(6.5, 10.5)
 
 [node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info")]
 position = Vector2(160, 125)
@@ -432,8 +436,70 @@ speed_movement = ExtResource("3_w3b7s")
 star = NodePath("UI_FX/Star")
 debug_info = NodePath("UI_FX/debug info")
 
-[node name="DashDust" type="CPUParticles2D" parent="."]
-position = Vector2(2.38419e-07, -2)
+[node name="Collider_rect" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_l0ebm")
+disabled = true
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+metadata/_edit_lock_ = true
+
+[node name="Collider_rounded" type="CollisionShape2D" parent="."]
+z_index = 1
+position = Vector2(0, -8)
+shape = SubResource("CapsuleShape2D_gou6u")
+debug_color = Color(0.733333, 0.764706, 0, 0.419608)
+metadata/_edit_lock_ = true
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
+position = Vector2(0, -32)
+sprite_frames = SubResource("SpriteFrames_7w45f")
+animation = &"crawl"
+autoplay = "idle"
+metadata/_edit_lock_ = true
+
+[node name="Trail" type="Line2D" parent="Visuals"]
+show_behind_parent = true
+z_index = -1
+width = 6.0
+width_curve = SubResource("Curve_w5yy1")
+default_color = Color(0.960784, 0.898039, 0, 1)
+gradient = SubResource("Gradient_nk0tk")
+script = ExtResource("7_se6t7")
+length = 0
+metadata/_edit_lock_ = true
+
+[node name="Spotlight" type="PointLight2D" parent="Visuals"]
+color = Color(1, 0.980392, 0.803922, 1)
+range_layer_min = -100
+range_item_cull_mask = 3
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 2
+shadow_filter_smooth = 10.0
+shadow_item_cull_mask = 2
+texture = ExtResource("6_bo4q8")
+metadata/_edit_lock_ = true
+
+[node name="light_animator" type="AnimationPlayer" parent="Visuals/Spotlight"]
+libraries = {
+"": SubResource("AnimationLibrary_hpbxt")
+}
+
+[node name="Particles" type="Node2D" parent="."]
+
+[node name="JumpDustSpawner" type="Marker2D" parent="Particles"]
+z_index = -1
+metadata/_edit_lock_ = true
+
+[node name="LandingDustSpawner" type="Marker2D" parent="Particles"]
+z_index = 1
+metadata/_edit_lock_ = true
+
+[node name="DashDust" type="CPUParticles2D" parent="Particles"]
+z_index = -1
 emitting = false
 amount = 15
 lifetime = 0.5
@@ -447,52 +513,15 @@ color = Color(0.403922, 1, 0.521569, 1)
 color_ramp = SubResource("Gradient_xmxui")
 metadata/_edit_lock_ = true
 
-[node name="JumpDustSpawner" type="Marker2D" parent="."]
-metadata/_edit_lock_ = true
+[node name="Physics" type="Node2D" parent="."]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(2.38419e-07, -32)
-sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"crawl"
-autoplay = "idle"
-metadata/_edit_lock_ = true
-
-[node name="Trail" type="Line2D" parent="."]
-show_behind_parent = true
-width = 6.0
-width_curve = SubResource("Curve_w5yy1")
-default_color = Color(0.960784, 0.898039, 0, 1)
-gradient = SubResource("Gradient_nk0tk")
-script = ExtResource("7_se6t7")
-length = 0
-metadata/_edit_lock_ = true
-
-[node name="LandingDustSpawner" type="Marker2D" parent="."]
-metadata/_edit_lock_ = true
-
-[node name="Spotlight" type="PointLight2D" parent="."]
-position = Vector2(0, -11)
-color = Color(1, 0.980392, 0.803922, 1)
-range_layer_min = -100
-range_item_cull_mask = 3
-shadow_enabled = true
-shadow_color = Color(0, 0, 0, 1)
-shadow_filter = 2
-shadow_filter_smooth = 10.0
-shadow_item_cull_mask = 2
-texture = ExtResource("6_bo4q8")
-metadata/_edit_lock_ = true
-
-[node name="light_animator" type="AnimationPlayer" parent="Spotlight"]
-libraries = {
-"": SubResource("AnimationLibrary_hpbxt")
-}
-
-[node name="Collider" type="CollisionShape2D" parent="."]
+[node name="HazardDetector" type="Area2D" parent="Physics"]
 visible = false
-position = Vector2(0, -8)
-shape = SubResource("RectangleShape2D_l0ebm")
-metadata/_edit_lock_ = true
+collision_mask = 17
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
+position = Vector2(-1, -7)
+shape = SubResource("RectangleShape2D_polx2")
 
 [node name="UI_FX" type="CanvasLayer" parent="."]
 
@@ -531,41 +560,36 @@ starting_state = NodePath("Grounded")
 [node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "jump_buffer", "coyote_time")]
 script = ExtResource("7_x3sml")
 AERIAL_STATE = NodePath("../Aerial")
-jump_buffer = NodePath("../../JumpBuffer")
-coyote_time = NodePath("../../CoyoteTime")
+jump_buffer = NodePath("../../Timers/JumpBuffer")
+coyote_time = NodePath("../../Timers/CoyoteTime")
 
 [node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "GROUNDED_STATE", "coyote_time", "jump_buffer")]
 script = ExtResource("9_vj5hi")
 WALL_STATE = NodePath("../Wall")
 GROUNDED_STATE = NodePath("../Grounded")
-coyote_time = NodePath("../../CoyoteTime")
-jump_buffer = NodePath("../../JumpBuffer")
+coyote_time = NodePath("../../Timers/CoyoteTime")
+jump_buffer = NodePath("../../Timers/JumpBuffer")
 
 [node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer")]
 script = ExtResource("10_eck16")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
-jump_buffer = NodePath("../../JumpBuffer")
+jump_buffer = NodePath("../../Timers/JumpBuffer")
 
-[node name="CoyoteTime" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
+[node name="Timers" type="Node" parent="."]
 
-[node name="JumpBuffer" type="Timer" parent="."]
+[node name="JumpBuffer" type="Timer" parent="Timers"]
 wait_time = 0.125
 one_shot = true
 
-[node name="MomentumTime" type="Timer" parent="."]
+[node name="CoyoteTime" type="Timer" parent="Timers"]
+wait_time = 0.1
+one_shot = true
+
+[node name="MomentumTime" type="Timer" parent="Timers"]
 wait_time = 3.0
 autostart = true
 
-[node name="HazardDetector" type="Area2D" parent="."]
-collision_mask = 17
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HazardDetector"]
-position = Vector2(-1, -7)
-shape = SubResource("RectangleShape2D_polx2")
-
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="timeout" from="MomentumTime" to="." method="_on_momentum_time_timeout"]
-[connection signal="area_entered" from="HazardDetector" to="." method="_on_hazard_detector_area_entered"]
+[connection signal="animation_finished" from="Visuals/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
+[connection signal="timeout" from="Timers/MomentumTime" to="." method="_on_momentum_time_timeout"]

@@ -11,7 +11,9 @@ extends PlayerState
 
 
 # GROUNDED
-@onready var dust = $"../../DashDust"
+@onready var dash_dust = $"../../Particles/DashDust"
+@onready var jump_dust = $"../../Particles/JumpDustSpawner"
+@onready var landing_dust = $"../../Particles/LandingDustSpawner"
 
 #@onready var dust_scene = preload("res://Scenes/Player/particles/jump_dust.tscn")
 #var scene_instance = scene.instance()
@@ -28,7 +30,7 @@ func enter() -> void:
 	#else:	
 	if abs(parent.velocity.x) >= parent.movement_data.RUN_THRESHOLD:
 		parent.current_animation = parent.ANI_STATES.RUNNING
-		dust.emitting = true
+		dash_dust.emitting = true
 	else:
 		parent.current_animation = parent.ANI_STATES.LANDING
 	
@@ -37,7 +39,7 @@ func enter() -> void:
 	# Give dust on landing
 	var new_cloud = parent.LANDING_DUST.instantiate()
 	new_cloud.set_name("landing_dust_temp")
-	$"../../LandingDustSpawner".add_child(new_cloud)
+	landing_dust.add_child(new_cloud)
 	var animation = new_cloud.get_node("AnimationPlayer")
 	animation.play("free")
 
@@ -81,7 +83,7 @@ func jump_logic(_delta):
 		
 		var new_cloud = parent.JUMP_DUST.instantiate()
 		new_cloud.set_name("jump_dust_temp")
-		$"../../JumpDustSpawner".add_child(new_cloud)
+		jump_dust.add_child(new_cloud)
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
 		
@@ -140,7 +142,7 @@ func update_state(direction):
 		if parent.current_animation == parent.ANI_STATES.IDLE or parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING:
 			if abs(parent.velocity.x) >= parent.movement_data.RUN_THRESHOLD:
 				parent.current_animation = parent.ANI_STATES.RUNNING
-				dust.emitting = true
+				dash_dust.emitting = true
 			else:
 				parent.current_animation = parent.ANI_STATES.WALKING
 			
@@ -164,7 +166,7 @@ func update_state(direction):
 		parent.current_animation = parent.ANI_STATES.STANDING_UP
 		
 	if parent.current_animation != parent.ANI_STATES.RUNNING:
-		dust.emitting = false
+		dash_dust.emitting = false
 		
 func animation_end() -> PlayerState:
 	

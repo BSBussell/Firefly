@@ -9,15 +9,11 @@ extends Resource
 @export var TURN_FRICTION = 800.0
 
 @export_subgroup("Aerial Properties")
-# The Vertical Speed of the Jump (Every fifty is a block
-@export var JUMP_VELOCITY = -275.0
 
-# The max height of our jump
+# The max height of our jump in tiles because im so silly like that
 @export var MAX_JUMP_HEIGHT: float = 2
-
 # The time it takes to reach that height
 @export var JUMP_RISE_TIME: float = 0.4
-
 # The time it takes to fall back down
 @export var JUMP_FALL_TIME: float = 0.3
 
@@ -40,5 +36,5 @@ extends Resource
 @export var AWAY_WJ_VECTOR = Vector2(20, 0.8)		# The vector an away wall jump will launch at
 @export var DISABLE_DRIFT: bool = true
 
-@export_subgroup("Animation Properties")
+@export_group("Animation Properties")
 @export var RUN_THRESHOLD = 150

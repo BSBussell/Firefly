@@ -15,7 +15,7 @@ func _process(_delta):
 	global_position = Vector2(0,0)
 	global_rotation = 0
 	
-	point = get_parent().global_position
+	point = get_parent().get_parent().global_position
 	point.y -= 9
 	
 	add_point(point)
