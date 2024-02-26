@@ -239,10 +239,6 @@ color = Color(0, 0.490196, 0, 1)
 hue_variation_min = 0.6
 hue_variation_max = 0.94
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(364, -32)
-texture = ExtResource("13_ogiw0")
-
 [node name="Leaves2" type="CPUParticles2D" parent="."]
 position = Vector2(512, -104)
 amount = 4
