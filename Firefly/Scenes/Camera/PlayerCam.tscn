@@ -12,7 +12,6 @@
 script = ExtResource("1_hjjau")
 
 [node name="Cursor" type="Sprite2D" parent="."]
-visible = false
 z_index = 100
 material = ExtResource("2_f7duo")
 texture = ExtResource("3_2gg2l")
@@ -38,7 +37,7 @@ starting_state = NodePath("Idle")
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW")]
 script = ExtResource("5_mfikc")
 FOLLOW = NodePath("../Follow")
-deceleration_speed = 1.0
+deceleration_speed = 0.2
 
 [node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("IDLE", "LOOKAHEAD", "follow_timer")]
 script = ExtResource("6_y5nkv")
@@ -52,6 +51,7 @@ acceleration = 0.5
 script = ExtResource("7_pjrc4")
 FOLLOW = NodePath("../Follow")
 IDLE = NodePath("../Idle")
+Max_Distance = 60
 speed = 4.0
 horizontal_weight = 1.0
 

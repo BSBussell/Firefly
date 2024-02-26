@@ -10,7 +10,7 @@ extends State
 @export var idle_Margin: Vector4 = Vector4(0.3, 0.3, 0.3, 0.3)
 
 # How quickly the camera will move to a stop
-@export var deceleration_speed: float = 0.1
+@export var deceleration_speed: float = 0.5
 
 
 ## Hold a reference to the parent so that it can be controlled by the state

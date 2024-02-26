@@ -91,7 +91,7 @@ func jump_logic(_delta):
 		#jump_buffer.wait_time = -1
 		
 		print("Jump Math")
-		parent.velocity.y = parent.movement_data.JUMP_VELOCITY
+		parent.velocity.y = parent.jump_velocity
 		
 		
 		# If we're not currently crouching, then we initiate jumping

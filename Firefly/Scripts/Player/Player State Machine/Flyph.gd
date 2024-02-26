@@ -17,7 +17,17 @@ extends CharacterBody2D
 
 
 @onready var movement_data = base_movement
-@onready var FF_Vel = movement_data.JUMP_VELOCITY / movement_data.FASTFALL_MULTIPLIER
+
+# Projectile Motion
+@onready var jump_actual_height = movement_data.MAX_JUMP_HEIGHT * 16 # Convert to tile size
+@onready var jump_velocity: float = ((-2.0 * jump_actual_height) / movement_data.JUMP_RISE_TIME)
+@onready var jump_gravity: float = (-2.0 * jump_actual_height) / (movement_data.JUMP_RISE_TIME * movement_data.JUMP_RISE_TIME)
+@onready var fall_gravity: float = (-2.0 * jump_actual_height) / (movement_data.JUMP_FALL_TIME * movement_data.JUMP_FALL_TIME)
+
+
+# The velocity of our ff
+@onready var ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
+@onready var ff_gravity: float = fall_gravity * movement_data.FASTFALL_MULTIPLIER
 
 const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
 const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
@@ -73,6 +83,8 @@ func _ready() -> void:
 	
 	speed_buffer.fill(0.5)
 	landings_buffer.fill(0.5)
+
+	print(jump_gravity)
 
 
 	
@@ -204,6 +216,8 @@ func update_score():
 
 func _on_momentum_time_timeout():
 	update_score()
+	change_state()
+	pass
 	
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
 # 	Player's momentum value
@@ -211,4 +225,18 @@ func add_momentum(amount: float, weight: float) -> void:
 	tmp_modifier += amount
 	await get_tree().create_timer(weight).timeout
 	tmp_modifier -= amount
+
+# Recalculating variables
+func change_state():
+	
+	# Projectile Motion
+	jump_actual_height = movement_data.MAX_JUMP_HEIGHT * 16 # Convert to tile size
+	jump_velocity = ((-2.0 * jump_actual_height) / movement_data.JUMP_RISE_TIME)
+	jump_gravity = (-2.0 * jump_actual_height) / (movement_data.JUMP_RISE_TIME * movement_data.JUMP_RISE_TIME)
+	fall_gravity = (-2.0 * jump_actual_height) / (movement_data.JUMP_FALL_TIME * movement_data.JUMP_FALL_TIME)
+
+
+	# The velocity of our ff
+	ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
+	ff_gravity = fall_gravity * movement_data.FASTFALL_MULTIPLIER
 

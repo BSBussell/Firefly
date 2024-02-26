@@ -11,6 +11,17 @@ extends Resource
 @export_subgroup("Aerial Properties")
 # The Vertical Speed of the Jump (Every fifty is a block
 @export var JUMP_VELOCITY = -275.0
+
+# The max height of our jump
+@export var MAX_JUMP_HEIGHT: float = 2
+
+# The time it takes to reach that height
+@export var JUMP_RISE_TIME: float = 0.4
+
+# The time it takes to fall back down
+@export var JUMP_FALL_TIME: float = 0.3
+
+
 # Friction but in the air
 @export var AIR_RESISTANCE = 0.9
 # Ability to change directions in air (1 is same as grounded, 10 is very little) 

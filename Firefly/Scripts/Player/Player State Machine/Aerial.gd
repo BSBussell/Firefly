@@ -9,6 +9,7 @@ extends PlayerState
 @export var coyote_time: Timer
 @export var jump_buffer: Timer
 
+var shopped: bool = false
 
 
 # Called on state entrance, setup
@@ -16,6 +17,7 @@ func enter() -> void:
 	
 	print("Aerial State")
 	
+	shopped = false
 	
 	if (parent.current_animation != parent.ANI_STATES.JUMP):	
 		parent.current_animation = parent.ANI_STATES.FALLING
@@ -90,7 +92,7 @@ func handle_coyote(_delta):
 			#jump_buffer.wait_time = -1
 			
 			# Apply Velocity
-			parent.velocity.y = parent.movement_data.JUMP_VELOCITY
+			parent.velocity.y = parent.jump_velocity
 			
 			# Play Jump Cloud
 			var new_cloud = parent.JUMP_DUST.instantiate()
@@ -104,23 +106,47 @@ func handle_coyote(_delta):
 				parent.current_animation = parent.ANI_STATES.FALLING
 	
 func handle_sHop(_delta):
-	if Input.is_action_just_released("Jump") and parent.velocity.y < parent.FF_Vel:
+	if Input.is_action_just_released("Jump") and parent.velocity.y < parent.ff_velocity:
 			
-				parent.FF_Vel = parent.movement_data.JUMP_VELOCITY / parent.movement_data.FASTFALL_MULTIPLIER
-				parent.velocity.y = parent.FF_Vel
+				shopped = true
+				#parent.velocity.y = parent.jump_velocity / parent.movement_data.FASTFALL_MULTIPLIER
+				parent.ff_velocity = parent.jump_velocity / parent.movement_data.FASTFALL_MULTIPLIER
+				parent.velocity.y = parent.ff_velocity
 				
 				#if (parent.current_animation != parent.ANI_STATES.CROUCH):
 					#parent.current_animation = parent.ANI_STATES.FALLING
+func get_gravity() -> float:
+
+	parent.jump_velocity = ((-2.0 *parent. jump_actual_height) / parent.movement_data.JUMP_RISE_TIME)
+
+	parent.jump_gravity = (-2.0 * parent.jump_actual_height) / (parent.movement_data.JUMP_RISE_TIME * parent.movement_data.JUMP_RISE_TIME)
+
+	parent.fall_gravity = (-2.0 * parent.jump_actual_height) / (parent.movement_data.JUMP_FALL_TIME * parent.movement_data.JUMP_FALL_TIME)
+
+	parent.ff_gravity = parent.fall_gravity * parent.movement_data.FASTFALL_MULTIPLIER
+	
+	var gravity_to_apply = parent.fall_gravity
+	print(shopped)
+	if parent.velocity.y <= 0 and not shopped:
+		print("Rising gravity")
+		gravity_to_apply = parent.jump_gravity
+	elif parent.fastFalling:
+		
+		print("Applying ff gravity")
+		# This could be a gradual increase instead of an immediate jump to a higher value
+		gravity_to_apply = parent.ff_gravity
+	
+	return gravity_to_apply
 
 func apply_gravity(delta):
 	
 	
 	# If we are just in the air use normal gravity
 	# AIR STATE
-	if not parent.fastFalling:
-		parent.velocity.y += gravity * delta
-	else:
-		parent.velocity.y += gravity * parent.movement_data.FASTFALL_MULTIPLIER * delta
+	#if not parent.fastFalling:
+		#parent.velocity.y += gravity * delta
+	#else:
+		parent.velocity.y -= get_gravity() * delta
 
 func handle_acceleration(delta, direction):
 	
