@@ -1,14 +1,17 @@
+
 class_name Flyph
 extends CharacterBody2D
 
 @export_category("Movement Resource")
-@export var base_movement : PlayerMovementData
-@export var speed_movement: PlayerMovementData
+@export var movement_states: Array[PlayerMovementData]
+#@export var base_movement : PlayerMovementData
+#@export var speed_movement: PlayerMovementData
 
 @export var star: CPUParticles2D
 @export var debug_info: Label
 
 
+# Nodes
 @onready var animation = $Visuals/AnimatedSprite2D
 @onready var StateMachine = $StateMachine
 @onready var spotlight = $Visuals/Spotlight
@@ -17,18 +20,42 @@ extends CharacterBody2D
 @onready var starting_position = global_position
 
 
-@onready var movement_data = base_movement
+# Movement State Shit
+@onready var movement_data = movement_states[0]
+@onready var max_level = len(movement_states) - 1
 
-# Projectile Motion
+# Velocity Units
+@onready var speed = movement_data.MAX_SPEED * 16 # Adjust for tile size
+@onready var accel = movement_data.ACCEL * 16
+@onready var friction = movement_data.FRICTION * 16
+@onready var turn_friction = movement_data.TURN_FRICTION * 16
+
+# Adjust Slide Values
+@onready var slide_friction = movement_data.SLIDE_FRICTION * 16
+@onready var hill_speed = movement_data.HILL_SPEED * 16
+@onready var hill_accel = movement_data.HILL_ACCEL * 16
+
+# Air Speed
+@onready var air_speed = movement_data.AIR_SPEED * 16 
+@onready var air_accel = movement_data.AIR_ACCEL * 16 
+@onready var air_frict = movement_data.AIR_FRICT * 16 
+
+# Projectile Motion / Jump Math
 @onready var jump_actual_height = movement_data.MAX_JUMP_HEIGHT * 16 # Convert to tile size
 @onready var jump_velocity: float = ((-2.0 * jump_actual_height) / movement_data.JUMP_RISE_TIME)
 @onready var jump_gravity: float = (-2.0 * jump_actual_height) / (movement_data.JUMP_RISE_TIME * movement_data.JUMP_RISE_TIME)
 @onready var fall_gravity: float = (-2.0 * jump_actual_height) / (movement_data.JUMP_FALL_TIME * movement_data.JUMP_FALL_TIME)
 
+# Wall Jump
+@onready var walljump_height = movement_data.WALL_JUMP_HEIGHT * 16
+@onready var walljump_velocity = ((-2.0 * walljump_height) / movement_data.JUMP_RISE_TIME)
+
+@onready var walljump_horizontal_velocity = (( movement_data.WALL_JUMP_DISTANCE) / movement_data.JUMP_RISE_TIME)
 
 # The velocity of our ff
 @onready var ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
 @onready var ff_gravity: float = fall_gravity * movement_data.FASTFALL_MULTIPLIER
+
 
 const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
 const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
@@ -52,7 +79,7 @@ var airDriftDisabled = false
 var wallJumping = false
 var turningAround = false
 
-@onready var cacheAirdrift = movement_data.AIR_DRIFT_MULTIPLIER
+#@onready var cacheAirdrift = movement_data.AIR_DRIFT_MULTIPLIER
 
 var current_animation: ANI_STATES
 var prev_animation: ANI_STATES
@@ -63,6 +90,8 @@ var horizontal_axis = 0
 
 
 # Players Movement Score
+var movement_level = 0
+
 var score = 0
 
 const MAX_ENTRIES = 120
@@ -97,6 +126,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	horizontal_axis = Input.get_axis("Left", "Right")
 	vertical_axis = Input.get_axis("Down", "Up")
 	
+	# Debug shit
+	if OS.is_debug_build():
+		if Input.is_action_just_pressed("debug_up"):
+			change_state(1)
+		elif Input.is_action_just_pressed("debug_down"):
+			change_state(0)
+	
 	StateMachine.process_input(event)
 	
 func _physics_process(delta: float) -> void:
@@ -110,18 +146,9 @@ func _process(delta: float) -> void:
 	
 	if restart_animation:
 		animation.set_frame_and_progress(0,0)
-	
-	
+		
 	# Only update animations if we've changed animations
 	if prev_animation != current_animation or restart_animation:
-		
-		#print("craw: Updating animations")
-		#if (current_animation == ANI_STATES.CROUCH):
-			#print("crouch animation being updated")
-		#elif (current_animation == ANI_STATES.STANDING_UP):
-			#print("STANIDNG UP UPDATED")
-		#elif (current_animation == ANI_STATES.CRAWL):
-			#print("SO IT DOES EXIST!!!")
 		update_animations()
 		restart_animation = false
 		
@@ -132,9 +159,6 @@ func _process(delta: float) -> void:
 
 	score = (0.4 * average_ff_landings + 0.6 * average_speed) + tmp_modifier
 	debug_info.text = "%.02f" % average_speed
-	#print("Average FF: ", average_ff_landings)
-	#print("Average Speed: ", average_speed)
-	#print("Average Score: ", score)
 	
 
 func update_animations():
@@ -167,18 +191,13 @@ func update_animations():
 			animation.play("landing")
 		
 		
-		
-		
-		
-		
-		
 func _on_animated_sprite_2d_animation_finished():
 	
 	StateMachine.animation_end()
 
 func update_speed(new_speed):
 	
-	var percentage_value = new_speed / movement_data.SPEED
+	var percentage_value = new_speed / speed
 	
 	# Add the new speed value to the buffer and remove the oldest entry
 	speed_buffer.pop_front()
@@ -199,25 +218,20 @@ func update_score():
 	score = (0.4 * average_ff_landings + 0.6 * average_speed)
 	score += tmp_modifier
 	
-	if score > 0.6:
+	
+	
+	if score >= movement_data.UPGRADE_SCORE and movement_level != max_level:
 		
+		change_state(movement_level + 1)
 		
-		if movement_data != speed_movement:
-			movement_data = speed_movement
-			star.emitting = true 
-			light_animator.play("turn_up")
-			trail.length = 10
-	else:
+	elif score <= movement_data.DOWNGRADE_SCORE and movement_level != 0:
 		
-		if movement_data != base_movement:
-			movement_data = base_movement
-			light_animator.play("turn_down")
-			trail.length = 0
+		change_state(movement_level - 1)
+		
 
 
 func _on_momentum_time_timeout():
 	update_score()
-	change_state()
 	pass
 	
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
@@ -227,8 +241,43 @@ func add_momentum(amount: float, weight: float) -> void:
 	await get_tree().create_timer(weight).timeout
 	tmp_modifier -= amount
 
-# Recalculating variables
-func change_state():
+# Recalculating variables changing state
+# This is a big weird but by doing it like this it enables us to jump around levels
+# In debug or just whatever
+func change_state(level: int):
+	
+	# This should only be called when im lazy
+	#if level == movement_level:
+		#return
+	
+	# If we leveling up
+	if level > movement_level:
+		star.emitting = true 
+		light_animator.play("turn_up")
+		
+	else:
+		light_animator.play("turn_down")
+		
+	movement_level = level
+	
+	# Ok set the new movement level
+	movement_data = movement_states[movement_level]
+	
+	# Recalc Speed:
+	speed = movement_data.MAX_SPEED * 16
+	accel = movement_data.ACCEL * 16
+	friction = movement_data.FRICTION * 16
+	turn_friction = movement_data.TURN_FRICTION * 16
+	
+	# Slide Values ReCalculated
+	slide_friction = movement_data.SLIDE_FRICTION * 16
+	hill_speed = movement_data.HILL_SPEED * 16
+	hill_accel = movement_data.HILL_ACCEL * 16
+	
+	# Recalc Air values lol kinda miserable but i like how this works
+	air_speed = movement_data.AIR_SPEED * 16 
+	air_accel = movement_data.AIR_ACCEL * 16 
+	air_frict = movement_data.AIR_FRICT * 16 
 	
 	# Projectile Motion
 	jump_actual_height = movement_data.MAX_JUMP_HEIGHT * 16 # Convert to tile size
@@ -241,6 +290,8 @@ func change_state():
 	ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
 	ff_gravity = fall_gravity * movement_data.FASTFALL_MULTIPLIER
 
+	# Visual
+	trail.length = movement_data.TRAIL_LENGTH
 
 func kill():
 	

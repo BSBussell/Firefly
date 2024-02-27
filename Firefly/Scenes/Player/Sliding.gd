@@ -90,7 +90,7 @@ func apply_friction(delta, direction):
 	
 	# IF LEVEL GROUND
 	if parent.get_floor_normal() == Vector2.UP:
-		var friction = parent.movement_data.FRICTION * parent.movement_data.SLIDE_FRICTION_MULTIPLIER
+		var friction = parent.slide_friction
 		parent.velocity.x = move_toward(parent.velocity.x, 0, friction * delta)
 		slidingDown = false
 	
@@ -104,8 +104,8 @@ func apply_friction(delta, direction):
 			parent.animation.flip_h = true
 		
 		
-		var speed = sign * parent.movement_data.SPEED * parent.movement_data.HILL_SPEED_MULTIPLIER
-		var accel = parent.movement_data.HILL_ACCELERATION_MULTIPLIER * parent.movement_data.ACCEL
+		var speed = sign * parent.hill_speed
+		var accel = parent.hill_accel
 		
 		parent.velocity.x = move_toward(parent.velocity.x, speed, accel*delta)
 		

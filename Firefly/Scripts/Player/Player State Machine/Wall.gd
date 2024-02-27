@@ -105,7 +105,7 @@ func handle_walljump(delta, vc_direction):
 			# Ok so if you are up on a walljump it'll launch you up
 			if vc_direction > 0:
 				parent.velocity.y = parent.jump_velocity * neutralY
-				parent.velocity.x = move_toward(parent.velocity.x, (parent.movement_data.SPEED * neutralX) * jump_dir, (parent.movement_data.ACCEL * neutralX) * delta) 
+				parent.velocity.x = move_toward(parent.velocity.x, (parent.air_speed * neutralX) * jump_dir, (parent.air_accel * neutralX) * delta) 
 				
 				# Facing the fall we're jumping up
 				if (parent.movement_data.NEUTRAL_WJ_VECTOR.y < 1.7):
@@ -119,8 +119,8 @@ func handle_walljump(delta, vc_direction):
 			# Secret Downward WallJump :3
 			elif vc_direction < 0:
 				
-				parent.velocity.y = parent.jump_velocity * awayY * -1
-				parent.velocity.x = move_toward(parent.velocity.x, (parent.movement_data.SPEED * awayX) * jump_dir, (parent.movement_data.ACCEL * awayX) * delta)
+				parent.velocity.y = parent.walljump_velocity * -1
+				parent.velocity.x = move_toward(parent.velocity.x, (parent.air_speed * awayX) * jump_dir, (parent.air_accel * awayX) * delta)
 			
 				# Face away from the wall we jumping off of
 				parent.animation.flip_h = (jump_dir < 0)
@@ -136,8 +136,9 @@ func handle_walljump(delta, vc_direction):
 				
 			# else itll launch you away
 			else:
-				parent.velocity.y = parent.jump_velocity * awayY
-				parent.velocity.x = move_toward(parent.velocity.x, (parent.movement_data.SPEED * awayX) * jump_dir, (parent.movement_data.ACCEL * awayX) * delta)
+				parent.velocity.y = parent.walljump_velocity
+				#parent.velocity.x = parent.walljump_horizontal_velocity
+				parent.velocity.x = move_toward(parent.velocity.x, (parent.air_speed * awayX) * jump_dir, (parent.air_accel * awayX) * delta)
 			
 				# Face away from the wall we jumping off of
 				parent.animation.flip_h = (jump_dir < 0)
@@ -156,14 +157,14 @@ func handle_walljump(delta, vc_direction):
 func handle_acceleration(delta, direction):
 	if direction:
 		# Wall Accel
-		parent.velocity.x  = move_toward(parent.velocity.x, parent.movement_data.SPEED*direction, (parent.movement_data.ACCEL / parent.movement_data.WALL_DRIFT_MULTIPLIER) * delta)
+		parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed * direction, parent.air_accel * delta)
 		
 
 func apply_airResistance(delta, direction):
 	
 	# Ok this makes the game really slippery when changing direction
 	if direction == 0:
-		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.AIR_RESISTANCE*delta)
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict*delta)
 			
 	
 

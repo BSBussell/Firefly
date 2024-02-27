@@ -2,45 +2,53 @@ class_name PlayerMovementData
 extends Resource
 
 @export_category("Movement Properties")
-@export_group("Base Properties")
-@export var SPEED = 150.0
-@export var ACCEL = 300.0
-@export var FRICTION = 500.0
-@export var TURN_FRICTION = 800.0
+@export_group("Base Properties (TILES PER SECOND)")
+@export var MAX_SPEED = 9.375 
+@export var ACCEL = 18.75 
+@export var FRICTION = 31.25 
+@export var TURN_FRICTION = 50.0
 
-@export_subgroup("Aerial Properties")
+@export_subgroup("Jump Properties")
 
-# The max height of our jump in tiles because im so silly like that
-@export var MAX_JUMP_HEIGHT: float = 2
-# The time it takes to reach that height
-@export var JUMP_RISE_TIME: float = 0.4
-# The time it takes to fall back down
-@export var JUMP_FALL_TIME: float = 0.3
+@export var MAX_JUMP_HEIGHT: float = 2			# The max height of our jump in tiles because im so silly like that
+@export var JUMP_RISE_TIME: float = 0.4			# The time it takes to reach that height
+@export var JUMP_FALL_TIME: float = 0.3 		# The time it takes to fall back down
 
 
-# Friction but in the air
-@export var AIR_RESISTANCE = 0.9
-# Ability to change directions in air (1 is same as grounded, 10 is very little) 
-@export var AIR_DRIFT_MULTIPLIER = 1.15
+@export_subgroup("Air Movement")
+@export var AIR_SPEED = 10 			# The Speed in the air
+@export var AIR_ACCEL = 20 			# Ability to change directions in air
+@export var AIR_FRICT = 30			# Friction but in the air
+
 # How far you fall after
 @export var FASTFALL_MULTIPLIER = 2.5
 
 @export_group("Wall Properties")
-# The friction from leaning into a wall
-@export var WALL_FRICTION_MULTIPLIER = 3.0
-# The change in drift from this
-@export var WALL_DRIFT_MULTIPLIER = 10.3
+
+@export var WALL_FRICTION_MULTIPLIER = 3.0		# The friction from leaning into a wall
+@export var WALL_DRIFT_MULTIPLIER = 10.3		# The change in drift from this
 
 @export_subgroup("Wall Jump Properties")
+@export var WALL_JUMP_HEIGHT: float = 2.0
+@export var UP_WALL_JUMP_HEIGHT: float = 2.0
+@export var DOWN_WALL_JUMP_HEIGHT: float = -1.0
+
+@export var WALL_JUMP_DISTANCE: float = 3.0
+
 @export var NEUTRAL_WJ_VECTOR = Vector2(8.0, 0.9) # The vector an neutral wall jump will launch at
 @export var AWAY_WJ_VECTOR = Vector2(20, 0.8)		# The vector an away wall jump will launch at
 @export var DISABLE_DRIFT: bool = true
 
 @export_group("Slide Properties")
-@export var SLIDE_FRICTION_MULTIPLIER: float = 0.8			# How sliding effects friction
+@export var SLIDE_FRICTION: float = 20		# How sliding effects friction
 
-@export var HILL_SPEED_MULTIPLIER: float = 1.0				# How sliding down hills effect speed
-@export var HILL_ACCELERATION_MULTIPLIER: float = 1.1		# How sliding down hills effect accel
+@export var HILL_SPEED: float = 10		# How sliding down hills effect speed
+@export var HILL_ACCEL: float = 35		# How sliding down hills effect accel
 
-@export_group("Animation Properties")
+@export_group("Visual Properties")
 @export var RUN_THRESHOLD = 150
+@export var TRAIL_LENGTH: int = 0
+
+@export_group("Threshold")
+@export var DOWNGRADE_SCORE: float = 0
+@export var UPGRADE_SCORE: float = 0.6

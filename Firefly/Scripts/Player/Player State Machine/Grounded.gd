@@ -123,7 +123,7 @@ func handle_acceleration(delta, direction):
 	# Can't move forward when crouching or landing
 	if direction:  
 		if parent.current_animation != parent.ANI_STATES.CRAWL:
-			parent.velocity.x = move_toward(parent.velocity.x, parent.movement_data.SPEED*direction, parent.movement_data.ACCEL * delta)
+			parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.accel * delta)
 	
 func apply_friction(delta, direction):
 	
@@ -134,13 +134,14 @@ func apply_friction(delta, direction):
 	if direction == 0:
 			# Non crouch friction
 			if parent.current_animation != parent.ANI_STATES.CRAWL:
-				parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.FRICTION*delta)
+				parent.velocity.x = move_toward(parent.velocity.x, 0, parent.friction * delta)
 				
 		
 	# IF Turning around
 	elif not (direction * parent.velocity.x > 0):
+		print("Turning around")
 		parent.turningAround = true
-		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.TURN_FRICTION*delta)
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.turn_friction)
 	
 		
 # Updates animation states based on changes in physics

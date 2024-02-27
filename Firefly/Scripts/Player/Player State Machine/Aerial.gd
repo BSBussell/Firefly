@@ -153,7 +153,7 @@ func handle_acceleration(delta, direction):
 	if parent.airDriftDisabled:
 		airDrift = 0
 	else:
-		airDrift = parent.movement_data.AIR_DRIFT_MULTIPLIER
+		airDrift = parent.air_accel
 	
 	# If we are in wall jump then we have no air drift, this restores this when we start falling
 	if parent.airDriftDisabled and parent.velocity.y > 0:
@@ -162,14 +162,14 @@ func handle_acceleration(delta, direction):
 	
 	if direction:
 		# AIR ACCEL
-		parent.velocity.x  = move_toward(parent.velocity.x, parent.movement_data.SPEED*direction, (parent.movement_data.ACCEL * airDrift) * delta)
+		parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, parent.air_accel * delta)
 	
 
 func apply_airResistance(delta, direction):
 	
 	# Ok this makes the game really slippery when changing direction
 	if direction == 0:
-		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.AIR_RESISTANCE*delta)
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
 			
 
 

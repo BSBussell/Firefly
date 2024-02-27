@@ -432,8 +432,7 @@ collision_mask = 3
 floor_constant_speed = true
 floor_snap_length = 7.0
 script = ExtResource("1_hphyi")
-base_movement = ExtResource("2_tlkrj")
-speed_movement = ExtResource("3_w3b7s")
+movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s")])
 star = NodePath("UI_FX/Star")
 debug_info = NodePath("UI_FX/debug info")
 
