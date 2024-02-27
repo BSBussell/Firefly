@@ -65,7 +65,7 @@ var horizontal_axis = 0
 # Players Movement Score
 var score = 0
 
-const MAX_ENTRIES = 500
+const MAX_ENTRIES = 120
 
 var speed_buffer = []
 var landings_buffer = []
@@ -131,7 +131,7 @@ func _process(delta: float) -> void:
 	StateMachine.process_frame(delta)
 
 	score = (0.4 * average_ff_landings + 0.6 * average_speed) + tmp_modifier
-	debug_info.text = "%.02f" % score
+	debug_info.text = "%.02f" % average_speed
 	#print("Average FF: ", average_ff_landings)
 	#print("Average Speed: ", average_speed)
 	#print("Average Score: ", score)

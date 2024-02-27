@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=68 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/PlayerStateMachine.gd" id="10_amheu"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wall.gd" id="10_eck16"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
+[ext_resource type="Script" path="res://Scenes/Player/Sliding.gd" id="14_n2n20"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ebm"]
 size = Vector2(6, 15)
@@ -557,16 +558,18 @@ label_settings = SubResource("LabelSettings_iomiv")
 script = ExtResource("10_amheu")
 starting_state = NodePath("Grounded")
 
-[node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "jump_buffer", "coyote_time")]
+[node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "coyote_time")]
 script = ExtResource("7_x3sml")
 AERIAL_STATE = NodePath("../Aerial")
+SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 
-[node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "GROUNDED_STATE", "coyote_time", "jump_buffer")]
+[node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "coyote_time", "jump_buffer")]
 script = ExtResource("9_vj5hi")
 WALL_STATE = NodePath("../Wall")
 GROUNDED_STATE = NodePath("../Grounded")
+SLIDING_STATE = NodePath("../Sliding")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
@@ -575,6 +578,11 @@ script = ExtResource("10_eck16")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
+
+[node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE")]
+script = ExtResource("14_n2n20")
+GROUNDED_STATE = NodePath("../Grounded")
+AERIAL_STATE = NodePath("../Aerial")
 
 [node name="Timers" type="Node" parent="."]
 

@@ -36,5 +36,11 @@ extends Resource
 @export var AWAY_WJ_VECTOR = Vector2(20, 0.8)		# The vector an away wall jump will launch at
 @export var DISABLE_DRIFT: bool = true
 
+@export_group("Slide Properties")
+@export var SLIDE_FRICTION_MULTIPLIER: float = 0.8			# How sliding effects friction
+
+@export var HILL_SPEED_MULTIPLIER: float = 1.0				# How sliding down hills effect speed
+@export var HILL_ACCELERATION_MULTIPLIER: float = 1.1		# How sliding down hills effect accel
+
 @export_group("Animation Properties")
 @export var RUN_THRESHOLD = 150

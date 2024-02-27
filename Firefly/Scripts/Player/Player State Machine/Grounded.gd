@@ -2,6 +2,7 @@ extends PlayerState
 
 @export_subgroup("TRANSITIONAL STATES")
 @export var AERIAL_STATE: PlayerState = null
+@export var SLIDING_STATE: PlayerState = null
 
 # And check the jump buffer on landing
 @export_subgroup("Input Assists")
@@ -25,28 +26,34 @@ extends PlayerState
 func enter() -> void:
 	print("Grounded State")
 	
-	# Make sure we have a constant floor speed
-	parent.floor_constant_speed = true
-	if Input.is_action_pressed("Down"):
-		parent.current_animation = parent.ANI_STATES.CRAWL
-		parent.floor_constant_speed = false
 	#else:
 	
-	if parent.current_animation != parent.ANI_STATES.CRAWL:			
+	
+	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
+		
+	
+		# Land into a sprint!
 		if abs(parent.velocity.x) >= parent.movement_data.RUN_THRESHOLD:
 			parent.current_animation = parent.ANI_STATES.RUNNING
 			dash_dust.emitting = true
 		else:
 			parent.current_animation = parent.ANI_STATES.LANDING
-	
-	parent.wallJumping = false
+
+		# Give dust on landing
+		var new_cloud = parent.LANDING_DUST.instantiate()
+		new_cloud.set_name("landing_dust_temp")
+		landing_dust.add_child(new_cloud)
+		var animation = new_cloud.get_node("AnimationPlayer")
+		animation.play("free")
+			
+		parent.wallJumping = false
 	
 	# Give dust on landing
-	var new_cloud = parent.LANDING_DUST.instantiate()
-	new_cloud.set_name("landing_dust_temp")
-	landing_dust.add_child(new_cloud)
-	var animation = new_cloud.get_node("AnimationPlayer")
-	animation.play("free")
+	#var new_cloud = parent.LANDING_DUST.instantiate()
+	#new_cloud.set_name("landing_dust_temp")
+	#landing_dust.add_child(new_cloud)
+	#var animation = new_cloud.get_node("AnimationPlayer")
+	#animation.play("free")
 
 # Called before exiting the state, cleanup
 func exit() -> void:
@@ -129,18 +136,13 @@ func apply_friction(delta, direction):
 			if parent.current_animation != parent.ANI_STATES.CRAWL:
 				parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.FRICTION*delta)
 				
-			# Crouch Friction
-			else:
-				parent.velocity.x = move_toward(parent.velocity.x, 0, 200*delta)
-			
 		
-	# Can't turn around in crouch
-	elif not direction * parent.velocity.x > 0 and parent.current_animation != parent.ANI_STATES.CRAWL:
+	# IF Turning around
+	elif not (direction * parent.velocity.x > 0):
 		parent.turningAround = true
 		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.movement_data.TURN_FRICTION*delta)
 	
-	elif parent.current_animation == parent.ANI_STATES.CRAWL:
-		parent.velocity.x = move_toward(parent.velocity.x, 0, 200*delta)
+		
 # Updates animation states based on changes in physics
 func update_state(direction):
 	
@@ -156,8 +158,7 @@ func update_state(direction):
 	if direction:
 		if parent.current_animation == parent.ANI_STATES.IDLE or parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING or parent.current_animation == parent.ANI_STATES.STANDING_UP:
 			
-			# So if we're walking on the ground set floor speed to constant
-			parent.floor_constant_speed = true
+			
 			if abs(parent.velocity.x) >= parent.movement_data.RUN_THRESHOLD:
 				parent.current_animation = parent.ANI_STATES.RUNNING
 				
@@ -179,7 +180,7 @@ func update_state(direction):
 	# When we press down we crouch
 	if Input.is_action_just_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
 		parent.current_animation = parent.ANI_STATES.CROUCH
-		parent.floor_constant_speed = false
+		#parent.floor_constant_speed = false
 		
 	# Stay there til we let go of down
 	if (parent.current_animation == parent.ANI_STATES.CRAWL) and not Input.is_action_pressed("Down"):
@@ -198,7 +199,8 @@ func animation_end() -> PlayerState:
 		
 	# If we've finished crouching then we go to our crawl
 	if parent.current_animation == parent.ANI_STATES.CROUCH:
-		parent.current_animation = parent.ANI_STATES.CRAWL
+		return SLIDING_STATE
+		#parent.current_animation = parent.ANI_STATES.CRAWL
 	
 	if parent.current_animation == parent.ANI_STATES.CRAWL:
 		print("Thing set")
@@ -206,6 +208,5 @@ func animation_end() -> PlayerState:
 	# If we've stopped getting up then we go to our idle
 	if parent.current_animation == parent.ANI_STATES.STANDING_UP:
 		parent.current_animation = parent.ANI_STATES.IDLE
-		parent.floor_constant_speed = true
 	
 	return null

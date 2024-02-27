@@ -3,6 +3,7 @@ extends PlayerState
 @export_subgroup("TRANSITIONAL STATES")
 @export var WALL_STATE: PlayerState = null
 @export var GROUNDED_STATE: PlayerState = null
+@export var SLIDING_STATE: PlayerState = null
 
 # Timers
 @export_subgroup("Input Assistance Timers")
@@ -69,7 +70,10 @@ func process_physics(delta: float) -> PlayerState:
 	
 	# Make Sure we're still grounded after this
 	if parent.is_on_floor():
-		return GROUNDED_STATE
+		if Input.is_action_pressed("Down"):
+			return SLIDING_STATE
+		else:
+			return GROUNDED_STATE
 	elif parent.is_on_wall_only():
 		return WALL_STATE
 	return null
