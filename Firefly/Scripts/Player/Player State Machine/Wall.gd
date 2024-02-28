@@ -80,20 +80,10 @@ func handle_walljump(delta, vc_direction):
 	if parent.is_on_wall_only():
 		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 		
-			# The vector for neutral wall jumps
-			# 3., .75
-			var neutralX = parent.movement_data.NEUTRAL_WJ_VECTOR.x
-			var neutralY = parent.movement_data.NEUTRAL_WJ_VECTOR.y
+			var wall_normal = parent.get_wall_normal()
 			
-			# The vector for away wall jumps
-			# 10, .5
-			var awayX = parent.movement_data.AWAY_WJ_VECTOR.x
-			var awayY = parent.movement_data.AWAY_WJ_VECTOR.y
-			
-			var wall_normal = parent.get_wall_normal()	
 			# Prevent silly interactions between jumping and wall jumping
 			jump_buffer.stop()
-			#jump_buffer.wait_time = -1
 			
 			# TODO: Walljump Animation (Crouch overrides all)
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):
@@ -104,11 +94,12 @@ func handle_walljump(delta, vc_direction):
 				
 			# Ok so if you are up on a walljump it'll launch you up
 			if vc_direction > 0:
-				parent.velocity.y = parent.jump_velocity * neutralY
-				parent.velocity.x = move_toward(parent.velocity.x, (parent.air_speed * neutralX) * jump_dir, (parent.air_accel * neutralX) * delta) 
+				
+				parent.velocity.y = parent.up_walljump_velocity_y
+				parent.velocity.x = parent.up_walljump_velocity_x * jump_dir
 				
 				# Facing the fall we're jumping up
-				if (parent.movement_data.NEUTRAL_WJ_VECTOR.y < 1.7):
+				if (parent.movement_data.UP_WALL_JUMP_VECTOR.y > 2):
 					parent.animation.flip_h = (jump_dir > 0)
 				else:
 					parent.animation.flip_h = (jump_dir < 0)
@@ -119,14 +110,11 @@ func handle_walljump(delta, vc_direction):
 			# Secret Downward WallJump :3
 			elif vc_direction < 0:
 				
-				parent.velocity.y = parent.walljump_velocity * -1
-				parent.velocity.x = move_toward(parent.velocity.x, (parent.air_speed * awayX) * jump_dir, (parent.air_accel * awayX) * delta)
-			
+				parent.velocity.y = parent.down_walljump_velocity_y
+				parent.velocity.x = parent.down_walljump_velocity_x * jump_dir
+				
 				# Face away from the wall we jumping off of
 				parent.animation.flip_h = (jump_dir < 0)
-				
-				
-				
 				
 				if parent.movement_data.DISABLE_DRIFT:
 					parent.airDriftDisabled = true
@@ -136,15 +124,11 @@ func handle_walljump(delta, vc_direction):
 				
 			# else itll launch you away
 			else:
-				parent.velocity.y = parent.walljump_velocity
-				#parent.velocity.x = parent.walljump_horizontal_velocity
-				parent.velocity.x = move_toward(parent.velocity.x, (parent.air_speed * awayX) * jump_dir, (parent.air_accel * awayX) * delta)
+				parent.velocity.y = parent.walljump_velocity_y
+				parent.velocity.x = parent.walljump_velocity_x * jump_dir
 			
 				# Face away from the wall we jumping off of
 				parent.animation.flip_h = (jump_dir < 0)
-				
-				
-				
 				
 				if parent.movement_data.DISABLE_DRIFT:
 					parent.airDriftDisabled = true

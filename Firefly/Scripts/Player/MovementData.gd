@@ -3,9 +3,9 @@ extends Resource
 
 @export_category("Movement Properties")
 @export_group("Base Properties (TILES PER SECOND)")
-@export var MAX_SPEED = 9.375 
-@export var ACCEL = 18.75 
-@export var FRICTION = 31.25 
+@export var MAX_SPEED = 9.375 		# Max Tile per second speed
+@export var ACCEL = 18.75 			# In tiles per second squared :3
+@export var FRICTION = 31.25 		# 
 @export var TURN_FRICTION = 50.0
 
 @export_subgroup("Jump Properties")
@@ -29,19 +29,17 @@ extends Resource
 @export var WALL_DRIFT_MULTIPLIER = 10.3		# The change in drift from this
 
 @export_subgroup("Wall Jump Properties")
-@export var WALL_JUMP_HEIGHT: float = 2.0
-@export var UP_WALL_JUMP_HEIGHT: float = 2.0
-@export var DOWN_WALL_JUMP_HEIGHT: float = -1.0
+@export var WALL_JUMP_VECTOR: Vector2 = Vector2(2.0, 3.0)	 	# Approx. How many tiles a wall jump will send the player
+@export var UP_WALL_JUMP_VECTOR: Vector2 = Vector2(2.0, 3.0) 	# Approx. How many tiles a Upward wall jump will send the player
+@export var DOWN_WALL_JUMP_VECTOR: Vector2 = Vector2(-1.0, 3.0)	# Approx. How many tiles a Downward wall jump will send the player
 
-@export var WALL_JUMP_DISTANCE: float = 3.0
-
-@export var NEUTRAL_WJ_VECTOR = Vector2(8.0, 0.9) # The vector an neutral wall jump will launch at
-@export var AWAY_WJ_VECTOR = Vector2(20, 0.8)		# The vector an away wall jump will launch at
 @export var DISABLE_DRIFT: bool = true
+@export var UP_DISABLE_DRIFT: bool = false
+@export var DOWN_DISABLE_DRIFT: bool = false
+
 
 @export_group("Slide Properties")
 @export var SLIDE_FRICTION: float = 20		# How sliding effects friction
-
 @export var HILL_SPEED: float = 10		# How sliding down hills effect speed
 @export var HILL_ACCEL: float = 35		# How sliding down hills effect accel
 
