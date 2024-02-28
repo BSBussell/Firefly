@@ -123,8 +123,13 @@ func _ready() -> void:
 	
 func _unhandled_input(event: InputEvent) -> void:
 	
-	horizontal_axis = Input.get_axis("Left", "Right")
-	vertical_axis = Input.get_axis("Down", "Up")
+	
+	# Ok for some reason my joystick is giving like 0.9998 which when holding left, which apparently
+	# is enough for my player to move considerably slower than like i want them to... so im just gonna
+	horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 ) 
+	vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.5 ) # idek if im gonna use this one lol
+	
+	print(horizontal_axis)
 	
 	# Debug shit
 	if OS.is_debug_build():
