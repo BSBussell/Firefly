@@ -124,16 +124,25 @@ func handle_sHop(_delta):
 func get_gravity() -> float:
 
 	var gravity_to_apply = parent.fall_gravity
-	print(shopped)
-	if parent.velocity.y <= 0 and not shopped:
-		print("Rising gravity")
+	if parent.wallJumping and parent.velocity.y > 0:
+		# Player has started falling, reset wall jump state
+		parent.wallJumping = false
+		parent.current_wj = parent.WALLJUMPS.NEUTRAL
+		print("turning off wj grav")
+	elif parent.wallJumping:
+		# Apply wall jump gravity
+		print("wj grava")
+		match parent.current_wj:
+			parent.WALLJUMPS.NEUTRAL:
+				gravity_to_apply = parent.walljump_gravity
+			parent.WALLJUMPS.UPWARD:
+				gravity_to_apply = parent.up_walljump_gravity
+	elif parent.velocity.y <= 0 and not shopped:
+		# Apply rising gravity
 		gravity_to_apply = parent.jump_gravity
 	elif parent.fastFalling:
-		
-		print("Applying ff gravity")
-		# This could be a gradual increase instead of an immediate jump to a higher value
+		# Apply fast falling gravity
 		gravity_to_apply = parent.ff_gravity
-	
 	return gravity_to_apply
 
 func apply_gravity(delta):
@@ -152,6 +161,7 @@ func handle_acceleration(delta, direction):
 	
 	if parent.airDriftDisabled:
 		airDrift = 0
+		print("hmm :3")
 	else:
 		airDrift = parent.air_accel
 	
@@ -162,7 +172,7 @@ func handle_acceleration(delta, direction):
 	
 	if direction:
 		# AIR ACCEL
-		parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, parent.air_accel * delta)
+		parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airDrift* delta)
 	
 
 func apply_airResistance(delta, direction):

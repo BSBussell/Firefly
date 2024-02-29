@@ -80,6 +80,9 @@ func handle_walljump(delta, vc_direction):
 	if parent.is_on_wall_only():
 		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 		
+			# Set Flag for gravity :3
+			parent.wallJumping = true
+		
 			var wall_normal = parent.get_wall_normal()
 			
 			# Prevent silly interactions between jumping and wall jumping
@@ -92,20 +95,23 @@ func handle_walljump(delta, vc_direction):
 			
 			var jump_dir = wall_normal.x
 				
+			
 			# Ok so if you are up on a walljump it'll launch you up
 			if vc_direction > 0:
 				
 				parent.velocity.y = parent.up_walljump_velocity_y
 				parent.velocity.x = parent.up_walljump_velocity_x * jump_dir
 				
-				# Facing the fall we're jumping up
-				if (parent.movement_data.UP_WALL_JUMP_VECTOR.y > 2):
+				# Facing the fall we're jumping up 
+				if (parent.movement_data.UP_WALL_JUMP_VECTOR.x < 5):
 					parent.animation.flip_h = (jump_dir > 0)
 				else:
 					parent.animation.flip_h = (jump_dir < 0)
 				
+				if parent.movement_data.UP_DISABLE_DRIFT:
+					parent.airDriftDisabled = true
 				
-				parent.wallJumping = true
+				parent.current_wj = parent.WALLJUMPS.UPWARD
 				
 			# Secret Downward WallJump :3
 			elif vc_direction < 0:
@@ -116,11 +122,14 @@ func handle_walljump(delta, vc_direction):
 				# Face away from the wall we jumping off of
 				parent.animation.flip_h = (jump_dir < 0)
 				
-				if parent.movement_data.DISABLE_DRIFT:
+				if parent.movement_data.DOWN_DISABLE_DRIFT:
 					parent.airDriftDisabled = true
 					print("Removing AirDrift")
 			
+			
 				parent.horizontal_axis = jump_dir
+				
+				parent.current_wj = parent.WALLJUMPS.DOWNWARD
 				
 			# else itll launch you away
 			else:
@@ -132,9 +141,10 @@ func handle_walljump(delta, vc_direction):
 				
 				if parent.movement_data.DISABLE_DRIFT:
 					parent.airDriftDisabled = true
-					print("Removing AirDrift")
 			
 				parent.horizontal_axis = jump_dir
+				
+				parent.current_wj = parent.WALLJUMPS.NEUTRAL
 	
 
 

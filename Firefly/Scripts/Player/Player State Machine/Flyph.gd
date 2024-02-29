@@ -25,57 +25,65 @@ extends CharacterBody2D
 @onready var max_level = len(movement_states) - 1
 
 # Velocity Units
-@onready var speed = movement_data.MAX_SPEED * 16 # Adjust for tile size
-@onready var accel = movement_data.ACCEL * 16
+@onready var speed: float # Adjust for tile size
+@onready var accel: float
 
 
 # Stop distance
-@onready var stop_distance = movement_data.FRICTION * 16
-@onready var friction = (speed * speed) / (2 * stop_distance)
+@onready var stop_distance: float
+@onready var friction: float
 
 #@onready var friction = movement_data.FRICTION * 16
-@onready var turn_distance = movement_data.TURN_FRICTION * 16
-@onready var turn_friction = (speed * speed) / (2 * turn_distance)
+@onready var turn_distance: float
+@onready var turn_friction: float
 
 # Adjust Slide Values
-@onready var slide_friction = movement_data.SLIDE_FRICTION * 16
-@onready var hill_speed = movement_data.HILL_SPEED * 16
-@onready var hill_accel = movement_data.HILL_ACCEL * 16
+@onready var slide_distance: float
+@onready var slide_friction: float
+
+@onready var hill_speed: float
+@onready var hill_accel: float
 
 # Air Speed
-@onready var air_speed = movement_data.AIR_SPEED * 16 
-@onready var air_accel = movement_data.AIR_ACCEL * 16 
-@onready var air_frict = movement_data.AIR_FRICT * 16 
+@onready var air_speed: float
+@onready var air_accel: float
+@onready var air_stop_distance: float
+@onready var air_frict: float
 
 # Projectile Motion / Jump Math
-@onready var jump_actual_height = movement_data.MAX_JUMP_HEIGHT * 16 # Convert to tile size
-@onready var jump_velocity: float = ((-2.0 * jump_actual_height) / movement_data.JUMP_RISE_TIME)
-@onready var jump_gravity: float = (-2.0 * jump_actual_height) / (movement_data.JUMP_RISE_TIME * movement_data.JUMP_RISE_TIME)
-@onready var fall_gravity: float = (-2.0 * jump_actual_height) / (movement_data.JUMP_FALL_TIME * movement_data.JUMP_FALL_TIME)
+@onready var jump_actual_height: float
+@onready var jump_velocity: float
+@onready var jump_gravity: float
+@onready var fall_gravity: float
 
 # Wall Jump
-@onready var walljump_height = movement_data.WALL_JUMP_VECTOR.y * 16
-@onready var walljump_distance = movement_data.WALL_JUMP_VECTOR.x * 16
+@onready var walljump_height: float
+@onready var walljump_distance: float
 
-@onready var up_walljump_height = movement_data.UP_WALL_JUMP_VECTOR.y * 16
-@onready var up_walljump_distance = movement_data.UP_WALL_JUMP_VECTOR.x * 16
+@onready var up_walljump_height: float
+@onready var up_walljump_distance: float
 
-@onready var down_walljump_height = movement_data.DOWN_WALL_JUMP_VECTOR.y * 16
-@onready var down_walljump_distance = movement_data.DOWN_WALL_JUMP_VECTOR.x * 16
+@onready var down_walljump_height: float
+@onready var down_walljump_distance: float
 
+@onready var walljump_gravity: float
+@onready var up_walljump_gravity: float
 
-@onready var walljump_velocity_y = ((-2.0 * walljump_height) / (movement_data.JUMP_RISE_TIME))
-@onready var walljump_velocity_x = (( walljump_distance) / (movement_data.JUMP_RISE_TIME + movement_data.JUMP_FALL_TIME))
+@onready var walljump_velocity_y: float
+@onready var walljump_velocity_x: float
 
-@onready var up_walljump_velocity_y = ((-2.0 * up_walljump_height) / (movement_data.JUMP_RISE_TIME))
-@onready var up_walljump_velocity_x = (( up_walljump_distance) / (movement_data.JUMP_RISE_TIME + movement_data.JUMP_FALL_TIME))
+@onready var up_walljump_velocity_y: float
+@onready var up_walljump_velocity_x: float
 
-@onready var down_walljump_velocity_y = ((-2.0 * down_walljump_height) / (movement_data.JUMP_RISE_TIME))
-@onready var down_walljump_velocity_x = (( down_walljump_distance) / (movement_data.JUMP_RISE_TIME + movement_data.JUMP_FALL_TIME))
+@onready var down_walljump_velocity_y: float
+@onready var down_walljump_velocity_x: float
 
 # The velocity of our ff
-@onready var ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
-@onready var ff_gravity: float = fall_gravity * movement_data.FASTFALL_MULTIPLIER
+@onready var ff_velocity: float
+@onready var ff_gravity: float
+
+# Silly
+@onready var run_threshold: float# Jumps helps to do this better
 
 
 const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
@@ -94,6 +102,10 @@ enum ANI_STATES {
 	WALKING
 	
 }
+
+# lol
+enum WALLJUMPS { NEUTRAL, UPWARD, DOWNWARD }
+var current_wj = WALLJUMPS.NEUTRAL
 
 # Various Player States Shared Across Bleh :3
 var fastFalling = false
@@ -128,6 +140,9 @@ var tmp_modifier = 0
 # I'm Being really annoying about this btw
 func _ready() -> void:
 	
+	# I hate myself
+	calculate_properties()
+	
 	# Setting up our buffers
 	speed_buffer.resize(MAX_ENTRIES)
 	landings_buffer.resize(MAX_ENTRIES)
@@ -149,8 +164,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if OS.is_debug_build():
 		if Input.is_action_just_pressed("debug_up"):
 			change_state(1)
-		elif Input.is_action_just_pressed("debug_down"):
+		if Input.is_action_just_pressed("debug_down"):
 			change_state(0)
+		if Input.is_action_just_pressed("reset"):
+			calculate_properties()
 	
 	StateMachine.process_input(event)
 	
@@ -175,7 +192,7 @@ func _process(delta: float) -> void:
 	StateMachine.process_frame(delta)
 
 	score = (0.4 * average_ff_landings + 0.6 * average_speed) + tmp_modifier
-	debug_info.text = "%.02f" % average_speed
+	debug_info.text = "%.02f" % score
 	
 
 func update_animations():
@@ -235,7 +252,8 @@ func update_score():
 	score = (0.4 * average_ff_landings + 0.6 * average_speed)
 	score += tmp_modifier
 	
-	
+	print("Score: ", score)
+	print("Check: ", movement_data.DOWNGRADE_SCORE)
 	
 	if score >= movement_data.UPGRADE_SCORE and movement_level != max_level:
 		
@@ -280,25 +298,37 @@ func change_state(level: int):
 	# Ok set the new movement level
 	movement_data = movement_states[movement_level]
 	
+	# Big ass math moment
+	calculate_properties()
+	
+	
+
+func calculate_properties():
+	
 	# Recalc Speed:
 	speed = movement_data.MAX_SPEED * 16
-	accel = movement_data.ACCEL * 16
+	accel = speed / movement_data.TIME_TO_ACCEL
 	
+	# Friction math
 	stop_distance = movement_data.FRICTION * 16
 	friction = (speed * speed) / (2 * stop_distance)
 	
+	# This ones broken but ill fix it l8r :3
 	turn_distance = movement_data.TURN_FRICTION * 16
 	turn_friction = (speed * speed) / (2 * turn_distance)
 	
 	# Slide Values ReCalculated
-	slide_friction = movement_data.SLIDE_FRICTION * 16
+	slide_distance = movement_data.SLIDE_DISTANCE * 16
+	slide_friction = (speed * speed) / (2 * slide_distance)
+
 	hill_speed = movement_data.HILL_SPEED * 16
-	hill_accel = movement_data.HILL_ACCEL * 16
+	hill_accel = hill_speed / movement_data.HILL_TIME_TO_ACCEL
 	
-	# Recalc Air values lol kinda miserable but i like how this works
+	# Recalc Air values
 	air_speed = movement_data.AIR_SPEED * 16 
-	air_accel = movement_data.AIR_ACCEL * 16 
-	air_frict = movement_data.AIR_FRICT * 16 
+	air_accel = air_speed / movement_data.AIR_TIME_TO_ACCEL
+	air_stop_distance = movement_data.AIR_FRICT * 16
+	air_frict = (air_speed * air_speed) / (2 * stop_distance)
 	
 	# Projectile Motion
 	jump_actual_height = movement_data.MAX_JUMP_HEIGHT * 16 # Convert to tile size
@@ -315,14 +345,18 @@ func change_state(level: int):
 
 	down_walljump_height = movement_data.DOWN_WALL_JUMP_VECTOR.y * 16
 	down_walljump_distance = movement_data.DOWN_WALL_JUMP_VECTOR.x * 16
+	
+	walljump_gravity = (-2.0 * walljump_height) / (movement_data.WJ_RISE_TIME * movement_data.WJ_RISE_TIME)
+	up_walljump_gravity = (-2.0 * up_walljump_height) / (movement_data.UP_WJ_RISE_TIME * movement_data.UP_WJ_RISE_TIME)
+	
 
+	walljump_velocity_y = ((-2.0 * walljump_height) / (movement_data.WJ_RISE_TIME))
+	walljump_velocity_x = (( walljump_distance) / (movement_data.WJ_RISE_TIME + movement_data.JUMP_FALL_TIME))
 
-	walljump_velocity_y = ((-2.0 * walljump_height) / (movement_data.JUMP_RISE_TIME))
-	walljump_velocity_x = (( walljump_distance) / (movement_data.JUMP_RISE_TIME + movement_data.JUMP_FALL_TIME))
+	up_walljump_velocity_y = (( -2.0 * up_walljump_height) / (movement_data.UP_WJ_RISE_TIME))
+	up_walljump_velocity_x = (( up_walljump_distance) / (movement_data.UP_WJ_RISE_TIME + movement_data.JUMP_FALL_TIME))
 
-	up_walljump_velocity_y = ((-2.0 * up_walljump_height) / (movement_data.JUMP_RISE_TIME))
-	up_walljump_velocity_x = (( up_walljump_distance) / (movement_data.JUMP_RISE_TIME + movement_data.JUMP_FALL_TIME))
-
+	# You know, this ones kinda silly ngl
 	down_walljump_velocity_y = ((-2.0 * down_walljump_height) / (movement_data.JUMP_RISE_TIME))
 	down_walljump_velocity_x = (( down_walljump_distance) / (movement_data.JUMP_RISE_TIME + movement_data.JUMP_FALL_TIME))
 
@@ -333,6 +367,9 @@ func change_state(level: int):
 
 	# Visual
 	trail.length = movement_data.TRAIL_LENGTH
+	
+	run_threshold = movement_data.RUN_THRESHOLD * 16
+	
 
 func kill():
 	

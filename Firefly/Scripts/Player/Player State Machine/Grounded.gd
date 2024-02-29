@@ -33,7 +33,7 @@ func enter() -> void:
 		
 	
 		# Land into a sprint!
-		if abs(parent.velocity.x) >= parent.movement_data.RUN_THRESHOLD:
+		if abs(parent.velocity.x) >= parent.run_threshold:
 			parent.current_animation = parent.ANI_STATES.RUNNING
 			dash_dust.emitting = true
 		else:
@@ -160,7 +160,7 @@ func update_state(direction):
 		if parent.current_animation == parent.ANI_STATES.IDLE or parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING or parent.current_animation == parent.ANI_STATES.STANDING_UP:
 			
 			
-			if abs(parent.velocity.x) >= parent.movement_data.RUN_THRESHOLD:
+			if abs(parent.velocity.x) >= parent.run_threshold:
 				parent.current_animation = parent.ANI_STATES.RUNNING
 				
 				dash_dust.emitting = true
