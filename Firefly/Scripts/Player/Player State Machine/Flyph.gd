@@ -129,7 +129,7 @@ var horizontal_axis = 0
 var movement_level = 0
 var score = 0
 
-const MAX_ENTRIES = 120
+const MAX_ENTRIES = 6
 var speed_buffer = []
 var landings_buffer = [] # I think this one might be stupid ngl
 
@@ -192,7 +192,8 @@ func _process(delta: float) -> void:
 	StateMachine.process_frame(delta)
 
 	score = (0.4 * average_ff_landings + 0.6 * average_speed) + tmp_modifier
-	debug_info.text = "%.02f" % score
+	debug_info.text = "%.02f" % average_speed
+
 	
 
 func update_animations():
