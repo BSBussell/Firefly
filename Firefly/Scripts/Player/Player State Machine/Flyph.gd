@@ -15,9 +15,15 @@ extends CharacterBody2D
 @onready var animation = $Visuals/AnimatedSprite2D
 @onready var StateMachine = $StateMachine
 @onready var spotlight = $Visuals/Spotlight
-@onready var light_animator = $Visuals/Spotlight/light_animator
+@onready var light = $Visuals/Spotlight
 @onready var trail = $Visuals/Trail
 @onready var starting_position = global_position
+
+# Timers
+@onready var jump_buffer = $Timers/JumpBuffer
+@onready var coyote_time = $Timers/CoyoteTime
+@onready var momentum_time = $Timers/MomentumTime
+
 
 
 # Movement State Shit
@@ -88,6 +94,7 @@ extends CharacterBody2D
 
 const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
 const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
+const WJ_DUST = preload("res://Scenes/Player/particles/wallJumpDust.tscn")
 
 enum ANI_STATES { 
 	
@@ -129,13 +136,21 @@ var horizontal_axis = 0
 var movement_level = 0
 var score = 0
 
-const MAX_ENTRIES = 6
+const MAX_ENTRIES = 120
+const SPEEDOMETER_ENTRIES = 120
+const FF_ENTRIES = 10
+const SLIDE_ENTRIES = 10
+
 var speed_buffer = []
+var slide_buffer = []
+var speedometer_buffer = []
 var landings_buffer = [] # I think this one might be stupid ngl
 
-var average_speed = 0
-var average_ff_landings = 0
-var tmp_modifier = 0
+var average_speed: float = 0
+var normalized_average_speed: float = 0
+var average_ff_landings: float = 0
+var average_slides: float = 0
+var tmp_modifier: float = 0
 
 # I'm Being really annoying about this btw
 func _ready() -> void:
@@ -145,10 +160,14 @@ func _ready() -> void:
 	
 	# Setting up our buffers
 	speed_buffer.resize(MAX_ENTRIES)
-	landings_buffer.resize(MAX_ENTRIES)
-	
+	landings_buffer.resize(FF_ENTRIES)
+	speedometer_buffer.resize(SPEEDOMETER_ENTRIES)
+	slide_buffer.resize(SLIDE_ENTRIES)
+
+	speedometer_buffer.fill(0)
 	speed_buffer.fill(0.5)
 	landings_buffer.fill(0.5)
+	slide_buffer.fill(0.5)
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)
@@ -162,10 +181,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	# For quickly chaning states
 	if OS.is_debug_build():
-		if Input.is_action_just_pressed("debug_up"):
-			change_state(1)
-		if Input.is_action_just_pressed("debug_down"):
-			change_state(0)
+		if Input.is_action_just_pressed("debug_up") and movement_level != max_level:
+			change_state(movement_level + 1)
+		if Input.is_action_just_pressed("debug_down") and movement_level > 0:
+			change_state(movement_level - 1)
 		if Input.is_action_just_pressed("reset"):
 			calculate_properties()
 	
@@ -174,7 +193,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	
 	StateMachine.process_physics(delta)
-	update_speed(abs(velocity.x))
+	update_speed()
 	
 func _process(delta: float) -> void:
 	
@@ -191,8 +210,8 @@ func _process(delta: float) -> void:
 	# Let each component do their frame stuff
 	StateMachine.process_frame(delta)
 
-	score = (0.4 * average_ff_landings + 0.6 * average_speed) + tmp_modifier
-	debug_info.text = "%.02f" % average_speed
+	score = calc_score()
+	debug_info.text = "%.02f" % score
 
 	
 
@@ -230,15 +249,30 @@ func _on_animated_sprite_2d_animation_finished():
 	
 	StateMachine.animation_end()
 
-func update_speed(new_speed):
+func update_speed():
 	
-	var percentage_value = new_speed / speed
+	var new_speed: float = 0.0
+	
+	if (current_wj == WALLJUMPS.UPWARD or current_wj == WALLJUMPS.DOWNWARD):
+		new_speed = abs(velocity.y) * 3
+		print("wjcred: ", new_speed)
+	else:
+		new_speed = abs(velocity.x)
+	
+	
+	
+	var percentage_value = new_speed / air_speed
 	
 	# Add the new speed value to the buffer and remove the oldest entry
 	speed_buffer.pop_front()
 	speed_buffer.append(percentage_value)
+	
+	speedometer_buffer.pop_front()
+	speedometer_buffer.append(new_speed)
+	
 	# Update the average speed using reduce()
-	average_speed = speed_buffer.reduce(func(acc, num): return acc + num) / speed_buffer.size()
+	normalized_average_speed = speed_buffer.reduce(func(acc, num): return acc + num) / speed_buffer.size()
+	average_speed = speedometer_buffer.reduce(func(acc, num): return acc + num) / speedometer_buffer.size()
 
 func update_ff_landings(did_ff_land):
 	# Add the new fast-fall landing value (1.0 for yes, 0.0 for no) to the buffer and remove the oldest entry
@@ -248,10 +282,16 @@ func update_ff_landings(did_ff_land):
 	average_ff_landings = landings_buffer.reduce(func(acc, num): return acc + num) / landings_buffer.size()
 
 
+func update_slides(was_optimal):
+	
+	slide_buffer.pop_front()
+	slide_buffer.append(was_optimal)
+	
+	average_slides = slide_buffer.reduce(func(acc, num): return acc + num) / slide_buffer.size()
+
 func update_score():
 	
-	score = (0.4 * average_ff_landings + 0.6 * average_speed)
-	score += tmp_modifier
+	score = calc_score()
 	
 	print("Score: ", score)
 	print("Check: ", movement_data.DOWNGRADE_SCORE)
@@ -264,6 +304,15 @@ func update_score():
 		
 		change_state(movement_level - 1)
 		
+
+func calc_score():
+	
+	var ff_score = (0.4 * average_ff_landings)
+	var spd_score = (0.6 * normalized_average_speed)
+	var slide_score = (0.2 * average_slides)
+	
+	
+	return ff_score + spd_score + slide_score + tmp_modifier
 
 
 func _on_momentum_time_timeout():
@@ -286,14 +335,6 @@ func change_state(level: int):
 	#if level == movement_level:
 		#return
 	
-	# If we leveling up
-	if level > movement_level:
-		star.emitting = true 
-		light_animator.play("turn_up")
-		
-	else:
-		light_animator.play("turn_down")
-		
 	movement_level = level
 	
 	# Ok set the new movement level
@@ -366,10 +407,16 @@ func calculate_properties():
 	ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
 	ff_gravity = fall_gravity * movement_data.FASTFALL_MULTIPLIER
 
+	# Set timers
+	coyote_time.wait_time = movement_data.COYOTE_TIME
+	jump_buffer.wait_time = movement_data.JUMP_BUFFER
+	momentum_time.wait_time = movement_data.STRICTNESS
+
 	# Visual
 	trail.length = movement_data.TRAIL_LENGTH
-	
 	run_threshold = movement_data.RUN_THRESHOLD * 16
+	
+	light.set_brightness(movement_data.BRIGHTNESS)
 	
 
 func kill():

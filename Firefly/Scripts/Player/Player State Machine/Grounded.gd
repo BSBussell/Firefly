@@ -16,6 +16,14 @@ extends PlayerState
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
 
+@onready var landing_sfx = $"../../Audio/LandingSFX"
+@onready var jumping_sfx = $"../../Audio/JumpingSFX"
+@onready var run_sfx = $"../../Audio/RunSFX"
+
+
+var jump_exit = false
+
+
 #@onready var dust_scene = preload("res://Scenes/Player/particles/jump_dust.tscn")
 #var scene_instance = scene.instance()
 #scene_instance.set_name("scene")
@@ -27,10 +35,15 @@ func enter() -> void:
 	print("Grounded State")
 	
 	#else:
+	jump_exit = false
+	
+	# Clamp Velocity because i hate fun
+	clampf(parent.velocity.x, parent.speed * -1, parent.speed)
 	
 	
 	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
 		
+		landing_sfx.play(0)
 	
 		# Land into a sprint!
 		if abs(parent.velocity.x) >= parent.run_threshold:
@@ -59,7 +72,11 @@ func enter() -> void:
 func exit() -> void:
 	# This is hard because we could either be falling or jumping in leaving this state
 	# So lets be silly how we handle that
-	coyote_time.start()
+	if not jump_exit:
+		coyote_time.start()
+	
+	run_sfx.stop()
+	
 	pass
 
 # Processing input in this state, returns nil or new state
@@ -104,9 +121,11 @@ func jump_logic(_delta):
 		jump_buffer.stop()
 		#jump_buffer.wait_time = -1
 		
-		print("Jump Math")
+		jumping_sfx.play(0)
+		
 		parent.velocity.y = parent.jump_velocity
 		
+		jump_exit = true
 		
 		# If we're not currently crouching, then we initiate jumping
 		if (parent.current_animation != parent.ANI_STATES.CRAWL):
@@ -161,7 +180,9 @@ func update_state(direction):
 			
 			
 			if abs(parent.velocity.x) >= parent.run_threshold:
+				
 				parent.current_animation = parent.ANI_STATES.RUNNING
+				run_sfx.play(run_sfx.get_playback_position())
 				
 				dash_dust.emitting = true
 			else:
@@ -171,6 +192,7 @@ func update_state(direction):
 	if not direction:
 		if (parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING) :
 			parent.current_animation = parent.ANI_STATES.IDLE
+			run_sfx.stop()
 	
 	# So if we are in falling and we've touched the floor aggresively finish the animation
 	#if animation_state == STATE.FALLING and is_on_floor():

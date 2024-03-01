@@ -1,19 +1,27 @@
-[gd_scene load_steps=68 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=74 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="3_endwo"]
 [ext_resource type="Resource" uid="uid://csjt8cboxggev" path="res://Scenes/Player/Movement_Presets/Stage1Movement.tres" id="3_w3b7s"]
+[ext_resource type="Resource" uid="uid://dsjjsd36v17p1" path="res://Scenes/Player/Movement_Presets/Stage2Movement.tres" id="4_66rk6"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="5_63g2f"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="6_bo4q8"]
 [ext_resource type="Script" path="res://Scenes/Player/trail.gd" id="7_se6t7"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Grounded.gd" id="7_x3sml"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerSpotlight.gd" id="8_728xn"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="8_shld8"]
+[ext_resource type="PackedScene" uid="uid://ba3c7whb0dsjn" path="res://Scenes/Player/particles/slideDust.tscn" id="9_c4aqh"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Aerial.gd" id="9_vj5hi"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/PlayerStateMachine.gd" id="10_amheu"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wall.gd" id="10_eck16"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
 [ext_resource type="Script" path="res://Scenes/Player/Sliding.gd" id="14_n2n20"]
+[ext_resource type="AudioStream" uid="uid://drn56tacwbwh1" path="res://Assets/SFX/Player/Landing.wav" id="15_o0d2x"]
+[ext_resource type="AudioStream" uid="uid://b31uhsci07hya" path="res://Assets/SFX/Player/Jump.wav" id="16_emt8f"]
+[ext_resource type="AudioStream" uid="uid://dhvsjt5lta3gk" path="res://Assets/SFX/Player/Sliding.wav" id="17_r3q20"]
+[ext_resource type="AudioStream" uid="uid://73hackyfhyx7" path="res://Assets/SFX/Player/WallJump.wav" id="18_nsyuf"]
+[ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ebm"]
 size = Vector2(6, 15)
@@ -356,60 +364,16 @@ point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_nk0tk"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0.475504, 1)
-colors = PackedColorArray(1, 1, 0, 1, 1, 1, 0.670588, 1)
+offsets = PackedFloat32Array(0.7, 0.9, 1)
+colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0.34902, 1, 1, 1, 0.670588, 1)
 
-[sub_resource type="Animation" id="Animation_j6ma2"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:energy")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.0]
-}
+[sub_resource type="Curve" id="Curve_grp02"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
 
-[sub_resource type="Animation" id="Animation_ocxxb"]
-resource_name = "turn_down"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:energy")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1.86607),
-"update": 0,
-"values": [1.2, 0.8]
-}
-
-[sub_resource type="Animation" id="Animation_068hy"]
-resource_name = "turn_up"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:energy")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1.93187, 1.93187),
-"update": 0,
-"values": [0.8, 1.2]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_hpbxt"]
-_data = {
-"RESET": SubResource("Animation_j6ma2"),
-"turn_down": SubResource("Animation_ocxxb"),
-"turn_up": SubResource("Animation_068hy")
-}
+[sub_resource type="Curve" id="Curve_5ulra"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_xmxui"]
 offsets = PackedFloat32Array(0.555256, 1)
@@ -419,7 +383,8 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 size = Vector2(6.5, 10.5)
 
 [sub_resource type="Gradient" id="Gradient_k6x1h"]
-colors = PackedColorArray(1, 0.772549, 0, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0, 0.6, 1)
+colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0.34902, 1, 1, 1, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_iomiv"]
 font = ExtResource("10_nb4h7")
@@ -432,7 +397,7 @@ collision_mask = 3
 floor_constant_speed = true
 floor_snap_length = 7.0
 script = ExtResource("1_hphyi")
-movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s")])
+movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 star = NodePath("UI_FX/Star")
 debug_info = NodePath("UI_FX/debug info")
 
@@ -456,7 +421,7 @@ metadata/_edit_lock_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"crawl"
+animation = &"falling"
 autoplay = "idle"
 metadata/_edit_lock_ = true
 
@@ -481,14 +446,20 @@ shadow_filter = 2
 shadow_filter_smooth = 10.0
 shadow_item_cull_mask = 2
 texture = ExtResource("6_bo4q8")
+script = ExtResource("8_728xn")
+curve_in = SubResource("Curve_grp02")
+curve_out = SubResource("Curve_5ulra")
 metadata/_edit_lock_ = true
 
-[node name="light_animator" type="AnimationPlayer" parent="Visuals/Spotlight"]
-libraries = {
-"": SubResource("AnimationLibrary_hpbxt")
-}
-
 [node name="Particles" type="Node2D" parent="."]
+
+[node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
+z_index = -1
+position = Vector2(0, -1)
+emission_rect_extents = Vector2(2, 3)
+
+[node name="WJDustSpawner" type="Marker2D" parent="Particles"]
+position = Vector2(-6, -7)
 
 [node name="JumpDustSpawner" type="Marker2D" parent="Particles"]
 z_index = -1
@@ -523,9 +494,31 @@ collision_mask = 17
 position = Vector2(-1, -7)
 shape = SubResource("RectangleShape2D_polx2")
 
+[node name="Audio" type="Node2D" parent="."]
+
+[node name="LandingSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("15_o0d2x")
+volume_db = -5.0
+
+[node name="JumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("16_emt8f")
+volume_db = -5.0
+
+[node name="SlidingSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("17_r3q20")
+
+[node name="WallJumpSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("18_nsyuf")
+volume_db = -5.0
+
+[node name="RunSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("19_pmf6f")
+volume_db = -5.0
+
 [node name="UI_FX" type="CanvasLayer" parent="."]
 
 [node name="Star" type="CPUParticles2D" parent="UI_FX"]
+light_mask = 0
 position = Vector2(159, 0)
 emitting = false
 amount = 16
@@ -543,6 +536,7 @@ color = Color(1, 1, 0.337255, 1)
 color_ramp = SubResource("Gradient_k6x1h")
 
 [node name="debug info" type="Label" parent="UI_FX"]
+light_mask = 0
 anchors_preset = -1
 anchor_right = 0.044
 anchor_bottom = 0.032

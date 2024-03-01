@@ -1,10 +1,11 @@
 extends Node2D
 
 
-@onready var music = $Flyph/Music
+@onready var music = $Music
 
 
 
 func _ready():
-	
-	music.play(0)
+
+	#music.play(0)
+	pass

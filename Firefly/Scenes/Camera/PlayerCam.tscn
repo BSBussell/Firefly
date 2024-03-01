@@ -12,6 +12,7 @@
 script = ExtResource("1_hjjau")
 
 [node name="Cursor" type="Sprite2D" parent="."]
+visible = false
 z_index = 100
 material = ExtResource("2_f7duo")
 texture = ExtResource("3_2gg2l")

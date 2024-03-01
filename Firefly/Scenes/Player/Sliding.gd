@@ -12,6 +12,13 @@ extends PlayerState
 
 
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
+@onready var sliding_sfx = $"../../Audio/SlidingSFX"
+@onready var landing_sfx = $"../../Audio/LandingSFX"
+@onready var slide_dust = $"../../Particles/SlideDust"
+
+
+
+var entryVel: float
 
 var slidingDown = false
 
@@ -22,18 +29,29 @@ func enter() -> void:
 	
 	slidingDown = false
 	
+	# Give dust on landing
+	if (parent.current_animation == parent.ANI_STATES.FALLING):
+		var new_cloud = parent.LANDING_DUST.instantiate()
+		new_cloud.set_name("landing_dust_temp")
+		landing_dust.add_child(new_cloud)
+		var animation = new_cloud.get_node("AnimationPlayer")
+		animation.play("free")
+		
+		landing_sfx.play(0)
+	
 	# Crawl Animation
 	parent.current_animation = parent.ANI_STATES.CRAWL
 	
 	
 	parent.floor_constant_speed = false
 	
-	# Give dust on landing
-	var new_cloud = parent.LANDING_DUST.instantiate()
-	new_cloud.set_name("landing_dust_temp")
-	landing_dust.add_child(new_cloud)
-	var animation = new_cloud.get_node("AnimationPlayer")
-	animation.play("free")
+	if abs(parent.velocity.x) > 0:
+		slide_dust.emitting = true
+		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
+		sliding_sfx.play(0)	
+	
+	
+	entryVel = parent.velocity.x
 		
 	parent.wallJumping = false
 	
@@ -42,8 +60,17 @@ func enter() -> void:
 # Called before exiting the state, cleanup
 func exit() -> void:
 	
+	sliding_sfx.stop()
+	
+	if abs(parent.velocity.x) > abs(entryVel) or abs(parent.velocity.x) > parent.speed:
+		parent.update_slides(1)
+		print("Optimal Slide :3")
+	else:
+		parent.update_slides(0)
+		#print("Optimal Slide Usage :3")
 	
 	parent.floor_constant_speed = true
+	slide_dust.emitting = false
 	pass
 
 # Processing input in this state, returns nil or new state
@@ -69,6 +96,15 @@ func process_physics(delta: float) -> PlayerState:
 	
 	parent.move_and_slide()
 	
+	# Stop it when we stop moving
+	if parent.velocity.x == 0:
+		sliding_sfx.stop()
+		slide_dust.emitting = false
+	else:
+		sliding_sfx.stop()
+		slide_dust.emitting = true
+		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
+	
 	GROUNDED_STATE.update_state(parent.horizontal_axis)
 	
 	# Make Sure we're still grounded after this
@@ -91,6 +127,10 @@ func apply_friction(delta, direction):
 	# IF LEVEL GROUND
 	if parent.get_floor_normal() == Vector2.UP:
 		var friction = parent.slide_friction
+		
+		# My favorite implication of this, is that it won't immediately clamp the players velocity
+		# To the min, so if the player has a faster air speed than ground speed, then they can 
+		# Crouch for just a second before jumping again to retain that speed...
 		parent.velocity.x = move_toward(parent.velocity.x, 0, friction * delta)
 		slidingDown = false
 	

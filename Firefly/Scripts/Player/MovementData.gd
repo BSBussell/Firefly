@@ -50,10 +50,17 @@ extends Resource
 @export var HILL_SPEED: float = 10		# How sliding down hills effect speed
 @export var HILL_TIME_TO_ACCEL: float = 1.2
 
+@export_group("Assists")
+@export var COYOTE_TIME: float = 0.1
+@export var JUMP_BUFFER: float = 0.125
+
+
 @export_group("Visual Properties")
 @export var RUN_THRESHOLD: float = 8
 @export var TRAIL_LENGTH: int = 0
+@export var BRIGHTNESS: float = 0.8
 
 @export_group("Threshold")
 @export var DOWNGRADE_SCORE: float = 0
 @export var UPGRADE_SCORE: float = 0.6
+@export var STRICTNESS: float = 3.0

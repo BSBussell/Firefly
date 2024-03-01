@@ -8,6 +8,12 @@ extends PlayerState
 @export_subgroup("Input Assists")
 @export var jump_buffer: Timer
 
+@onready var wall_jump_sfx = $"../../Audio/WallJumpSFX"
+
+@onready var wj_dust_spawner = $"../../Particles/WJDustSpawner"
+
+
+
 var cache_airdrift
 
 # Called on state entrance, setup
@@ -88,12 +94,24 @@ func handle_walljump(delta, vc_direction):
 			# Prevent silly interactions between jumping and wall jumping
 			jump_buffer.stop()
 			
+			# SFX!!
+			wall_jump_sfx.play(0)
+			
+			var jump_dir = wall_normal.x
+			
+			var new_cloud = parent.WJ_DUST.instantiate()
+			new_cloud.set_name("WJ_dust_temp")
+			wj_dust_spawner.add_child(new_cloud)
+			new_cloud.direction.x *= jump_dir
+			var animation = new_cloud.get_node("AnimationPlayer")
+			animation.play("free")
+			
 			# TODO: Walljump Animation (Crouch overrides all)
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):
 				parent.current_animation = parent.ANI_STATES.FALLING
 				parent.restart_animation = true
 			
-			var jump_dir = wall_normal.x
+			
 				
 			
 			# Ok so if you are up on a walljump it'll launch you up
