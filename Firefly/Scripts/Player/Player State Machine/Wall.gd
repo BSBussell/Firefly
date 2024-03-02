@@ -81,88 +81,91 @@ func apply_gravity(delta, _direction):
 		parent.velocity.y -= silly_grav * delta
 		
 
-func handle_walljump(delta, vc_direction):	
+func handle_walljump(delta, vc_direction, dir = 0):	
 	
-	if parent.is_on_wall_only():
-		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
+
+	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
+	
+		# Set Flag for gravity :3
+		parent.wallJumping = true
+	
 		
-			# Set Flag for gravity :3
-			parent.wallJumping = true
 		
-			var wall_normal = parent.get_wall_normal()
+		# Prevent silly interactions between jumping and wall jumping
+		jump_buffer.stop()
+		
+		# SFX!!
+		wall_jump_sfx.play(0)
+		
+		#var wall_normal = parent.get_wall_normal()
+		var jump_dir: float = dir
+		if dir == 0:
+			jump_dir = parent.get_wall_normal().x
+		
+		var new_cloud = parent.WJ_DUST.instantiate()
+		new_cloud.set_name("WJ_dust_temp")
+		wj_dust_spawner.add_child(new_cloud)
+		new_cloud.direction.x *= jump_dir
+		var animation = new_cloud.get_node("AnimationPlayer")
+		animation.play("free")
+		
+		# TODO: Walljump Animation (Crouch overrides all)
+		if (parent.current_animation != parent.ANI_STATES.CRAWL):
+			parent.current_animation = parent.ANI_STATES.FALLING
+			parent.restart_animation = true
+		
+		
 			
-			# Prevent silly interactions between jumping and wall jumping
-			jump_buffer.stop()
+		
+		# Ok so if you are up on a walljump it'll launch you up
+		if vc_direction > 0:
 			
-			# SFX!!
-			wall_jump_sfx.play(0)
+			parent.velocity.y = parent.up_walljump_velocity_y
+			parent.velocity.x = parent.up_walljump_velocity_x * jump_dir
 			
-			var jump_dir = wall_normal.x
-			
-			var new_cloud = parent.WJ_DUST.instantiate()
-			new_cloud.set_name("WJ_dust_temp")
-			wj_dust_spawner.add_child(new_cloud)
-			new_cloud.direction.x *= jump_dir
-			var animation = new_cloud.get_node("AnimationPlayer")
-			animation.play("free")
-			
-			# TODO: Walljump Animation (Crouch overrides all)
-			if (parent.current_animation != parent.ANI_STATES.CRAWL):
-				parent.current_animation = parent.ANI_STATES.FALLING
-				parent.restart_animation = true
-			
-			
-				
-			
-			# Ok so if you are up on a walljump it'll launch you up
-			if vc_direction > 0:
-				
-				parent.velocity.y = parent.up_walljump_velocity_y
-				parent.velocity.x = parent.up_walljump_velocity_x * jump_dir
-				
-				# Facing the fall we're jumping up 
-				if (parent.movement_data.UP_WALL_JUMP_VECTOR.x < 5):
-					parent.animation.flip_h = (jump_dir > 0)
-				else:
-					parent.animation.flip_h = (jump_dir < 0)
-				
-				if parent.movement_data.UP_DISABLE_DRIFT:
-					parent.airDriftDisabled = true
-				
-				parent.current_wj = parent.WALLJUMPS.UPWARD
-				
-			# Secret Downward WallJump :3
-			elif vc_direction < 0:
-				
-				parent.velocity.y = parent.down_walljump_velocity_y
-				parent.velocity.x = parent.down_walljump_velocity_x * jump_dir
-				
-				# Face away from the wall we jumping off of
-				parent.animation.flip_h = (jump_dir < 0)
-				
-				if parent.movement_data.DOWN_DISABLE_DRIFT:
-					parent.airDriftDisabled = true
-					print("Removing AirDrift")
-			
-			
-				parent.horizontal_axis = jump_dir
-				
-				parent.current_wj = parent.WALLJUMPS.DOWNWARD
-				
-			# else itll launch you away
+			# Facing the fall we're jumping up 
+			if (parent.movement_data.UP_WALL_JUMP_VECTOR.x < 5):
+				parent.animation.flip_h = (jump_dir > 0)
 			else:
-				parent.velocity.y = parent.walljump_velocity_y
-				parent.velocity.x = parent.walljump_velocity_x * jump_dir
-			
-				# Face away from the wall we jumping off of
 				parent.animation.flip_h = (jump_dir < 0)
-				
-				if parent.movement_data.DISABLE_DRIFT:
-					parent.airDriftDisabled = true
 			
-				parent.horizontal_axis = jump_dir
-				
-				parent.current_wj = parent.WALLJUMPS.NEUTRAL
+			if parent.movement_data.UP_DISABLE_DRIFT:
+				parent.airDriftDisabled = true
+			
+			parent.current_wj = parent.WALLJUMPS.UPWARD
+			
+		# Secret Downward WallJump :3
+		elif vc_direction < 0:
+			
+			parent.velocity.y = parent.down_walljump_velocity_y
+			parent.velocity.x = parent.down_walljump_velocity_x * jump_dir
+			
+			# Face away from the wall we jumping off of
+			parent.animation.flip_h = (jump_dir < 0)
+			
+			if parent.movement_data.DOWN_DISABLE_DRIFT:
+				parent.airDriftDisabled = true
+				print("Removing AirDrift")
+		
+		
+			parent.horizontal_axis = jump_dir
+			
+			parent.current_wj = parent.WALLJUMPS.DOWNWARD
+			
+		# else itll launch you away
+		else:
+			parent.velocity.y = parent.walljump_velocity_y
+			parent.velocity.x = parent.walljump_velocity_x * jump_dir
+		
+			# Face away from the wall we jumping off of
+			parent.animation.flip_h = (jump_dir < 0)
+			
+			if parent.movement_data.DISABLE_DRIFT:
+				parent.airDriftDisabled = true
+		
+			parent.horizontal_axis = jump_dir
+			
+			parent.current_wj = parent.WALLJUMPS.NEUTRAL
 	
 
 

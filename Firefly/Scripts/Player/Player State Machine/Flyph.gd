@@ -24,6 +24,9 @@ extends CharacterBody2D
 @onready var coyote_time = $Timers/CoyoteTime
 @onready var momentum_time = $Timers/MomentumTime
 
+# Corner Correction
+@onready var top_left = $Raycasts/TopLeft
+@onready var top_right = $Raycasts/TopRight
 
 
 # Movement State Shit
@@ -193,6 +196,10 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	
 	StateMachine.process_physics(delta)
+	
+	
+	if velocity.y < 0:
+		jump_corner_correction(delta)
 	update_speed()
 	
 func _process(delta: float) -> void:
@@ -248,6 +255,17 @@ func update_animations():
 func _on_animated_sprite_2d_animation_finished():
 	
 	StateMachine.animation_end()
+
+func jump_corner_correction(delta):
+	
+	# Make the strength of adjustments depented on rising velocity cause
+	# That makes it feel more natural for some reason
+	var strength = abs(velocity.y) * 0.9
+	
+	if top_left.is_colliding() and not top_right.is_colliding():
+		position.x += strength * delta
+	elif not top_left.is_colliding() and top_right.is_colliding():
+		position.x -= strength * delta
 
 func update_speed():
 	

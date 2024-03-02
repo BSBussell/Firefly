@@ -12,6 +12,14 @@ extends PlayerState
 
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 
+# WallJump Checkers
+@onready var right_wj_grace = $"../../Raycasts/Right_WJ_Grace"
+@onready var left_wj_grace = $"../../Raycasts/Left_WJ_Grace"
+
+# Jump SFX
+@onready var jumping_sfx = $"../../Audio/JumpingSFX"
+
+
 var shopped: bool = false
 
 
@@ -62,9 +70,20 @@ func process_physics(delta: float) -> PlayerState:
 	handle_coyote(delta)
 	handle_sHop(delta)
 	
+	if right_wj_grace.is_colliding():
+		print("Grace WJ")
+		
+		WALL_STATE.handle_walljump(delta, parent.vertical_axis, -1)
+	
+	if left_wj_grace.is_colliding():
+		print("Grace WJ")
+		WALL_STATE.handle_walljump(delta, parent.vertical_axis, 1)
+	
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
+	
+	
 	
 	parent.move_and_slide()
 	
@@ -106,6 +125,8 @@ func handle_coyote(_delta):
 			jump_dust.add_child(new_cloud)
 			var animation = new_cloud.get_node("AnimationPlayer")
 			animation.play("free")
+			
+			jumping_sfx.play(0)
 			
 			
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):

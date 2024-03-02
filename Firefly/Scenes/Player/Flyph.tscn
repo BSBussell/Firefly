@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=75 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -16,19 +16,15 @@
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/PlayerStateMachine.gd" id="10_amheu"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wall.gd" id="10_eck16"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
+[ext_resource type="AudioStream" uid="uid://dabydr3n6ho76" path="res://Assets/SFX/Player/jump_1.mp3" id="12_m3poj"]
+[ext_resource type="AudioStream" uid="uid://b6jwf7oavshmg" path="res://Assets/SFX/Player/jump_2.mp3" id="14_hplrh"]
 [ext_resource type="Script" path="res://Scenes/Player/Sliding.gd" id="14_n2n20"]
 [ext_resource type="AudioStream" uid="uid://drn56tacwbwh1" path="res://Assets/SFX/Player/Landing.wav" id="15_o0d2x"]
-[ext_resource type="AudioStream" uid="uid://b31uhsci07hya" path="res://Assets/SFX/Player/Jump.wav" id="16_emt8f"]
 [ext_resource type="AudioStream" uid="uid://dhvsjt5lta3gk" path="res://Assets/SFX/Player/Sliding.wav" id="17_r3q20"]
-[ext_resource type="AudioStream" uid="uid://73hackyfhyx7" path="res://Assets/SFX/Player/WallJump.wav" id="18_nsyuf"]
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ebm"]
 size = Vector2(6, 15)
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gou6u"]
-radius = 3.0
-height = 15.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpwsx"]
 atlas = ExtResource("5_63g2f")
@@ -382,6 +378,12 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_polx2"]
 size = Vector2(6.5, 10.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dj0fv"]
+size = Vector2(0, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_whhcd"]
+size = Vector2(0, 10)
+
 [sub_resource type="Gradient" id="Gradient_k6x1h"]
 offsets = PackedFloat32Array(0, 0.6, 1)
 colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0.34902, 1, 1, 1, 1, 1)
@@ -393,7 +395,7 @@ font_size = 8
 [node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info")]
 position = Vector2(160, 125)
 collision_layer = 5
-collision_mask = 3
+collision_mask = 34
 floor_constant_speed = true
 floor_snap_length = 7.0
 script = ExtResource("1_hphyi")
@@ -407,16 +409,15 @@ shape = SubResource("RectangleShape2D_l0ebm")
 debug_color = Color(0.733333, 0.764706, 0, 0.419608)
 metadata/_edit_lock_ = true
 
-[node name="Collider_rounded" type="CollisionShape2D" parent="."]
+[node name="Collider_rounded" type="CollisionPolygon2D" parent="."]
 visible = false
 z_index = 1
 position = Vector2(0, -8)
-shape = SubResource("CapsuleShape2D_gou6u")
+polygon = PackedVector2Array(-2, 3, 0, 7.5, 2, 3, 3, 0, 2, -4, 0, -7.5, -2, -4, -3, 0)
 disabled = true
-debug_color = Color(0.733333, 0.764706, 0, 0.419608)
-metadata/_edit_lock_ = true
 
 [node name="Visuals" type="Node2D" parent="."]
+visible = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -32)
@@ -454,8 +455,9 @@ metadata/_edit_lock_ = true
 [node name="Particles" type="Node2D" parent="."]
 
 [node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
-z_index = -1
+z_index = 1
 position = Vector2(0, -1)
+emitting = false
 emission_rect_extents = Vector2(2, 3)
 
 [node name="WJDustSpawner" type="Marker2D" parent="Particles"]
@@ -494,6 +496,31 @@ collision_mask = 17
 position = Vector2(-1, -7)
 shape = SubResource("RectangleShape2D_polx2")
 
+[node name="Raycasts" type="Node2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="Right_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
+position = Vector2(3, 0)
+shape = SubResource("RectangleShape2D_dj0fv")
+target_position = Vector2(3, 0)
+collision_mask = 2
+
+[node name="Left_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
+position = Vector2(-3, 0)
+shape = SubResource("RectangleShape2D_whhcd")
+target_position = Vector2(-3, 0)
+collision_mask = 2
+
+[node name="TopLeft" type="RayCast2D" parent="Raycasts"]
+position = Vector2(-4, -7.5)
+target_position = Vector2(0, -5)
+collision_mask = 2
+
+[node name="TopRight" type="RayCast2D" parent="Raycasts"]
+position = Vector2(4, -7.5)
+target_position = Vector2(0, -5)
+collision_mask = 2
+
 [node name="Audio" type="Node2D" parent="."]
 
 [node name="LandingSFX" type="AudioStreamPlayer2D" parent="Audio"]
@@ -501,15 +528,17 @@ stream = ExtResource("15_o0d2x")
 volume_db = -5.0
 
 [node name="JumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("16_emt8f")
+stream = ExtResource("12_m3poj")
 volume_db = -5.0
+pitch_scale = 0.66
 
 [node name="SlidingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("17_r3q20")
 
 [node name="WallJumpSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("18_nsyuf")
-volume_db = -5.0
+stream = ExtResource("14_hplrh")
+volume_db = -7.0
+pitch_scale = 1.33
 
 [node name="RunSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("19_pmf6f")
