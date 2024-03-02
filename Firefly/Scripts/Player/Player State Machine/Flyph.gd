@@ -24,9 +24,15 @@ extends CharacterBody2D
 @onready var coyote_time = $Timers/CoyoteTime
 @onready var momentum_time = $Timers/MomentumTime
 
-# Corner Correction
+# Vertical Corner Correction
 @onready var top_left = $Raycasts/TopLeft
 @onready var top_right = $Raycasts/TopRight
+
+# Horizontal Corner Correction
+@onready var bottom_right = $Raycasts/BottomRight
+@onready var step_max_right = $Raycasts/StepMaxRight
+@onready var bottom_left = $Raycasts/BottomLeft
+@onready var step_max_left = $Raycasts/StepMaxLeft
 
 
 # Movement State Shit
@@ -200,6 +206,11 @@ func _physics_process(delta: float) -> void:
 	
 	if velocity.y < 0:
 		jump_corner_correction(delta)
+		
+	# If they are moving horizontally or trying to move horizontally :3
+	if abs(horizontal_axis) > 0 or abs(velocity.x) > 0:
+		forward_corner_correction(delta)
+	
 	update_speed()
 	
 func _process(delta: float) -> void:
@@ -266,6 +277,22 @@ func jump_corner_correction(delta):
 		position.x += strength * delta
 	elif not top_left.is_colliding() and top_right.is_colliding():
 		position.x -= strength * delta
+		
+func forward_corner_correction(delta):
+	
+	var offset = ( bottom_right.position.y - step_max_right.position.y )
+	#var offset = 10
+	
+	if bottom_right.is_colliding() and not step_max_right.is_colliding():
+		
+		if bottom_right.get_collision_normal().y == 0:
+			position.y -= offset
+	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
+		if bottom_left.get_collision_normal().y == 0:
+			
+		
+			position.y -= offset
+	
 
 func update_speed():
 	
