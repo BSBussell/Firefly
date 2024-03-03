@@ -1,7 +1,4 @@
-extends Line2D
-
-@export var length = 10
-var point = Vector2()
+extends CanvasItem
 
 # Interpolation state
 var interpolating: bool = false
@@ -14,17 +11,6 @@ var interpolation_duration: float = 1.0  # Adjust this to control the speed of t
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	global_position = Vector2(0, 0)
-	global_rotation = 0
-
-	point = get_parent().get_parent().global_position
-	point.y -= 10
-
-	add_point(point)
-
-	while get_point_count() > length:
-		remove_point(0)
-
 	if interpolating:
 		interpolation_time += delta
 		var t = min(interpolation_time / interpolation_duration, 1.0)  # Clamp to [0, 1]

@@ -1,5 +1,6 @@
-[gd_scene load_steps=30 format=3 uid="uid://cpc5ssjndq6qc"]
+[gd_scene load_steps=32 format=3 uid="uid://cpc5ssjndq6qc"]
 
+[ext_resource type="Shader" path="res://Core/wind.gdshader" id="1_3xnpk"]
 [ext_resource type="Texture2D" uid="uid://bkc8jbna0iql3" path="res://Assets/Graphics/Forest_Tile_Set_Extended/forest_tiles_bee_mods.png" id="1_v8b5t"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_f4aiq"]
@@ -33,6 +34,18 @@ polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_byfe5"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1b6go"]
+shader = ExtResource("1_3xnpk")
+shader_parameter/speed = 1.2
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 150.0
+shader_parameter/interval = 3.0
+shader_parameter/detail = 2.0
+shader_parameter/distortion = 1.0
+shader_parameter/heightOffset = 0.0
+shader_parameter/offset = 4.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_qggkm"]
 
@@ -573,17 +586,17 @@ texture = ExtResource("1_v8b5t")
 10:4/0 = 0
 10:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 10:4/0/physics_layer_0/angular_velocity = 0.0
-10:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-2, -2, 8, -2, 8, -5, -2, -5)
-10:4/0/physics_layer_0/polygon_0/one_way = true
 10:4/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 10:4/0/physics_layer_1/angular_velocity = 0.0
+10:4/0/physics_layer_1/polygon_0/points = PackedVector2Array(-2, -5, 8, -5, 8, -3, -2, -3)
+10:4/0/physics_layer_1/polygon_0/one_way = true
 11:4/0 = 0
 11:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 11:4/0/physics_layer_0/angular_velocity = 0.0
-11:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -2, 8, -2, 8, -5, -8, -5)
-11:4/0/physics_layer_0/polygon_0/one_way = true
 11:4/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 11:4/0/physics_layer_1/angular_velocity = 0.0
+11:4/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -5, 8, -5, 8, -3, -8, -3, -8, -5)
+11:4/0/physics_layer_1/polygon_0/one_way = true
 12:4/0 = 0
 12:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 12:4/0/physics_layer_0/angular_velocity = 0.0
@@ -591,6 +604,8 @@ texture = ExtResource("1_v8b5t")
 12:4/0/physics_layer_0/polygon_0/one_way = true
 12:4/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 12:4/0/physics_layer_1/angular_velocity = 0.0
+12:4/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -5, -3, -5, -3, -3, -8, -3, -8, -5)
+12:4/0/physics_layer_1/polygon_0/one_way = true
 1:5/0 = 0
 1:5/0/terrain_set = 0
 1:5/0/terrain = 3
@@ -602,6 +617,7 @@ texture = ExtResource("1_v8b5t")
 1:5/0/physics_layer_1/angular_velocity = 0.0
 1:5/0/terrains_peering_bit/top_side = 0
 2:5/0 = 0
+2:5/0/material = SubResource("ShaderMaterial_1b6go")
 2:5/0/terrain_set = 0
 2:5/0/terrain = 3
 2:5/0/probability = 0.25

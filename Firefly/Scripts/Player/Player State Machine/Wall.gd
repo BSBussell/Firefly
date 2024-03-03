@@ -94,13 +94,17 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		# Prevent silly interactions between jumping and wall jumping
 		jump_buffer.stop()
 		
-		# SFX!!
-		wall_jump_sfx.play(0)
+		
 		
 		#var wall_normal = parent.get_wall_normal()
 		var jump_dir: float = dir
 		if dir == 0:
 			jump_dir = parent.get_wall_normal().x
+			
+		# SFX!!
+		wall_jump_sfx.play(0)
+		var pitch = 0.2 * jump_dir
+		wall_jump_sfx.pitch_scale = 1 + pitch 
 		
 		var new_cloud = parent.WJ_DUST.instantiate()
 		new_cloud.set_name("WJ_dust_temp")

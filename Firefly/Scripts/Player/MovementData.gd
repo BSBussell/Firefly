@@ -59,6 +59,7 @@ extends Resource
 @export var RUN_THRESHOLD: float = 8
 @export var TRAIL_LENGTH: int = 0
 @export var BRIGHTNESS: float = 0.8
+@export var GLOW: Color = Color(1.0, 1.0, 1.0)
 
 @export_group("Threshold")
 @export var DOWNGRADE_SCORE: float = 0

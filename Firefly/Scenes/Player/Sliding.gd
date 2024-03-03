@@ -49,6 +49,7 @@ func enter() -> void:
 		slide_dust.emitting = true
 		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
 		sliding_sfx.play(0)	
+		print("fzzzz")
 	
 	
 	entryVel = parent.velocity.x
@@ -76,10 +77,7 @@ func exit() -> void:
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
 	
-	# Stay there til we let go of down
-	if not Input.is_action_pressed("Down"):
-		parent.current_animation = parent.ANI_STATES.STANDING_UP
-		return GROUNDED_STATE
+	
 	return null
 
 # Processing Frames in this state, returns nil or new state
@@ -101,15 +99,21 @@ func process_physics(delta: float) -> PlayerState:
 		sliding_sfx.stop()
 		slide_dust.emitting = false
 	else:
-		sliding_sfx.stop()
+		sliding_sfx.play(sliding_sfx.get_playback_position())
 		slide_dust.emitting = true
 		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
+		
 	
-	GROUNDED_STATE.update_state(parent.horizontal_axis)
+	update_state(parent.horizontal_axis)
 	
 	# Make Sure we're still grounded after this
 	if not parent.is_on_floor():
 		return AERIAL_STATE
+		
+	# Stay there til we let go of down
+	if not Input.is_action_pressed("Down"):
+		parent.current_animation = parent.ANI_STATES.STANDING_UP
+		return GROUNDED_STATE
 		
 	return null
 	
@@ -150,3 +154,34 @@ func apply_friction(delta, direction):
 		parent.velocity.x = move_toward(parent.velocity.x, speed, accel*delta)
 		
 		
+
+# Updates animation states based on changes in physics
+func update_state(direction):
+	
+	# Change direction (cANT DO SLIDING
+	if direction > 0:
+		parent.animation.flip_h = false
+		#dust.gravity.x = -200
+	elif direction < 0:
+		parent.animation.flip_h = true
+		#dust.gravity.x *= 200
+	
+	
+	# So if we are in falling and we've touched the floor aggresively finish the animation
+	#if animation_state == STATE.FALLING and is_on_floor():
+	#	animated.speed_scale = 2.0
+		
+		
+	# Crawling Shit
+	# When we press down we crouch
+	#if Input.is_action_just_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
+		#parent.current_animation = parent.ANI_STATES.CROUCH
+		#parent.floor_constant_speed = false
+		
+	# Stay there til we let go of down
+	#if (parent.current_animation == parent.ANI_STATES.CRAWL) and not Input.is_action_pressed("Down"):
+		#parent.current_animation = parent.ANI_STATES.STANDING_UP
+		
+		
+	#if parent.current_animation != parent.ANI_STATES.RUNNING:
+		#dash_dust.emitting = false

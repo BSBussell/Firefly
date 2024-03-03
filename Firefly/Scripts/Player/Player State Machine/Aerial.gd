@@ -16,6 +16,11 @@ extends PlayerState
 @onready var right_wj_grace = $"../../Raycasts/Right_WJ_Grace"
 @onready var left_wj_grace = $"../../Raycasts/Left_WJ_Grace"
 
+# Jump Corner Correctors
+@onready var top_left = $"../../Raycasts/TopLeft"
+@onready var top_right = $"../../Raycasts/TopRight"
+
+
 # Jump SFX
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 
@@ -28,6 +33,13 @@ func enter() -> void:
 	
 	print("Aerial State")
 	
+	right_wj_grace.enabled = true
+	left_wj_grace.enabled = true
+	
+	# Corner correcting raycast
+	top_right.enabled = true
+	top_left.enabled = true
+	
 	shopped = false
 	
 	if (parent.current_animation != parent.ANI_STATES.JUMP):	
@@ -36,6 +48,13 @@ func enter() -> void:
 
 # Called before exiting the state, cleanup
 func exit() -> void:
+	
+	right_wj_grace.enabled = false
+	left_wj_grace.enabled = false
+	
+	# Corner correcting raycast (just making sure they off)
+	top_right.enabled = false
+	top_left.enabled = false
 	
 	if (parent.fastFalling):
 		

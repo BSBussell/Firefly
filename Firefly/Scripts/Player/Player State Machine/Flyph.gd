@@ -9,6 +9,7 @@ extends CharacterBody2D
 
 @export var star: CPUParticles2D
 @export var debug_info: Label
+@export var MusicPlayer: AudioStreamPlayer
 
 
 # Nodes
@@ -174,9 +175,9 @@ func _ready() -> void:
 	slide_buffer.resize(SLIDE_ENTRIES)
 
 	speedometer_buffer.fill(0)
-	speed_buffer.fill(0.5)
-	landings_buffer.fill(0.5)
-	slide_buffer.fill(0.5)
+	speed_buffer.fill(0)
+	landings_buffer.fill(0)
+	slide_buffer.fill(0)
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)
@@ -201,12 +202,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 func _physics_process(delta: float) -> void:
 	
+	
+	
 	StateMachine.process_physics(delta)
 	
 	
 	if velocity.y < 0:
 		jump_corner_correction(delta)
-		
+	
 	# If they are moving horizontally or trying to move horizontally :3
 	if abs(horizontal_axis) > 0 or abs(velocity.x) > 0:
 		forward_corner_correction(delta)
@@ -277,22 +280,71 @@ func jump_corner_correction(delta):
 		position.x += strength * delta
 	elif not top_left.is_colliding() and top_right.is_colliding():
 		position.x -= strength * delta
-		
+	
+
+var progress: float = 0
+var goal: float = 0
+	
 func forward_corner_correction(delta):
 	
-	var offset = ( bottom_right.position.y - step_max_right.position.y )
-	#var offset = 10
+	if get_floor_normal().x != 0:
+		return 
+		
+		
+	var length: float = 0
+	length = clamp(abs(velocity.x) / 10, 0, 3)
+	set_corner_snapping_length(length)
 	
+	var offset = ( bottom_right.position.y - step_max_right.position.y ) + 1
 	if bottom_right.is_colliding() and not step_max_right.is_colliding():
 		
-		if bottom_right.get_collision_normal().y == 0:
-			position.y -= offset
-	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
-		if bottom_left.get_collision_normal().y == 0:
+		# If we are moviging in that direction or pressing that dir
+		if (velocity.x > 0 or horizontal_axis > 0) and round(bottom_right.get_collision_normal().x) == bottom_right.get_collision_normal().x:
 			
-		
-			position.y -= offset
+			
+			
+			# Horizontal Offset
+			var origin = bottom_right.global_transform.origin
+			var collision_point = bottom_right.get_collision_point()
+			var horizontal_offset = origin.distance_to(collision_point)
+			
+			# Adjust Position
+			#position.y -= offset
+			#position.x += horizontal_offset + 1
 	
+			# Smoothly adjust position
+			var target_position = position + Vector2(0, -offset)
+			position = position.lerp(target_position, delta * length * 20)  # Adjust the factor as needed
+	
+	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
+		
+		# If we are moviging in that direction or pressing that dir
+		if (velocity.x < 0 or horizontal_axis < 0)  and round(bottom_left.get_collision_normal().x) == bottom_left.get_collision_normal().x:
+			
+			# Horizontal Offset
+			var origin = bottom_left.global_transform.origin
+			var collision_point = bottom_left.get_collision_point()
+			var horizontal_offset = origin.distance_to(collision_point)
+			
+			# Adjust Position
+			#position.y -= offset
+			#position.x -= horizontal_offset + 1
+			var target_position = position + Vector2(0, -offset)
+			position = position.lerp(target_position, delta * length * 20)  # Adjust the factor as needed
+
+
+func set_corner_snapping_length(offset: float):
+	
+	bottom_right.target_position.x = offset
+	step_max_right.target_position.x = offset
+	bottom_left.target_position.x = -offset
+	step_max_left.target_position.x = -offset
+	
+	 #this might be real chat
+	bottom_right.force_raycast_update()
+	bottom_left.force_raycast_update()
+	step_max_right.force_raycast_update()
+	step_max_left.force_raycast_update()
 
 func update_speed():
 	
@@ -343,12 +395,17 @@ func update_score():
 	
 	if score >= movement_data.UPGRADE_SCORE and movement_level != max_level:
 		
+		star.emitting = true
 		change_state(movement_level + 1)
 		
 	elif score <= movement_data.DOWNGRADE_SCORE and movement_level != 0:
 		
 		change_state(movement_level - 1)
 		
+	#if movement_level == max_level:
+		#MusicPlayer.pitch_scale = 1.25
+	#else:
+		#MusicPlayer.pitch_scale = 1.0
 
 func calc_score():
 	
@@ -459,9 +516,11 @@ func calculate_properties():
 
 	# Visual
 	trail.length = movement_data.TRAIL_LENGTH
+	trail.set_glow(movement_data.GLOW)
 	run_threshold = movement_data.RUN_THRESHOLD * 16
 	
 	light.set_brightness(movement_data.BRIGHTNESS)
+	animation.set_glow(movement_data.GLOW)
 	
 
 func kill():

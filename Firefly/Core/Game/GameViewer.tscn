@@ -1,8 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=6 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
 [ext_resource type="Shader" path="res://Core/Game/SubPixelSmoothing.gdshader" id="1_jculp"]
 [ext_resource type="PackedScene" uid="uid://bxpfadjfys05l" path="res://Scenes/Levels/debug.tscn" id="1_uvhp8"]
+
+[sub_resource type="Environment" id="Environment_xxxtd"]
+background_mode = 3
+tonemap_mode = 2
+tonemap_exposure = 0.9
+tonemap_white = 2.1
+glow_enabled = true
+glow_levels/1 = 0.18
+glow_levels/2 = 0.39
+glow_levels/3 = 0.0
+glow_levels/5 = 0.74
+glow_levels/7 = 0.26
+glow_normalized = true
+glow_blend_mode = 0
+glow_hdr_threshold = 0.9
+glow_hdr_luminance_cap = 247.09
+adjustment_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gjm2h"]
 shader = ExtResource("1_jculp")
@@ -10,6 +27,9 @@ shader_parameter/sub_pixel_offset = Vector2(0, 0)
 
 [node name="GameViewer" type="Node2D"]
 script = ExtResource("1_42j4d")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xxxtd")
 
 [node name="GameContainer" type="SubViewportContainer" parent="."]
 material = SubResource("ShaderMaterial_gjm2h")
@@ -24,6 +44,7 @@ disable_3d = true
 handle_input_locally = false
 snap_2d_transforms_to_pixel = true
 snap_2d_vertices_to_pixel = true
+use_hdr_2d = true
 canvas_item_default_texture_filter = 0
 audio_listener_enable_2d = true
 size = Vector2i(322, 182)

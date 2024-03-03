@@ -81,6 +81,14 @@ func exit() -> void:
 
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
+	
+	# Crawling Shit
+	# When we press down we crouch
+	if Input.is_action_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
+		parent.current_animation = parent.ANI_STATES.CROUCH
+		# When this animation ends we go to the sliding state
+		
+	
 	return null
 
 
@@ -199,15 +207,12 @@ func update_state(direction):
 	#	animated.speed_scale = 2.0
 		
 		
-	# Crawling Shit
-	# When we press down we crouch
-	if Input.is_action_just_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
-		parent.current_animation = parent.ANI_STATES.CROUCH
+	
 		#parent.floor_constant_speed = false
 		
 	# Stay there til we let go of down
-	if (parent.current_animation == parent.ANI_STATES.CRAWL) and not Input.is_action_pressed("Down"):
-		parent.current_animation = parent.ANI_STATES.STANDING_UP
+	#if (parent.current_animation == parent.ANI_STATES.CRAWL) and not Input.is_action_pressed("Down"):
+		#parent.current_animation = parent.ANI_STATES.STANDING_UP
 		
 		
 	if parent.current_animation != parent.ANI_STATES.RUNNING:

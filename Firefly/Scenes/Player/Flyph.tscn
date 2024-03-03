@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=76 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://dsjjsd36v17p1" path="res://Scenes/Player/Movement_Presets/Stage2Movement.tres" id="4_66rk6"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="5_63g2f"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="6_bo4q8"]
+[ext_resource type="Script" path="res://Scenes/Player/Modulation.gd" id="6_vid37"]
 [ext_resource type="Script" path="res://Scenes/Player/trail.gd" id="7_se6t7"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Grounded.gd" id="7_x3sml"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerSpotlight.gd" id="8_728xn"]
@@ -413,32 +414,36 @@ metadata/_edit_lock_ = true
 visible = false
 z_index = 1
 position = Vector2(0, -8)
-polygon = PackedVector2Array(-2, 3, 0, 7.5, 2, 3, 3, 0, 2, -4, 0, -7.5, -2, -4, -3, 0)
+polygon = PackedVector2Array(-2, 5, 0, 7.5, 2, 5, 3, 0, 3, -7.5, 0, -7.5, -3, -7.5, -3, 0)
 disabled = true
 
 [node name="Visuals" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
+modulate = Color(4, 3.5, 3, 1)
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
 animation = &"falling"
 autoplay = "idle"
+script = ExtResource("6_vid37")
 metadata/_edit_lock_ = true
 
 [node name="Trail" type="Line2D" parent="Visuals"]
+modulate = Color(2.5, 2.6, 1.25, 1)
 show_behind_parent = true
 z_index = -1
+position = Vector2(0, -13)
 width = 6.0
 width_curve = SubResource("Curve_w5yy1")
 default_color = Color(0.960784, 0.898039, 0, 1)
 gradient = SubResource("Gradient_nk0tk")
+antialiased = true
 script = ExtResource("7_se6t7")
 length = 0
-metadata/_edit_lock_ = true
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
 color = Color(1, 0.980392, 0.803922, 1)
-range_layer_min = -100
+range_layer_min = -99
 range_item_cull_mask = 3
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
@@ -501,6 +506,7 @@ position = Vector2(0, -8)
 [node name="Right_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
 visible = false
 position = Vector2(3, 0)
+enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
 target_position = Vector2(3, 0)
 collision_mask = 2
@@ -508,39 +514,46 @@ collision_mask = 2
 [node name="Left_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
 visible = false
 position = Vector2(-3, 0)
+enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
 target_position = Vector2(-3, 0)
 collision_mask = 2
 
 [node name="TopLeft" type="RayCast2D" parent="Raycasts"]
 position = Vector2(-4, -7.5)
+enabled = false
 target_position = Vector2(0, -5)
 collision_mask = 2
 
 [node name="TopRight" type="RayCast2D" parent="Raycasts"]
 position = Vector2(3, -7.5)
+enabled = false
 target_position = Vector2(0, -5)
 collision_mask = 2
 
 [node name="BottomRight" type="RayCast2D" parent="Raycasts"]
 position = Vector2(3, 7.5)
-target_position = Vector2(3, 0)
+target_position = Vector2(2, 0)
 collision_mask = 2
+hit_from_inside = true
 
 [node name="StepMaxRight" type="RayCast2D" parent="Raycasts"]
-position = Vector2(3, 3.5)
-target_position = Vector2(3, 0)
+position = Vector2(3, 2.5)
+target_position = Vector2(2, 0)
 collision_mask = 2
+hit_from_inside = true
 
 [node name="BottomLeft" type="RayCast2D" parent="Raycasts"]
 position = Vector2(-4, 7.5)
-target_position = Vector2(-3, 0)
+target_position = Vector2(-2, 0)
 collision_mask = 2
+hit_from_inside = true
 
 [node name="StepMaxLeft" type="RayCast2D" parent="Raycasts"]
-position = Vector2(-4, 3.5)
-target_position = Vector2(-3, 0)
+position = Vector2(-4, 2.5)
+target_position = Vector2(-2, 0)
 collision_mask = 2
+hit_from_inside = true
 
 [node name="Audio" type="Node2D" parent="."]
 
@@ -568,6 +581,7 @@ volume_db = -5.0
 [node name="UI_FX" type="CanvasLayer" parent="."]
 
 [node name="Star" type="CPUParticles2D" parent="UI_FX"]
+modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 position = Vector2(159, 0)
 emitting = false
