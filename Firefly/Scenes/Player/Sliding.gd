@@ -15,7 +15,12 @@ extends PlayerState
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
 @onready var landing_sfx = $"../../Audio/LandingSFX"
 @onready var slide_dust = $"../../Particles/SlideDust"
+@onready var collider_rect = $"../../Collider_rect"
 
+@onready var standing_collider = $"../../Standing_Collider"
+@onready var crouching_collider = $"../../Crouching_Collider"
+
+@onready var stand_room = $"../../Raycasts/Colliders/Stand_Room"
 
 
 var entryVel: float
@@ -51,6 +56,9 @@ func enter() -> void:
 		sliding_sfx.play(0)	
 		print("fzzzz")
 	
+	# 
+	standing_collider.disabled = true
+	crouching_collider.disabled = false
 	
 	entryVel = parent.velocity.x
 		
@@ -69,6 +77,10 @@ func exit() -> void:
 	else:
 		parent.update_slides(0)
 		#print("Optimal Slide Usage :3")
+	
+	# Resize Collision Box
+	#standing_collider.disabled = false
+	#crouching_collider.disabled = true
 	
 	parent.floor_constant_speed = true
 	slide_dust.emitting = false
@@ -89,6 +101,8 @@ func process_physics(delta: float) -> PlayerState:
 	
 	GROUNDED_STATE.jump_logic(delta)
 	
+	
+	
 	apply_friction(delta, parent.horizontal_axis)
 	
 	
@@ -108,10 +122,12 @@ func process_physics(delta: float) -> PlayerState:
 	
 	# Make Sure we're still grounded after this
 	if not parent.is_on_floor():
+		# Reset Animation State in case of change
+		parent.current_animation = parent.ANI_STATES.CRAWL
 		return AERIAL_STATE
 		
 	# Stay there til we let go of down
-	if not Input.is_action_pressed("Down"):
+	if not Input.is_action_pressed("Down") and  not stand_room.is_colliding():
 		parent.current_animation = parent.ANI_STATES.STANDING_UP
 		return GROUNDED_STATE
 		

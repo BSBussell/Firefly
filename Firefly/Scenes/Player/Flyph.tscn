@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=77 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -24,8 +24,11 @@
 [ext_resource type="AudioStream" uid="uid://dhvsjt5lta3gk" path="res://Assets/SFX/Player/Sliding.wav" id="17_r3q20"]
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0ebm"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_143ut"]
 size = Vector2(6, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_seiic"]
+size = Vector2(6, 9.5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpwsx"]
 atlas = ExtResource("5_63g2f")
@@ -404,26 +407,24 @@ movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtRe
 star = NodePath("UI_FX/Star")
 debug_info = NodePath("UI_FX/debug info")
 
-[node name="Collider_rect" type="CollisionShape2D" parent="."]
+[node name="Standing_Collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -8)
-shape = SubResource("RectangleShape2D_l0ebm")
+shape = SubResource("RectangleShape2D_143ut")
 debug_color = Color(0.733333, 0.764706, 0, 0.419608)
 metadata/_edit_lock_ = true
 
-[node name="Collider_rounded" type="CollisionPolygon2D" parent="."]
-visible = false
-z_index = 1
-position = Vector2(0, -8)
-polygon = PackedVector2Array(-2, 5, 0, 7.5, 2, 5, 3, 0, 3, -7.5, 0, -7.5, -3, -7.5, -3, 0)
+[node name="Crouching_Collider" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5.25)
+shape = SubResource("RectangleShape2D_seiic")
 disabled = true
+debug_color = Color(0, 0.764706, 0, 0.372549)
 
 [node name="Visuals" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
-modulate = Color(4, 3.5, 3, 1)
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"falling"
+animation = &"crawl"
 autoplay = "idle"
 script = ExtResource("6_vid37")
 metadata/_edit_lock_ = true
@@ -555,6 +556,14 @@ target_position = Vector2(-2, 0)
 collision_mask = 2
 hit_from_inside = true
 
+[node name="Colliders" type="Node2D" parent="Raycasts"]
+
+[node name="Stand_Room" type="RayCast2D" parent="Raycasts/Colliders"]
+position = Vector2(0, -2)
+target_position = Vector2(0, -5.5)
+collision_mask = 2
+hit_from_inside = true
+
 [node name="Audio" type="Node2D" parent="."]
 
 [node name="LandingSFX" type="AudioStreamPlayer2D" parent="Audio"]
@@ -630,10 +639,11 @@ SLIDING_STATE = NodePath("../Sliding")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
-[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer")]
+[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "jump_buffer")]
 script = ExtResource("10_eck16")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
+SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
 [node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE")]

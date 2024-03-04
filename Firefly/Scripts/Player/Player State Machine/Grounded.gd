@@ -20,6 +20,10 @@ extends PlayerState
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 @onready var run_sfx = $"../../Audio/RunSFX"
 
+# Colliders
+@onready var standing_collider = $"../../Standing_Collider"
+@onready var crouching_collider = $"../../Crouching_Collider"
+
 
 var jump_exit = false
 
@@ -39,6 +43,10 @@ func enter() -> void:
 	
 	# Clamp Velocity because i hate fun
 	clampf(parent.velocity.x, parent.speed * -1, parent.speed)
+	
+	# Setup the proper colliders for this state :3
+	standing_collider.disabled = false
+	crouching_collider.disabled = true
 	
 	
 	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:

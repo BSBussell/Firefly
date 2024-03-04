@@ -3,6 +3,7 @@ extends PlayerState
 @export_subgroup("TRANSITIONAL STATES")
 @export var GROUNDED_STATE: PlayerState = null
 @export var AERIAL_STATE: PlayerState = null
+@export var SLIDING_STATE: PlayerState = null
 
 # And check the jump buffer on landing
 @export_subgroup("Input Assists")
@@ -12,6 +13,8 @@ extends PlayerState
 
 @onready var wj_dust_spawner = $"../../Particles/WJDustSpawner"
 
+# For measuring standing room
+@onready var stand_room = $"../../Raycasts/Colliders/Stand_Room"
 
 
 var cache_airdrift
@@ -48,7 +51,10 @@ func process_physics(delta: float) -> PlayerState:
 	parent.move_and_slide()
 	
 	if parent.is_on_floor():
-		return GROUNDED_STATE
+		if stand_room.is_colliding():
+			return SLIDING_STATE
+		else:
+			return GROUNDED_STATE
 	elif not parent.is_on_wall():
 		return AERIAL_STATE
 	return null

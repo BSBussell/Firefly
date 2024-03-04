@@ -211,7 +211,7 @@ func _physics_process(delta: float) -> void:
 		jump_corner_correction(delta)
 	
 	# If they are moving horizontally or trying to move horizontally :3
-	if abs(horizontal_axis) > 0 or abs(velocity.x) > 0:
+	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0) and is_on_floor():
 		forward_corner_correction(delta)
 	
 	update_speed()

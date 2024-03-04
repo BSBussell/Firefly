@@ -24,6 +24,9 @@ extends PlayerState
 # Jump SFX
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 
+# Check if room for standing up
+@onready var stand_room = $"../../Raycasts/Colliders/Stand_Room"
+
 
 var shopped: bool = false
 
@@ -108,7 +111,7 @@ func process_physics(delta: float) -> PlayerState:
 	
 	# Make Sure we're still grounded after this
 	if parent.is_on_floor():
-		if Input.is_action_pressed("Down"):
+		if Input.is_action_pressed("Down") or stand_room.is_colliding():
 			return SLIDING_STATE
 		else:
 			return GROUNDED_STATE
