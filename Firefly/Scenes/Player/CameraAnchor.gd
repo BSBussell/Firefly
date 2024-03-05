@@ -12,7 +12,7 @@ enum process {Physics, Draw}
 @export_group("Nerd Shit")
 
 # Smooths out the players velocity, used by lookahead
-@export var velocity_smoothing: float = 2.0
+@export var velocity_smoothing: float = 0.8
 
 # Where the camera position is processed at. Keep this the same as the camera2d node
 @export var processor: process

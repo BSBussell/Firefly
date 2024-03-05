@@ -80,7 +80,7 @@ func check_state(player):
 	
 	# Have to be in follow for X amount of time before can exit
 	if follow_timer.time_left == 0:
-		if player.velocity.length() >= 100 and not player.wallJumping:
+		if player.velocity.length() >= 100 and not player.current_wj == player.WALLJUMPS.UPWARD:
 			return LOOKAHEAD
 			
 	

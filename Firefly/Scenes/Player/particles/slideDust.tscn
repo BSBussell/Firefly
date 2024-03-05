@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://ba3c7whb0dsjn"]
+
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_hlv8n"]
+
+[sub_resource type="Gradient" id="Gradient_w02w3"]
+offsets = PackedFloat32Array(0.735991, 0.869612, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.623529, 0.623529, 0.623529, 0.858824, 0, 0, 0, 0)
+
+[node name="JumpDust" type="CPUParticles2D"]
+amount = 6
+lifetime = 0.4
+texture = ExtResource("1_hlv8n")
+emission_shape = 3
+emission_rect_extents = Vector2(2, 5)
+direction = Vector2(3, -1)
+spread = 0.0
+gravity = Vector2(0, 100)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+linear_accel_min = -200.0
+linear_accel_max = -200.0
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 0.25
+scale_amount_max = 0.35
+color_ramp = SubResource("Gradient_w02w3")
