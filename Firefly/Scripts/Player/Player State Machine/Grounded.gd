@@ -9,29 +9,19 @@ extends PlayerState
 @export var jump_buffer: Timer
 @export var coyote_time: Timer
 
-
-
-# GROUNDED
+# Particle Effects
 @onready var dash_dust = $"../../Particles/DashDust"
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
 
+# Sound Effects
 @onready var landing_sfx = $"../../Audio/LandingSFX"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 @onready var run_sfx = $"../../Audio/RunSFX"
 
-# Colliders
-@onready var standing_collider = $"../../Standing_Collider"
-@onready var crouching_collider = $"../../Crouching_Collider"
 
-
+# Set to true when we are exiting via jumping
 var jump_exit = false
-
-
-#@onready var dust_scene = preload("res://Scenes/Player/particles/jump_dust.tscn")
-#var scene_instance = scene.instance()
-#scene_instance.set_name("scene")
-#add_child(scene_instance)
 
 
 # Called on state entrance, setup
@@ -41,7 +31,9 @@ func enter() -> void:
 	#else:
 	jump_exit = false
 	
-	# Clamp Velocity because i hate fun
+	parent.crouchJumping = false
+	
+	# Clamp Velocity because i hate fun rahh
 	clampf(parent.velocity.x, parent.speed * -1, parent.speed)
 	
 	# Setup the proper colliders for this state :3
@@ -67,13 +59,6 @@ func enter() -> void:
 		animation.play("free")
 			
 		parent.wallJumping = false
-	
-	# Give dust on landing
-	#var new_cloud = parent.LANDING_DUST.instantiate()
-	#new_cloud.set_name("landing_dust_temp")
-	#landing_dust.add_child(new_cloud)
-	#var animation = new_cloud.get_node("AnimationPlayer")
-	#animation.play("free")
 
 # Called before exiting the state, cleanup
 func exit() -> void:
@@ -120,7 +105,7 @@ func process_physics(delta: float) -> PlayerState:
 		
 	return null
 	
-# TODO: Add jump lag in order to show the crouch animation
+# Our logic for making the player jumping
 func jump_logic(_delta):
 	
 	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
@@ -135,11 +120,13 @@ func jump_logic(_delta):
 		
 		# Prevent silly interactions between jumping and wall jumping
 		jump_buffer.stop()
-		#jump_buffer.wait_time = -1
 		
 		jumping_sfx.play(0)
 		
 		parent.velocity.y = parent.jump_velocity
+		
+		# Madeline Moment
+		parent.animation.scale = Vector2(0.9, 1.1)
 		
 		jump_exit = true
 		
@@ -151,18 +138,18 @@ func jump_logic(_delta):
 
 	
 	
-
+# Accelerate the player based on direction
 func handle_acceleration(delta, direction):
-	
 	
 	# Can't move forward when crouching or landing
 	if direction:  
 		if parent.current_animation != parent.ANI_STATES.CRAWL:
 			parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.accel * delta)
 	
+# Stop the character when they let go of the button
 func apply_friction(delta, direction):
 	
-	parent.turningAround = false	
+	parent.turningAround = false
 	
 	
 	# Ok this makes the game really slippery when changing direction
@@ -184,10 +171,9 @@ func update_state(direction):
 	# Change direction
 	if direction > 0:
 		parent.animation.flip_h = false
-		#dust.gravity.x = -200
+		
 	elif direction < 0:
 		parent.animation.flip_h = true
-		#dust.gravity.x *= 200
 	
 	# If set to running/walking from grounded state
 	if direction:
@@ -219,9 +205,6 @@ func animation_end() -> PlayerState:
 	if parent.current_animation == parent.ANI_STATES.LANDING:
 		parent.current_animation = parent.ANI_STATES.IDLE
 		
-	# If we've finished crouching then we go to our crawl
-	#if parent.current_animation == parent.ANI_STATES.CROUCH:
-		#return SLIDING_STATE
 		
 	# If we've stopped getting up then we go to our idle
 	if parent.current_animation == parent.ANI_STATES.STANDING_UP:

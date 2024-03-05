@@ -51,10 +51,15 @@ func process_physics(delta: float) -> PlayerState:
 	parent.move_and_slide()
 	
 	if parent.is_on_floor():
+		# Force into crouch if theres no room
 		if AERIAL_STATE.have_stand_room():
 			return SLIDING_STATE
+		
+		# Otherwise go to standing/grounded state
 		else:
 			return GROUNDED_STATE
+			
+	# If we're just in the air
 	elif not parent.is_on_wall():
 		return AERIAL_STATE
 	return null
@@ -84,13 +89,10 @@ func apply_gravity(delta, _direction):
 
 func handle_walljump(delta, vc_direction, dir = 0):	
 	
-
 	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 	
 		# Set Flag for gravity :3
 		parent.wallJumping = true
-	
-		
 		
 		# Prevent silly interactions between jumping and wall jumping
 		jump_buffer.stop()
@@ -100,7 +102,7 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		if dir == 0:
 			jump_dir = parent.get_wall_normal().x
 			
-		# SFX!!
+		# SFX
 		wall_jump_sfx.play(0)
 		var pitch = 0.2 * jump_dir
 		wall_jump_sfx.pitch_scale = 1 + pitch 
@@ -112,18 +114,13 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
 		
-		# TODO: Walljump Animation (Crouch overrides all)
+		# TODO: Walljump Animation or something
 		if (parent.current_animation != parent.ANI_STATES.CRAWL):
 			parent.current_animation = parent.ANI_STATES.FALLING
 			parent.restart_animation = true
-		
-		
 			
-		
 		# Ok so if you are up on a walljump it'll launch you up
 		if vc_direction > 0:
-			
-			
 			
 			parent.velocity.x = parent.up_walljump_velocity_x * jump_dir
 			parent.velocity.y = parent.up_walljump_velocity_y
@@ -144,8 +141,6 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		# Secret Downward WallJump :3
 		elif vc_direction < 0 and not parent.crouchJumping:
 			
-			
-			
 			parent.velocity.x = parent.down_walljump_velocity_x * jump_dir
 			parent.velocity.y = parent.down_walljump_velocity_y
 			
@@ -164,8 +159,6 @@ func handle_walljump(delta, vc_direction, dir = 0):
 			
 		# else itll launch you away
 		else:
-			
-			
 			
 			parent.velocity.x = parent.walljump_velocity_x * jump_dir
 			parent.velocity.y = parent.walljump_velocity_y

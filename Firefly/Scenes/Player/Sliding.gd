@@ -10,16 +10,15 @@ extends PlayerState
 @export var jump_buffer: Timer
 @export var coyote_time: Timer
 
-
+# Particle Effects
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
+@onready var slide_dust = $"../../Particles/SlideDust"
+
+# Sound Effects
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
 @onready var landing_sfx = $"../../Audio/LandingSFX"
-@onready var slide_dust = $"../../Particles/SlideDust"
-@onready var collider_rect = $"../../Collider_rect"
 
-@onready var standing_collider = $"../../Standing_Collider"
-@onready var crouching_collider = $"../../Crouching_Collider"
-
+# Raycast for checking if we have room to stand
 @onready var stand_room = $"../../Raycasts/Colliders/Stand_Room"
 
 
@@ -49,18 +48,14 @@ func enter() -> void:
 		# Crouch Animation
 		parent.current_animation = parent.ANI_STATES.LANDING
 	
-	
+	# This might be silly b/c i can't control it lol
 	parent.floor_constant_speed = false
 	
 	if abs(parent.velocity.x) > 0:
 		slide_dust.emitting = true
 		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
 		sliding_sfx.play(0)
-	
-	# 
-	standing_collider.disabled = true
-	crouching_collider.disabled = false
-	
+		
 	entryVel = parent.velocity.x
 		
 	jumpExit = false

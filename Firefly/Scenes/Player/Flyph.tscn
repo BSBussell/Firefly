@@ -389,7 +389,7 @@ size = Vector2(0, 10)
 size = Vector2(0, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oeqmw"]
-size = Vector2(0, 5)
+size = Vector2(0, 6)
 
 [sub_resource type="Gradient" id="Gradient_k6x1h"]
 offsets = PackedFloat32Array(0, 0.6, 1)
@@ -417,6 +417,7 @@ debug_color = Color(0.733333, 0.764706, 0, 0.419608)
 metadata/_edit_lock_ = true
 
 [node name="Crouching_Collider" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -4.75)
 shape = SubResource("RectangleShape2D_seiic")
 disabled = true
@@ -427,7 +428,7 @@ debug_color = Color(0, 0.764706, 0, 0.372549)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"crawl"
+animation = &"walking"
 autoplay = "idle"
 script = ExtResource("6_vid37")
 metadata/_edit_lock_ = true
@@ -513,16 +514,16 @@ position = Vector2(3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
 target_position = Vector2(3, 0)
-max_results = 2
+max_results = 1
 collision_mask = 2
 
 [node name="Left_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
 visible = false
-position = Vector2(-3, 0)
+position = Vector2(-4, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
 target_position = Vector2(-3, 0)
-max_results = 2
+max_results = 1
 collision_mask = 2
 
 [node name="VerticalSmoothing" type="Node2D" parent="Raycasts"]
@@ -549,47 +550,44 @@ collision_mask = 2
 hit_from_inside = true
 
 [node name="StepMaxRight" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
-visible = false
-position = Vector2(3, 2.5)
+position = Vector2(3, 1.5)
 target_position = Vector2(3, 0)
 collision_mask = 2
 hit_from_inside = true
 
 [node name="RightAccuracy" type="ShapeCast2D" parent="Raycasts/HorizontalSmoothing"]
-visible = false
-position = Vector2(3, 5)
+position = Vector2(3, 4.5)
 enabled = false
 shape = SubResource("RectangleShape2D_oeqmw")
-target_position = Vector2(1, 0)
+target_position = Vector2(3, 0)
 max_results = 1
 
 [node name="BottomLeft" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
 z_index = 4
-position = Vector2(-4, 7.5)
+position = Vector2(-3, 7.5)
 target_position = Vector2(-3, 0)
 collision_mask = 2
 hit_from_inside = true
 
 [node name="StepMaxLeft" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
-visible = false
 z_index = 4
-position = Vector2(-4, 2.5)
+position = Vector2(-3, 1.5)
 target_position = Vector2(-3, 0)
 collision_mask = 2
 hit_from_inside = true
 
 [node name="LeftAccuracy" type="ShapeCast2D" parent="Raycasts/HorizontalSmoothing"]
-visible = false
-position = Vector2(-4, 5)
+position = Vector2(-3, 4.5)
 enabled = false
 shape = SubResource("RectangleShape2D_oeqmw")
-target_position = Vector2(-1, 0)
-max_results = 1
+target_position = Vector2(-3, 0)
+max_results = 6
 
 [node name="Colliders" type="Node2D" parent="Raycasts"]
+visible = false
 
 [node name="Stand_Room_Left" type="RayCast2D" parent="Raycasts/Colliders"]
-position = Vector2(-3, -1)
+position = Vector2(-4, -1)
 target_position = Vector2(0, -6.5)
 collision_mask = 2
 hit_from_inside = true
@@ -601,6 +599,7 @@ collision_mask = 2
 hit_from_inside = true
 
 [node name="AutoTunnel" type="Node2D" parent="Raycasts"]
+visible = false
 
 [node name="CrouchLeft" type="RayCast2D" parent="Raycasts/AutoTunnel"]
 position = Vector2(-4, -1)

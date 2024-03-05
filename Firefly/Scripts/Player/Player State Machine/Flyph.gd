@@ -17,6 +17,9 @@ extends CharacterBody2D
 @onready var standing_collider = $Standing_Collider
 @onready var crouching_collider = $Crouching_Collider
 
+@onready var standing_collider_pos = standing_collider.position
+@onready var standing_collider_shape = standing_collider.shape.size
+
 
 # Visual Nodes
 @onready var animation = $Visuals/AnimatedSprite2D
@@ -161,18 +164,20 @@ var horizontal_axis = 0
 var movement_level = 0
 var score = 0
 
-const MAX_ENTRIES = 120
+const MAX_ENTRIES = 180
 const SPEEDOMETER_ENTRIES = 120
 const FF_ENTRIES = 10
 const SLIDE_ENTRIES = 10
 
-var speed_buffer = []
+var air_speed_buffer = []
+var ground_speed_buffer = []
 var slide_buffer = []
 var speedometer_buffer = []
 var landings_buffer = [] # I think this one might be stupid ngl
 
 var average_speed: float = 0
-var normalized_average_speed: float = 0
+var air_normalized_average_speed: float = 0
+var ground_normalized_average_speed: float = 0
 var average_ff_landings: float = 0
 var average_slides: float = 0
 var tmp_modifier: float = 0
@@ -184,13 +189,15 @@ func _ready() -> void:
 	calculate_properties()
 	
 	# Setting up our buffers
-	speed_buffer.resize(MAX_ENTRIES)
+	air_speed_buffer.resize(MAX_ENTRIES)
+	ground_speed_buffer.resize(MAX_ENTRIES)
 	landings_buffer.resize(FF_ENTRIES)
 	speedometer_buffer.resize(SPEEDOMETER_ENTRIES)
 	slide_buffer.resize(SLIDE_ENTRIES)
 
 	speedometer_buffer.fill(0)
-	speed_buffer.fill(0)
+	air_speed_buffer.fill(0)
+	ground_speed_buffer.fill(0)
 	landings_buffer.fill(0)
 	slide_buffer.fill(0)
 
@@ -217,21 +224,20 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 func _physics_process(delta: float) -> void:
 	
-	
 	# Calls the physics proceess
 	StateMachine.process_physics(delta)
-	
 	
 	# Corner Smoothing
 	if velocity.y < 0 and not is_on_wall():
 		jump_corner_correction(delta)
-		
+	
+	# Auto Enter Tunnel
 	if is_on_wall_only():
 		auto_enter_tunnel(delta)
 	
 	# If they are moving horizontally or trying to move horizontally :3
 	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0):
-		forward_corner_correction(delta)
+		horizontal_corner_correction(delta)
 	
 	# Update Scoring information based on movement speed, etc.
 	update_speed()
@@ -297,6 +303,9 @@ func _on_animated_sprite_2d_animation_finished():
 # This sucks but idk man
 func set_crouch_collider():
 	
+	#standing_collider.position = crouching_collider.position
+	#standing_collider.shape.size = crouching_collider.shape.size
+	
 	# Enable the crouching one
 	crouching_collider.disabled = false
 	# Then disable the standing one
@@ -305,14 +314,28 @@ func set_crouch_collider():
 
 func set_standing_collider():
 	
+	#standing_collider.position = standing_collider_pos
+	#standing_collider.shape.size = standing_collider_shape
+	
 	# Enable it first
 	standing_collider.disabled = false
 	# Then disable the other one
 	crouching_collider.disabled = true
 
-#  Corner Correction Corrections
+#  Player Assist Methods
 #######################################
 #######################################
+
+# Auto enter hole
+func auto_enter_tunnel(delta):
+	
+	if (not crouch_left.is_colliding() and not bottom_left.is_colliding()) and get_wall_normal().x > 0: 
+		set_crouch_collider()
+		crouchJumping = true
+	
+	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x > 0:
+		set_crouch_collider()
+		crouchJumping = true
 
 # When jumping if theres a corner above us we will attempt to guide the player
 # Away from the ceiling in order to help smooth out the collisions
@@ -328,23 +351,10 @@ func jump_corner_correction(delta):
 	elif not top_left.is_colliding() and top_right.is_colliding():
 		position.x -= strength * delta
 
-# Auto enter hole
-func auto_enter_tunnel(delta):
-	
-	if (not crouch_left.is_colliding() and not bottom_left.is_colliding()) and get_wall_normal().x > 0: 
-		set_crouch_collider()
-		#position.y -= 1
-		#position.x -= 1
-		crouchJumping = true		
-	
-	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x > 0:
-		set_crouch_collider()
-		#position.y -= 1
-		#position.x += 1
-		crouchJumping = true
+
 
 # What allows the player to "smoothly"(lol) step up from small gaps
-func forward_corner_correction(delta):
+func horizontal_corner_correction(delta):
 	
 	# Ignore this if player is standing on a slant
 	if get_floor_normal().x != 0:
@@ -354,6 +364,7 @@ func forward_corner_correction(delta):
 	if not is_on_floor():
 		set_corner_snapping_length(1)
 	else:
+		# Make it a bit bigger when doing floor corrections in order to give us a little xtra time to get up lol
 		set_corner_snapping_length(3)
 	
 	var offset = ( bottom_right.position.y - step_max_right.position.y ) + 1
@@ -370,19 +381,22 @@ func forward_corner_correction(delta):
 			var collision_y = right_accuracy.get_collision_point(0).y
 			
 			if collision_y == 0:
+				#return
 				collision_y = position.y
 				
 			offset = (position.y - collision_y)
+			var correction_speed = 1
 			
 			if is_on_floor():
-				offset += 3
-			
+				offset += 6
+				correction_speed = 250
+			else:
+				correction_speed = 80
 			
 			print("Carried ass")
 			
 			# Smoothly adjust position
-			var target_position = position + Vector2(0, -offset)
-			position = position.lerp(target_position, delta * 80)  # Adjust the factor as needed
+			position.y = move_toward(position.y, -offset, delta * correction_speed)
 			
 			#right_accuracy.enabled = false
 	
@@ -396,20 +410,25 @@ func forward_corner_correction(delta):
 			
 			var collision_y = left_accuracy.get_collision_point(0).y
 			
+			# If we're tall enough se
 			if collision_y == 0:
 				collision_y = position.y
 				
 			offset = (position.y - collision_y)
 			
+			var correction_speed = 1
 			if is_on_floor():
-				offset += 3
+				offset += 6
+				correction_speed = 250
+			else:
+				offset -= 2
+				correction_speed = 80
 				
 			
 			print("Carried ass")
 			
 			# Attempt to smoothly
-			var target_position = position + Vector2(0, -offset)
-			position = position.lerp(target_position, delta * 80)  # Adjust the factor as needed
+			position.y = move_toward(position.y, -offset, delta * correction_speed)
 			
 			#left_accuracy.enabled = false
 
@@ -445,17 +464,22 @@ func update_speed():
 	
 	
 	
-	var percentage_value = new_speed / air_speed
+	var air_percentage_value = new_speed / air_speed
+	var ground_percentage_value = new_speed / speed
 	
 	# Add the new speed value to the buffer and remove the oldest entry
-	speed_buffer.pop_front()
-	speed_buffer.append(percentage_value)
+	air_speed_buffer.pop_front()
+	air_speed_buffer.append(air_percentage_value)
+	
+	ground_speed_buffer.pop_front()
+	ground_speed_buffer.append(ground_percentage_value)
 	
 	speedometer_buffer.pop_front()
 	speedometer_buffer.append(new_speed)
 	
 	# Update the average speed using reduce()
-	normalized_average_speed = speed_buffer.reduce(func(acc, num): return acc + num) / speed_buffer.size()
+	air_normalized_average_speed = air_speed_buffer.reduce(func(acc, num): return acc + num) / air_speed_buffer.size()
+	ground_normalized_average_speed = ground_speed_buffer.reduce(func(acc, num): return acc + num) / ground_speed_buffer.size()
 	average_speed = speedometer_buffer.reduce(func(acc, num): return acc + num) / speedometer_buffer.size()
 
 # Called each landing, we counts how often we land with a fast fall
@@ -489,11 +513,19 @@ func update_score():
 		
 		change_state(movement_level - 1)
 
+# This is its own function so it can easily be changed
 func calc_score():
 	
-	var ff_score = (0.4 * average_ff_landings)
-	var spd_score = (0.6 * normalized_average_speed)
+	var ff_score = (0.2 * average_ff_landings)
 	var slide_score = (0.2 * average_slides)
+	
+	# Speed Score (these numbers are not arbitrary lmao)
+	var air_spd_score = (0.1625 * air_normalized_average_speed)
+	var ground_spd_score = (0.4875 * ground_normalized_average_speed)
+	
+	# Honestly this is probably a shitty way of doing this lmao
+	
+	var spd_score = air_spd_score + ground_spd_score
 	
 	
 	return ff_score + spd_score + slide_score + tmp_modifier

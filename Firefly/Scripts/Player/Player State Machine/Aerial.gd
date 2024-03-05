@@ -20,13 +20,14 @@ extends PlayerState
 @onready var top_left = $"../../Raycasts/VerticalSmoothing/TopLeft"
 @onready var top_right = $"../../Raycasts/VerticalSmoothing/TopRight"
 
+# Check if room for standing up
+@onready var stand_room_left = $"../../Raycasts/Colliders/Stand_Room_Left"
+@onready var stand_room_right = $"../../Raycasts/Colliders/Stand_Room_Right"
+
 
 # Jump SFX
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 
-# Check if room for standing up
-@onready var stand_room_left = $"../../Raycasts/Colliders/Stand_Room_Left"
-@onready var stand_room_right = $"../../Raycasts/Colliders/Stand_Room_Right"
 
 
 
@@ -49,7 +50,8 @@ func enter() -> void:
 	
 	if (parent.current_animation != parent.ANI_STATES.JUMP and not parent.crouchJumping):
 		parent.current_animation = parent.ANI_STATES.FALLING
-	pass
+	
+	
 
 # Called before exiting the state, cleanup
 func exit() -> void:
@@ -92,6 +94,9 @@ func process_input(_event: InputEvent) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 	
+	
+	if parent.velocity.y > 0:
+		parent.animation.scale = Vector2(1, 1)
 	
 	apply_gravity(delta)
 	
@@ -191,7 +196,7 @@ func get_gravity() -> float:
 		# Apply fast falling gravity
 		gravity_to_apply = parent.ff_gravity
 		
-		
+	
 	return gravity_to_apply
 
 func apply_gravity(delta):
