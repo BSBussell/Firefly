@@ -26,6 +26,7 @@ extends PlayerState
 var entryVel: float
 
 var slidingDown = false
+var jumpExit = false
 
 
 # Called on state entrance, setup
@@ -62,6 +63,7 @@ func enter() -> void:
 	
 	entryVel = parent.velocity.x
 		
+	jumpExit = false
 	parent.set_crouch_collider()
 	
 	pass
@@ -77,6 +79,9 @@ func exit() -> void:
 		parent.update_slides(0)
 	
 	slide_dust.emitting = false
+	
+	if not jumpExit:
+		coyote_time.start()
 	
 	pass
 
@@ -117,7 +122,7 @@ func process_physics(delta: float) -> PlayerState:
 		return AERIAL_STATE
 		
 	# Stay there til we let go of down
-	if not Input.is_action_pressed("Down") and  not stand_room.is_colliding():
+	if not Input.is_action_pressed("Down") and AERIAL_STATE.have_stand_room():
 		parent.current_animation = parent.ANI_STATES.STANDING_UP
 		return GROUNDED_STATE
 		
@@ -190,6 +195,7 @@ func jump_logic(_delta):
 		parent.velocity.y = parent.jump_velocity
 		
 		parent.crouchJumping = true
+		jumpExit = true
 
 # Updates animation states based on changes in physics
 func update_state(direction):

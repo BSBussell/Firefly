@@ -51,7 +51,7 @@ func process_physics(delta: float) -> PlayerState:
 	parent.move_and_slide()
 	
 	if parent.is_on_floor():
-		if stand_room.is_colliding():
+		if AERIAL_STATE.have_stand_room():
 			return SLIDING_STATE
 		else:
 			return GROUNDED_STATE

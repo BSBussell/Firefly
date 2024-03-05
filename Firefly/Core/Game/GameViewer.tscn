@@ -9,6 +9,7 @@ background_mode = 3
 tonemap_mode = 2
 tonemap_exposure = 0.9
 tonemap_white = 2.1
+glow_enabled = true
 glow_levels/1 = 0.18
 glow_levels/2 = 0.39
 glow_levels/3 = 0.0
@@ -17,7 +18,6 @@ glow_levels/7 = 0.26
 glow_normalized = true
 glow_blend_mode = 0
 glow_hdr_threshold = 0.9
-glow_hdr_luminance_cap = 247.09
 adjustment_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gjm2h"]

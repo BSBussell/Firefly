@@ -42,6 +42,11 @@ extends CharacterBody2D
 @onready var step_max_left = $Raycasts/HorizontalSmoothing/StepMaxLeft
 @onready var left_accuracy = $Raycasts/HorizontalSmoothing/LeftAccuracy
 
+# Auto Enter Tunnel
+@onready var crouch_left = $Raycasts/AutoTunnel/CrouchLeft
+@onready var crouch_right = $Raycasts/AutoTunnel/CrouchRight
+
+
 # Respawn / Death Variables
 @onready var starting_position = global_position
 
@@ -218,8 +223,11 @@ func _physics_process(delta: float) -> void:
 	
 	
 	# Corner Smoothing
-	if velocity.y < 0:
+	if velocity.y < 0 and not is_on_wall():
 		jump_corner_correction(delta)
+		
+	if is_on_wall_only():
+		auto_enter_tunnel(delta)
 	
 	# If they are moving horizontally or trying to move horizontally :3
 	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0):
@@ -320,6 +328,21 @@ func jump_corner_correction(delta):
 	elif not top_left.is_colliding() and top_right.is_colliding():
 		position.x -= strength * delta
 
+# Auto enter hole
+func auto_enter_tunnel(delta):
+	
+	if (not crouch_left.is_colliding() and not bottom_left.is_colliding()) and get_wall_normal().x > 0: 
+		set_crouch_collider()
+		#position.y -= 1
+		#position.x -= 1
+		crouchJumping = true		
+	
+	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x > 0:
+		set_crouch_collider()
+		#position.y -= 1
+		#position.x += 1
+		crouchJumping = true
+
 # What allows the player to "smoothly"(lol) step up from small gaps
 func forward_corner_correction(delta):
 	
@@ -341,43 +364,54 @@ func forward_corner_correction(delta):
 		# If we are moviging in that direction or pressing that dir
 		if (velocity.x > 0 or horizontal_axis > 0) and round(bottom_right.get_collision_normal().x) == bottom_right.get_collision_normal().x:
 			
-			right_accuracy.enabled = true
-			if not is_on_floor():
-				right_accuracy.force_shapecast_update()
+			# Scan using the shapecast
+			right_accuracy.force_shapecast_update()
+			
+			var collision_y = right_accuracy.get_collision_point(0).y
+			
+			if collision_y == 0:
+				collision_y = position.y
 				
-				var collision_y = right_accuracy.get_collision_point(0).y
-				
-				if collision_y == 0:
-					collision_y = position.y
-					
-				offset = (position.y - collision_y)
+			offset = (position.y - collision_y)
+			
+			if is_on_floor():
+				offset += 3
+			
+			
+			print("Carried ass")
+			
 			# Smoothly adjust position
 			var target_position = position + Vector2(0, -offset)
-			position = position.lerp(target_position, delta * 40.5)  # Adjust the factor as needed
+			position = position.lerp(target_position, delta * 80)  # Adjust the factor as needed
 			
-			right_accuracy.enabled = false
+			#right_accuracy.enabled = false
 	
 	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
 		
 		# If we are moviging in that direction or pressing that dir
 		if (velocity.x < 0 or horizontal_axis < 0)  and round(bottom_left.get_collision_normal().x) == bottom_left.get_collision_normal().x:
 			
-			left_accuracy.enabled = true
-			if not is_on_floor():
-				left_accuracy.force_shapecast_update()
+			# Scan using the shape cast
+			left_accuracy.force_shapecast_update()
+			
+			var collision_y = left_accuracy.get_collision_point(0).y
+			
+			if collision_y == 0:
+				collision_y = position.y
 				
-				var collision_y = left_accuracy.get_collision_point(0).y
+			offset = (position.y - collision_y)
+			
+			if is_on_floor():
+				offset += 3
 				
-				if collision_y == 0:
-					collision_y = position.y
-					
-				offset = (position.y - collision_y)
+			
+			print("Carried ass")
 			
 			# Attempt to smoothly
 			var target_position = position + Vector2(0, -offset)
-			position = position.lerp(target_position, delta * 40.5)  # Adjust the factor as needed
+			position = position.lerp(target_position, delta * 80)  # Adjust the factor as needed
 			
-			left_accuracy.enabled = false
+			#left_accuracy.enabled = false
 
 # Allows us to resize our raycasts for forward corner corrections
 func set_corner_snapping_length(offset: float):

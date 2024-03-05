@@ -423,7 +423,6 @@ disabled = true
 debug_color = Color(0, 0.764706, 0, 0.372549)
 
 [node name="Visuals" type="Node2D" parent="."]
-visible = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -32)
@@ -542,7 +541,6 @@ target_position = Vector2(0, -5)
 collision_mask = 2
 
 [node name="HorizontalSmoothing" type="Node2D" parent="Raycasts"]
-visible = false
 
 [node name="BottomRight" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
 position = Vector2(3, 7.5)
@@ -551,16 +549,19 @@ collision_mask = 2
 hit_from_inside = true
 
 [node name="StepMaxRight" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
+visible = false
 position = Vector2(3, 2.5)
 target_position = Vector2(3, 0)
 collision_mask = 2
 hit_from_inside = true
 
 [node name="RightAccuracy" type="ShapeCast2D" parent="Raycasts/HorizontalSmoothing"]
+visible = false
 position = Vector2(3, 5)
 enabled = false
 shape = SubResource("RectangleShape2D_oeqmw")
-target_position = Vector2(3, 0)
+target_position = Vector2(1, 0)
+max_results = 1
 
 [node name="BottomLeft" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
 z_index = 4
@@ -570,6 +571,7 @@ collision_mask = 2
 hit_from_inside = true
 
 [node name="StepMaxLeft" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
+visible = false
 z_index = 4
 position = Vector2(-4, 2.5)
 target_position = Vector2(-3, 0)
@@ -577,17 +579,38 @@ collision_mask = 2
 hit_from_inside = true
 
 [node name="LeftAccuracy" type="ShapeCast2D" parent="Raycasts/HorizontalSmoothing"]
+visible = false
 position = Vector2(-4, 5)
 enabled = false
 shape = SubResource("RectangleShape2D_oeqmw")
-target_position = Vector2(-3, 0)
+target_position = Vector2(-1, 0)
+max_results = 1
 
 [node name="Colliders" type="Node2D" parent="Raycasts"]
 
-[node name="Stand_Room" type="RayCast2D" parent="Raycasts/Colliders"]
-visible = false
-position = Vector2(0, -1)
+[node name="Stand_Room_Left" type="RayCast2D" parent="Raycasts/Colliders"]
+position = Vector2(-3, -1)
 target_position = Vector2(0, -6.5)
+collision_mask = 2
+hit_from_inside = true
+
+[node name="Stand_Room_Right" type="RayCast2D" parent="Raycasts/Colliders"]
+position = Vector2(3, -1)
+target_position = Vector2(0, -6.5)
+collision_mask = 2
+hit_from_inside = true
+
+[node name="AutoTunnel" type="Node2D" parent="Raycasts"]
+
+[node name="CrouchLeft" type="RayCast2D" parent="Raycasts/AutoTunnel"]
+position = Vector2(-4, -1)
+target_position = Vector2(-3, 0)
+collision_mask = 2
+hit_from_inside = true
+
+[node name="CrouchRight" type="RayCast2D" parent="Raycasts/AutoTunnel"]
+position = Vector2(3, -1)
+target_position = Vector2(3, 0)
 collision_mask = 2
 hit_from_inside = true
 
@@ -673,10 +696,12 @@ AERIAL_STATE = NodePath("../Aerial")
 SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
-[node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE")]
+[node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "coyote_time")]
 script = ExtResource("14_n2n20")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
+jump_buffer = NodePath("../../Timers/JumpBuffer")
+coyote_time = NodePath("../../Timers/CoyoteTime")
 
 [node name="Timers" type="Node" parent="."]
 

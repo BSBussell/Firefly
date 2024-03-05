@@ -25,7 +25,9 @@ extends PlayerState
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 
 # Check if room for standing up
-@onready var stand_room = $"../../Raycasts/Colliders/Stand_Room"
+@onready var stand_room_left = $"../../Raycasts/Colliders/Stand_Room_Left"
+@onready var stand_room_right = $"../../Raycasts/Colliders/Stand_Room_Right"
+
 
 
 var shopped: bool = false
@@ -77,7 +79,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
 		
-	if Input.is_action_just_released("Down") and not SLIDING_STATE.stand_room.is_colliding():
+	if Input.is_action_just_released("Down") and have_stand_room():
 		parent.crouchJumping = false
 		parent.current_animation = parent.ANI_STATES.FALLING
 		parent.set_standing_collider()
@@ -111,7 +113,7 @@ func process_physics(delta: float) -> PlayerState:
 	
 	# Make Sure we're still grounded after this
 	if parent.is_on_floor():
-		if Input.is_action_pressed("Down") or stand_room.is_colliding():
+		if Input.is_action_pressed("Down") or not have_stand_room():
 			return SLIDING_STATE
 		else:
 			return GROUNDED_STATE
@@ -205,7 +207,7 @@ func handle_acceleration(delta, direction):
 		airDrift = 0
 	
 	# If player is jumping in a tunnel
-	elif parent.crouchJumping and SLIDING_STATE.stand_room.is_colliding():
+	elif parent.crouchJumping and not have_stand_room():
 		airDrift = parent.tunnel_jump_accel
 	
 	# Otherwise use the default airDrift
@@ -226,6 +228,10 @@ func apply_airResistance(delta, direction):
 	# Ok this makes the game really slippery when changing direction
 	if direction == 0:
 		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
+	
+
+func have_stand_room():
+	return not (stand_room_left.is_colliding() or stand_room_right.is_colliding())
 			
 
 
