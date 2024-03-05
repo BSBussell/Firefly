@@ -89,19 +89,20 @@ func process_input(_event: InputEvent) -> PlayerState:
 func process_physics(delta: float) -> PlayerState:
 	
 	
+	
 	jump_logic(delta)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_friction(delta, parent.horizontal_axis)
-	
-	
-	parent.move_and_slide()
 	
 	update_state(parent.horizontal_axis)
 	
 	# Make Sure we're still grounded after this
 	if not parent.is_on_floor():
 		return AERIAL_STATE
+	#parent.move_and_slide()
+	
+	
 		
 	return null
 	
@@ -123,10 +124,9 @@ func jump_logic(_delta):
 		
 		jumping_sfx.play(0)
 		
+		# TODO: One day explore the potential of a horizontal boost to the jump
 		parent.velocity.y = parent.jump_velocity
 		
-		# Madeline Moment
-		parent.animation.scale = Vector2(0.9, 1.1)
 		
 		jump_exit = true
 		

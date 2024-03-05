@@ -42,13 +42,15 @@ func process_frame(_delta: float) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 	
+	
+	
 	apply_gravity(delta, parent.horizontal_axis)
 	handle_walljump(delta, parent.vertical_axis)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
 	
-	parent.move_and_slide()
+	#parent.move_and_slide()
 	
 	if parent.is_on_floor():
 		# Force into crouch if theres no room
@@ -62,6 +64,7 @@ func process_physics(delta: float) -> PlayerState:
 	# If we're just in the air
 	elif not parent.is_on_wall():
 		return AERIAL_STATE
+	
 	return null
 	
 func animation_end() -> PlayerState:

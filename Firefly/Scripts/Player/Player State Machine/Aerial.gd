@@ -95,6 +95,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 func process_physics(delta: float) -> PlayerState:
 	
 	
+	
 	if parent.velocity.y > 0:
 		parent.animation.scale = Vector2(1, 1)
 	
@@ -105,16 +106,14 @@ func process_physics(delta: float) -> PlayerState:
 	handle_sHop(delta)
 	
 	# Grace Wall Jumps
-	if right_wj_grace.is_colliding():
+	if right_wj_grace.is_colliding() and round(right_wj_grace.get_collision_normal(0).x) == right_wj_grace.get_collision_normal(0).x :
 		WALL_STATE.handle_walljump(delta, parent.vertical_axis, -1)
-	elif left_wj_grace.is_colliding():
+	elif left_wj_grace.is_colliding() and round(left_wj_grace.get_collision_normal(0).x) == left_wj_grace.get_collision_normal(0).x:
 		WALL_STATE.handle_walljump(delta, parent.vertical_axis, 1)
 	
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
-	
-	parent.move_and_slide()
 	
 	# Make Sure we're still grounded after this
 	if parent.is_on_floor():
@@ -124,6 +123,10 @@ func process_physics(delta: float) -> PlayerState:
 			return GROUNDED_STATE
 	elif parent.is_on_wall_only():
 		return WALL_STATE
+	
+	#parent.move_and_slide()
+	
+	
 	return null
 	
 func animation_end() -> PlayerState:

@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/image="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png"
 config/icon="res://Assets/BOOT/icon.png"
 
+[audio]
+
+driver/output_latency.web=90
+
 [autoload]
 
 _viewports="*res://Scripts/Globals/_viewports.gd"

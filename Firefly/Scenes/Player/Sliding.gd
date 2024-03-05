@@ -93,20 +93,13 @@ func process_frame(_delta: float) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 	
+	
+		
+	
+	
+	# Just need to be able to jump and apply friction tbh
 	jump_logic(delta)
 	apply_friction(delta, parent.horizontal_axis)
-	
-	parent.move_and_slide()
-	
-	# Stop it when we stop moving
-	if parent.velocity.x == 0:
-		sliding_sfx.stop()
-		slide_dust.emitting = false
-	else:
-		sliding_sfx.play(sliding_sfx.get_playback_position())
-		slide_dust.emitting = true
-		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
-		
 	
 	update_state(parent.horizontal_axis)
 	
@@ -120,6 +113,9 @@ func process_physics(delta: float) -> PlayerState:
 	if not Input.is_action_pressed("Down") and AERIAL_STATE.have_stand_room():
 		parent.current_animation = parent.ANI_STATES.STANDING_UP
 		return GROUNDED_STATE
+	#parent.move_and_slide()
+	
+	
 		
 	return null
 	
@@ -202,3 +198,12 @@ func update_state(direction):
 	elif direction < 0:
 		parent.animation.flip_h = true
 		#dust.gravity.x *= 200
+
+	# Stop sfx when we stop moving
+	if parent.velocity.x == 0:
+		sliding_sfx.stop()
+		slide_dust.emitting = false
+	else:
+		sliding_sfx.play(sliding_sfx.get_playback_position())
+		slide_dust.emitting = true
+		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1

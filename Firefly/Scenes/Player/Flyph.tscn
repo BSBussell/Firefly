@@ -506,6 +506,7 @@ position = Vector2(-1, -7)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="Raycasts" type="Node2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 
 [node name="Right_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
@@ -527,7 +528,6 @@ max_results = 1
 collision_mask = 2
 
 [node name="VerticalSmoothing" type="Node2D" parent="Raycasts"]
-visible = false
 
 [node name="TopLeft" type="RayCast2D" parent="Raycasts/VerticalSmoothing"]
 position = Vector2(-4, -7.5)

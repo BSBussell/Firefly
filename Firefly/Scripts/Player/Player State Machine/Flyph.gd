@@ -227,17 +227,26 @@ func _physics_process(delta: float) -> void:
 	# Calls the physics proceess
 	StateMachine.process_physics(delta)
 	
-	# Corner Smoothing
+	
+	move_and_slide()
+	
+	# Corner Smoothing when jumping up
 	if velocity.y < 0 and not is_on_wall():
 		jump_corner_correction(delta)
+		
+	# If they are moving horizontally or trying to move horizontally :3
+	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0):
+		horizontal_corner_correction(delta) # Kinda a misleading name but pretty much we will gravitate the player towards small dips that it feels like the character should be able to step up
 	
 	# Auto Enter Tunnel
 	if is_on_wall_only():
 		auto_enter_tunnel(delta)
 	
-	# If they are moving horizontally or trying to move horizontally :3
-	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0):
-		horizontal_corner_correction(delta)
+	
+	
+	
+		
+	
 	
 	# Update Scoring information based on movement speed, etc.
 	update_speed()
@@ -344,12 +353,16 @@ func jump_corner_correction(delta):
 	
 	# Make the strength of adjustments depented on rising velocity cause
 	# That makes it feel more natural for some reason
-	var strength = abs(velocity.y) * 0.9
+	var strength = abs(velocity.y) * 0.5
 	
 	if top_left.is_colliding() and not top_right.is_colliding():
-		position.x += strength * delta
+		
+		if not test_move(global_transform, Vector2(strength * delta, 0)):
+			position.x += strength * delta
 	elif not top_left.is_colliding() and top_right.is_colliding():
-		position.x -= strength * delta
+		if not test_move(global_transform, Vector2(-strength * delta, 0)):
+			position.x -= strength * delta
+		#position.x -= strength * delta
 
 
 
@@ -391,12 +404,25 @@ func horizontal_corner_correction(delta):
 				offset += 6
 				correction_speed = 250
 			else:
+				offset -= 2
 				correction_speed = 80
 			
 			print("Carried ass")
 			
-			# Smoothly adjust position
-			position.y = move_toward(position.y, -offset, delta * correction_speed)
+			# Calculate the desired new position
+			var test_y = move_toward(position.y, -offset, delta * correction_speed)
+
+			# Calculate the motion vector
+			var motion = Vector2(0, test_y - position.y)
+
+			# Check if the motion would cause a collision
+			if not test_move(global_transform, motion):
+				# If no collision, update the position
+				position.y = test_y
+
+			else:
+				print("Saved")
+			# Check if collider is 
 			
 			#right_accuracy.enabled = false
 	
@@ -428,7 +454,19 @@ func horizontal_corner_correction(delta):
 			print("Carried ass")
 			
 			# Attempt to smoothly
-			position.y = move_toward(position.y, -offset, delta * correction_speed)
+			# Calculate the desired new position
+			var test_y = move_toward(position.y, -offset, delta * correction_speed)
+
+			# Calculate the motion vector
+			var motion = Vector2(0, test_y - position.y)
+
+			# Check if the motion would cause a collision
+			if not test_move(global_transform, motion):
+				# If no collision, update the position
+				position.y = test_y
+
+			else:
+				print("Saved")
 			
 			#left_accuracy.enabled = false
 
