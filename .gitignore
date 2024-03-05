@@ -18,3 +18,10 @@ mono_crash.*.json
 Exports/
 .DS_Store
 Aseprite/.DS_Store
+Exports/.DS_Store
+Exports/Mac/Firefly.app/Contents/Resources/icon.icns
+Exports/Mac/Firefly.app/Contents/Resources/Firefly.pck
+Exports/Mac/Firefly.app/Contents/_CodeSignature/CodeResources
+Exports/Mac/.DS_Store
+Exports/.DS_Store
+.DS_Store
