@@ -129,7 +129,7 @@ metadata/_edit_lock_ = true
 [node name="Moonlight" type="DirectionalLight2D" parent="PP + FX"]
 rotation = -0.698132
 color = Color(0.780392, 0.87451, 0.921569, 1)
-energy = 0.0
+energy = 0.19
 range_layer_min = -101
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 0.858824)
@@ -139,6 +139,7 @@ height = 1.0
 metadata/_edit_lock_ = true
 
 [node name="Light Filter" type="CanvasModulate" parent="PP + FX"]
+visible = false
 color = Color(0.105309, 0.0848265, 0.254756, 1)
 metadata/_edit_lock_ = true
 
@@ -253,6 +254,7 @@ color = Color(0.0588235, 0.188235, 0.129412, 1)
 [node name="Leaves3" type="CPUParticles2D" parent="Particles"]
 z_index = 100
 position = Vector2(1497, -214)
+emitting = false
 amount = 50
 lifetime = 4.0
 preprocess = 1.0
@@ -266,6 +268,7 @@ color = Color(0.105882, 0.352941, 0.0941176, 1)
 [node name="Leaves4" type="CPUParticles2D" parent="Particles"]
 z_index = 100
 position = Vector2(2447, -128)
+emitting = false
 amount = 50
 lifetime = 4.0
 preprocess = 1.0
@@ -279,6 +282,7 @@ color = Color(0.0588235, 0.188235, 0.129412, 1)
 [node name="Leaves5" type="CPUParticles2D" parent="Particles"]
 z_index = 100
 position = Vector2(996, -160)
+emitting = false
 amount = 50
 lifetime = 4.0
 preprocess = 1.0
@@ -292,6 +296,7 @@ color = Color(0.0588235, 0.188235, 0.129412, 1)
 [node name="Leaves" type="CPUParticles2D" parent="Particles"]
 z_index = 100
 position = Vector2(168, -88)
+emitting = false
 amount = 12
 preprocess = 1.0
 speed_scale = 0.25

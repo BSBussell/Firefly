@@ -21,12 +21,12 @@ extends Resource
 @export var AIR_FRICT: float = 30			# Friction but in the air
 
 # How far you fall after
-@export var FASTFALL_MULTIPLIER = 2.5
+@export var FASTFALL_MULTIPLIER: float = 2.5
 
 @export_group("Wall Properties")
 
-@export var WALL_FRICTION_MULTIPLIER = 3.0		# The friction from leaning into a wall
-@export var WALL_DRIFT_MULTIPLIER = 10.3		# The change in drift from this
+@export var WALL_FRICTION_MULTIPLIER: float = 3.0		# The friction from leaning into a wall
+@export var WALL_DRIFT_MULTIPLIER: float = 10.3		# The change in drift from this
 
 @export_group("Wall Jump Properties")
 
@@ -49,6 +49,8 @@ extends Resource
 @export var SLIDE_DISTANCE: float = 4
 @export var HILL_SPEED: float = 10		# How sliding down hills effect speed
 @export var HILL_TIME_TO_ACCEL: float = 1.2
+
+@export var TUNNEL_JUMP_ACCEL: float = 0.14
 
 @export_group("Assists")
 @export var COYOTE_TIME: float = 0.1

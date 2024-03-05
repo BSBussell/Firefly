@@ -4,37 +4,46 @@ extends CharacterBody2D
 
 @export_category("Movement Resource")
 @export var movement_states: Array[PlayerMovementData]
-#@export var base_movement : PlayerMovementData
-#@export var speed_movement: PlayerMovementData
 
+@export_subgroup("MISC")
 @export var star: CPUParticles2D
 @export var debug_info: Label
 @export var MusicPlayer: AudioStreamPlayer
 
-
-# Nodes
-@onready var animation = $Visuals/AnimatedSprite2D
+# Our State Machine
 @onready var StateMachine = $StateMachine
+
+# Colliders
+@onready var standing_collider = $Standing_Collider
+@onready var crouching_collider = $Crouching_Collider
+
+
+# Visual Nodes
+@onready var animation = $Visuals/AnimatedSprite2D
 @onready var spotlight = $Visuals/Spotlight
 @onready var light = $Visuals/Spotlight
 @onready var trail = $Visuals/Trail
-@onready var starting_position = global_position
 
 # Timers
 @onready var jump_buffer = $Timers/JumpBuffer
 @onready var coyote_time = $Timers/CoyoteTime
 @onready var momentum_time = $Timers/MomentumTime
 
-# Vertical Corner Correction
-@onready var top_left = $Raycasts/TopLeft
-@onready var top_right = $Raycasts/TopRight
+# Vertical Corner Correction Raycasts
+@onready var top_left = $Raycasts/VerticalSmoothing/TopLeft
+@onready var top_right = $Raycasts/VerticalSmoothing/TopRight
 
-# Horizontal Corner Correction
-@onready var bottom_right = $Raycasts/BottomRight
-@onready var step_max_right = $Raycasts/StepMaxRight
-@onready var bottom_left = $Raycasts/BottomLeft
-@onready var step_max_left = $Raycasts/StepMaxLeft
+# Horizontal Corner Correction Raycasts
+@onready var bottom_right = $Raycasts/HorizontalSmoothing/BottomRight
+@onready var step_max_right = $Raycasts/HorizontalSmoothing/StepMaxRight
+@onready var right_accuracy = $Raycasts/HorizontalSmoothing/RightAccuracy
 
+@onready var bottom_left = $Raycasts/HorizontalSmoothing/BottomLeft
+@onready var step_max_left = $Raycasts/HorizontalSmoothing/StepMaxLeft
+@onready var left_accuracy = $Raycasts/HorizontalSmoothing/LeftAccuracy
+
+# Respawn / Death Variables
+@onready var starting_position = global_position
 
 # Movement State Shit
 @onready var movement_data = movement_states[0]
@@ -44,12 +53,10 @@ extends CharacterBody2D
 @onready var speed: float # Adjust for tile size
 @onready var accel: float
 
-
 # Stop distance
 @onready var stop_distance: float
 @onready var friction: float
 
-#@onready var friction = movement_data.FRICTION * 16
 @onready var turn_distance: float
 @onready var turn_friction: float
 
@@ -65,6 +72,7 @@ extends CharacterBody2D
 @onready var air_accel: float
 @onready var air_stop_distance: float
 @onready var air_frict: float
+@onready var tunnel_jump_accel: float
 
 # Projectile Motion / Jump Math
 @onready var jump_actual_height: float
@@ -94,13 +102,14 @@ extends CharacterBody2D
 @onready var down_walljump_velocity_y: float
 @onready var down_walljump_velocity_x: float
 
-# The velocity of our ff
+# The velocity of our fast fall
 @onready var ff_velocity: float
 @onready var ff_gravity: float
 
-# Silly
+# Animation Variable
 @onready var run_threshold: float# Jumps helps to do this better
 
+const TILE_SIZE: int = 16
 
 const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
 const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
@@ -129,6 +138,7 @@ var fastFalling = false
 var airDriftDisabled = false
 var wallJumping = false
 var turningAround = false
+var crouchJumping = false
 
 
 
@@ -203,18 +213,21 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	
 	
-	
+	# Calls the physics proceess
 	StateMachine.process_physics(delta)
 	
 	
+	# Corner Smoothing
 	if velocity.y < 0:
 		jump_corner_correction(delta)
 	
 	# If they are moving horizontally or trying to move horizontally :3
-	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0) and is_on_floor():
+	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0):
 		forward_corner_correction(delta)
 	
+	# Update Scoring information based on movement speed, etc.
 	update_speed()
+	score = calc_score()
 	
 func _process(delta: float) -> void:
 	
@@ -231,11 +244,12 @@ func _process(delta: float) -> void:
 	# Let each component do their frame stuff
 	StateMachine.process_frame(delta)
 
-	score = calc_score()
+	# Display current score for dev purposes.
+	# TODO: Use a meter of some kinda for this.
 	debug_info.text = "%.02f" % score
 
 	
-
+# Update the current animation based on the current_Animatino variable
 func update_animations():
 	
 	match current_animation:
@@ -250,7 +264,6 @@ func update_animations():
 		
 		# Crouch Animations
 		ANI_STATES.CRAWL:
-			#print("crawl: played")
 			animation.play("crawl")
 		ANI_STATES.CROUCH:
 			animation.play("crouch")
@@ -266,10 +279,36 @@ func update_animations():
 			animation.play("landing")
 		
 		
+
+# When an animation ends
 func _on_animated_sprite_2d_animation_finished():
 	
 	StateMachine.animation_end()
 
+# Alternate Collider
+# This sucks but idk man
+func set_crouch_collider():
+	
+	# Enable the crouching one
+	crouching_collider.disabled = false
+	# Then disable the standing one
+	standing_collider.disabled = true
+	
+
+func set_standing_collider():
+	
+	# Enable it first
+	standing_collider.disabled = false
+	# Then disable the other one
+	crouching_collider.disabled = true
+
+#  Corner Correction Corrections
+#######################################
+#######################################
+
+# When jumping if theres a corner above us we will attempt to guide the player
+# Away from the ceiling in order to help smooth out the collisions
+# Easy to see visually if you make raycast and collisions visible and jump near a ceiling
 func jump_corner_correction(delta):
 	
 	# Make the strength of adjustments depented on rising velocity cause
@@ -280,59 +319,67 @@ func jump_corner_correction(delta):
 		position.x += strength * delta
 	elif not top_left.is_colliding() and top_right.is_colliding():
 		position.x -= strength * delta
-	
 
-var progress: float = 0
-var goal: float = 0
-	
+# What allows the player to "smoothly"(lol) step up from small gaps
 func forward_corner_correction(delta):
 	
+	# Ignore this if player is standing on a slant
 	if get_floor_normal().x != 0:
 		return 
-		
-		
-	var length: float = 0
-	length = clamp(abs(velocity.x) / 10, 0, 3)
-	set_corner_snapping_length(length)
+	
+	# Adjust the Raycast Length based on usecase (if grounded step we need longer 
+	if not is_on_floor():
+		set_corner_snapping_length(1)
+	else:
+		set_corner_snapping_length(3)
 	
 	var offset = ( bottom_right.position.y - step_max_right.position.y ) + 1
+	
+	# Right side ledge detected
 	if bottom_right.is_colliding() and not step_max_right.is_colliding():
 		
 		# If we are moviging in that direction or pressing that dir
 		if (velocity.x > 0 or horizontal_axis > 0) and round(bottom_right.get_collision_normal().x) == bottom_right.get_collision_normal().x:
 			
-			
-			
-			# Horizontal Offset
-			var origin = bottom_right.global_transform.origin
-			var collision_point = bottom_right.get_collision_point()
-			var horizontal_offset = origin.distance_to(collision_point)
-			
-			# Adjust Position
-			#position.y -= offset
-			#position.x += horizontal_offset + 1
-	
+			right_accuracy.enabled = true
+			if not is_on_floor():
+				right_accuracy.force_shapecast_update()
+				
+				var collision_y = right_accuracy.get_collision_point(0).y
+				
+				if collision_y == 0:
+					collision_y = position.y
+					
+				offset = (position.y - collision_y)
 			# Smoothly adjust position
 			var target_position = position + Vector2(0, -offset)
-			position = position.lerp(target_position, delta * length * 20)  # Adjust the factor as needed
+			position = position.lerp(target_position, delta * 40.5)  # Adjust the factor as needed
+			
+			right_accuracy.enabled = false
 	
 	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
 		
 		# If we are moviging in that direction or pressing that dir
 		if (velocity.x < 0 or horizontal_axis < 0)  and round(bottom_left.get_collision_normal().x) == bottom_left.get_collision_normal().x:
 			
-			# Horizontal Offset
-			var origin = bottom_left.global_transform.origin
-			var collision_point = bottom_left.get_collision_point()
-			var horizontal_offset = origin.distance_to(collision_point)
+			left_accuracy.enabled = true
+			if not is_on_floor():
+				left_accuracy.force_shapecast_update()
+				
+				var collision_y = left_accuracy.get_collision_point(0).y
+				
+				if collision_y == 0:
+					collision_y = position.y
+					
+				offset = (position.y - collision_y)
 			
-			# Adjust Position
-			#position.y -= offset
-			#position.x -= horizontal_offset + 1
+			# Attempt to smoothly
 			var target_position = position + Vector2(0, -offset)
-			position = position.lerp(target_position, delta * length * 20)  # Adjust the factor as needed
+			position = position.lerp(target_position, delta * 40.5)  # Adjust the factor as needed
+			
+			left_accuracy.enabled = false
 
-
+# Allows us to resize our raycasts for forward corner corrections
 func set_corner_snapping_length(offset: float):
 	
 	bottom_right.target_position.x = offset
@@ -346,13 +393,19 @@ func set_corner_snapping_length(offset: float):
 	step_max_right.force_raycast_update()
 	step_max_left.force_raycast_update()
 
+
+
+#  Glow State Functions
+#######################################
+#######################################
+
+# Record Current Speed
 func update_speed():
 	
 	var new_speed: float = 0.0
 	
 	if (current_wj == WALLJUMPS.UPWARD or current_wj == WALLJUMPS.DOWNWARD):
 		new_speed = abs(velocity.y) * 3
-		print("wjcred: ", new_speed)
 	else:
 		new_speed = abs(velocity.x)
 	
@@ -371,6 +424,8 @@ func update_speed():
 	normalized_average_speed = speed_buffer.reduce(func(acc, num): return acc + num) / speed_buffer.size()
 	average_speed = speedometer_buffer.reduce(func(acc, num): return acc + num) / speedometer_buffer.size()
 
+# Called each landing, we counts how often we land with a fast fall
+# The assumption being that a player fast falling often is moving quickly lol
 func update_ff_landings(did_ff_land):
 	# Add the new fast-fall landing value (1.0 for yes, 0.0 for no) to the buffer and remove the oldest entry
 	landings_buffer.pop_front()
@@ -378,7 +433,7 @@ func update_ff_landings(did_ff_land):
 	# Update the average fast-fall landings using reduce()
 	average_ff_landings = landings_buffer.reduce(func(acc, num): return acc + num) / landings_buffer.size()
 
-
+# Called on every slide, allows us to count how often the player slides optimally
 func update_slides(was_optimal):
 	
 	slide_buffer.pop_front()
@@ -386,12 +441,10 @@ func update_slides(was_optimal):
 	
 	average_slides = slide_buffer.reduce(func(acc, num): return acc + num) / slide_buffer.size()
 
+# Updates the score and change states if appropriate
 func update_score():
 	
 	score = calc_score()
-	
-	print("Score: ", score)
-	print("Check: ", movement_data.DOWNGRADE_SCORE)
 	
 	if score >= movement_data.UPGRADE_SCORE and movement_level != max_level:
 		
@@ -401,11 +454,6 @@ func update_score():
 	elif score <= movement_data.DOWNGRADE_SCORE and movement_level != 0:
 		
 		change_state(movement_level - 1)
-		
-	#if movement_level == max_level:
-		#MusicPlayer.pitch_scale = 1.25
-	#else:
-		#MusicPlayer.pitch_scale = 1.0
 
 func calc_score():
 	
@@ -416,14 +464,13 @@ func calc_score():
 	
 	return ff_score + spd_score + slide_score + tmp_modifier
 
-
+# Timer that determines how often we are checking the score
 func _on_momentum_time_timeout():
 	update_score()
-	pass
 	
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
 # 	Player's momentum value
-func add_momentum(amount: float, weight: float) -> void:
+func add_score(amount: float, weight: float) -> void:
 	tmp_modifier += amount
 	await get_tree().create_timer(weight).timeout
 	tmp_modifier -= amount
@@ -446,62 +493,71 @@ func change_state(level: int):
 	calculate_properties()
 	
 	
-
+# Recalculated all the players movement properties
+#     Necessary because the player parameters are described in ways that are easier to measure,and quantify
+#        but also require some math in order to convert these parameters to the actual forces and changes in velocity
 func calculate_properties():
 	
 	# Recalc Speed:
-	speed = movement_data.MAX_SPEED * 16
+	speed = movement_data.MAX_SPEED * TILE_SIZE
 	accel = speed / movement_data.TIME_TO_ACCEL
 	
 	# Friction math
-	stop_distance = movement_data.FRICTION * 16
+	stop_distance = movement_data.FRICTION * TILE_SIZE
 	friction = (speed * speed) / (2 * stop_distance)
 	
 	# This ones broken but ill fix it l8r :3
-	turn_distance = movement_data.TURN_FRICTION * 16
+	turn_distance = movement_data.TURN_FRICTION * TILE_SIZE
 	turn_friction = (speed * speed) / (2 * turn_distance)
 	
 	# Slide Values ReCalculated
-	slide_distance = movement_data.SLIDE_DISTANCE * 16
+	slide_distance = movement_data.SLIDE_DISTANCE * TILE_SIZE
 	slide_friction = (speed * speed) / (2 * slide_distance)
 
-	hill_speed = movement_data.HILL_SPEED * 16
+	hill_speed = movement_data.HILL_SPEED * TILE_SIZE
 	hill_accel = hill_speed / movement_data.HILL_TIME_TO_ACCEL
 	
 	# Recalc Air values
-	air_speed = movement_data.AIR_SPEED * 16 
+	air_speed = movement_data.AIR_SPEED * TILE_SIZE
 	air_accel = air_speed / movement_data.AIR_TIME_TO_ACCEL
-	air_stop_distance = movement_data.AIR_FRICT * 16
+	air_stop_distance = movement_data.AIR_FRICT * TILE_SIZE
 	air_frict = (air_speed * air_speed) / (2 * stop_distance)
 	
+	# How fast we can move when hopping through a "tunnel"
+	tunnel_jump_accel = air_speed / movement_data.TUNNEL_JUMP_ACCEL
+	
 	# Projectile Motion
-	jump_actual_height = movement_data.MAX_JUMP_HEIGHT * 16 # Convert to tile size
+	jump_actual_height = movement_data.MAX_JUMP_HEIGHT * TILE_SIZE
 	jump_velocity = ((-2.0 * jump_actual_height) / movement_data.JUMP_RISE_TIME)
 	jump_gravity = (-2.0 * jump_actual_height) / (movement_data.JUMP_RISE_TIME * movement_data.JUMP_RISE_TIME)
 	fall_gravity = (-2.0 * jump_actual_height) / (movement_data.JUMP_FALL_TIME * movement_data.JUMP_FALL_TIME)
 
-	# Walljump 
-	walljump_height = movement_data.WALL_JUMP_VECTOR.y * 16
-	walljump_distance = movement_data.WALL_JUMP_VECTOR.x * 16
-
-	up_walljump_height = movement_data.UP_WALL_JUMP_VECTOR.y * 16
-	up_walljump_distance = movement_data.UP_WALL_JUMP_VECTOR.x * 16
-
-	down_walljump_height = movement_data.DOWN_WALL_JUMP_VECTOR.y * 16
-	down_walljump_distance = movement_data.DOWN_WALL_JUMP_VECTOR.x * 16
+	# Translate Walljump Dimensions
+	walljump_height = movement_data.WALL_JUMP_VECTOR.y * TILE_SIZE
+	walljump_distance = movement_data.WALL_JUMP_VECTOR.x * TILE_SIZE
 	
+	# Translate Upward Wall Dimensions
+	up_walljump_height = movement_data.UP_WALL_JUMP_VECTOR.y * TILE_SIZE
+	up_walljump_distance = movement_data.UP_WALL_JUMP_VECTOR.x * TILE_SIZE
+
+	# Translate Downward Wall Dimensions
+	down_walljump_height = movement_data.DOWN_WALL_JUMP_VECTOR.y * TILE_SIZE
+	down_walljump_distance = movement_data.DOWN_WALL_JUMP_VECTOR.x * TILE_SIZE
+	
+	# Walljump Gravity's
 	walljump_gravity = (-2.0 * walljump_height) / (movement_data.WJ_RISE_TIME * movement_data.WJ_RISE_TIME)
 	up_walljump_gravity = (-2.0 * up_walljump_height) / (movement_data.UP_WJ_RISE_TIME * movement_data.UP_WJ_RISE_TIME)
 	
-
+	# Wall Jump Velocities
 	walljump_velocity_y = ((-2.0 * walljump_height) / (movement_data.WJ_RISE_TIME))
 	walljump_velocity_x = (( walljump_distance) / (movement_data.WJ_RISE_TIME + movement_data.JUMP_FALL_TIME))
 
+	# Upward Wall Jump Velocities
 	up_walljump_velocity_y = (( -2.0 * up_walljump_height) / (movement_data.UP_WJ_RISE_TIME))
 	up_walljump_velocity_x = (( up_walljump_distance) / (movement_data.UP_WJ_RISE_TIME + movement_data.JUMP_FALL_TIME))
 
-	# You know, this ones kinda silly ngl
-	down_walljump_velocity_y = ((-2.0 * down_walljump_height) / (movement_data.JUMP_RISE_TIME))
+	# Downward Wall Jump Velocities
+	down_walljump_velocity_y = ((-2.0 * down_walljump_height) / (movement_data.JUMP_RISE_TIME)) # ya know, this ones a bit wild
 	down_walljump_velocity_x = (( down_walljump_distance) / (movement_data.JUMP_RISE_TIME + movement_data.JUMP_FALL_TIME))
 
 
@@ -516,13 +572,14 @@ func calculate_properties():
 
 	# Visual
 	trail.length = movement_data.TRAIL_LENGTH
-	trail.set_glow(movement_data.GLOW)
-	run_threshold = movement_data.RUN_THRESHOLD * 16
+	run_threshold = movement_data.RUN_THRESHOLD * TILE_SIZE
 	
+	# Visual: Setting Glow and such
 	light.set_brightness(movement_data.BRIGHTNESS)
+	trail.set_glow(movement_data.GLOW)
 	animation.set_glow(movement_data.GLOW)
-	
 
+# Whatever we need to do when the player dies can be called here
 func kill():
 	
 	trail.clear_points()

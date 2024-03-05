@@ -27,6 +27,7 @@ var entryVel: float
 
 var slidingDown = false
 
+
 # Called on state entrance, setup
 func enter() -> void:
 	
@@ -44,8 +45,8 @@ func enter() -> void:
 		
 		landing_sfx.play(0)
 	
-	# Crawl Animation
-	parent.current_animation = parent.ANI_STATES.CRAWL
+		# Crouch Animation
+		parent.current_animation = parent.ANI_STATES.LANDING
 	
 	
 	parent.floor_constant_speed = false
@@ -53,8 +54,7 @@ func enter() -> void:
 	if abs(parent.velocity.x) > 0:
 		slide_dust.emitting = true
 		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
-		sliding_sfx.play(0)	
-		print("fzzzz")
+		sliding_sfx.play(0)
 	
 	# 
 	standing_collider.disabled = true
@@ -62,7 +62,7 @@ func enter() -> void:
 	
 	entryVel = parent.velocity.x
 		
-	parent.wallJumping = false
+	parent.set_crouch_collider()
 	
 	pass
 
@@ -73,17 +73,11 @@ func exit() -> void:
 	
 	if abs(parent.velocity.x) > abs(entryVel) or abs(parent.velocity.x) > parent.speed:
 		parent.update_slides(1)
-		print("Optimal Slide :3")
 	else:
 		parent.update_slides(0)
-		#print("Optimal Slide Usage :3")
 	
-	# Resize Collision Box
-	#standing_collider.disabled = false
-	#crouching_collider.disabled = true
-	
-	parent.floor_constant_speed = true
 	slide_dust.emitting = false
+	
 	pass
 
 # Processing input in this state, returns nil or new state
@@ -99,12 +93,8 @@ func process_frame(_delta: float) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 	
-	GROUNDED_STATE.jump_logic(delta)
-	
-	
-	
+	jump_logic(delta)
 	apply_friction(delta, parent.horizontal_axis)
-	
 	
 	parent.move_and_slide()
 	
@@ -135,6 +125,13 @@ func process_physics(delta: float) -> PlayerState:
 	
 func animation_end() -> PlayerState:
 	
+	# If we are landing go to crouch
+	if parent.current_animation == parent.ANI_STATES.LANDING:
+		parent.current_animation = parent.ANI_STATES.CROUCH
+	
+	# If we are crouching go to crawl
+	if parent.current_animation == parent.ANI_STATES.CROUCH:
+		parent.current_animation = parent.ANI_STATES.CRAWL
 	
 	return null
 
@@ -171,6 +168,29 @@ func apply_friction(delta, direction):
 		
 		
 
+# TODO: Add jump lag in order to show the crouch animation
+func jump_logic(_delta):
+	
+	if Input.is_action_just_pressed("Jump") or GROUNDED_STATE.jump_buffer.time_left > 0.0: 
+		
+		
+		var new_cloud = parent.JUMP_DUST.instantiate()
+		new_cloud.set_name("jump_dust_temp")
+		GROUNDED_STATE.jump_dust.add_child(new_cloud)
+		var animation = new_cloud.get_node("AnimationPlayer")
+		animation.play("free")
+		
+		
+		# Prevent silly interactions between jumping and wall jumping
+		GROUNDED_STATE.jump_buffer.stop()
+		#jump_buffer.wait_time = -1
+		
+		GROUNDED_STATE.jumping_sfx.play(0)
+		
+		parent.velocity.y = parent.jump_velocity
+		
+		parent.crouchJumping = true
+
 # Updates animation states based on changes in physics
 func update_state(direction):
 	
@@ -181,23 +201,3 @@ func update_state(direction):
 	elif direction < 0:
 		parent.animation.flip_h = true
 		#dust.gravity.x *= 200
-	
-	
-	# So if we are in falling and we've touched the floor aggresively finish the animation
-	#if animation_state == STATE.FALLING and is_on_floor():
-	#	animated.speed_scale = 2.0
-		
-		
-	# Crawling Shit
-	# When we press down we crouch
-	#if Input.is_action_just_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
-		#parent.current_animation = parent.ANI_STATES.CROUCH
-		#parent.floor_constant_speed = false
-		
-	# Stay there til we let go of down
-	#if (parent.current_animation == parent.ANI_STATES.CRAWL) and not Input.is_action_pressed("Down"):
-		#parent.current_animation = parent.ANI_STATES.STANDING_UP
-		
-		
-	#if parent.current_animation != parent.ANI_STATES.RUNNING:
-		#dash_dust.emitting = false

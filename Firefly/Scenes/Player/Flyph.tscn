@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=78 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -28,7 +28,7 @@
 size = Vector2(6, 15)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_seiic"]
-size = Vector2(6, 9.5)
+size = Vector2(6, 8.5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpwsx"]
 atlas = ExtResource("5_63g2f")
@@ -388,6 +388,9 @@ size = Vector2(0, 10)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_whhcd"]
 size = Vector2(0, 10)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oeqmw"]
+size = Vector2(0, 5)
+
 [sub_resource type="Gradient" id="Gradient_k6x1h"]
 offsets = PackedFloat32Array(0, 0.6, 1)
 colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0.34902, 1, 1, 1, 1, 1)
@@ -414,12 +417,13 @@ debug_color = Color(0.733333, 0.764706, 0, 0.419608)
 metadata/_edit_lock_ = true
 
 [node name="Crouching_Collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, -5.25)
+position = Vector2(0, -4.75)
 shape = SubResource("RectangleShape2D_seiic")
 disabled = true
 debug_color = Color(0, 0.764706, 0, 0.372549)
 
 [node name="Visuals" type="Node2D" parent="."]
+visible = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -32)
@@ -510,6 +514,7 @@ position = Vector2(3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
 target_position = Vector2(3, 0)
+max_results = 2
 collision_mask = 2
 
 [node name="Left_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
@@ -518,49 +523,71 @@ position = Vector2(-3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
 target_position = Vector2(-3, 0)
+max_results = 2
 collision_mask = 2
 
-[node name="TopLeft" type="RayCast2D" parent="Raycasts"]
+[node name="VerticalSmoothing" type="Node2D" parent="Raycasts"]
+visible = false
+
+[node name="TopLeft" type="RayCast2D" parent="Raycasts/VerticalSmoothing"]
 position = Vector2(-4, -7.5)
 enabled = false
 target_position = Vector2(0, -5)
 collision_mask = 2
 
-[node name="TopRight" type="RayCast2D" parent="Raycasts"]
+[node name="TopRight" type="RayCast2D" parent="Raycasts/VerticalSmoothing"]
 position = Vector2(3, -7.5)
 enabled = false
 target_position = Vector2(0, -5)
 collision_mask = 2
 
-[node name="BottomRight" type="RayCast2D" parent="Raycasts"]
+[node name="HorizontalSmoothing" type="Node2D" parent="Raycasts"]
+visible = false
+
+[node name="BottomRight" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
 position = Vector2(3, 7.5)
-target_position = Vector2(2, 0)
+target_position = Vector2(3, 0)
 collision_mask = 2
 hit_from_inside = true
 
-[node name="StepMaxRight" type="RayCast2D" parent="Raycasts"]
+[node name="StepMaxRight" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
 position = Vector2(3, 2.5)
-target_position = Vector2(2, 0)
+target_position = Vector2(3, 0)
 collision_mask = 2
 hit_from_inside = true
 
-[node name="BottomLeft" type="RayCast2D" parent="Raycasts"]
+[node name="RightAccuracy" type="ShapeCast2D" parent="Raycasts/HorizontalSmoothing"]
+position = Vector2(3, 5)
+enabled = false
+shape = SubResource("RectangleShape2D_oeqmw")
+target_position = Vector2(3, 0)
+
+[node name="BottomLeft" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
+z_index = 4
 position = Vector2(-4, 7.5)
-target_position = Vector2(-2, 0)
+target_position = Vector2(-3, 0)
 collision_mask = 2
 hit_from_inside = true
 
-[node name="StepMaxLeft" type="RayCast2D" parent="Raycasts"]
+[node name="StepMaxLeft" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
+z_index = 4
 position = Vector2(-4, 2.5)
-target_position = Vector2(-2, 0)
+target_position = Vector2(-3, 0)
 collision_mask = 2
 hit_from_inside = true
+
+[node name="LeftAccuracy" type="ShapeCast2D" parent="Raycasts/HorizontalSmoothing"]
+position = Vector2(-4, 5)
+enabled = false
+shape = SubResource("RectangleShape2D_oeqmw")
+target_position = Vector2(-3, 0)
 
 [node name="Colliders" type="Node2D" parent="Raycasts"]
 
 [node name="Stand_Room" type="RayCast2D" parent="Raycasts/Colliders"]
-position = Vector2(0, -2)
-target_position = Vector2(0, -5.5)
+visible = false
+position = Vector2(0, -1)
+target_position = Vector2(0, -6.5)
 collision_mask = 2
 hit_from_inside = true
 

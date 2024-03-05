@@ -45,8 +45,7 @@ func enter() -> void:
 	clampf(parent.velocity.x, parent.speed * -1, parent.speed)
 	
 	# Setup the proper colliders for this state :3
-	standing_collider.disabled = false
-	crouching_collider.disabled = true
+	parent.set_standing_collider()
 	
 	
 	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
@@ -94,7 +93,8 @@ func process_input(_event: InputEvent) -> PlayerState:
 	# When we press down we crouch
 	if Input.is_action_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
 		parent.current_animation = parent.ANI_STATES.CROUCH
-		# When this animation ends we go to the sliding state
+		return SLIDING_STATE
+		
 		
 	
 	return null
@@ -174,7 +174,6 @@ func apply_friction(delta, direction):
 		
 	# IF Turning around
 	elif not (direction * parent.velocity.x > 0):
-		print("Turning around")
 		parent.turningAround = true
 		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.turn_friction)
 	
@@ -209,19 +208,6 @@ func update_state(direction):
 		if (parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING) :
 			parent.current_animation = parent.ANI_STATES.IDLE
 			run_sfx.stop()
-	
-	# So if we are in falling and we've touched the floor aggresively finish the animation
-	#if animation_state == STATE.FALLING and is_on_floor():
-	#	animated.speed_scale = 2.0
-		
-		
-	
-		#parent.floor_constant_speed = false
-		
-	# Stay there til we let go of down
-	#if (parent.current_animation == parent.ANI_STATES.CRAWL) and not Input.is_action_pressed("Down"):
-		#parent.current_animation = parent.ANI_STATES.STANDING_UP
-		
 		
 	if parent.current_animation != parent.ANI_STATES.RUNNING:
 		dash_dust.emitting = false
@@ -234,13 +220,9 @@ func animation_end() -> PlayerState:
 		parent.current_animation = parent.ANI_STATES.IDLE
 		
 	# If we've finished crouching then we go to our crawl
-	if parent.current_animation == parent.ANI_STATES.CROUCH:
-		return SLIDING_STATE
-		#parent.current_animation = parent.ANI_STATES.CRAWL
-	
-	if parent.current_animation == parent.ANI_STATES.CRAWL:
-		print("Thing set")
-	
+	#if parent.current_animation == parent.ANI_STATES.CROUCH:
+		#return SLIDING_STATE
+		
 	# If we've stopped getting up then we go to our idle
 	if parent.current_animation == parent.ANI_STATES.STANDING_UP:
 		parent.current_animation = parent.ANI_STATES.IDLE
