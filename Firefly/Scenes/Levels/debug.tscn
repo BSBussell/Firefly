@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=23 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="Script" path="res://Scripts/misc/debug.gd" id="1_iuwvq"]
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="3_41qlf"]
@@ -26,6 +26,9 @@ offsets = PackedFloat32Array(0.333333, 0.666667, 0.777778)
 colors = PackedColorArray(0, 0, 0, 1, 0.977813, 0.977813, 0.977813, 0.0221871, 0, 0, 0, 1)
 metadata/_snap_enabled = true
 metadata/_snap_count = 9
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cx0np"]
+size = Vector2(217, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2bp1o"]
 size = Vector2(85, 101)
@@ -124,7 +127,7 @@ script = ExtResource("1_iuwvq")
 [node name="Moonlight" type="DirectionalLight2D" parent="PP + FX"]
 rotation = -0.698132
 color = Color(0.780392, 0.87451, 0.921569, 1)
-energy = 0.0
+energy = 0.19
 range_layer_min = -101
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 0.858824)
@@ -321,6 +324,16 @@ MusicPlayer = NodePath("../Music")
 visible = false
 position = Vector2(96, 150)
 Player = NodePath("../Flyph")
+
+[node name="DeathZone" type="Node" parent="."]
+
+[node name="Area2D" type="Area2D" parent="DeathZone"]
+position = Vector2(-1, 0)
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone/Area2D"]
+position = Vector2(-231.5, -88)
+shape = SubResource("RectangleShape2D_cx0np")
 
 [node name="Spikes" parent="." instance=ExtResource("13_ieshq")]
 position = Vector2(446, 241)

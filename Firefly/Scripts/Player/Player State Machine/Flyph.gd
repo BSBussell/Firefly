@@ -716,6 +716,7 @@ func kill():
 	velocity = Vector2.ZERO
 	animation.visible = true
 	dying = false
+	change_state(0)
 	reset_score()
 
 func _on_hazard_detector_area_entered(area):

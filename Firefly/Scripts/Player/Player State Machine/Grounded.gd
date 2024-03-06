@@ -68,6 +68,7 @@ func exit() -> void:
 		coyote_time.start()
 	
 	run_sfx.stop()
+	dash_dust.emitting = false
 	
 	pass
 
