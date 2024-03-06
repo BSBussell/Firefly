@@ -26,6 +26,7 @@ extends CharacterBody2D
 @onready var spotlight = $Visuals/Spotlight
 @onready var light = $Visuals/Spotlight
 @onready var trail = $Visuals/Trail
+@onready var deathDust = $Particles/JumpDustSpawner
 
 # Timers
 @onready var jump_buffer = $Timers/JumpBuffer
@@ -122,6 +123,7 @@ const TILE_SIZE: int = 16
 const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
 const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
 const WJ_DUST = preload("res://Scenes/Player/particles/wallJumpDust.tscn")
+const DEATH_DUST = preload("res://Scenes/Player/particles/DeathParticle.tscn")
 
 enum ANI_STATES { 
 	
@@ -159,6 +161,8 @@ var restart_animation: bool = false
 var vertical_axis = 0
 var horizontal_axis = 0
 
+# DEATH
+var dying: bool = false
 
 # Players Movement Score
 var movement_level = 0
@@ -224,33 +228,34 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 func _physics_process(delta: float) -> void:
 	
-	# Calls the physics proceess
-	StateMachine.process_physics(delta)
-	
-	
-	move_and_slide()
-	
-	# Corner Smoothing when jumping up
-	if velocity.y < 0 and not is_on_wall():
-		jump_corner_correction(delta)
+	if not dying:
+		# Calls the physics proceess
+		StateMachine.process_physics(delta)
 		
-	# If they are moving horizontally or trying to move horizontally :3
-	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0):
-		horizontal_corner_correction(delta) # Kinda a misleading name but pretty much we will gravitate the player towards small dips that it feels like the character should be able to step up
-	
-	# Auto Enter Tunnel
-	if is_on_wall_only():
-		auto_enter_tunnel(delta)
-	
-	
-	
-	
 		
-	
-	
-	# Update Scoring information based on movement speed, etc.
-	update_speed()
-	score = calc_score()
+		move_and_slide()
+		
+		# Corner Smoothing when jumping up
+		if velocity.y < 0 and not is_on_wall():
+			jump_corner_correction(delta)
+			
+		# If they are moving horizontally or trying to move horizontally :3
+		if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0):
+			horizontal_corner_correction(delta) # Kinda a misleading name but pretty much we will gravitate the player towards small dips that it feels like the character should be able to step up
+		
+		# Auto Enter Tunnel
+		if is_on_wall_only():
+			auto_enter_tunnel(delta)
+		
+		
+		
+		
+			
+		
+		
+		# Update Scoring information based on movement speed, etc.
+		update_speed()
+		score = calc_score()
 	
 func _process(delta: float) -> void:
 	
@@ -579,6 +584,14 @@ func add_score(amount: float, weight: float) -> void:
 	await get_tree().create_timer(weight).timeout
 	tmp_modifier -= amount
 
+func reset_score():
+	
+	speedometer_buffer.fill(0)
+	air_speed_buffer.fill(0)
+	ground_speed_buffer.fill(0)
+	landings_buffer.fill(0)
+	slide_buffer.fill(0)
+
 # Recalculating variables changing state
 # This is a big weird but by doing it like this it enables us to jump around levels
 # In debug or just whatever
@@ -687,7 +700,23 @@ func calculate_properties():
 func kill():
 	
 	trail.clear_points()
+	
+	# Give dust on landing
+	var new_cloud = DEATH_DUST.instantiate()
+	new_cloud.set_name("death_dust_temp")
+	deathDust.add_child(new_cloud)
+	var death_animation = new_cloud.get_node("AnimationPlayer")
+	death_animation.play("Start")
+	
+	animation.visible = false
+	dying = true
+	
+	await get_tree().create_timer(1.5).timeout
 	global_position = starting_position
+	velocity = Vector2.ZERO
+	animation.visible = true
+	dying = false
+	reset_score()
 
 func _on_hazard_detector_area_entered(area):
 	kill()
