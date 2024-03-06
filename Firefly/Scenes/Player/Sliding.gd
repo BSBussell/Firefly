@@ -18,9 +18,6 @@ extends PlayerState
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
 @onready var landing_sfx = $"../../Audio/LandingSFX"
 
-# Raycast for checking if we have room to stand
-@onready var stand_room = $"../../Raycasts/Colliders/Stand_Room"
-
 
 var entryVel: float
 

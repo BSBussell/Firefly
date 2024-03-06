@@ -13,10 +13,6 @@ extends PlayerState
 
 @onready var wj_dust_spawner = $"../../Particles/WJDustSpawner"
 
-# For measuring standing room
-@onready var stand_room = $"../../Raycasts/Colliders/Stand_Room"
-
-
 var cache_airdrift
 
 # Called on state entrance, setup

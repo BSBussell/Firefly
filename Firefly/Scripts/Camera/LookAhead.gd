@@ -116,7 +116,7 @@ func check_state(player):
 	#if player.velocity.length() == 0:
 		#return IDLE
 	
-	if player.velocity.length() < 100 or player.wallJumping and not player.turningAround:
+	if (player.velocity.length() < 100 or player.wallJumping and not player.turningAround) or player.dying:
 		control.camera_speed = FOLLOW.Minimum_Speed
 		return FOLLOW
 	return null
