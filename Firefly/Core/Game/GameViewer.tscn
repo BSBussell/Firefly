@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
 [ext_resource type="Shader" path="res://Core/Game/SubPixelSmoothing.gdshader" id="1_jculp"]
-[ext_resource type="PackedScene" uid="uid://bxpfadjfys05l" path="res://Scenes/Levels/debug.tscn" id="1_uvhp8"]
+[ext_resource type="PackedScene" uid="uid://d2aiiqy7j5ovi" path="res://Scenes/Levels/tutorial.tscn" id="3_u1u8g"]
 
 [sub_resource type="Environment" id="Environment_xxxtd"]
 background_mode = 3
@@ -47,7 +47,7 @@ audio_listener_enable_2d = true
 size = Vector2i(322, 182)
 render_target_update_mode = 4
 
-[node name="World" parent="GameContainer/GameViewPort" instance=ExtResource("1_uvhp8")]
+[node name="World2" parent="GameContainer/GameViewPort" instance=ExtResource("3_u1u8g")]
 
 [node name="UI" type="SubViewportContainer" parent="."]
 offset_right = 40.0

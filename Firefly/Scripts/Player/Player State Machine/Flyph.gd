@@ -720,5 +720,6 @@ func kill():
 	reset_score()
 
 func _on_hazard_detector_area_entered(area):
+	print("y")
 	kill()
 
