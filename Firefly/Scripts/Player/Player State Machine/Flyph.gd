@@ -317,24 +317,24 @@ func _on_animated_sprite_2d_animation_finished():
 # This sucks but idk man
 func set_crouch_collider():
 	
-	#standing_collider.position = crouching_collider.position
-	#standing_collider.shape.size = crouching_collider.shape.size
+	standing_collider.position = crouching_collider.position
+	standing_collider.shape.size = crouching_collider.shape.size
 	
 	# Enable the crouching one
-	crouching_collider.disabled = false
+	#crouching_collider.disabled = false
 	# Then disable the standing one
-	standing_collider.disabled = true
+	#standing_collider.disabled = true
 	
 
 func set_standing_collider():
 	
-	#standing_collider.position = standing_collider_pos
-	#standing_collider.shape.size = standing_collider_shape
+	standing_collider.position = standing_collider_pos
+	standing_collider.shape.size = standing_collider_shape
 	
 	# Enable it first
-	standing_collider.disabled = false
+	#standing_collider.disabled = false
 	# Then disable the other one
-	crouching_collider.disabled = true
+	#crouching_collider.disabled = true
 
 #  Player Assist Methods
 #######################################

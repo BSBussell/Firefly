@@ -414,7 +414,6 @@ debug_info = NodePath("UI_FX/debug info")
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_143ut")
 debug_color = Color(0.733333, 0.764706, 0, 0.419608)
-metadata/_edit_lock_ = true
 
 [node name="Crouching_Collider" type="CollisionShape2D" parent="."]
 visible = false
@@ -506,11 +505,9 @@ position = Vector2(-1, -7)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="Raycasts" type="Node2D" parent="."]
-visible = false
 position = Vector2(0, -8)
 
 [node name="Right_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
-visible = false
 position = Vector2(3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
@@ -519,8 +516,7 @@ max_results = 1
 collision_mask = 2
 
 [node name="Left_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
-visible = false
-position = Vector2(-4, 0)
+position = Vector2(-3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
 target_position = Vector2(-3, 0)
@@ -530,7 +526,7 @@ collision_mask = 2
 [node name="VerticalSmoothing" type="Node2D" parent="Raycasts"]
 
 [node name="TopLeft" type="RayCast2D" parent="Raycasts/VerticalSmoothing"]
-position = Vector2(-4, -7.5)
+position = Vector2(-3, -7.5)
 enabled = false
 target_position = Vector2(0, -5)
 collision_mask = 2
@@ -561,6 +557,7 @@ enabled = false
 shape = SubResource("RectangleShape2D_oeqmw")
 target_position = Vector2(3, 0)
 max_results = 1
+collision_mask = 2
 
 [node name="BottomLeft" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
 z_index = 4
@@ -582,12 +579,12 @@ enabled = false
 shape = SubResource("RectangleShape2D_oeqmw")
 target_position = Vector2(-3, 0)
 max_results = 6
+collision_mask = 2
 
 [node name="Colliders" type="Node2D" parent="Raycasts"]
-visible = false
 
 [node name="Stand_Room_Left" type="RayCast2D" parent="Raycasts/Colliders"]
-position = Vector2(-4, -1)
+position = Vector2(-3, -1)
 target_position = Vector2(0, -6.5)
 collision_mask = 2
 hit_from_inside = true
