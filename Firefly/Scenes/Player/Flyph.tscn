@@ -427,7 +427,7 @@ debug_color = Color(0, 0.764706, 0, 0.372549)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"walking"
+animation = &"falling"
 autoplay = "idle"
 script = ExtResource("6_vid37")
 metadata/_edit_lock_ = true
@@ -498,13 +498,14 @@ metadata/_edit_lock_ = true
 
 [node name="HazardDetector" type="Area2D" parent="Physics"]
 visible = false
-collision_mask = 17
+collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
 position = Vector2(-1, -7)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="Raycasts" type="Node2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 
 [node name="Right_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
@@ -715,4 +716,5 @@ autostart = true
 
 [connection signal="animation_finished" from="Visuals/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
+[connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
 [connection signal="timeout" from="Timers/MomentumTime" to="." method="_on_momentum_time_timeout"]

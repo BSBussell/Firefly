@@ -75,6 +75,9 @@ func exit() -> void:
 	if not jumpExit:
 		coyote_time.start()
 	
+	# This might be silly b/c i can't control it lol
+	parent.floor_constant_speed = true
+	
 	pass
 
 # Processing input in this state, returns nil or new state

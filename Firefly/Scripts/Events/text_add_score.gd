@@ -1,6 +1,11 @@
 extends "res://Scripts/Events/base_event.gd"
 
 @export var Text: Control
+
+@export var score_thres: float = 0.6
+@export var score_amount: float = 0.6
+@export var score_duration: float = 30
+
 @onready var animator = $"Nice!"
 
 var inside = false
@@ -18,10 +23,25 @@ func _physics_process(_delta):
 		set_physics_process(false)
 	elif inside and enter_body and enter_body.is_on_floor() and animationEnded:
 		animator.play("drop_in")
+		
+		var player: Flyph = enter_body as Flyph
+		if not player:
+			print("ah shit")
+			
+		player.GLOW_ENABLED = true
+		if player.score < score_thres:
+			player.add_score(score_amount, score_duration)
+			
 		animationEnded = false
 		set_physics_process(false)
 
 func on_enter(_body):
+	
+	var player: Flyph = _body as Flyph
+	if not player:
+		print("ah shit")
+		
+	
 	inside = true
 	set_physics_process(true)
 
@@ -32,3 +52,8 @@ func on_exit(_body):
 func on_animator_end(animation: String):
 	if animation == "fall_out" or animation == "drop_in":
 		animationEnded = true
+
+
+
+
+
