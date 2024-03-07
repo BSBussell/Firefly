@@ -178,7 +178,7 @@ height = 1.0
 metadata/_edit_lock_ = true
 
 [node name="ShadowFilter" type="CanvasModulate" parent="PP + FX"]
-color = Color(0.105309, 0.0848265, 0.254756, 1)
+color = Color(0.172549, 0.141176, 0.380392, 1)
 metadata/_edit_lock_ = true
 
 [node name="Parallax" type="ParallaxBackground" parent="."]
@@ -586,7 +586,6 @@ Text = NodePath("Label")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Down_WJ_Tut"]
 position = Vector2(107, 97.75)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_asml6")
 
 [node name="Label" type="Label" parent="Events/Down_WJ_Tut"]
@@ -606,7 +605,7 @@ libraries = {
 
 [node name="Glow_Tut_3B" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
 z_index = -1
-position = Vector2(-661, -378)
+position = Vector2(-661, -394)
 scale = Vector2(0.5, 0.5)
 collision_layer = 4
 collision_mask = 4
@@ -619,7 +618,6 @@ position = Vector2(-51.625, 50)
 shape = SubResource("RectangleShape2D_62rpp")
 
 [node name="Label" type="Label" parent="Events/Glow_Tut_3B"]
-visible = false
 offset_left = -57.0
 offset_top = -68.0
 offset_right = 130.0

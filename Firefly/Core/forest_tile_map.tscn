@@ -1099,6 +1099,7 @@ texture = ExtResource("1_v8b5t")
 18:5/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 18:5/0/physics_layer_1/angular_velocity = 0.0
 18:5/0/physics_layer_1/polygon_0/points = PackedVector2Array(-3, -8, -8, -8, -8, -5, -3, -5)
+18:5/0/physics_layer_1/polygon_0/one_way = true
 18:5/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 18:5/0/physics_layer_2/angular_velocity = 0.0
 18:5/0/terrains_peering_bit/left_side = 5

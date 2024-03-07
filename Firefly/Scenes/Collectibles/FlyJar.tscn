@@ -123,23 +123,6 @@ interpolation_mode = 2
 offsets = PackedFloat32Array(0.336066, 0.8, 1)
 colors = PackedColorArray(1, 1, 0, 1, 1, 1, 1, 0.670588, 1, 1, 1, 0)
 
-[sub_resource type="Animation" id="Animation_ejuv7"]
-resource_name = "Idle"
-length = 1.5
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.8, 1.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, 5), Vector2(0, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_1h70t"]
 resource_name = "Grab"
 length = 0.5
@@ -188,6 +171,23 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_ejuv7"]
+resource_name = "Idle"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 5), Vector2(0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_df1wb"]
@@ -367,7 +367,7 @@ libraries = {
 [node name="FireFlies" type="CPUParticles2D" parent="."]
 modulate = Color(6, 6, 2.5, 1)
 position = Vector2(0, 5)
-amount = 15
+amount = 10
 speed_scale = 0.8
 randomness = 1.0
 emission_shape = 1
@@ -384,7 +384,7 @@ color_ramp = SubResource("Gradient_a3cyy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1.5, 1.5, 1, 1)
-position = Vector2(0, 3.48943)
+position = Vector2(0, 0.0317688)
 texture = ExtResource("1_m3sud")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

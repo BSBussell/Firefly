@@ -25,20 +25,9 @@ adjustment_enabled = true
 shader = ExtResource("1_jculp")
 shader_parameter/sub_pixel_offset = Vector2(0, 0)
 
-[sub_resource type="Animation" id="Animation_jhb4m"]
-resource_name = "Show"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("UI/UIViewPort/Label:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 10.1965),
-"update": 0,
-"values": [Vector2(1920, 200), Vector2(1425, 200)]
-}
+[sub_resource type="Animation" id="Animation_1bgpc"]
+resource_name = "Display"
+length = 10.0
 
 [sub_resource type="Animation" id="Animation_d4d62"]
 resource_name = "Hide"
@@ -55,9 +44,20 @@ tracks/0/keys = {
 "values": [Vector2(1425, 200), Vector2(1920, 200)]
 }
 
-[sub_resource type="Animation" id="Animation_1bgpc"]
-resource_name = "Display"
-length = 10.0
+[sub_resource type="Animation" id="Animation_jhb4m"]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UI/UIViewPort/Label:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 10.1965),
+"update": 0,
+"values": [Vector2(1920, 200), Vector2(1425, 200)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_s4xwf"]
 _data = {
