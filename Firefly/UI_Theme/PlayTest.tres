@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dtqfsbjdbbwas"]
+
+[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_ht7w3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vve56"]
+bg_color = Color(0.6, 0.6, 0.6, 0.231373)
+
+[resource]
+default_font = ExtResource("1_ht7w3")
+Button/styles/normal = SubResource("StyleBoxFlat_vve56")

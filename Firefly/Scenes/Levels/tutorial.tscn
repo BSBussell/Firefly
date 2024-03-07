@@ -288,6 +288,7 @@ layer_4/tile_data = PackedInt32Array(262195, 131073, 3, 196659, 327681, 3, 13112
 layer_5/tile_data = PackedInt32Array(327670, 2, 0, 131064, 2, 0, 393205, 2, 1610612736, 262135, 2, 1610612736, 196599, 2, 1610612736, -7, 2, 1610612736, -65543, 2, 1610612736, -196614, 2, 1610612736, 131053, 2, 536870912, -393245, 2, 536870912, 458740, 2, 0, 458739, 2, 0, 458738, 2, 0, 524273, 2, 1610612736, 655346, 2, 1610612736, 720882, 2, 1610612736, 786418, 2, 1610612736, 917491, 2, 1610612736, 1114101, 2, 536870912, 1310711, 2, 536870912, 1376248, 2, 536870912, -65577, 2, 536870912, -131085, 2, 536870912, -720945, 2, 536870912)
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("8_u0i4u")
 volume_db = -20.0
 
@@ -711,7 +712,7 @@ position = Vector2(-43, -114)
 position = Vector2(-689, -373)
 
 [node name="FlyJar16" parent="Collectibles" instance=ExtResource("14_3rk53")]
-position = Vector2(-362, -494)
+position = Vector2(-357, -496)
 
 [node name="DeathZones" type="Node2D" parent="."]
 

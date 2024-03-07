@@ -4,8 +4,6 @@ func _ready():
 	set_physics_process(false)
 
 func _physics_process(_delta):
-	
-	print("bleh")
 	if enter_body and enter_body.is_on_floor():
 		
 		var player: Flyph = enter_body as Flyph

@@ -26,6 +26,7 @@ _viewports="*res://Scripts/Globals/_viewports.gd"
 _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
 _shake="*res://Scripts/Globals/_shake.gd"
 _ui="*res://Scripts/Globals/_UI.gd"
+_stats="*res://Scripts/Globals/_stats.gd"
 
 [display]
 

@@ -703,6 +703,8 @@ func kill():
 	dying = true
 	
 	await get_tree().create_timer(1.5).timeout
+	
+	_stats.DEATHS += 1
 	global_position = starting_position
 	velocity = Vector2.ZERO
 	animation.visible = true

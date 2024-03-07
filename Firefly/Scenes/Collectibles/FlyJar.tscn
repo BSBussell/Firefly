@@ -204,7 +204,7 @@ script = ExtResource("1_thq2o")
 shape = SubResource("CapsuleShape2D_rubtm")
 
 [node name="Explosion" type="Node2D" parent="."]
-modulate = Color(3, 3, 1, 1)
+modulate = Color(2, 2, 1, 1)
 rotation = 0.785398
 scale = Vector2(0.75, 0.75)
 
@@ -312,7 +312,7 @@ modulate = Color(1, 1, 0, 1)
 
 [node name="DeathSmoke" type="CPUParticles2D" parent="Explosion/Smoke"]
 emitting = false
-amount = 15
+amount = 10
 lifetime = 2.0
 one_shot = true
 speed_scale = 2.0
@@ -334,7 +334,7 @@ scale_amount_max = 0.4
 
 [node name="DeathSmoke_S" type="CPUParticles2D" parent="Explosion/Smoke"]
 emitting = false
-amount = 15
+amount = 10
 lifetime = 2.0
 one_shot = true
 speed_scale = 2.0
@@ -384,7 +384,7 @@ color_ramp = SubResource("Gradient_a3cyy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1.5, 1.5, 1, 1)
-position = Vector2(0, 2.47957)
+position = Vector2(0, 3.48943)
 texture = ExtResource("1_m3sud")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

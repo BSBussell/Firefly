@@ -5,6 +5,8 @@ var COUNTER_ANIMATOR: AnimationPlayer
 var ANIMATION_TIMER: Timer
 var DISPLAY_TIME: float
 
+var Victory: ColorRect
+
 var COLLECTED: int = 0
 var MAX: int = 100
 
@@ -22,7 +24,18 @@ func new_item_found():
 	COLLECTED += 1
 	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
 	
-	show_counter
+	show_counter()
+	
+	if COLLECTED == MAX:
+		show_Victory_Screen()
+		
+
+func show_Victory_Screen():
+	Victory.visible = true
+	get_tree().paused = true
+	
+	
+	
 
 func show_counter():
 	if not out:

@@ -1,9 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=16 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
 [ext_resource type="Shader" path="res://Core/Game/SubPixelSmoothing.gdshader" id="1_jculp"]
 [ext_resource type="PackedScene" uid="uid://d2aiiqy7j5ovi" path="res://Scenes/Levels/tutorial.tscn" id="3_u1u8g"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="4_cvk6m"]
+[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="5_ocg2k"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="6_nwbni"]
 
 [sub_resource type="Environment" id="Environment_xxxtd"]
 background_mode = 3
@@ -69,7 +71,15 @@ font = ExtResource("4_cvk6m")
 font_size = 64
 shadow_size = 0
 
+[sub_resource type="LabelSettings" id="LabelSettings_fors3"]
+font = ExtResource("5_ocg2k")
+font_size = 128
+
+[sub_resource type="LabelSettings" id="LabelSettings_55r0k"]
+font_size = 32
+
 [node name="GameViewer" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_42j4d")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -95,6 +105,7 @@ size = Vector2i(322, 182)
 render_target_update_mode = 4
 
 [node name="World" parent="GameContainer/GameViewPort" instance=ExtResource("3_u1u8g")]
+process_mode = 1
 
 [node name="UI" type="SubViewportContainer" parent="."]
 offset_right = 40.0
@@ -129,3 +140,60 @@ label_settings = SubResource("LabelSettings_u4aag")
 [node name="HideTimer" type="Timer" parent="UI/UIViewPort"]
 wait_time = 3.0
 one_shot = true
+
+[node name="ColorRect" type="ColorRect" parent="UI/UIViewPort"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.2, 0.501961, 0.886275)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/UIViewPort/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_nwbni")
+theme_override_constants/separation = 90
+alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/UIViewPort/ColorRect/VBoxContainer"]
+modulate = Color(1, 1, 0, 1)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/UIViewPort/ColorRect/VBoxContainer/CenterContainer"]
+layout_mode = 2
+text = "You Did It!"
+label_settings = SubResource("LabelSettings_fors3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterContainer2" type="CenterContainer" parent="UI/UIViewPort/ColorRect/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("6_nwbni")
+
+[node name="Label" type="Label" parent="UI/UIViewPort/ColorRect/VBoxContainer/CenterContainer2"]
+layout_mode = 2
+text = "Time:
+Total Deaths:"
+label_settings = SubResource("LabelSettings_55r0k")
+horizontal_alignment = 2
+
+[node name="CenterContainer3" type="CenterContainer" parent="UI/UIViewPort/ColorRect/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/UIViewPort/ColorRect/VBoxContainer/CenterContainer3"]
+layout_mode = 2
+text = "Press BackSpace To Try Again!"
+label_settings = SubResource("LabelSettings_55r0k")
+horizontal_alignment = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="UI/UIViewPort/ColorRect"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
