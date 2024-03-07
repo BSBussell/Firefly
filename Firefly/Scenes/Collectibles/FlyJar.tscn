@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://rlrtgfd0qf8k"]
+
+[ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="1_m3sud"]
+[ext_resource type="Script" path="res://Scripts/Collectibles/FlyJar.gd" id="1_thq2o"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rubtm"]
+radius = 7.0
+height = 20.0
+
+[node name="FlyJar" type="Area2D"]
+collision_layer = 4
+collision_mask = 32
+script = ExtResource("1_thq2o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_rubtm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_m3sud")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
