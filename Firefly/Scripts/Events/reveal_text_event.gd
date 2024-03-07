@@ -1,27 +1,34 @@
-# reveal_text_event.gd
 extends "res://Scripts/Events/base_event.gd"
 
 @export var Text: Control
-@onready var nice = $"Nice!"
+@onready var animator = $"Nice!"
+
+var inside = false
+var animationEnded = true
 
 func _ready():
 	Text.visible = false
-	
-	# Enabling and disabling the physics process method
-	# In order to decrease unecessary checks and stuff
-	# Cause Im cute like that
+	animator.connect("animation_finished", Callable(self, "on_animator_end"))
 	set_physics_process(false)
-	
 
 func _physics_process(_delta):
-	
-	# Check if we're on floor
-	if enter_body and enter_body.is_on_floor():
-		nice.play("drop_in")
+	if not inside and animationEnded:
+		animator.play("fall_out")
+		animationEnded = false
+		set_physics_process(false)
+	elif inside and enter_body and enter_body.is_on_floor() and animationEnded:
+		animator.play("drop_in")
+		animationEnded = false
 		set_physics_process(false)
 
 func on_enter(_body):
+	inside = true
 	set_physics_process(true)
 
 func on_exit(_body):
-	nice.play("fall_out")
+	inside = false
+	set_physics_process(true)
+
+func on_animator_end(animation: String):
+	if animation == "fall_out" or animation == "drop_in":
+		animationEnded = true

@@ -47,7 +47,7 @@ audio_listener_enable_2d = true
 size = Vector2i(322, 182)
 render_target_update_mode = 4
 
-[node name="World2" parent="GameContainer/GameViewPort" instance=ExtResource("3_u1u8g")]
+[node name="World" parent="GameContainer/GameViewPort" instance=ExtResource("3_u1u8g")]
 
 [node name="UI" type="SubViewportContainer" parent="."]
 offset_right = 40.0

@@ -43,7 +43,7 @@ func process_physics(delta: float) -> State:
 	return check_state(control.Player)
 	
 	
-func settle_cam(delta, Player):
+func settle_cam(delta: float, Player: Flyph):
 	# Our Center / Starting Position
 	var target_position = control.Player.global_position - control.startingPos
 

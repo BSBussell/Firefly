@@ -20,6 +20,7 @@ func _process(delta):
 
 		if t >= 1.0:
 			interpolating = false  # Stop interpolating
+			
 
 func set_glow(new_color: Color, duration: float = 1.0) -> void:
 	goal_color = new_color

@@ -186,6 +186,9 @@ var average_ff_landings: float = 0
 var average_slides: float = 0
 var tmp_modifier: float = 0
 
+
+var GLOW_ENABLED = true
+
 # I'm Being really annoying about this btw
 func _ready() -> void:
 	
@@ -316,7 +319,7 @@ func _on_animated_sprite_2d_animation_finished():
 # Alternate Collider
 # This sucks but idk man
 func set_crouch_collider():
-	
+	#pass
 	standing_collider.position = crouching_collider.position
 	standing_collider.shape.size = crouching_collider.shape.size
 	
@@ -327,7 +330,7 @@ func set_crouch_collider():
 	
 
 func set_standing_collider():
-	
+	#pass
 	standing_collider.position = standing_collider_pos
 	standing_collider.shape.size = standing_collider_shape
 	
@@ -358,7 +361,7 @@ func jump_corner_correction(delta):
 	
 	# Make the strength of adjustments depented on rising velocity cause
 	# That makes it feel more natural for some reason
-	var strength = abs(velocity.y) * 0.5
+	var strength = abs(velocity.y) * 0.9
 	
 	if top_left.is_colliding() and not top_right.is_colliding():
 		
@@ -409,13 +412,11 @@ func horizontal_corner_correction(delta):
 				offset += 6
 				correction_speed = 250
 			else:
-				offset -= 2
-				correction_speed = 80
-			
-			print("Carried ass")
+				#offset += 2
+				correction_speed = 100
 			
 			# Calculate the desired new position
-			var test_y = move_toward(position.y, -offset, delta * correction_speed)
+			var test_y = move_toward(position.y, position.y-offset, delta * correction_speed)
 
 			# Calculate the motion vector
 			var motion = Vector2(0, test_y - position.y)
@@ -425,12 +426,7 @@ func horizontal_corner_correction(delta):
 				# If no collision, update the position
 				position.y = test_y
 
-			else:
-				print("Saved")
-			# Check if collider is 
-			
-			#right_accuracy.enabled = false
-	
+				
 	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
 		
 		# If we are moviging in that direction or pressing that dir
@@ -452,15 +448,12 @@ func horizontal_corner_correction(delta):
 				offset += 6
 				correction_speed = 250
 			else:
-				offset -= 2
-				correction_speed = 80
+				#offset += 2
+				correction_speed = 100
 				
-			
-			print("Carried ass")
-			
 			# Attempt to smoothly
 			# Calculate the desired new position
-			var test_y = move_toward(position.y, -offset, delta * correction_speed)
+			var test_y = move_toward(position.y, position.y-offset, delta * correction_speed)
 
 			# Calculate the motion vector
 			var motion = Vector2(0, test_y - position.y)
@@ -470,10 +463,7 @@ func horizontal_corner_correction(delta):
 				# If no collision, update the position
 				position.y = test_y
 
-			else:
-				print("Saved")
 			
-			#left_accuracy.enabled = false
 
 # Allows us to resize our raycasts for forward corner corrections
 func set_corner_snapping_length(offset: float):
@@ -547,14 +537,15 @@ func update_score():
 	
 	score = calc_score()
 	
-	if score >= movement_data.UPGRADE_SCORE and movement_level != max_level:
-		
-		star.emitting = true
-		change_state(movement_level + 1)
-		
-	elif score <= movement_data.DOWNGRADE_SCORE and movement_level != 0:
-		
-		change_state(movement_level - 1)
+	if GLOW_ENABLED:
+		if score >= movement_data.UPGRADE_SCORE and movement_level != max_level:
+			
+			star.emitting = true
+			change_state(movement_level + 1)
+			
+		elif score <= movement_data.DOWNGRADE_SCORE and movement_level != 0:
+			
+			change_state(movement_level - 1)
 
 # This is its own function so it can easily be changed
 func calc_score():
@@ -720,6 +711,13 @@ func kill():
 	reset_score()
 
 func _on_hazard_detector_area_entered(area):
+	
+	
 	print("y")
 	kill()
 
+
+
+func _on_hazard_detector_body_entered(body):
+	kill()
+	pass # Replace with function body.

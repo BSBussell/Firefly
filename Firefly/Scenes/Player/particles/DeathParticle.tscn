@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="1_sbnip"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="2_dhcvn"]
-[ext_resource type="AudioStream" uid="uid://n1jp21srkgrf" path="res://Assets/SFX/Player/glass_hit_2.mp3" id="3_csugy"]
+[ext_resource type="AudioStream" uid="uid://n1jp21srkgrf" path="res://Scenes/glass_hit_2.mp3" id="3_r17uo"]
 
 [sub_resource type="Animation" id="Animation_807ua"]
 resource_name = "Start"
@@ -261,7 +261,7 @@ scale_amount_min = 0.2
 scale_amount_max = 0.4
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_csugy")
+stream = ExtResource("3_r17uo")
 volume_db = -5.0
 pitch_scale = 1.2
 
