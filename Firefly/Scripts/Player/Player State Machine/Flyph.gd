@@ -350,7 +350,7 @@ func auto_enter_tunnel(delta):
 		set_crouch_collider()
 		crouchJumping = true
 	
-	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x > 0:
+	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x < 0:
 		set_crouch_collider()
 		crouchJumping = true
 

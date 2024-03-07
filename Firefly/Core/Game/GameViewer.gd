@@ -11,6 +11,12 @@ func _ready():
 
 	_viewports.ui_viewport_container = $UI
 	_viewports.ui_viewport = $UI/UIViewPort
+	
+	# Global UI Elements
+	_ui.COUNTER = $UI/UIViewPort/Label
+	_ui.COUNTER_ANIMATOR = $UI/UIViewPort/AnimationPlayer
+	_ui.ANIMATION_TIMER = $UI/UIViewPort/HideTimer
+	_ui.connect_timer()
 
 
 
@@ -36,8 +42,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_window().content_scale_size = base_resolution * scale_factor
 			break  # Exit the loop after the first match
 
-	if Input.is_key_pressed(KEY_ESCAPE):
-		swap_fullscreen_mode()
+	
+		
+	if Input.is_action_just_pressed("Pause"):
+		_ui.show_counter()
 
 func swap_fullscreen_mode():
 	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_MAXIMIZED:

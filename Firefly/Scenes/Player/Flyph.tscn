@@ -656,6 +656,7 @@ color = Color(1, 1, 0.337255, 1)
 color_ramp = SubResource("Gradient_k6x1h")
 
 [node name="debug info" type="Label" parent="UI_FX"]
+visible = false
 light_mask = 0
 anchors_preset = -1
 anchor_right = 0.044

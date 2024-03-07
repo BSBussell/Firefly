@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://Scripts/Events/reveal_text_event.gd" id="10_jbi1k"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="11_dm2r0"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="11_tymp7"]
-[ext_resource type="PackedScene" path="res://Scenes/Camera/PlayerCam.tscn" id="12_mdqvq"]
+[ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="12_mdqvq"]
 [ext_resource type="PackedScene" uid="uid://wcqgun3wahbf" path="res://Scenes/Hazards/spikes.tscn" id="13_ieshq"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="14_163t2"]
 
@@ -402,7 +402,7 @@ libraries = {
 [node name="Collectible" type="Node" parent="."]
 
 [node name="FlyJar" parent="Collectible" instance=ExtResource("14_163t2")]
-position = Vector2(178, 154)
+position = Vector2(179, 148)
 collision_mask = 4
 
 [connection signal="body_entered" from="Events/Nice_Event" to="Events/Nice_Event" method="_on_body_entered"]
