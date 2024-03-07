@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=24 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="Script" path="res://Scripts/misc/debug.gd" id="1_iuwvq"]
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="3_41qlf"]
@@ -11,8 +11,9 @@
 [ext_resource type="Script" path="res://Scripts/Events/reveal_text_event.gd" id="10_jbi1k"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="11_dm2r0"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="11_tymp7"]
-[ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="12_mdqvq"]
+[ext_resource type="PackedScene" path="res://Scenes/Camera/PlayerCam.tscn" id="12_mdqvq"]
 [ext_resource type="PackedScene" uid="uid://wcqgun3wahbf" path="res://Scenes/Hazards/spikes.tscn" id="13_ieshq"]
+[ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="14_163t2"]
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
 min_value = -0.5
@@ -398,7 +399,14 @@ libraries = {
 "": SubResource("AnimationLibrary_7vltr")
 }
 
+[node name="Collectible" type="Node" parent="."]
+
+[node name="FlyJar" parent="Collectible" instance=ExtResource("14_163t2")]
+position = Vector2(178, 154)
+collision_mask = 4
+
 [connection signal="body_entered" from="Events/Nice_Event" to="Events/Nice_Event" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/Nice_Event" to="Events/Nice_Event" method="_on_body_exited"]
 [connection signal="body_entered" from="Events/High_Tree_Event" to="Events/High_Tree_Event" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/High_Tree_Event" to="Events/High_Tree_Event" method="_on_body_exited"]
+[connection signal="body_entered" from="Collectible/FlyJar" to="." method="_on_fly_jar_body_entered"]
