@@ -149,6 +149,7 @@ func handle_coyote(_delta):
 			
 			# Apply Velocity
 			parent.velocity.y = parent.jump_velocity
+			parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
 			
 			# Play Jump Cloud
 			var new_cloud = parent.JUMP_DUST.instantiate()

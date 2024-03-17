@@ -1,0 +1,190 @@
+[gd_scene load_steps=14 format=3 uid="uid://ckw301634ajuq"]
+
+[ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="1_mn2f8"]
+[ext_resource type="Texture2D" uid="uid://f4xhpem7fo4b" path="res://Assets/Graphics/Deep_Forest_Resource/bg_mountains_3.png" id="2_n6trq"]
+[ext_resource type="Texture2D" uid="uid://8nctejfx4eoj" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_2.png" id="3_eij65"]
+[ext_resource type="Texture2D" uid="uid://pux5vi5jthqm" path="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png" id="4_yqwit"]
+[ext_resource type="Texture2D" uid="uid://b1yvkgf4mxi26" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_1.png" id="5_wxrwp"]
+[ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="6_36uet"]
+[ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="7_giaka"]
+[ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="8_d1lsx"]
+[ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="9_b1sj2"]
+[ext_resource type="Script" path="res://Scenes/Levels/CollectibleCounter.gd" id="14_yfks2"]
+
+[sub_resource type="GDScript" id="GDScript_0jk77"]
+script/source = "extends Node2D
+
+@export var PLAYER: Flyph
+
+@onready var music = $Music
+
+
+func _ready():
+
+	music.play(0)
+	PLAYER.GLOW_ENABLED = false
+	pass
+"
+
+[sub_resource type="Curve" id="Curve_qfi4m"]
+min_value = -0.5
+max_value = 0.5
+_data = [Vector2(0, -0.5), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_ddh3k"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.333333, 0.666667, 0.777778)
+colors = PackedColorArray(0, 0, 0, 1, 0.977813, 0.977813, 0.977813, 0.0221871, 0, 0, 0, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 9
+
+[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER")]
+script = SubResource("GDScript_0jk77")
+PLAYER = NodePath("Flyph")
+
+[node name="PP + FX" type="Node" parent="."]
+
+[node name="Moonlight" type="DirectionalLight2D" parent="PP + FX"]
+visible = false
+rotation = -0.698132
+color = Color(0.780392, 0.87451, 0.921569, 1)
+energy = 0.19
+range_layer_min = -101
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 0.858824)
+shadow_filter = 1
+shadow_filter_smooth = 10.0
+height = 1.0
+metadata/_edit_lock_ = true
+
+[node name="ShadowFilter" type="CanvasModulate" parent="PP + FX"]
+visible = false
+color = Color(0.172549, 0.141176, 0.380392, 1)
+metadata/_edit_lock_ = true
+
+[node name="Parallax" type="ParallaxBackground" parent="."]
+visible = false
+scroll_base_offset = Vector2(0, 7.55)
+scroll_base_scale = Vector2(1, 0.6)
+
+[node name="Sky" type="ParallaxLayer" parent="Parallax"]
+motion_scale = Vector2(0, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="sky_sprite" type="Sprite2D" parent="Parallax/Sky"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("1_mn2f8")
+
+[node name="Mountains" type="ParallaxLayer" parent="Parallax"]
+motion_scale = Vector2(0.5, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="mtns_sprite" type="Sprite2D" parent="Parallax/Mountains"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("2_n6trq")
+
+[node name="Far Trees" type="ParallaxLayer" parent="Parallax"]
+position = Vector2(0, -1)
+motion_scale = Vector2(0.6, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="tree_far_sprite" type="Sprite2D" parent="Parallax/Far Trees"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("3_eij65")
+
+[node name="Godrays" type="ParallaxLayer" parent="Parallax"]
+motion_scale = Vector2(0.7, 0.7)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="GodRays" type="Sprite2D" parent="Parallax/Godrays"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("4_yqwit")
+
+[node name="Close Trees" type="ParallaxLayer" parent="Parallax"]
+visible = false
+motion_scale = Vector2(0.8, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="close_trees" type="Sprite2D" parent="Parallax/Close Trees"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("5_wxrwp")
+metadata/_edit_lock_ = true
+
+[node name="BKGParticles" type="ParallaxLayer" parent="Parallax"]
+motion_mirroring = Vector2(320, 0)
+
+[node name="FireFlyParticles" type="CPUParticles2D" parent="Parallax/BKGParticles"]
+modulate = Color(20, 19, 1, 1)
+position = Vector2(204, 61)
+amount = 50
+lifetime = 2.15
+speed_scale = 0.75
+randomness = 0.84
+local_coords = true
+emission_shape = 3
+emission_rect_extents = Vector2(320, 180)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 31.37
+initial_velocity_max = 31.37
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_qfi4m")
+scale_amount_max = 3.0
+color = Color(0.890196, 0.921569, 0.34902, 1)
+color_ramp = SubResource("Gradient_ddh3k")
+
+[node name="Close Trees2" type="ParallaxLayer" parent="Parallax"]
+motion_scale = Vector2(0.8, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="close_trees" type="Sprite2D" parent="Parallax/Close Trees2"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("5_wxrwp")
+metadata/_edit_lock_ = true
+
+[node name="Light Filter2" type="CanvasModulate" parent="Parallax"]
+color = Color(0.235294, 0.2, 0.501961, 1)
+metadata/_edit_lock_ = true
+
+[node name="Particles" type="Node" parent="."]
+
+[node name="Level" parent="." instance=ExtResource("6_36uet")]
+position = Vector2(1, 0)
+layer_0/tile_data = PackedInt32Array(589833, 262144, 7, 589832, 327680, 7, 589831, 131072, 1, 589830, 262144, 7, 589829, 327680, 7, 589828, 327680, 7, 589827, 327680, 7, 589826, 589824, 1, 655362, 65536, 2, 655363, 327680, 3, 655364, 327680, 3, 655365, 131072, 2, 655366, 131072, 2, 655367, 131072, 2, 655368, 327680, 3, 655369, 131072, 2, 655370, 131072, 2, 589834, 131072, 1, 655371, 196608, 2, 720905, 131072, 2, 720904, 131072, 2, 720903, 327680, 3, 589835, 196608, 1, 720907, 196608, 2, 720906, 327680, 3, 720902, 131072, 2, 720901, 131072, 2, 720900, 131072, 6, 720899, 131072, 3, 720898, 65536, 3, 786441, 131072, 3, 786440, 131072, 3, 786439, 131072, 3, 786437, 131072, 3, 786438, 131072, 3, 786436, 589824, 2, 786442, 131072, 3, 786443, 655360, 2)
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("7_giaka")
+volume_db = -20.0
+
+[node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("8_d1lsx")]
+position = Vector2(122, 147)
+MusicPlayer = NodePath("../Music")
+
+[node name="PlayerCam" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("9_b1sj2")]
+visible = false
+position = Vector2(96, 150)
+Player = NodePath("../Flyph")
+
+[node name="Events" type="Node2D" parent="."]
+
+[node name="CheckPoints" type="Node2D" parent="."]
+
+[node name="Collectibles" type="Node2D" parent="."]
+position = Vector2(3, -4)
+script = ExtResource("14_yfks2")
+
+[node name="DeathZones" type="Node2D" parent="."]

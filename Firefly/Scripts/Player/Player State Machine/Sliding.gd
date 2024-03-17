@@ -185,6 +185,11 @@ func jump_logic(_delta):
 		
 		parent.velocity.y = parent.jump_velocity
 		
+		# If we're sliding faster than the ground speed, do a special boost
+		#if parent.velocity.x < parent.speed and parent.velocity.x != 0:
+			#print("CROUCH JUMP!")
+			#parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+		
 		parent.crouchJumping = true
 		jumpExit = true
 

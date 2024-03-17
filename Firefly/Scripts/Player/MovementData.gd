@@ -13,6 +13,7 @@ extends Resource
 @export var MAX_JUMP_HEIGHT: float = 2			# The max height of our jump in tiles because im so silly like that
 @export var JUMP_RISE_TIME: float = 0.4			# The time it takes to reach that height
 @export var JUMP_FALL_TIME: float = 0.3 		# The time it takes to fall back down
+@export var JUMP_HORIZ_BOOST: float = 30		# The max speed added on jumping
 
 
 @export_subgroup("Air Movement")
@@ -51,6 +52,8 @@ extends Resource
 @export var HILL_TIME_TO_ACCEL: float = 1.2
 
 @export var TUNNEL_JUMP_ACCEL: float = 0.14
+
+@export var CROUCH_JUMP_BOOST: float = 100.0
 
 @export_group("Assists")
 @export var COYOTE_TIME: float = 0.1

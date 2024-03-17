@@ -8,6 +8,7 @@ extends CharacterBody2D
 @export_subgroup("MISC")
 @export var star: CPUParticles2D
 @export var debug_info: Label
+@export var meter: TextureProgressBar
 @export var MusicPlayer: AudioStreamPlayer
 
 # Our State Machine
@@ -278,6 +279,7 @@ func _process(delta: float) -> void:
 	# Display current score for dev purposes.
 	# TODO: Use a meter of some kinda for this.
 	debug_info.text = "%.02f" % score
+	meter.set_score(score * 100)
 
 	
 # Update the current animation based on the current_Animatino variable
@@ -686,7 +688,14 @@ func calculate_properties():
 	light.set_brightness(movement_data.BRIGHTNESS)
 	trail.set_glow(movement_data.GLOW)
 	animation.set_glow(movement_data.GLOW)
-
+	
+	# Setup Meter
+	if movement_level != max_level:
+		meter.update_range(movement_data.DOWNGRADE_SCORE * 100, movement_data.UPGRADE_SCORE * 100)
+	
+	# So if we are the max level then we set the meter to only go down when the players at risk of losing momentum
+	else:
+		meter.update_range(0, movement_data.DOWNGRADE_SCORE * 100)
 # Whatever we need to do when the player dies can be called here
 func kill():
 	

@@ -198,6 +198,7 @@ _data = {
 
 [node name="FlyJar" type="Area2D"]
 collision_layer = 4
+collision_mask = 17
 script = ExtResource("1_thq2o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -213,7 +214,7 @@ modulate = Color(1, 1, 0, 1)
 
 [node name="DeathDustN" type="CPUParticles2D" parent="Explosion/+"]
 emitting = false
-amount = 6
+amount = 3
 lifetime = 2.0
 one_shot = true
 speed_scale = 3.0
@@ -237,7 +238,7 @@ scale_amount_max = 0.5
 
 [node name="DeathDustE" type="CPUParticles2D" parent="Explosion/+"]
 emitting = false
-amount = 6
+amount = 3
 lifetime = 2.0
 one_shot = true
 speed_scale = 3.0
@@ -260,7 +261,7 @@ scale_amount_max = 0.5
 
 [node name="DeathDustS" type="CPUParticles2D" parent="Explosion/+"]
 emitting = false
-amount = 6
+amount = 3
 lifetime = 2.0
 one_shot = true
 speed_scale = 3.0
@@ -285,7 +286,7 @@ scale_amount_max = 0.5
 
 [node name="DeathDustW" type="CPUParticles2D" parent="Explosion/+"]
 emitting = false
-amount = 6
+amount = 3
 lifetime = 2.0
 one_shot = true
 speed_scale = 3.0
@@ -312,7 +313,7 @@ modulate = Color(1, 1, 0, 1)
 
 [node name="DeathSmoke" type="CPUParticles2D" parent="Explosion/Smoke"]
 emitting = false
-amount = 10
+amount = 5
 lifetime = 2.0
 one_shot = true
 speed_scale = 2.0
@@ -334,7 +335,7 @@ scale_amount_max = 0.4
 
 [node name="DeathSmoke_S" type="CPUParticles2D" parent="Explosion/Smoke"]
 emitting = false
-amount = 10
+amount = 5
 lifetime = 2.0
 one_shot = true
 speed_scale = 2.0

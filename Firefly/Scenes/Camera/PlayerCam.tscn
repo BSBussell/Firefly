@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://chji8mvt4o3jg"]
 
-[ext_resource type="Script" path="res://Scenes/Player/CameraAnchor.gd" id="1_hjjau"]
+[ext_resource type="Script" path="res://Scripts/Camera/CameraAnchor.gd" id="1_hjjau"]
 [ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_f7duo"]
 [ext_resource type="Texture2D" uid="uid://bury6i0qclg2g" path="res://Assets/Graphics/Camera/cursor.png" id="3_2gg2l"]
 [ext_resource type="Script" path="res://Scripts/State_Machine/StateMachine.gd" id="5_67mh8"]

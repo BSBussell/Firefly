@@ -127,6 +127,7 @@ func jump_logic(_delta):
 		
 		# TODO: One day explore the potential of a horizontal boost to the jump
 		parent.velocity.y = parent.jump_velocity
+		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
 		
 		
 		jump_exit = true

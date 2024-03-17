@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=79 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -19,10 +19,11 @@
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
 [ext_resource type="AudioStream" uid="uid://dabydr3n6ho76" path="res://Assets/SFX/Player/jump_1.mp3" id="12_m3poj"]
 [ext_resource type="AudioStream" uid="uid://b6jwf7oavshmg" path="res://Assets/SFX/Player/jump_2.mp3" id="14_hplrh"]
-[ext_resource type="Script" path="res://Scenes/Player/Sliding.gd" id="14_n2n20"]
 [ext_resource type="AudioStream" uid="uid://drn56tacwbwh1" path="res://Assets/SFX/Player/Landing.wav" id="15_o0d2x"]
 [ext_resource type="AudioStream" uid="uid://dhvsjt5lta3gk" path="res://Assets/SFX/Player/Sliding.wav" id="17_r3q20"]
+[ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="18_mioiu"]
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
+[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Sliding.gd" id="23_0bu6o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_143ut"]
 size = Vector2(6, 15)
@@ -380,7 +381,7 @@ offsets = PackedFloat32Array(0.555256, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_polx2"]
-size = Vector2(6.5, 10.5)
+size = Vector2(6.5, 13.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dj0fv"]
 size = Vector2(0, 10)
@@ -399,7 +400,7 @@ colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0
 font = ExtResource("10_nb4h7")
 font_size = 8
 
-[node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info")]
+[node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info", "meter")]
 position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 34
@@ -409,8 +410,10 @@ script = ExtResource("1_hphyi")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 star = NodePath("UI_FX/Star")
 debug_info = NodePath("UI_FX/debug info")
+meter = NodePath("UI_FX/Control/Meter")
 
 [node name="Standing_Collider" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_143ut")
 debug_color = Color(0.733333, 0.764706, 0, 0.419608)
@@ -468,6 +471,13 @@ position = Vector2(0, -1)
 emitting = false
 emission_rect_extents = Vector2(2, 3)
 
+[node name="WallSlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
+z_index = 1
+position = Vector2(0, -8)
+emitting = false
+emission_rect_extents = Vector2(2, 3)
+direction = Vector2(2, -10)
+
 [node name="WJDustSpawner" type="Marker2D" parent="Particles"]
 position = Vector2(-6, -7)
 
@@ -497,11 +507,10 @@ metadata/_edit_lock_ = true
 [node name="Physics" type="Node2D" parent="."]
 
 [node name="HazardDetector" type="Area2D" parent="Physics"]
-visible = false
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
-position = Vector2(-1, -7)
+position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="Raycasts" type="Node2D" parent="."]
@@ -625,6 +634,10 @@ pitch_scale = 0.66
 [node name="SlidingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("17_r3q20")
 
+[node name="WallSlideSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("17_r3q20")
+pitch_scale = 2.0
+
 [node name="WallJumpSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("14_hplrh")
 volume_db = -7.0
@@ -654,6 +667,25 @@ angle_min = -180.0
 angle_max = 180.0
 color = Color(1, 1, 0.337255, 1)
 color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="Control" type="Control" parent="UI_FX"]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -37.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Meter" parent="UI_FX/Control" instance=ExtResource("18_mioiu")]
+layout_mode = 0
+offset_right = 90.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+decrease_speed = 50.0
 
 [node name="debug info" type="Label" parent="UI_FX"]
 visible = false
@@ -695,7 +727,7 @@ SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
 [node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "coyote_time")]
-script = ExtResource("14_n2n20")
+script = ExtResource("23_0bu6o")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
