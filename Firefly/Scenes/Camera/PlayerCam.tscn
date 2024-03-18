@@ -17,7 +17,7 @@ material = ExtResource("2_f7duo")
 texture = ExtResource("3_2gg2l")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(0, -35)
+offset = Vector2(0, -15)
 process_callback = 0
 limit_smoothed = true
 position_smoothing_speed = 7.0
@@ -28,7 +28,6 @@ drag_top_margin = 0.4
 drag_right_margin = 0.25
 drag_bottom_margin = 0.25
 editor_draw_drag_margin = true
-metadata/_edit_lock_ = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("5_67mh8")
@@ -44,6 +43,7 @@ script = ExtResource("6_y5nkv")
 IDLE = NodePath("../Idle")
 LOOKAHEAD = NodePath("../LookAhead")
 follow_timer = NodePath("../../FollowTimer")
+Maximum_Speed = 25.0
 Minimum_Speed = 0.01
 acceleration = 0.5
 

@@ -27,7 +27,7 @@ script/source = "extends Node2D
 
 func _ready():
 
-	music.play(0)
+	#music.play(0)
 	PLAYER.GLOW_ENABLED = false
 	pass
 "
@@ -168,7 +168,7 @@ PLAYER = NodePath("Flyph")
 [node name="Moonlight" type="DirectionalLight2D" parent="PP + FX"]
 rotation = -0.698132
 color = Color(0.780392, 0.87451, 0.921569, 1)
-energy = 0.19
+energy = 0.1
 range_layer_min = -101
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 0.858824)
@@ -178,7 +178,7 @@ height = 1.0
 metadata/_edit_lock_ = true
 
 [node name="ShadowFilter" type="CanvasModulate" parent="PP + FX"]
-color = Color(0.172549, 0.141176, 0.380392, 1)
+color = Color(0.0901961, 0.0705882, 0.219608, 1)
 metadata/_edit_lock_ = true
 
 [node name="Parallax" type="ParallaxBackground" parent="."]

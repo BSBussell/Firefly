@@ -206,6 +206,7 @@ func get_gravity() -> float:
 func apply_gravity(delta):
 	
 	parent.velocity.y -= get_gravity() * delta
+	parent.velocity.y = min(parent.velocity.y, parent.movement_data.MAX_FALL_SPEED)
 
 func handle_acceleration(delta, direction):
 	

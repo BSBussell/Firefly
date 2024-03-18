@@ -90,6 +90,9 @@ func apply_gravity(delta, _direction):
 		parent.velocity.y -= silly_grav * delta
 		sliding_sfx.stop()
 		
+	
+	# Cap fall speed
+	parent.velocity.y = min(parent.velocity.y, parent.movement_data.MAX_FALL_SPEED)
 
 func handle_walljump(delta, vc_direction, dir = 0):	
 	

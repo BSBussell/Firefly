@@ -18,6 +18,8 @@ extends PlayerState
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
 @onready var landing_sfx = $"../../Audio/LandingSFX"
 
+@onready var crouch_jumping_sfx = $"../../Audio/CrouchJumpingSFX"
+
 
 var entryVel: float
 
@@ -181,14 +183,23 @@ func jump_logic(_delta):
 		GROUNDED_STATE.jump_buffer.stop()
 		#jump_buffer.wait_time = -1
 		
-		GROUNDED_STATE.jumping_sfx.play(0)
+		#GROUNDED_STATE.jumping_sfx.play(0)
 		
 		parent.velocity.y = parent.jump_velocity
 		
 		# If we're sliding faster than the ground speed, do a special boost
-		#if parent.velocity.x < parent.speed and parent.velocity.x != 0:
+		if abs(parent.velocity.x) > 30:
 			#print("CROUCH JUMP!")
-			#parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+			
+			if parent.velocity.y * parent.horizontal_axis > 0:
+				
+				parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+			else:
+				parent.velocity.x = parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+			crouch_jumping_sfx.play(0)
+		else:
+		
+			GROUNDED_STATE.jumping_sfx.play(0)
 		
 		parent.crouchJumping = true
 		jumpExit = true

@@ -20,6 +20,7 @@ extends Resource
 @export var AIR_SPEED: float = 10 			# The Speed in the air
 @export var AIR_TIME_TO_ACCEL: float = 20 			# Ability to change directions in air
 @export var AIR_FRICT: float = 30			# Friction but in the air
+@export var MAX_FALL_SPEED: float = 1200
 
 # How far you fall after
 @export var FASTFALL_MULTIPLIER: float = 2.5

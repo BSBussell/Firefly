@@ -631,6 +631,11 @@ stream = ExtResource("12_m3poj")
 volume_db = -5.0
 pitch_scale = 0.66
 
+[node name="CrouchJumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("12_m3poj")
+volume_db = -5.0
+pitch_scale = 0.75
+
 [node name="SlidingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("17_r3q20")
 

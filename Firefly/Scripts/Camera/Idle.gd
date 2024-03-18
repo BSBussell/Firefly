@@ -52,8 +52,9 @@ func settle_cam(delta: float, Player: Flyph):
 	control.camera_speed = max(0, control.camera_speed - deceleration_speed)
 
 	# Smoothly move the marker towards the target position
-	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, control.camera_speed * delta)
-	control.actual_cam_pos.y = _gerblesh.lerpi(control.actual_cam_pos.y, target_position.y, control.camera_speed * delta)
+	var blend = 1 - pow(0.5, control.camera_speed * delta)
+	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, blend)
+	control.actual_cam_pos.y = _gerblesh.lerpi(control.actual_cam_pos.y, target_position.y, blend)
 
 	# Set the global position to a rounded position of the actual cam
 	control.global_position = control.actual_cam_pos.round()
