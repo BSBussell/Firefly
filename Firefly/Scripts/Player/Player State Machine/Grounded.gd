@@ -8,6 +8,7 @@ extends PlayerState
 @export_subgroup("Input Assists")
 @export var jump_buffer: Timer
 @export var coyote_time: Timer
+@onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
 
 # Particle Effects
 @onready var dash_dust = $"../../Particles/DashDust"
@@ -34,7 +35,7 @@ func enter() -> void:
 	parent.crouchJumping = false
 	
 	# Clamp Velocity because i hate fun rahh
-	clampf(parent.velocity.x, parent.speed * -1, parent.speed)
+	#clampf(parent.velocity.x, parent.speed * -1, parent.speed)
 	
 	# Setup the proper colliders for this state :3
 	parent.set_standing_collider()
@@ -146,7 +147,13 @@ func handle_acceleration(delta, direction):
 	# Can't move forward when crouching or landing
 	if direction:  
 		if parent.current_animation != parent.ANI_STATES.CRAWL:
-			parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.accel * delta)
+			# Thank you maddy/noel/whoever on the exOK team came up with this, this was genius
+			if (abs(parent.velocity.x) > parent.speed and sign(parent.velocity.x) == sign(direction)):
+				# Reducing Speed to the cap 
+				parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.movement_data.SPEED_REDUCTION * delta)
+			else:
+				# Increasing speed
+				parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.accel * delta)
 	
 # Stop the character when they let go of the button
 func apply_friction(delta, direction):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=82 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -24,6 +24,8 @@
 [ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="18_mioiu"]
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Sliding.gd" id="23_0bu6o"]
+[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
+[ext_resource type="Script" path="res://Scenes/Player/Speedometer.gd" id="26_0wrd0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_143ut"]
 size = Vector2(6, 15)
@@ -400,6 +402,9 @@ colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0
 font = ExtResource("10_nb4h7")
 font_size = 8
 
+[sub_resource type="LabelSettings" id="LabelSettings_yau3k"]
+font = ExtResource("25_bx13g")
+
 [node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info", "meter")]
 position = Vector2(160, 125)
 collision_layer = 5
@@ -751,6 +756,22 @@ one_shot = true
 [node name="MomentumTime" type="Timer" parent="Timers"]
 wait_time = 3.0
 autostart = true
+
+[node name="CrouchJumpWindow" type="Timer" parent="Timers"]
+wait_time = 0.1
+one_shot = true
+
+[node name="Debug" type="Node2D" parent="."]
+
+[node name="Speedometer" type="Label" parent="Debug"]
+offset_left = -10.0
+offset_top = -29.0
+offset_right = 8.0
+offset_bottom = -15.0
+text = "120"
+label_settings = SubResource("LabelSettings_yau3k")
+horizontal_alignment = 1
+script = ExtResource("26_0wrd0")
 
 [connection signal="animation_finished" from="Visuals/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]

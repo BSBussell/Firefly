@@ -20,6 +20,8 @@ extends PlayerState
 
 @onready var crouch_jumping_sfx = $"../../Audio/CrouchJumpingSFX"
 
+@onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
+
 
 var entryVel: float
 
@@ -59,6 +61,8 @@ func enter() -> void:
 		
 	jumpExit = false
 	parent.set_crouch_collider()
+	
+	crouch_jump_window.start()
 	
 	pass
 
@@ -149,15 +153,11 @@ func apply_friction(delta, direction):
 		parent.velocity.x = move_toward(parent.velocity.x, 0, friction * delta)
 		slidingDown = false
 	
+	# Sliding Downhill
 	else:
-		var sign
-		if parent.get_floor_normal().x > 0:
-			sign = 1
-			parent.animation.flip_h = false
-		else:
-			sign = -1	
-			parent.animation.flip_h = true
 		
+		var sign = sign(parent.get_floor_normal().x)
+		parent.animation.flip_h = sign <= 0 # Flip the sprite based on slide dir
 		
 		var speed = sign * parent.hill_speed
 		var accel = parent.hill_accel
@@ -187,21 +187,37 @@ func jump_logic(_delta):
 		
 		parent.velocity.y = parent.jump_velocity
 		
-		# If we're sliding faster than the ground speed, do a special boost
-		if abs(parent.velocity.x) > 30:
-			#print("CROUCH JUMP!")
-			
-			if parent.velocity.y * parent.horizontal_axis > 0:
+		# throw in this to make it slightly less free
+		if crouch_jump_window.time_left == 0 and abs(parent.velocity.x) > parent.movement_data.CROUCH_JUMP_THRES:
 				
-				parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
-			else:
-				parent.velocity.x = parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
-			crouch_jumping_sfx.play(0)
+				# If velocity is moving in the same direction as our direction
+				# Add onto speed
+				if parent.velocity.x * parent.horizontal_axis > 0:
+					
+					print("Increasing velocity")
+					print(parent.velocity.x)
+					print(parent.horizontal_axis)
+					parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+				
+				# Otherwise instant reset :3
+				else:
+					print("Setting Velocity")
+					
+					print(parent.velocity.x)
+					print(parent.horizontal_axis)
+					parent.velocity.x = parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+			
+				crouch_jumping_sfx.play(0)
+				
+				parent.crouchJumping = false
+		
+		# If we aren't crouch jumping just do a normal jump
 		else:
-		
 			GROUNDED_STATE.jumping_sfx.play(0)
+			parent.crouchJumping = true
 		
-		parent.crouchJumping = true
+		# TODO: Rename this or relook at it
+		
 		jumpExit = true
 
 # Updates animation states based on changes in physics

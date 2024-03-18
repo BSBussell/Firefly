@@ -230,7 +230,13 @@ func handle_acceleration(delta, direction):
 	
 	if direction:
 		# AIR ACCEL
-		parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airDrift * delta)
+		# Slow ourselves down in the air
+		if (abs(parent.velocity.x) > parent.air_speed and sign(parent.velocity.x) == sign(direction)):
+			parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, 120 * delta)
+		
+		# Speed ourselves up
+		else:
+			parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airDrift * delta)
 	
 
 func apply_airResistance(delta, direction):

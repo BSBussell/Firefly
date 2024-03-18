@@ -7,6 +7,7 @@ extends Resource
 @export var TIME_TO_ACCEL: float = 0.5
 @export var FRICTION: float = 31.25 		# In terms of how far the player will slide without acceleration
 @export var TURN_FRICTION: float = 50.0
+@export var SPEED_REDUCTION: float = 400	# The speed at which the players speed will decrease
 
 @export_subgroup("Jump Properties")
 
@@ -20,7 +21,7 @@ extends Resource
 @export var AIR_SPEED: float = 10 			# The Speed in the air
 @export var AIR_TIME_TO_ACCEL: float = 20 			# Ability to change directions in air
 @export var AIR_FRICT: float = 30			# Friction but in the air
-@export var MAX_FALL_SPEED: float = 1200
+@export var MAX_FALL_SPEED: float = 1300
 
 # How far you fall after
 @export var FASTFALL_MULTIPLIER: float = 2.5
@@ -55,6 +56,7 @@ extends Resource
 @export var TUNNEL_JUMP_ACCEL: float = 0.14
 
 @export var CROUCH_JUMP_BOOST: float = 100.0
+@export var CROUCH_JUMP_THRES: float = 30.0
 
 @export_group("Assists")
 @export var COYOTE_TIME: float = 0.1
