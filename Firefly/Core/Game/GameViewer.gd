@@ -41,7 +41,7 @@ func _input(event: InputEvent) -> void:
 		KEY_7: 7,
 		KEY_8: 8,
 		KEY_9: 9,
-		KEY_0: 12
+		KEY_0: 11
 	}
 
 	for key in scale_factors.keys():

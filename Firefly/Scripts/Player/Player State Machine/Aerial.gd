@@ -29,7 +29,7 @@ extends PlayerState
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 
 
-
+var stored_velocity_x: float
 
 var shopped: bool = false
 
@@ -125,7 +125,7 @@ func process_physics(delta: float) -> PlayerState:
 		return WALL_STATE
 	
 	#parent.move_and_slide()
-	
+	stored_velocity_x = parent.velocity.x
 	
 	return null
 	
@@ -219,6 +219,13 @@ func handle_acceleration(delta, direction):
 	# If player is jumping in a tunnel
 	elif parent.crouchJumping and not have_stand_room():
 		airDrift = parent.tunnel_jump_accel
+	
+	# If we are wall jumping up and holding into a wall we give a boost in air accel in order to help
+	# with climbing / make it possible
+	elif parent.current_wj == parent.WALLJUMPS.UPWARD and sign(direction) != parent.current_wj_dir:
+		
+		# Give us the drift we need to go back to wall
+		airDrift = parent.air_accel * parent.movement_data.UP_AIR_DRIFT_MULTI
 	
 	# Otherwise use the default airDrift
 	else:

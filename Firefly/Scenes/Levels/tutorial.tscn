@@ -178,10 +178,12 @@ height = 1.0
 metadata/_edit_lock_ = true
 
 [node name="ShadowFilter" type="CanvasModulate" parent="PP + FX"]
+visible = false
 color = Color(0.0901961, 0.0705882, 0.219608, 1)
 metadata/_edit_lock_ = true
 
 [node name="Parallax" type="ParallaxBackground" parent="."]
+visible = false
 scroll_base_offset = Vector2(0, 7.55)
 scroll_base_scale = Vector2(1, 0.6)
 
@@ -297,7 +299,6 @@ position = Vector2(122, 147)
 MusicPlayer = NodePath("../Music")
 
 [node name="PlayerCam" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("10_apmf0")]
-visible = false
 position = Vector2(96, 150)
 Player = NodePath("../Flyph")
 

@@ -21,6 +21,8 @@ var cache_airdrift
 # Called on state entrance, setup
 func enter() -> void:
 	print("Enter Wall State")
+	print("Stored Velocity: %f" % parent.velocity.x )
+	
 	pass
 
 # Called before exiting the state, cleanup
@@ -98,6 +100,11 @@ func handle_walljump(delta, vc_direction, dir = 0):
 	
 	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 	
+		# If the player is trying to do an upward wall jump and we're coming from the padding abort
+		# Upward wall jumps get frustrating when the padding starts pushing the player away from the wall
+		#if vc_direction > 0 and dir != 0:
+			#return
+	
 		# Set Flag for gravity :3
 		parent.wallJumping = true
 		
@@ -126,10 +133,20 @@ func handle_walljump(delta, vc_direction, dir = 0):
 			parent.current_animation = parent.ANI_STATES.FALLING
 			parent.restart_animation = true
 			
+		
+		parent.current_wj_dir = jump_dir
+			
 		# Ok so if you are up on a walljump it'll launch you up
 		if vc_direction > 0:
 			
-			parent.velocity.x = parent.up_walljump_velocity_x * jump_dir
+			# Generally this will be 0 unless I want a wj that gives speed boosts
+			var velocity_multi: float = parent.movement_data.UP_VELOCITY_MULTI
+			
+			# Flip the velocity first
+			parent.velocity.x = AERIAL_STATE.stored_velocity_x * - velocity_multi
+			
+			# Then add to it
+			parent.velocity.x += parent.up_walljump_velocity_x * jump_dir
 			parent.velocity.y = parent.up_walljump_velocity_y
 			
 			# Facing the fall we're jumping up 
@@ -143,12 +160,18 @@ func handle_walljump(delta, vc_direction, dir = 0):
 			else:
 				parent.airDriftDisabled = false
 			
+			# Let any other potential states know we walljumpin
 			parent.current_wj = parent.WALLJUMPS.UPWARD
 			
 		# Secret Downward WallJump :3
 		elif vc_direction < 0 and not parent.crouchJumping:
 			
-			parent.velocity.x = parent.down_walljump_velocity_x * jump_dir
+			var velocity_multi: float = parent.movement_data.DOWN_VELOCITY_MULTI
+			
+			parent.velocity.x = AERIAL_STATE.stored_velocity_x * -velocity_multi
+			parent.velocity.x += parent.down_walljump_velocity_x * jump_dir
+			
+			
 			parent.velocity.y = parent.down_walljump_velocity_y
 			
 			# Face away from the wall we jumping off of
@@ -166,9 +189,13 @@ func handle_walljump(delta, vc_direction, dir = 0):
 			
 		# else itll launch you away
 		else:
-			
-			parent.velocity.x = parent.walljump_velocity_x * jump_dir
-			parent.velocity.y = parent.walljump_velocity_y
+			var velocity_multi: float = parent.movement_data.WJ_VELOCITY_MULTI
+			# Flip the velocity first
+			parent.velocity.x = AERIAL_STATE.stored_velocity_x * -velocity_multi
+			parent.velocity.x += parent.walljump_velocity_x * jump_dir
+
+				
+			parent.velocity.y = parent.walljump_velocity_y	
 		
 			# Face away from the wall we jumping off of
 			parent.animation.flip_h = (jump_dir < 0)

@@ -1,20 +1,22 @@
 extends State
 
-@export_category("Following State")
+# For when the player is falling
+@export_category("Falling State")
 @export_group("Transition States")
 @export var IDLE: State
+@export var FOLLOW: State
 @export var LOOKAHEAD: State
-@export var FALLING: State
 
-@export_group("Timers")
-@export var follow_timer: Timer
 
 @export_group("Parameters")
 @export var Maximum_Speed: float = 5
 @export var Minimum_Speed: float = 5
 @export var acceleration: float = 0.1
+@export var offset_speed: float = 15
+@export var offset_pos: float = -50
 
 @onready var cursor = $"../../Cursor"
+@onready var camera_2d = $"../../Camera2D"
 
 var follow_speed: float = 0
 
@@ -26,19 +28,22 @@ var control: PlayerCam
 # Called on state entrance, setup
 func enter() -> void:
 	
-	follow_timer.start()
+	#camera_2d.offset.y = -15
+	
 	# Cast the parent to a playercam
 	control = parent as PlayerCam
 	
 	if cursor.visible:
-		cursor.material.set_shader_parameter("greenVal", 0.0)
+		cursor.material.set_shader_parameter("blueVal", 0.0)
 	pass
 
 # Called before exiting the state, cleanup
 func exit() -> void:
 	
+	#camera_2d.offset.y = -35
+	
 	if cursor.visible:
-		cursor.material.set_shader_parameter("greenVal", 1.0)
+		cursor.material.set_shader_parameter("blueVal", 1.0)
 	pass
 
 # Processing Frames in this state, returns nil or new state
@@ -46,8 +51,6 @@ func process_frame(delta: float) -> State:
 	
 	# Only one of these will be called
 	move_cursor(delta)
-	
-
 	return check_state(control.Player)
 
 # Processing Physics in this state, returns nil or new state
@@ -55,7 +58,6 @@ func process_physics(delta: float) -> State:
 	
 	# Only one of these will be called
 	move_cursor(delta)
-	
 	return check_state(control.Player)
 	
 
@@ -79,24 +81,19 @@ func move_cursor(delta):
 
 	# Align the Camera2D node
 	control.camera_2d.align()
+	
 
 	
-		
-	
+
 func check_state(player):
 	
-	# If player is falling lets show the ground below
-	if player.velocity.y > control.fallingThres:
-		return FALLING
-	
-	# Have to be in follow for X amount of time before can exit
-	if follow_timer.time_left == 0:
-		if player.velocity.length() >= 100 and not player.current_wj == player.WALLJUMPS.UPWARD:
-			return LOOKAHEAD
+	# IDLE once ground is hit
+	if player.velocity.y == 0:
+		return FOLLOW
 			
 	
-	if control.Player.velocity.length() == 0:
-		return IDLE
+	#if control.Player.velocity.length() == 0:
+		#return IDLE
 	
 	return null
 	

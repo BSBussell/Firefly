@@ -37,15 +37,19 @@ extends Resource
 @export var WALL_JUMP_VECTOR: Vector2 = Vector2(2.0, 3.0)	 	# Approx. How many tiles a wall jump will send the player
 @export var DISABLE_DRIFT: bool = true
 @export var WJ_RISE_TIME: float = 0.25
+@export var WJ_VELOCITY_MULTI: float = 0.0					# The velocity that is added instead of set
 
 @export_subgroup("UP Wall Jump")
 @export var UP_WALL_JUMP_VECTOR: Vector2 = Vector2(2.0, 3.0) 	# Approx. How many tiles a Upward wall jump will send the player
 @export var UP_DISABLE_DRIFT: bool = false
 @export var UP_WJ_RISE_TIME: float = 0.25
+@export var UP_VELOCITY_MULTI: float = 0.0
+@export var UP_AIR_DRIFT_MULTI: float = 2.0
 
 @export_subgroup("DOWN Wall Jump")
 @export var DOWN_WALL_JUMP_VECTOR: Vector2 = Vector2(-1.0, 3.0)	# Approx. How many tiles a Downward wall jump will send the player
 @export var DOWN_DISABLE_DRIFT: bool = false
+@export var DOWN_VELOCITY_MULTI: float = 0.0
 
 
 @export_group("Slide Properties")
@@ -55,8 +59,10 @@ extends Resource
 
 @export var TUNNEL_JUMP_ACCEL: float = 0.14
 
+@export_subgroup("Crouch Jump")
 @export var CROUCH_JUMP_BOOST: float = 100.0
 @export var CROUCH_JUMP_THRES: float = 30.0
+@export var CJ_REVERSE_MULTIPLIER: float = 0.0 # When direction changed 
 
 @export_group("Assists")
 @export var COYOTE_TIME: float = 0.1

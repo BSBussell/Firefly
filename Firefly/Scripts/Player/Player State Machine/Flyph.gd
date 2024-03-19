@@ -142,14 +142,15 @@ enum ANI_STATES {
 
 # lol
 enum WALLJUMPS { NEUTRAL, UPWARD, DOWNWARD }
-var current_wj = WALLJUMPS.NEUTRAL
+var current_wj: WALLJUMPS = WALLJUMPS.NEUTRAL
+var current_wj_dir: float = 0
 
 # Various Player States Shared Across Bleh :3
-var fastFalling = false
-var airDriftDisabled = false
-var wallJumping = false
-var turningAround = false
-var crouchJumping = false
+var fastFalling: bool = false
+var airDriftDisabled: bool = false
+var wallJumping: bool = false
+var turningAround: bool = false
+var crouchJumping: bool = false
 
 
 
@@ -159,26 +160,26 @@ var prev_animation: ANI_STATES
 var restart_animation: bool = false
 
 # Input values
-var vertical_axis = 0
-var horizontal_axis = 0
+var vertical_axis: float = 0
+var horizontal_axis: float = 0
 
 # DEATH
 var dying: bool = false
 
 # Players Movement Score
-var movement_level = 0
-var score = 0
+var movement_level: int = 0
+var score: float = 0
 
-const MAX_ENTRIES = 180
-const SPEEDOMETER_ENTRIES = 120
-const FF_ENTRIES = 10
-const SLIDE_ENTRIES = 10
+const MAX_ENTRIES: int = 180
+const SPEEDOMETER_ENTRIES: int = 120
+const FF_ENTRIES: int = 10
+const SLIDE_ENTRIES: int = 10
 
-var air_speed_buffer = []
-var ground_speed_buffer = []
-var slide_buffer = []
-var speedometer_buffer = []
-var landings_buffer = [] # I think this one might be stupid ngl
+var air_speed_buffer: Array = []
+var ground_speed_buffer: Array = []
+var slide_buffer: Array = []
+var speedometer_buffer: Array = []
+var landings_buffer: Array = [] # I think this one might be stupid ngl
 
 var average_speed: float = 0
 var air_normalized_average_speed: float = 0
@@ -188,7 +189,7 @@ var average_slides: float = 0
 var tmp_modifier: float = 0
 
 
-var GLOW_ENABLED = true
+var GLOW_ENABLED: bool = true
 
 # I'm Being really annoying about this btw
 func _ready() -> void:

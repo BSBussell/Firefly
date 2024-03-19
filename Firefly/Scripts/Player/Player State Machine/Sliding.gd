@@ -205,7 +205,12 @@ func jump_logic(_delta):
 					
 					print(parent.velocity.x)
 					print(parent.horizontal_axis)
-					parent.velocity.x = parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+					
+					#if parent.movement_data.CJ_VELOCITY_TRANSFER:
+					parent.velocity.x *= -parent.movement_data.CJ_REVERSE_MULTIPLIER
+					parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+					#else:
+						#parent.velocity.x = parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
 			
 				crouch_jumping_sfx.play(0)
 				

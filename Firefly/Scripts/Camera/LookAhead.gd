@@ -4,6 +4,7 @@ extends State
 @export_group("Transition States")
 @export var FOLLOW: State
 @export var IDLE: State
+@export var FALLING: State
 
 @export_group("Parameters")
 @export var Max_Distance: int = 80
@@ -113,6 +114,10 @@ func move_cursor(delta, Player):
 	
 	
 func check_state(player):
+	
+	# If player is falling lets show the ground below
+	if player.velocity.y > control.fallingThres:
+		return FALLING
 	
 	#if player.velocity.length() == 0:
 		#return IDLE
