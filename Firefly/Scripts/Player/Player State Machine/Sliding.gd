@@ -192,7 +192,7 @@ func jump_logic(_delta):
 		if not crouch_jump():
 			
 			# Velocity y
-			parent.velocity.y = (parent.jump_velocity * 0.7)
+			parent.velocity.y = (parent.jump_velocity * 1)
 			
 			# Normal Jump Dust
 			var new_cloud = parent.JUMP_DUST.instantiate()
@@ -235,7 +235,7 @@ func update_state(direction):
 func crouch_jump() -> bool:
 	
 	# throw in this to make it slightly less free
-	if crouch_jump_window.time_left == 0 and abs(parent.velocity.x) > parent.movement_data.CROUCH_JUMP_THRES and parent.canCrouchJump:
+	if crouch_jump_window.time_left == 0 and abs(parent.velocity.x) > parent.movement_data.CROUCH_JUMP_THRES: #and parent.canCrouchJump:
 		
 		parent.velocity.y = parent.jump_velocity * parent.movement_data.CROUCH_JUMP_HEIGHT_MULTI
 		
