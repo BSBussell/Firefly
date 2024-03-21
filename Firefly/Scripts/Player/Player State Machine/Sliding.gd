@@ -13,6 +13,7 @@ extends PlayerState
 # Particle Effects
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
 @onready var slide_dust = $"../../Particles/SlideDust"
+@onready var speed_particles = $"../../Particles/SpeedParticles"
 
 # Sound Effects
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
@@ -21,7 +22,6 @@ extends PlayerState
 @onready var crouch_jumping_sfx = $"../../Audio/CrouchJumpingSFX"
 
 @onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
-
 
 var entryVel: float
 
@@ -94,6 +94,12 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 # Processing Frames in this state, returns nil or new state
 func process_frame(_delta: float) -> PlayerState:
+	
+	if abs(parent.velocity.x) > parent.speed:
+		speed_particles.emitting = true
+		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
+	else:
+		speed_particles.emitting = false
 	return null
 
 # Processing Physics in this state, returns nil or new state
@@ -125,6 +131,9 @@ func process_physics(delta: float) -> PlayerState:
 		
 	return null
 	
+	
+	
+
 func animation_end() -> PlayerState:
 	
 	# If we are landing go to crouch
@@ -171,53 +180,28 @@ func jump_logic(_delta):
 	
 	if Input.is_action_just_pressed("Jump") or GROUNDED_STATE.jump_buffer.time_left > 0.0: 
 		
-		
-		var new_cloud = parent.JUMP_DUST.instantiate()
-		new_cloud.set_name("jump_dust_temp")
-		GROUNDED_STATE.jump_dust.add_child(new_cloud)
-		var animation = new_cloud.get_node("AnimationPlayer")
-		animation.play("free")
-		
-		
 		# Prevent silly interactions between jumping and wall jumping
 		GROUNDED_STATE.jump_buffer.stop()
 		#jump_buffer.wait_time = -1
 		
 		#GROUNDED_STATE.jumping_sfx.play(0)
 		
-		parent.velocity.y = parent.jump_velocity
 		
-		# throw in this to make it slightly less free
-		if crouch_jump_window.time_left == 0 and abs(parent.velocity.x) > parent.movement_data.CROUCH_JUMP_THRES:
-				
-				# If velocity is moving in the same direction as our direction
-				# Add onto speed
-				if parent.velocity.x * parent.horizontal_axis > 0:
-					
-					print("Increasing velocity")
-					print(parent.velocity.x)
-					print(parent.horizontal_axis)
-					parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
-				
-				# Otherwise instant reset :3
-				else:
-					print("Setting Velocity")
-					
-					print(parent.velocity.x)
-					print(parent.horizontal_axis)
-					
-					#if parent.movement_data.CJ_VELOCITY_TRANSFER:
-					parent.velocity.x *= -parent.movement_data.CJ_REVERSE_MULTIPLIER
-					parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
-					#else:
-						#parent.velocity.x = parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
-			
-				crouch_jumping_sfx.play(0)
-				
-				parent.crouchJumping = false
 		
 		# If we aren't crouch jumping just do a normal jump
-		else:
+		if not crouch_jump():
+			
+			# Velocity y
+			parent.velocity.y = (parent.jump_velocity * 0.7)
+			
+			# Normal Jump Dust
+			var new_cloud = parent.JUMP_DUST.instantiate()
+			new_cloud.set_name("jump_dust_temp")
+			GROUNDED_STATE.jump_dust.add_child(new_cloud)
+			var animation = new_cloud.get_node("AnimationPlayer")
+			animation.play("free")
+			
+			# Normal Jump SFX
 			GROUNDED_STATE.jumping_sfx.play(0)
 			parent.crouchJumping = true
 		
@@ -244,3 +228,49 @@ func update_state(direction):
 		sliding_sfx.play(sliding_sfx.get_playback_position())
 		slide_dust.emitting = true
 		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
+
+
+# This is a big messy, but essentially crouch jump returns true if we perform
+# A crouch jump and false if we don't
+func crouch_jump() -> bool:
+	
+	# throw in this to make it slightly less free
+	if crouch_jump_window.time_left == 0 and abs(parent.velocity.x) > parent.movement_data.CROUCH_JUMP_THRES and parent.canCrouchJump:
+		
+		parent.velocity.y = parent.jump_velocity * parent.movement_data.CROUCH_JUMP_HEIGHT_MULTI
+		
+		# If velocity is moving in the same direction as our direction
+		# Add onto speed
+		if parent.velocity.x * parent.horizontal_axis > 0:
+			
+			parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+		
+		# Otherwise instant reset :3
+		else:
+			
+			# Flip velocity (or zero it)
+			parent.velocity.x *= -parent.movement_data.CJ_REVERSE_MULTIPLIER
+			# Then add to it
+			parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+			
+			
+		# Spawn Dust effects
+		var new_cloud = parent.CROUCH_JUMP_DUST.instantiate()
+		new_cloud.direction.x *= sign(parent.horizontal_axis)
+		new_cloud.gravity.x *= sign(parent.horizontal_axis)
+		new_cloud.set_name("crouch_jump_dust_temp")
+		GROUNDED_STATE.jump_dust.add_child(new_cloud)
+		var animation = new_cloud.get_node("AnimationPlayer")
+		animation.play("free")
+		
+		# Play crouch jump sfx
+		crouch_jumping_sfx.play(0)
+		
+		# Set crouch jumpint to true
+		parent.crouchJumping = true
+		
+		
+		return true
+	
+	return false
+	

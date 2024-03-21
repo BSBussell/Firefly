@@ -143,17 +143,17 @@ func handle_walljump(delta, vc_direction, dir = 0):
 			var velocity_multi: float = parent.movement_data.UP_VELOCITY_MULTI
 			
 			# Flip the velocity first
-			parent.velocity.x = AERIAL_STATE.stored_velocity_x * - velocity_multi
+			parent.velocity.x = parent.prev_velocity_x * - velocity_multi
 			
 			# Then add to it
 			parent.velocity.x += parent.up_walljump_velocity_x * jump_dir
 			parent.velocity.y = parent.up_walljump_velocity_y
 			
 			# Facing the fall we're jumping up 
-			if (parent.movement_data.UP_WALL_JUMP_VECTOR.x < 5):
-				parent.animation.flip_h = (jump_dir > 0)
-			else:
-				parent.animation.flip_h = (jump_dir < 0)
+			#if (parent.movement_data.UP_WALL_JUMP_VECTOR.x < 5):
+			parent.animation.flip_h = (jump_dir >= parent.horizontal_axis)
+			#else:
+				#parent.animation.flip_h = (jump_dir <= parent.horizontal_axis)
 			
 			if parent.movement_data.UP_DISABLE_DRIFT:
 				parent.airDriftDisabled = true
@@ -168,7 +168,7 @@ func handle_walljump(delta, vc_direction, dir = 0):
 			
 			var velocity_multi: float = parent.movement_data.DOWN_VELOCITY_MULTI
 			
-			parent.velocity.x = AERIAL_STATE.stored_velocity_x * -velocity_multi
+			parent.velocity.x =  parent.prev_velocity_x * -velocity_multi
 			parent.velocity.x += parent.down_walljump_velocity_x * jump_dir
 			
 			
@@ -191,7 +191,7 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		else:
 			var velocity_multi: float = parent.movement_data.WJ_VELOCITY_MULTI
 			# Flip the velocity first
-			parent.velocity.x = AERIAL_STATE.stored_velocity_x * -velocity_multi
+			parent.velocity.x =  parent.prev_velocity_x * -velocity_multi
 			parent.velocity.x += parent.walljump_velocity_x * jump_dir
 
 				

@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://b5i26wms21oan"]
+[gd_scene load_steps=6 format=3 uid="uid://cgjun0654y5tj"]
 
-[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_cuoa8"]
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_mipx8"]
 
 [sub_resource type="Gradient" id="Gradient_w02w3"]
 offsets = PackedFloat32Array(0.76378, 1)
@@ -56,28 +56,23 @@ _data = {
 "free": SubResource("Animation_bkega")
 }
 
-[node name="JumpDust" type="CPUParticles2D"]
+[node name="CrouchJumpDust" type="CPUParticles2D"]
 emitting = false
-amount = 5
-lifetime = 0.5
-one_shot = true
-explosiveness = 1.0
-texture = ExtResource("1_cuoa8")
-emission_shape = 1
-emission_sphere_radius = 2.0
-direction = Vector2(0, -1)
-spread = 90.0
-gravity = Vector2(0, 10)
-initial_velocity_min = 5.0
-initial_velocity_max = 45.01
-angular_velocity_min = -45.0
+explosiveness = 0.9
+texture = ExtResource("1_mipx8")
+emission_shape = 3
+emission_rect_extents = Vector2(5, 2)
+direction = Vector2(-150, -90)
+gravity = Vector2(-40, 100)
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+angular_velocity_min = 45.0
 angular_velocity_max = 45.0
-linear_accel_min = -51.1
-linear_accel_max = -28.19
-damping_max = 2.0
+damping_min = 52.301
+damping_max = 52.301
 angle_min = -30.2
 angle_max = 30.0
-scale_amount_min = 0.3
+scale_amount_min = 0.25
 scale_amount_max = 0.3
 color_ramp = SubResource("Gradient_w02w3")
 

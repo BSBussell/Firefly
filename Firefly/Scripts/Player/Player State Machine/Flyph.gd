@@ -77,6 +77,9 @@ extends CharacterBody2D
 @onready var hill_speed: float
 @onready var hill_accel: float
 
+# Crouch Values
+@onready var longjump_velocity: float
+
 # Air Speed
 @onready var air_speed: float
 @onready var air_accel: float
@@ -123,6 +126,7 @@ const TILE_SIZE: int = 16
 
 const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
 const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
+const CROUCH_JUMP_DUST = preload("res://Scenes/Player/particles/crouchJumpDust.tscn")
 const WJ_DUST = preload("res://Scenes/Player/particles/wallJumpDust.tscn")
 const DEATH_DUST = preload("res://Scenes/Player/particles/DeathParticle.tscn")
 
@@ -151,7 +155,10 @@ var airDriftDisabled: bool = false
 var wallJumping: bool = false
 var turningAround: bool = false
 var crouchJumping: bool = false
+var canCrouchJump: bool = true
 
+# Used for when hitting a wall kills our velocity and we wanna get it back
+var prev_velocity_x: float = 0.0
 
 
 # Animation values
@@ -241,7 +248,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		
 		# Corner Smoothing when jumping up
-		if velocity.y < 0 and not is_on_wall():
+		if velocity.y < 0 and not is_on_wall() :
 			jump_corner_correction(delta)
 			
 		# If they are moving horizontally or trying to move horizontally :3
@@ -249,18 +256,16 @@ func _physics_process(delta: float) -> void:
 			horizontal_corner_correction(delta) # Kinda a misleading name but pretty much we will gravitate the player towards small dips that it feels like the character should be able to step up
 		
 		# Auto Enter Tunnel
-		if is_on_wall_only():
+		if is_on_wall():
+			print(prev_velocity_x)
 			auto_enter_tunnel(delta)
-		
-		
-		
-		
-			
-		
 		
 		# Update Scoring information based on movement speed, etc.
 		update_speed()
 		score = calc_score()
+		
+		# Store the velocity for next frame
+		prev_velocity_x = velocity.x
 	
 func _process(delta: float) -> void:
 	
@@ -351,10 +356,12 @@ func auto_enter_tunnel(delta):
 	
 	if (not crouch_left.is_colliding() and not bottom_left.is_colliding()) and get_wall_normal().x > 0: 
 		set_crouch_collider()
+		velocity.x = prev_velocity_x
 		crouchJumping = true
 	
 	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x < 0:
 		set_crouch_collider()
+		velocity.x = prev_velocity_x
 		crouchJumping = true
 
 # When jumping if theres a corner above us we will attempt to guide the player

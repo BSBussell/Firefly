@@ -14,6 +14,7 @@ extends PlayerState
 @onready var dash_dust = $"../../Particles/DashDust"
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
+@onready var speed_particles = $"../../Particles/SpeedParticles"
 
 # Sound Effects
 @onready var landing_sfx = $"../../Audio/LandingSFX"
@@ -33,6 +34,9 @@ func enter() -> void:
 	jump_exit = false
 	
 	parent.crouchJumping = false
+	
+	# If we go to grounded we regain the ability to crouch jump
+	parent.canCrouchJump = true
 	
 	# Clamp Velocity because i hate fun rahh
 	#clampf(parent.velocity.x, parent.speed * -1, parent.speed)
@@ -104,9 +108,22 @@ func process_physics(delta: float) -> PlayerState:
 		return AERIAL_STATE
 	#parent.move_and_slide()
 	
+	# If for whatever reason we end up not having room above us then force the
+	# Player into crouch, might be used with Auto entering tunnel
+	if not AERIAL_STATE.have_stand_room():
+		parent.current_animation = parent.ANI_STATES.CROUCH
+		# parent.veloity.x = parent.prev_velocity_x
+		return SLIDING_STATE
 	
 		
 	return null
+	
+func process_frame(delta):
+	if abs(parent.velocity.x) > parent.speed:
+		speed_particles.emitting = true
+		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
+	else:
+		speed_particles.emitting = false
 	
 # Our logic for making the player jumping
 func jump_logic(_delta):

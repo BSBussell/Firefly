@@ -22,6 +22,7 @@ extends Resource
 @export var AIR_TIME_TO_ACCEL: float = 20 			# Ability to change directions in air
 @export var AIR_FRICT: float = 30			# Friction but in the air
 @export var MAX_FALL_SPEED: float = 1300
+@export var AIR_SPEED_RECUTION: float = 120.0		# The rate of deceleration when above max speed
 
 # How far you fall after
 @export var FASTFALL_MULTIPLIER: float = 2.5
@@ -60,9 +61,11 @@ extends Resource
 @export var TUNNEL_JUMP_ACCEL: float = 0.14
 
 @export_subgroup("Crouch Jump")
+@export var CROUCH_JUMP_HEIGHT_MULTI: float = 1.0
 @export var CROUCH_JUMP_BOOST: float = 100.0
 @export var CROUCH_JUMP_THRES: float = 30.0
 @export var CJ_REVERSE_MULTIPLIER: float = 0.0 # When direction changed 
+@export var CROUCH_SPEED_REDUCTION: float = 400000.0
 
 @export_group("Assists")
 @export var COYOTE_TIME: float = 0.1

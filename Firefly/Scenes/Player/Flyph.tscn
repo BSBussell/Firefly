@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=83 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -382,6 +382,10 @@ point_count = 2
 offsets = PackedFloat32Array(0.555256, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
+[sub_resource type="Gradient" id="Gradient_diik4"]
+offsets = PackedFloat32Array(0.8, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_polx2"]
 size = Vector2(6.5, 13.25)
 
@@ -504,10 +508,35 @@ emission_shape = 3
 emission_rect_extents = Vector2(1, 2.5)
 gravity = Vector2(0, 0)
 scale_amount_min = 0.15
-scale_amount_max = 0.25
-color = Color(0.403922, 1, 0.521569, 1)
+scale_amount_max = 0.3
 color_ramp = SubResource("Gradient_xmxui")
 metadata/_edit_lock_ = true
+
+[node name="SpeedParticles" type="CPUParticles2D" parent="Particles"]
+position = Vector2(-1, -9)
+emitting = false
+lifetime = 0.5
+randomness = 1.0
+lifetime_randomness = 1.0
+texture = ExtResource("3_endwo")
+emission_shape = 3
+emission_rect_extents = Vector2(2, 6)
+direction = Vector2(-1, 0)
+spread = 12.26
+gravity = Vector2(0, 0)
+initial_velocity_min = 25.0
+initial_velocity_max = 25.0
+angular_velocity_min = -15.0
+angular_velocity_max = 15.0
+linear_accel_min = 10.0
+linear_accel_max = 10.0
+damping_min = 41.841
+damping_max = 48.117
+angle_min = -15.0
+angle_max = 15.0
+scale_amount_min = 0.3
+scale_amount_max = 0.35
+color_ramp = SubResource("Gradient_diik4")
 
 [node name="Physics" type="Node2D" parent="."]
 
