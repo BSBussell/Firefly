@@ -84,13 +84,13 @@ func exit() -> void:
 	if (parent.fastFalling):
 		
 		# Landing in fast fall
-		parent.update_ff_landings(1.0)
+		parent.glow_manager.update_ff_landings(1.0)
 		
 		parent.fastFalling = false
 		parent.animation.speed_scale = 1.0
 		
 	else:
-		parent.update_ff_landings(0.0)
+		parent.glow_manager.update_ff_landings(0.0)
 
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:

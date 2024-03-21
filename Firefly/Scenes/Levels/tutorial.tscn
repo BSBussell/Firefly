@@ -28,7 +28,7 @@ script/source = "extends Node2D
 func _ready():
 
 	#music.play(0)
-	PLAYER.GLOW_ENABLED = false
+	#PLAYER.GLOW_ENABLED = false
 	pass
 "
 
@@ -217,7 +217,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("4_531it")
 
 [node name="Godrays" type="ParallaxLayer" parent="Parallax"]
-motion_scale = Vector2(0.7, 0.7)
+motion_scale = Vector2(0.7, 0.5)
 motion_mirroring = Vector2(1024, 0)
 metadata/_edit_lock_ = true
 
@@ -262,6 +262,7 @@ color = Color(0.890196, 0.921569, 0.34902, 1)
 color_ramp = SubResource("Gradient_ddh3k")
 
 [node name="Close Trees2" type="ParallaxLayer" parent="Parallax"]
+visible = false
 motion_scale = Vector2(0.8, 0)
 motion_mirroring = Vector2(1024, 0)
 metadata/_edit_lock_ = true
@@ -301,6 +302,7 @@ position = Vector2(96, 150)
 Player = NodePath("../Flyph")
 
 [node name="Events" type="Node2D" parent="."]
+visible = false
 
 [node name="Crouch_Tut" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
 z_index = -1
@@ -711,6 +713,7 @@ position = Vector2(-689, -373)
 position = Vector2(-357, -496)
 
 [node name="DeathZones" type="Node2D" parent="."]
+visible = false
 
 [node name="HazardArea" parent="DeathZones" instance=ExtResource("13_1r4s1")]
 

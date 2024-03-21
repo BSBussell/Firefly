@@ -72,9 +72,9 @@ func exit() -> void:
 	sliding_sfx.stop()
 	
 	if abs(parent.velocity.x) > abs(entryVel) or abs(parent.velocity.x) > parent.speed:
-		parent.update_slides(1)
+		parent.glow_manager.update_slides(1)
 	else:
-		parent.update_slides(0)
+		parent.glow_manager.update_slides(0)
 	
 	slide_dust.emitting = false
 	
@@ -192,7 +192,7 @@ func jump_logic(_delta):
 		if not crouch_jump():
 			
 			# Velocity y
-			parent.velocity.y = (parent.jump_velocity * 1)
+			parent.velocity.y = (parent.jump_velocity * 0.9)
 			
 			# Normal Jump Dust
 			var new_cloud = parent.JUMP_DUST.instantiate()

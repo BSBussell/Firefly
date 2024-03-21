@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=84 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="18_mioiu"]
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Sliding.gd" id="23_0bu6o"]
+[ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
 [ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
 [ext_resource type="Script" path="res://Scenes/Player/Speedometer.gd" id="26_0wrd0"]
 
@@ -734,8 +735,8 @@ anchor_right = 0.044
 anchor_bottom = 0.032
 offset_left = 257.0
 offset_top = 157.0
-offset_right = 298.92
-offset_bottom = 169.24
+offset_right = 315.68
+offset_bottom = 170.816
 text = "Score"
 label_settings = SubResource("LabelSettings_iomiv")
 
@@ -772,6 +773,9 @@ AERIAL_STATE = NodePath("../Aerial")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 
+[node name="GlowManager" type="Node" parent="."]
+script = ExtResource("25_5it1v")
+
 [node name="Timers" type="Node" parent="."]
 
 [node name="JumpBuffer" type="Timer" parent="Timers"]
@@ -806,3 +810,4 @@ script = ExtResource("26_0wrd0")
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
 [connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
 [connection signal="timeout" from="Timers/MomentumTime" to="." method="_on_momentum_time_timeout"]
+[connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
