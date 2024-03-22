@@ -14,6 +14,7 @@ extends PlayerState
 @onready var wj_dust_spawner = $"../../Particles/WJDustSpawner"
 
 @onready var sliding_sfx = $"../../Audio/WallSlideSFX"
+@onready var wall_slide_dust = $"../../Particles/WallSlideDust"
 
 
 var cache_airdrift
@@ -27,6 +28,8 @@ func enter() -> void:
 
 # Called before exiting the state, cleanup
 func exit() -> void:
+	
+	wall_slide_dust.emitting = false
 	pass
 
 # Processing input in this state, returns nil or new state
@@ -84,7 +87,13 @@ func apply_gravity(delta, _direction):
 
 	# If holding into wall and falling, slow our fall
 	if parent.velocity.y > 0 and Input.is_action_pressed(get_which_wall_collided()):  # Ensure we're moving downwards
+		
 		sliding_sfx.play(sliding_sfx.get_playback_position())
+		
+		wall_slide_dust.direction.x = -2 if (parent.get_wall_normal().x > 0) else 2
+		wall_slide_dust.emitting = true
+		
+		# Hit them with the velocity
 		parent.velocity.y -= silly_grav * delta * (1/parent.movement_data.WALL_FRICTION_MULTIPLIER)  # Reduce the gravity's effect to slow down descent
 	
 	# otherwise just fall normally

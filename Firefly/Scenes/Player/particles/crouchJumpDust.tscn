@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_mipx8"]
 
 [sub_resource type="Gradient" id="Gradient_w02w3"]
-offsets = PackedFloat32Array(0.76378, 1)
+offsets = PackedFloat32Array(0.185792, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="Animation" id="Animation_6pndg"]
@@ -58,6 +58,7 @@ _data = {
 
 [node name="CrouchJumpDust" type="CPUParticles2D"]
 emitting = false
+amount = 6
 explosiveness = 0.9
 texture = ExtResource("1_mipx8")
 emission_shape = 3

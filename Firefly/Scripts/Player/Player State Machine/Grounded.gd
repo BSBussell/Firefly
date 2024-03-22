@@ -14,7 +14,7 @@ extends PlayerState
 @onready var dash_dust = $"../../Particles/DashDust"
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
-@onready var speed_particles = $"../../Particles/SpeedParticles"
+@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 
 # Sound Effects
 @onready var landing_sfx = $"../../Audio/LandingSFX"

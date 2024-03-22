@@ -13,7 +13,7 @@ extends PlayerState
 # Particle Effects
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
 @onready var slide_dust = $"../../Particles/SlideDust"
-@onready var speed_particles = $"../../Particles/SpeedParticles"
+@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 
 # Sound Effects
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
@@ -22,6 +22,7 @@ extends PlayerState
 @onready var crouch_jumping_sfx = $"../../Audio/CrouchJumpingSFX"
 
 @onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
+@onready var crouch_jump_disable = $"../../Timers/CrouchJumpDisable"
 
 var entryVel: float
 
@@ -192,7 +193,7 @@ func jump_logic(_delta):
 		if not crouch_jump():
 			
 			# Velocity y
-			parent.velocity.y = (parent.jump_velocity * 0.9)
+			parent.velocity.y = (parent.jump_velocity * 0.8)
 			
 			# Normal Jump Dust
 			var new_cloud = parent.JUMP_DUST.instantiate()
@@ -235,7 +236,7 @@ func update_state(direction):
 func crouch_jump() -> bool:
 	
 	# throw in this to make it slightly less free
-	if crouch_jump_window.time_left == 0 and abs(parent.velocity.x) > parent.movement_data.CROUCH_JUMP_THRES: #and parent.canCrouchJump:
+	if (crouch_jump_window.time_left == 0 ) and abs(parent.velocity.x) > abs(parent.speed) * parent.movement_data.CROUCH_JUMP_THRES: #and parent.canCrouchJump:
 		
 		parent.velocity.y = parent.jump_velocity * parent.movement_data.CROUCH_JUMP_HEIGHT_MULTI
 		
@@ -274,3 +275,4 @@ func crouch_jump() -> bool:
 	
 	return false
 	
+

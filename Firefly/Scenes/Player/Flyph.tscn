@@ -384,8 +384,9 @@ offsets = PackedFloat32Array(0.555256, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="Gradient" id="Gradient_diik4"]
-offsets = PackedFloat32Array(0.8, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.710383, 0.803279, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.588921, 1, 1, 1, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_polx2"]
 size = Vector2(6.5, 13.25)
@@ -513,13 +514,13 @@ scale_amount_max = 0.3
 color_ramp = SubResource("Gradient_xmxui")
 metadata/_edit_lock_ = true
 
-[node name="SpeedParticles" type="CPUParticles2D" parent="Particles"]
+[node name="MegaSpeedParticles" type="CPUParticles2D" parent="Particles"]
 position = Vector2(-1, -9)
 emitting = false
 lifetime = 0.5
 randomness = 1.0
 lifetime_randomness = 1.0
-texture = ExtResource("3_endwo")
+texture = ExtResource("8_shld8")
 emission_shape = 3
 emission_rect_extents = Vector2(2, 6)
 direction = Vector2(-1, 0)
@@ -527,16 +528,19 @@ spread = 12.26
 gravity = Vector2(0, 0)
 initial_velocity_min = 25.0
 initial_velocity_max = 25.0
-angular_velocity_min = -15.0
-angular_velocity_max = 15.0
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+orbit_velocity_min = -0.13
+orbit_velocity_max = 0.13
 linear_accel_min = 10.0
 linear_accel_max = 10.0
 damping_min = 41.841
 damping_max = 48.117
-angle_min = -15.0
-angle_max = 15.0
-scale_amount_min = 0.3
-scale_amount_max = 0.35
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.2
+scale_amount_max = 0.3
+color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_diik4")
 
 [node name="Physics" type="Node2D" parent="."]
@@ -669,7 +673,7 @@ pitch_scale = 0.66
 [node name="CrouchJumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("12_m3poj")
 volume_db = -5.0
-pitch_scale = 0.75
+pitch_scale = 0.6
 
 [node name="SlidingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("17_r3q20")
@@ -715,8 +719,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -30.0
-offset_top = -37.0
+offset_left = -40.0
+offset_top = -40.0
+offset_right = -10.0
+offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 0
 
@@ -725,6 +731,7 @@ layout_mode = 0
 offset_right = 90.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+increase_speed = 20.0
 decrease_speed = 50.0
 
 [node name="debug info" type="Label" parent="UI_FX"]
@@ -794,7 +801,12 @@ autostart = true
 wait_time = 0.1
 one_shot = true
 
+[node name="CrouchJumpDisable" type="Timer" parent="Timers"]
+wait_time = 0.1
+one_shot = true
+
 [node name="Debug" type="Node2D" parent="."]
+visible = false
 
 [node name="Speedometer" type="Label" parent="Debug"]
 offset_left = -10.0
@@ -811,3 +823,4 @@ script = ExtResource("26_0wrd0")
 [connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
 [connection signal="timeout" from="Timers/MomentumTime" to="." method="_on_momentum_time_timeout"]
 [connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
+[connection signal="timeout" from="Timers/CrouchJumpWindow" to="StateMachine/Sliding" method="_on_crouch_jump_window_timeout"]

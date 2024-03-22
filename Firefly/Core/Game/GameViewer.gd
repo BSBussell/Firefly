@@ -41,7 +41,7 @@ func _input(event: InputEvent) -> void:
 		KEY_7: 7,
 		KEY_8: 8,
 		KEY_9: 9,
-		KEY_0: 11
+		KEY_0: 12
 	}
 
 	for key in scale_factors.keys():
@@ -55,6 +55,7 @@ func _input(event: InputEvent) -> void:
 		
 	if Input.is_action_just_pressed("Pause"):
 		_ui.show_counter()
+		swap_fullscreen_mode()
 		
 	if Input.is_action_just_pressed("reset"):
 		# Get the current scene's root node
@@ -75,10 +76,10 @@ func _input(event: InputEvent) -> void:
 
 
 func swap_fullscreen_mode():
-	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_MAXIMIZED:
+	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_MAXIMIZED)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 
 func _process(delta):

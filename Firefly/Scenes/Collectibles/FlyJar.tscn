@@ -395,6 +395,7 @@ libraries = {
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.8
 texture = ExtResource("3_sikls")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

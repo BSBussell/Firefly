@@ -90,13 +90,13 @@ func check_state(player):
 		return FALLING
 	
 	# Have to be in follow for X amount of time before can exit
-	if follow_timer.time_left == 0:
-		if player.velocity.length() >= 100 and not player.current_wj == player.WALLJUMPS.UPWARD:
-			return LOOKAHEAD
+	#if follow_timer.time_left == 0:
+		#if player.velocity.length() >= 100 and not player.current_wj == player.WALLJUMPS.UPWARD:
+			#return LOOKAHEAD
 			
 	
-	if control.Player.velocity.length() == 0:
-		return IDLE
+	#if control.Player.velocity.length() == 0:
+		#return IDLE
 	
 	return null
 	

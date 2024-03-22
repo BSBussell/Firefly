@@ -16,8 +16,6 @@ var movement_level: int = 0
 var max_level: int
 var score: float = 0
 
-
-
 var air_speed_buffer: Array = []
 var ground_speed_buffer: Array = []
 var slide_buffer: Array = []
@@ -58,6 +56,9 @@ func startup():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
+	if not GLOW_ENABLED:
+		return
+	
 	# Update Scoring information based on movement speed, etc.
 	update_speed()
 	score = calc_score()
@@ -66,7 +67,6 @@ func _process(delta):
 	
 	# Update our meter
 	meter.set_score(score * 100)
-	pass
 
 
 # Record Current Speed
@@ -102,6 +102,11 @@ func update_speed():
 # Called each landing, we counts how often we land with a fast fall
 # The assumption being that a player fast falling often is moving quickly lol
 func update_ff_landings(did_ff_land):
+	
+	# Don't modify score while glow is disabled
+	if not GLOW_ENABLED:
+		return
+	
 	# Add the new fast-fall landing value (1.0 for yes, 0.0 for no) to the buffer and remove the oldest entry
 	landings_buffer.pop_front()
 	landings_buffer.append(did_ff_land)
@@ -110,6 +115,10 @@ func update_ff_landings(did_ff_land):
 
 # Called on every slide, allows us to count how often the player slides optimally
 func update_slides(was_optimal):
+	
+	# Don't modify score while glow is disabled
+	if not GLOW_ENABLED:
+		return
 	
 	slide_buffer.pop_front()
 	slide_buffer.append(was_optimal)
@@ -150,6 +159,9 @@ func calc_score():
 
 # Timer that determines how often we are checking the score
 func _on_momentum_time_timeout():
+	if not GLOW_ENABLED:
+		return
+		
 	update_score()
 	
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
@@ -183,3 +195,12 @@ func change_state(level: int):
 	
 	# Big ass math moment
 	PLAYER.calculate_properties()
+	
+	# Setup Meter
+	if movement_level != max_level:
+		meter.update_range(0, PLAYER.movement_data.UPGRADE_SCORE * 100)
+	
+	# So if we are the max level then we set the meter to only go down when the players at risk of losing momentum
+	else:
+		meter.update_range(0, PLAYER.movement_data.DOWNGRADE_SCORE * 100)
+		

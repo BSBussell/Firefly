@@ -89,8 +89,12 @@ func check_state(player):
 	
 	# IDLE once ground is hit
 	if player.velocity.y == 0:
+		#if player.velocity.length() >= 100 and not player.current_wj == player.WALLJUMPS.UPWARD:
+			#return LOOKAHEAD
 		return FOLLOW
 			
+			
+	
 	
 	#if control.Player.velocity.length() == 0:
 		#return IDLE

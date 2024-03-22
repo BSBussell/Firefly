@@ -30,7 +30,7 @@ editor_draw_drag_margin = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("5_67mh8")
-starting_state = NodePath("Idle")
+starting_state = NodePath("Follow")
 
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW", "FALLING")]
 script = ExtResource("5_mfikc")
@@ -45,9 +45,9 @@ IDLE = NodePath("../Idle")
 LOOKAHEAD = NodePath("../LookAhead")
 FALLING = NodePath("../Falling")
 follow_timer = NodePath("../../FollowTimer")
-Maximum_Speed = 25.0
+Maximum_Speed = 30.0
 Minimum_Speed = 0.01
-acceleration = 0.5
+acceleration = 0.75
 
 [node name="LookAhead" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW", "IDLE", "FALLING")]
 script = ExtResource("7_pjrc4")

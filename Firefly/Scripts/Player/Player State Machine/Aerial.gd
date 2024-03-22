@@ -25,7 +25,7 @@ extends PlayerState
 @onready var stand_room_right = $"../../Raycasts/Colliders/Stand_Room_Right"
 
 # Speed FX
-@onready var speed_particles = $"../../Particles/SpeedParticles"
+@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 
 # Jump SFX
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
@@ -135,7 +135,6 @@ func process_physics(delta: float) -> PlayerState:
 	apply_airResistance(delta, parent.horizontal_axis)
 	
 	ticks += delta
-	print(ticks)
 	
 	# Make Sure we're still grounded after this
 	if parent.is_on_floor():
@@ -157,7 +156,7 @@ func process_physics(delta: float) -> PlayerState:
 
 func process_frame(delta):
 	
-	if abs(parent.velocity.x) > parent.air_speed:
+	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST:
 		speed_particles.emitting = true
 		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
 	else:
@@ -202,7 +201,8 @@ func handle_coyote(_delta):
 			
 			else:
 				ticks = 0
-				
+			
+			
 				
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):
 				parent.current_animation = parent.ANI_STATES.FALLING
@@ -260,18 +260,18 @@ func handle_acceleration(delta, direction):
 	if parent.airDriftDisabled:
 		airDrift = 0
 	
-	# If player is jumping in a tunnel
+	# If player is jumping while crouching
 	elif parent.crouchJumping:
 		
-		var crouch_release_window = 15/60 # So this should be roughly one frame
+		var crouch_release_window = 5/60 # So this should be roughly one frame
 		
-		# After .1 second we immediately cap speed
-		
+		# So they have that much time to release down before velocity is capped
+		# I have this because I don't like the idea of players flying around in crouch
+		# And also I found that the motion of releasing crouch felt inline with 
+		if ticks > crouch_release_window:
+			parent.velocity.x = clamp(parent.velocity.x, -abs(parent.air_speed), parent.air_speed)
 			
-			#player.velocity.x 
-		#if ticks > crouch_release_window:
-			#airReduction = parent.movement_data.CROUCH_SPEED_REDUCTION
-			#clamp(parent.velocity.x, -abs(parent.air_speed), parent.air_speed)
+		# If we're in a tunnel we increase accel
 		if not have_stand_room():
 			airDrift = parent.tunnel_jump_accel
 		else:
@@ -283,6 +283,10 @@ func handle_acceleration(delta, direction):
 		
 		# Give us the drift we need to go back to wall
 		airDrift = parent.air_accel * parent.movement_data.UP_AIR_DRIFT_MULTI
+		
+		# Sneakily remove analog inputs to help the gampad players
+		# with this weird input
+		direction = round(direction)
 	
 	# Otherwise use the default airDrift
 	else:
