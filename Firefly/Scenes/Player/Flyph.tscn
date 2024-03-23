@@ -425,6 +425,7 @@ meter = NodePath("UI_FX/Control/Meter")
 
 [node name="Standing_Collider" type="CollisionShape2D" parent="."]
 visible = false
+z_index = 1
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_143ut")
 debug_color = Color(0.733333, 0.764706, 0, 0.419608)
@@ -732,8 +733,8 @@ layout_mode = 0
 offset_right = 90.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-increase_speed = 20.0
-decrease_speed = 50.0
+increase_speed = 900.0
+decrease_speed = 900.0
 
 [node name="debug info" type="Label" parent="UI_FX"]
 visible = false

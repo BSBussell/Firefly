@@ -490,14 +490,14 @@ func set_corner_snapping_length(offset: float):
 #######################################
 #######################################
 func enable_glow():
-	glow_manager.reset_score()
+	#glow_manager.reset_score()
 	glow_manager.GLOW_ENABLED = true
 	
 func disable_glow():
 	
 	# Reset our level and bleh :3
 	glow_manager.change_state(0)
-	glow_manager.reset_score()
+	#glow_manager.reset_score()
 	glow_manager.GLOW_ENABLED = false
 	
 # Just an external setter
@@ -508,7 +508,7 @@ func force_glow_update():
 	glow_manager.update_score()
 
 func get_glow_score():
-	return glow_manager.score
+	return glow_manager.glow_points
 
 func get_glow_level():
 	return glow_manager.movement_level
