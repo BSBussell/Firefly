@@ -544,6 +544,7 @@ color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_diik4")
 
 [node name="Physics" type="Node2D" parent="."]
+visible = false
 
 [node name="HazardDetector" type="Area2D" parent="Physics"]
 collision_mask = 16

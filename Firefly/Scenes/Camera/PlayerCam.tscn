@@ -18,7 +18,7 @@ material = ExtResource("2_f7duo")
 texture = ExtResource("3_2gg2l")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(0, -35)
+offset = Vector2(0, -25)
 process_callback = 0
 limit_smoothed = true
 position_smoothing_speed = 7.0
