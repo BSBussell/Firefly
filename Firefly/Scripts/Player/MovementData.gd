@@ -81,6 +81,9 @@ extends Resource
 @export_group("Threshold")
 @export var GLOW_GROWTH_RATE: float = 5
 @export var GLOW_DECAY_RATE: float = 3
+
+## When the normalized speed is > 1 we multiplier the surplus by this
+@export var SURPLUS_MULTIPLIER: float = 2.0		# When the normalized speed is > 1 we multiplier the surplus by this
 #@export var DOWNGRADE_SCORE: float = 0
 #@export var UPGRADE_SCORE: float = 0.6
 @export var STRICTNESS: float = 3.0

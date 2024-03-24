@@ -49,6 +49,9 @@ func enter() -> void:
 		
 		landing_sfx.play(0)
 	
+		# Squish
+		parent.animation.scale = Vector2( 1.1, 0.9)
+	
 		# Land into a sprint!
 		if abs(parent.velocity.x) >= parent.run_threshold:
 			parent.current_animation = parent.ANI_STATES.RUNNING
@@ -84,6 +87,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 	# When we press down we crouch
 	if Input.is_action_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
 		parent.current_animation = parent.ANI_STATES.CROUCH
+		parent.animation.scale = Vector2(1.1,0.95)
 		return SLIDING_STATE
 		
 		
@@ -113,6 +117,8 @@ func process_physics(delta: float) -> PlayerState:
 	if not AERIAL_STATE.have_stand_room():
 		parent.current_animation = parent.ANI_STATES.CROUCH
 		# parent.veloity.x = parent.prev_velocity_x
+		parent.animation.scale = Vector2(1.1,0.95)
+		
 		return SLIDING_STATE
 	
 		
@@ -147,6 +153,7 @@ func jump_logic(_delta):
 		parent.velocity.y = parent.jump_velocity
 		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
 		
+		parent.animation.scale = Vector2(0.7, 1.2)
 		
 		jump_exit = true
 		
@@ -195,11 +202,13 @@ func apply_friction(delta, direction):
 func update_state(direction):
 	
 	# Change direction
-	if direction > 0:
+	if direction > 0 and parent.animation.flip_h:
 		parent.animation.flip_h = false
+		parent.animation.scale = Vector2(0.6, 1.0)
 		
-	elif direction < 0:
+	elif direction < 0 and not parent.animation.flip_h:
 		parent.animation.flip_h = true
+		parent.animation.scale = Vector2(0.6, 1)
 	
 	# If set to running/walking from grounded state
 	if direction:

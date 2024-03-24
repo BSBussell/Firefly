@@ -83,14 +83,9 @@ func exit() -> void:
 	
 	if (parent.fastFalling):
 		
-		# Landing in fast fall
-		parent.glow_manager.update_ff_landings(1.0)
-		
 		parent.fastFalling = false
 		parent.animation.speed_scale = 1.0
-		
-	else:
-		parent.glow_manager.update_ff_landings(0.0)
+	
 
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
@@ -155,6 +150,12 @@ func process_physics(delta: float) -> PlayerState:
 	return null
 
 func process_frame(delta):
+	
+	if parent.fastFalling:
+		var spriteBlend = min(parent.velocity.y / parent.movement_data.MAX_FALL_SPEED, 1)
+		parent.animation.scale.x = lerp(1.0, 0.8, spriteBlend)
+		parent.animation.scale.y = lerp(1.0, 1.2, spriteBlend)
+	
 	
 	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST:
 		speed_particles.emitting = true
@@ -263,7 +264,7 @@ func handle_acceleration(delta, direction):
 	# If player is jumping while crouching
 	elif parent.crouchJumping:
 		
-		var crouch_release_window = 5/60 # So this should be roughly one frame
+		var crouch_release_window = 30/60 # So this should be roughly one frame
 		
 		# So they have that much time to release down before velocity is capped
 		# I have this because I don't like the idea of players flying around in crouch
@@ -279,7 +280,7 @@ func handle_acceleration(delta, direction):
 			
 	# If we are wall jumping up and holding into a wall we give a boost in air accel in order to help
 	# with climbing / make it possible
-	elif parent.current_wj == parent.WALLJUMPS.UPWARD and sign(direction) != parent.current_wj_dir:
+	elif parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD and sign(direction) != parent.current_wj_dir:
 		
 		# Give us the drift we need to go back to wall
 		airDrift = parent.air_accel * parent.movement_data.UP_AIR_DRIFT_MULTI

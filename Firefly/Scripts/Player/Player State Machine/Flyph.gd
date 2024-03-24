@@ -159,6 +159,7 @@ var canCrouchJump: bool = true
 
 # Used for when hitting a wall kills our velocity and we wanna get it back
 var prev_velocity_x: float = 0.0
+var prev_velocity_y: float = 0.0
 
 
 # Animation values
@@ -224,10 +225,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	# For quickly chaning states
 	if OS.is_debug_build():
-		if Input.is_action_just_pressed("debug_up") and glow_manager.movement_level != glow_manager.max_level:
-			glow_manager.change_state(movement_level + 1)
+		if Input.is_action_just_pressed("debug_up"):
+			glow_manager.promote()
 		if Input.is_action_just_pressed("debug_down") and glow_manager.movement_level > 0:
-			glow_manager.change_state(movement_level - 1)
+			glow_manager.demote()
 		if Input.is_action_just_pressed("reset"):
 			calculate_properties()
 	
@@ -261,6 +262,7 @@ func _physics_process(delta: float) -> void:
 		
 		# Store the velocity for next frame
 		prev_velocity_x = velocity.x
+		prev_velocity_y = velocity.y
 	
 func _process(delta: float) -> void:
 	
@@ -501,8 +503,8 @@ func disable_glow():
 	glow_manager.GLOW_ENABLED = false
 	
 # Just an external setter
-func add_glow(amount: float, weight: float) -> void:
-	glow_manager.add_score(amount, weight)
+func add_glow(amount: float) -> void:
+	glow_manager.add_score(amount)
 
 func force_glow_update():
 	glow_manager.update_score()
@@ -620,16 +622,19 @@ func kill():
 	
 	animation.visible = false
 	dying = true
+	glow_manager.reset_glow()
 	
 	await get_tree().create_timer(1.5).timeout
+	global_position = starting_position
+	await get_tree().create_timer(0.3).timeout
 	
 	_stats.DEATHS += 1
 	global_position = starting_position
 	velocity = Vector2.ZERO
+	animation.scale = Vector2(1.2, 0.8)
 	animation.visible = true
 	dying = false
-	glow_manager.change_state(0)
-	glow_manager.reset_score()
+	
 
 func _on_hazard_detector_area_entered(area):
 	kill()

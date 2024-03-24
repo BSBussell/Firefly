@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://gp2i0l1wqs08"]
+[gd_scene load_steps=7 format=3 uid="uid://gp2i0l1wqs08"]
 
 [ext_resource type="Texture2D" uid="uid://bdrta3oncmj8f" path="res://Assets/Graphics/Meter/back.png" id="1_s86km"]
 [ext_resource type="Texture2D" uid="uid://bk0bytm2irea5" path="res://Assets/Graphics/Meter/front_vines.png" id="2_eg2ve"]
 [ext_resource type="Texture2D" uid="uid://cunj6ke3xbe7r" path="res://Assets/Graphics/Meter/filling.png" id="3_rr7kc"]
 [ext_resource type="Script" path="res://Scenes/Player/Meter.gd" id="4_qwq71"]
+[ext_resource type="AudioStream" uid="uid://n1jp21srkgrf" path="res://Scenes/glass_hit_2.mp3" id="5_dyfr1"]
 
 [sub_resource type="Gradient" id="Gradient_8qie6"]
 offsets = PackedFloat32Array(0, 0.104167, 0.885417, 1)
@@ -40,3 +41,8 @@ angle_max = 45.0
 scale_amount_max = 2.0
 color = Color(0.960784, 0.898039, 0, 1)
 color_ramp = SubResource("Gradient_8qie6")
+
+[node name="MeterFull" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_dyfr1")
+volume_db = -10.0
+pitch_scale = 2.5

@@ -137,6 +137,9 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
 		
+		# Sprite squashing
+		parent.animation.scale = Vector2(0.7, 1.1)
+		
 		# TODO: Walljump Animation or something
 		if (parent.current_animation != parent.ANI_STATES.CRAWL):
 			parent.current_animation = parent.ANI_STATES.FALLING

@@ -47,6 +47,8 @@ func enter() -> void:
 		
 		landing_sfx.play(0)
 	
+		parent.animation.scale = Vector2( 1.1, 0.9)
+	
 		# Crouch Animation
 		parent.current_animation = parent.ANI_STATES.LANDING
 	
@@ -71,11 +73,6 @@ func enter() -> void:
 func exit() -> void:
 	
 	sliding_sfx.stop()
-	
-	if abs(parent.velocity.x) > abs(entryVel) or abs(parent.velocity.x) > parent.speed:
-		parent.glow_manager.update_slides(1)
-	else:
-		parent.glow_manager.update_slides(0)
 	
 	slide_dust.emitting = false
 	
@@ -125,6 +122,8 @@ func process_physics(delta: float) -> PlayerState:
 	# Stay there til we let go of down
 	if not Input.is_action_pressed("Down") and AERIAL_STATE.have_stand_room():
 		parent.current_animation = parent.ANI_STATES.STANDING_UP
+		
+		parent.animation.scale = Vector2(0.9, 1.1)
 		return GROUNDED_STATE
 	#parent.move_and_slide()
 	
@@ -206,6 +205,8 @@ func jump_logic(_delta):
 			GROUNDED_STATE.jumping_sfx.play(0)
 			parent.crouchJumping = true
 		
+			parent.animation.scale = Vector2(0.8, 1.2)
+		
 		# TODO: Rename this or relook at it
 		
 		jumpExit = true
@@ -213,13 +214,14 @@ func jump_logic(_delta):
 # Updates animation states based on changes in physics
 func update_state(direction):
 	
-	# Change direction (cANT DO SLIDING
-	if direction > 0:
+	# Change direction
+	if direction > 0 and parent.animation.flip_h:
 		parent.animation.flip_h = false
-		#dust.gravity.x = -200
-	elif direction < 0:
+		parent.animation.scale = Vector2(0.6, 1.0)
+		
+	elif direction < 0 and not parent.animation.flip_h:
 		parent.animation.flip_h = true
-		#dust.gravity.x *= 200
+		parent.animation.scale = Vector2(0.6, 1)
 
 	# Stop sfx when we stop moving
 	if parent.velocity.x == 0:
@@ -266,6 +268,9 @@ func crouch_jump() -> bool:
 		
 		# Play crouch jump sfx
 		crouch_jumping_sfx.play(0)
+		
+		# Squash the sprite
+		parent.animation.scale = Vector2(0.7, 1.1)
 		
 		# Set crouch jumpint to true
 		parent.crouchJumping = true

@@ -31,7 +31,7 @@ func _physics_process(_delta):
 			
 		player.enable_glow()
 		if player.get_glow_score() < score_thres:
-			player.add_glow(score_amount, score_duration)
+			player.add_glow(score_amount)
 			if update:
 				player.force_glow_update()
 			

@@ -4,9 +4,12 @@ extends TextureProgressBar
 @export var decrease_speed: float = 20
 
 @onready var particle = $Particle
+@onready var meter_full = $MeterFull
 
 var actual_score: float = 0
 var interpolated_score: float = 0
+
+var played_sound: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,8 +30,13 @@ func _process(delta):
 	
 	if value >= max_value:
 		particle.emitting = true
+		
+		if not played_sound:
+			meter_full.play()
+			played_sound = true
 	else:
 		particle.emitting = false
+		played_sound = false
 	pass
 
 func set_score(score):

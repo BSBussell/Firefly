@@ -1,4 +1,4 @@
-[gd_scene load_steps=84 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=85 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -379,6 +379,10 @@ point_count = 2
 _data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="Gradient" id="Gradient_r3nhe"]
+offsets = PackedFloat32Array(0.879781, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
 [sub_resource type="Gradient" id="Gradient_xmxui"]
 offsets = PackedFloat32Array(0.555256, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -442,10 +446,11 @@ debug_color = Color(0, 0.764706, 0, 0.372549)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"falling"
+animation = &"landing"
 autoplay = "idle"
+frame = 2
+frame_progress = 1.0
 script = ExtResource("6_vid37")
-metadata/_edit_lock_ = true
 
 [node name="Trail" type="Line2D" parent="Visuals"]
 modulate = Color(2.5, 2.6, 1.25, 1)
@@ -476,6 +481,32 @@ curve_out = SubResource("Curve_5ulra")
 metadata/_edit_lock_ = true
 
 [node name="Particles" type="Node2D" parent="."]
+
+[node name="GlowAura" type="CPUParticles2D" parent="Particles"]
+modulate = Color(3, 3, 1, 1)
+z_index = -1
+position = Vector2(-1, -9)
+emitting = false
+amount = 24
+randomness = 0.32
+texture = ExtResource("8_shld8")
+emission_shape = 1
+emission_sphere_radius = 10.0
+gravity = Vector2(0, -20)
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+orbit_velocity_min = -0.1
+orbit_velocity_max = 0.1
+radial_accel_min = -10.0
+radial_accel_max = 10.0
+damping_min = 0.1
+damping_max = 0.2
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.1
+scale_amount_max = 0.2
+color = Color(3, 3, 0, 1)
+color_ramp = SubResource("Gradient_r3nhe")
 
 [node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
 z_index = 1
@@ -698,7 +729,7 @@ volume_db = -5.0
 [node name="Star" type="CPUParticles2D" parent="UI_FX"]
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
-position = Vector2(159, 0)
+position = Vector2(160, 180)
 emitting = false
 amount = 16
 one_shot = true
@@ -707,6 +738,7 @@ local_coords = true
 texture = ExtResource("8_shld8")
 emission_shape = 3
 emission_rect_extents = Vector2(180, 1)
+gravity = Vector2(0, -980)
 damping_min = 8.908
 damping_max = 8.908
 angle_min = -180.0
@@ -733,6 +765,7 @@ layout_mode = 0
 offset_right = 90.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+min_value = -33.0
 increase_speed = 900.0
 decrease_speed = 900.0
 
@@ -782,8 +815,9 @@ AERIAL_STATE = NodePath("../Aerial")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 
-[node name="GlowManager" type="Node" parent="."]
+[node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
 script = ExtResource("25_5it1v")
+MOMENTUM_TIMER = NodePath("../Timers/MomentumTime")
 
 [node name="Timers" type="Node" parent="."]
 
@@ -797,14 +831,10 @@ one_shot = true
 
 [node name="MomentumTime" type="Timer" parent="Timers"]
 wait_time = 3.0
-autostart = true
-
-[node name="CrouchJumpWindow" type="Timer" parent="Timers"]
-wait_time = 0.1
 one_shot = true
 
-[node name="CrouchJumpDisable" type="Timer" parent="Timers"]
-wait_time = 0.1
+[node name="CrouchJumpWindow" type="Timer" parent="Timers"]
+wait_time = 0.05
 one_shot = true
 
 [node name="Debug" type="Node2D" parent="."]
@@ -823,6 +853,5 @@ script = ExtResource("26_0wrd0")
 [connection signal="animation_finished" from="Visuals/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
 [connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
-[connection signal="timeout" from="Timers/MomentumTime" to="." method="_on_momentum_time_timeout"]
 [connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
 [connection signal="timeout" from="Timers/CrouchJumpWindow" to="StateMachine/Sliding" method="_on_crouch_jump_window_timeout"]
