@@ -50,7 +50,7 @@ func enter() -> void:
 		landing_sfx.play(0)
 	
 		# Squish
-		parent.animation.scale = Vector2( 1.1, 0.9)
+		parent.squish_node.squish(calc_landing_squish())
 	
 		# Land into a sprint!
 		if abs(parent.velocity.x) >= parent.run_threshold:
@@ -87,7 +87,6 @@ func process_input(_event: InputEvent) -> PlayerState:
 	# When we press down we crouch
 	if Input.is_action_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
 		parent.current_animation = parent.ANI_STATES.CROUCH
-		parent.animation.scale = Vector2(1.1,0.95)
 		return SLIDING_STATE
 		
 		
@@ -117,7 +116,6 @@ func process_physics(delta: float) -> PlayerState:
 	if not AERIAL_STATE.have_stand_room():
 		parent.current_animation = parent.ANI_STATES.CROUCH
 		# parent.veloity.x = parent.prev_velocity_x
-		parent.animation.scale = Vector2(1.1,0.95)
 		
 		return SLIDING_STATE
 	
@@ -153,7 +151,7 @@ func jump_logic(_delta):
 		parent.velocity.y = parent.jump_velocity
 		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
 		
-		parent.animation.scale = Vector2(0.7, 1.2)
+		parent.squish_node.squish(parent.jump_squash)
 		
 		jump_exit = true
 		
@@ -204,11 +202,11 @@ func update_state(direction):
 	# Change direction
 	if direction > 0 and parent.animation.flip_h:
 		parent.animation.flip_h = false
-		parent.animation.scale = Vector2(0.6, 1.0)
+		parent.squish_node.squish(parent.turn_around_squash)
 		
 	elif direction < 0 and not parent.animation.flip_h:
 		parent.animation.flip_h = true
-		parent.animation.scale = Vector2(0.6, 1)
+		parent.squish_node.squish(parent.turn_around_squash)
 	
 	# If set to running/walking from grounded state
 	if direction:
@@ -246,3 +244,12 @@ func animation_end() -> PlayerState:
 		parent.current_animation = parent.ANI_STATES.IDLE
 	
 	return null
+
+## Funny Method for calculating the landing squish using lerps
+func calc_landing_squish() -> Vector2:
+	
+	var squish_blend = abs(parent.landing_speed) / parent.movement_data.MAX_FALL_SPEED
+	var x_squish = lerp(1.0, parent.landing_squash.x, squish_blend)
+	var y_squish = lerp(1.0, parent.landing_squash.y, squish_blend)
+	print(parent.landing_speed)
+	return Vector2(x_squish, y_squish)

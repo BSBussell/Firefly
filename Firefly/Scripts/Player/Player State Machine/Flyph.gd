@@ -11,6 +11,18 @@ extends CharacterBody2D
 @export var meter: TextureProgressBar
 @export var MusicPlayer: AudioStreamPlayer
 
+@export_category("Visual Tweaks")
+@export_subgroup("Squash Constants")
+@export var jump_squash = Vector2(0.6, 1.4)
+@export var lJump_squash = Vector2(0.6, 1.4)
+@export var wJump_squash = Vector2(0.6, 1.4)
+@export var falling_squash = Vector2(0.5, 1.5)
+@export var landing_squash = Vector2( 1.5, 0.5)
+@export var crouch_squash = Vector2(1.4,0.6)
+@export var stand_up_squash = Vector2(1.4, 0.6)
+@export var turn_around_squash = Vector2(0.6, 1.0)
+@export var death_squash = Vector2(1.5, 0.5)
+
 # Our State Machine
 @onready var StateMachine = $StateMachine
 
@@ -23,20 +35,21 @@ extends CharacterBody2D
 
 
 # Visual Nodes
-@onready var animation = $Visuals/AnimatedSprite2D
-@onready var spotlight = $Visuals/Spotlight
-@onready var light = $Visuals/Spotlight
-@onready var trail = $Visuals/Trail
-@onready var deathDust = $Particles/JumpDustSpawner
+@onready var animation: AnimatedSprite2D = $Visuals/SquishCenter/AnimatedSprite2D
+@onready var squish_node: Node2D = $Visuals/SquishCenter
+@onready var spotlight: PointLight2D = $Visuals/Spotlight
+@onready var light: PointLight2D = $Visuals/Spotlight
+@onready var trail: Line2D = $Visuals/Trail
+@onready var deathDust: Marker2D = $Particles/JumpDustSpawner
 
 # Timers
-@onready var jump_buffer = $Timers/JumpBuffer
-@onready var coyote_time = $Timers/CoyoteTime
-@onready var momentum_time = $Timers/MomentumTime
+@onready var jump_buffer: Timer = $Timers/JumpBuffer
+@onready var coyote_time: Timer = $Timers/CoyoteTime
+@onready var momentum_time: Timer = $Timers/MomentumTime
 
 # Vertical Corner Correction Raycasts
-@onready var top_left = $Raycasts/VerticalSmoothing/TopLeft
-@onready var top_right = $Raycasts/VerticalSmoothing/TopRight
+@onready var top_left: RayCast2D = $Raycasts/VerticalSmoothing/TopLeft
+@onready var top_right: RayCast2D = $Raycasts/VerticalSmoothing/TopRight
 
 # Horizontal Corner Correction Raycasts
 @onready var bottom_right = $Raycasts/HorizontalSmoothing/BottomRight
@@ -129,6 +142,7 @@ const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
 const CROUCH_JUMP_DUST = preload("res://Scenes/Player/particles/crouchJumpDust.tscn")
 const WJ_DUST = preload("res://Scenes/Player/particles/wallJumpDust.tscn")
 const DEATH_DUST = preload("res://Scenes/Player/particles/DeathParticle.tscn")
+const RESPAWN_DUST = preload("res://Scenes/Player/particles/RespawnParticle.tscn")
 
 enum ANI_STATES { 
 	
@@ -161,6 +175,8 @@ var canCrouchJump: bool = true
 var prev_velocity_x: float = 0.0
 var prev_velocity_y: float = 0.0
 
+## The Speed the player was moving before hitting the ground
+var landing_speed: float = 0.0
 
 # Animation values
 var current_animation: ANI_STATES
@@ -244,17 +260,13 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		
 		# Corner Smoothing when jumping up
-		if velocity.y < 0 and not is_on_wall() :
-			jump_corner_correction(delta)
+		if velocity.y < 0 and not is_on_wall(): jump_corner_correction(delta)
 			
 		# If they are moving horizontally or trying to move horizontally :3
-		if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0):
-			horizontal_corner_correction(delta) # Kinda a misleading name but pretty much we will gravitate the player towards small dips that it feels like the character should be able to step up
+		if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta) # Kinda a misleading name but pretty much we will gravitate the player towards small dips that it feels like the character should be able to step up
 		
 		# Auto Enter Tunnel
-		if is_on_wall():
-			print(prev_velocity_x)
-			auto_enter_tunnel(delta)
+		if is_on_wall(): auto_enter_tunnel(delta)
 		
 		## Update Scoring information based on movement speed, etc.
 		#update_speed()
@@ -354,11 +366,13 @@ func auto_enter_tunnel(delta):
 	if (not crouch_left.is_colliding() and not bottom_left.is_colliding()) and get_wall_normal().x > 0: 
 		set_crouch_collider()
 		velocity.x = prev_velocity_x
+		squish_node.squish(crouch_squash)
 		crouchJumping = true
 	
 	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x < 0:
 		set_crouch_collider()
 		velocity.x = prev_velocity_x
+		squish_node.squish(crouch_squash)
 		crouchJumping = true
 
 # When jumping if theres a corner above us we will attempt to guide the player
@@ -374,9 +388,11 @@ func jump_corner_correction(delta):
 		
 		if not test_move(global_transform, Vector2(strength * delta, 0)):
 			position.x += strength * delta
+			squish_node.squish(jump_squash)
 	elif not top_left.is_colliding() and top_right.is_colliding():
 		if not test_move(global_transform, Vector2(-strength * delta, 0)):
 			position.x -= strength * delta
+			squish_node.squish(jump_squash)
 		#position.x -= strength * delta
 
 
@@ -432,6 +448,7 @@ func horizontal_corner_correction(delta):
 			if not test_move(global_transform, motion):
 				# If no collision, update the position
 				position.y = test_y
+				squish_node.squish( Vector2(1.2, 0.8))
 
 				
 	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
@@ -469,6 +486,7 @@ func horizontal_corner_correction(delta):
 			if not test_move(global_transform, motion):
 				# If no collision, update the position
 				position.y = test_y
+				squish_node.squish( Vector2(1.2, 0.8))
 
 			
 
@@ -613,7 +631,7 @@ func kill():
 	
 	trail.clear_points()
 	
-	# Give dust on landing
+	# DEATH EXPLOSION
 	var new_cloud = DEATH_DUST.instantiate()
 	new_cloud.set_name("death_dust_temp")
 	deathDust.add_child(new_cloud)
@@ -626,12 +644,20 @@ func kill():
 	
 	await get_tree().create_timer(1.5).timeout
 	global_position = starting_position
-	await get_tree().create_timer(0.3).timeout
+	
+	# LIFE EXPLOSION
+	var respawn_cloud = RESPAWN_DUST.instantiate()
+	respawn_cloud.set_name("Respawn_dust_temp")
+	deathDust.add_child(respawn_cloud)
+	var respawn_animation = respawn_cloud.get_node("AnimationPlayer")
+	respawn_animation.play("Start")
+	
+	await get_tree().create_timer(0.7).timeout
 	
 	_stats.DEATHS += 1
 	global_position = starting_position
 	velocity = Vector2.ZERO
-	animation.scale = Vector2(1.2, 0.8)
+	squish_node.squish(death_squash)
 	animation.visible = true
 	dying = false
 	

@@ -50,6 +50,7 @@ func process_physics(delta: float) -> PlayerState:
 	
 	apply_gravity(delta, parent.horizontal_axis)
 	handle_walljump(delta, parent.vertical_axis)
+	AERIAL_STATE.handle_sHop(delta)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
@@ -138,7 +139,7 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		animation.play("free")
 		
 		# Sprite squashing
-		parent.animation.scale = Vector2(0.7, 1.1)
+		parent.squish_node.squish(parent.wJump_squash)
 		
 		# TODO: Walljump Animation or something
 		if (parent.current_animation != parent.ANI_STATES.CRAWL):

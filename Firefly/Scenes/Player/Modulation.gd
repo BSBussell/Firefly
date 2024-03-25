@@ -12,7 +12,6 @@ var interpolation_duration: float = 1.0  # Adjust this to control the speed of t
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 
-	scale = scale.move_toward(Vector2(1.0, 1.0), delta * 1.75)
 	
 	if interpolating:
 		interpolation_time += delta

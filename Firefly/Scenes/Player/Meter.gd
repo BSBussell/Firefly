@@ -4,7 +4,9 @@ extends TextureProgressBar
 @export var decrease_speed: float = 20
 
 @onready var particle = $Particle
-@onready var meter_full = $MeterFull
+@onready var fire_lit = $FireLit
+@onready var fire_rumble = $FireRumble
+
 
 var actual_score: float = 0
 var interpolated_score: float = 0
@@ -32,11 +34,13 @@ func _process(delta):
 		particle.emitting = true
 		
 		if not played_sound:
-			meter_full.play()
+			fire_lit.play()
+			fire_rumble.play()
 			played_sound = true
 	else:
 		particle.emitting = false
 		played_sound = false
+		fire_rumble.stop()
 	pass
 
 func set_score(score):

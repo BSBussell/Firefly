@@ -33,7 +33,7 @@ extends PlayerState
 # For Coyote CJ
 @onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
 
-
+var min_fall_speed = 0.0
 # Timer to wait before slowing down the player
 #@onready var crouch_jump_window = $"../../Timers/CrouchJumpReleaseWindow"
 
@@ -65,6 +65,8 @@ func enter() -> void:
 		parent.current_animation = parent.ANI_STATES.FALLING
 	
 	ticks = 0
+	
+	min_fall_speed = 0.0
 	
 
 # Called before exiting the state, cleanup
@@ -98,6 +100,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 	#Input.is_action_released("Down") and have_stand_room():
 		parent.crouchJumping = false
 		parent.current_animation = parent.ANI_STATES.FALLING
+		#parent.squish_node.scale = parent.stand_up_squash
 		parent.set_standing_collider()
 		
 	if Input.is_action_just_pressed("Jump"):
@@ -108,10 +111,6 @@ func process_input(_event: InputEvent) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 	
-	
-	
-	if parent.velocity.y > 0:
-		parent.animation.scale = Vector2(1, 1)
 	
 	apply_gravity(delta)
 	
@@ -131,8 +130,12 @@ func process_physics(delta: float) -> PlayerState:
 	
 	ticks += delta
 	
+	min_fall_speed = min(min_fall_speed, parent.velocity.y)
+	
 	# Make Sure we're still grounded after this
 	if parent.is_on_floor():
+		
+		parent.landing_speed = min_fall_speed
 		if Input.is_action_pressed("Down") or not have_stand_room():
 			
 			# IF the player stays crouching the whole time they can't chain it again
@@ -151,10 +154,14 @@ func process_physics(delta: float) -> PlayerState:
 
 func process_frame(delta):
 	
-	if parent.fastFalling:
+	# Fall squishing :3
+	if parent.velocity.y > 0:
+		print("Squishing our fall")
 		var spriteBlend = min(parent.velocity.y / parent.movement_data.MAX_FALL_SPEED, 1)
-		parent.animation.scale.x = lerp(1.0, 0.8, spriteBlend)
-		parent.animation.scale.y = lerp(1.0, 1.2, spriteBlend)
+		var squishVal = Vector2()
+		squishVal.x = lerp(1.0, parent.falling_squash.x, spriteBlend)
+		squishVal.y =  lerp(1.0, parent.falling_squash.y, spriteBlend)
+		parent.squish_node.squish(squishVal)
 	
 	
 	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST:
@@ -244,6 +251,8 @@ func get_gravity() -> float:
 		# Apply fast falling gravity
 		gravity_to_apply = parent.ff_gravity
 		
+	#if abs(parent.velocity.y) <= 10:
+		#gravity_to_apply *= 0.6
 	
 	return gravity_to_apply
 

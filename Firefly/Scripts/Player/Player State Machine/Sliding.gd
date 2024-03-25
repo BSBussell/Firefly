@@ -47,10 +47,13 @@ func enter() -> void:
 		
 		landing_sfx.play(0)
 	
-		parent.animation.scale = Vector2( 1.1, 0.9)
+		parent.squish_node.squish(GROUNDED_STATE.calc_landing_squish())
 	
 		# Crouch Animation
 		parent.current_animation = parent.ANI_STATES.LANDING
+
+	else:
+		parent.squish_node.squish(parent.crouch_squash)
 	
 	# This might be silly b/c i can't control it lol
 	parent.floor_constant_speed = false
@@ -78,6 +81,7 @@ func exit() -> void:
 	
 	if not jumpExit:
 		coyote_time.start()
+		parent.squish_node.squish(parent.stand_up_squash)
 	
 	# This might be silly b/c i can't control it lol
 	parent.floor_constant_speed = true
@@ -122,8 +126,7 @@ func process_physics(delta: float) -> PlayerState:
 	# Stay there til we let go of down
 	if not Input.is_action_pressed("Down") and AERIAL_STATE.have_stand_room():
 		parent.current_animation = parent.ANI_STATES.STANDING_UP
-		
-		parent.animation.scale = Vector2(0.9, 1.1)
+		#parent.squish_node.scale = parent.stand_up_squash
 		return GROUNDED_STATE
 	#parent.move_and_slide()
 	
@@ -138,6 +141,7 @@ func animation_end() -> PlayerState:
 	
 	# If we are landing go to crouch
 	if parent.current_animation == parent.ANI_STATES.LANDING:
+		parent.squish_node.squish(parent.crouch_squash)
 		parent.current_animation = parent.ANI_STATES.CROUCH
 	
 	# If we are crouching go to crawl
@@ -205,7 +209,7 @@ func jump_logic(_delta):
 			GROUNDED_STATE.jumping_sfx.play(0)
 			parent.crouchJumping = true
 		
-			parent.animation.scale = Vector2(0.8, 1.2)
+			parent.squish_node.squish(parent.jump_squash)
 		
 		# TODO: Rename this or relook at it
 		
@@ -217,11 +221,11 @@ func update_state(direction):
 	# Change direction
 	if direction > 0 and parent.animation.flip_h:
 		parent.animation.flip_h = false
-		parent.animation.scale = Vector2(0.6, 1.0)
+		parent.squish_node.squish(parent.turn_around_squash)
 		
 	elif direction < 0 and not parent.animation.flip_h:
 		parent.animation.flip_h = true
-		parent.animation.scale = Vector2(0.6, 1)
+		parent.squish_node.squish(parent.turn_around_squash)
 
 	# Stop sfx when we stop moving
 	if parent.velocity.x == 0:
@@ -270,7 +274,7 @@ func crouch_jump() -> bool:
 		crouch_jumping_sfx.play(0)
 		
 		# Squash the sprite
-		parent.animation.scale = Vector2(0.7, 1.1)
+		parent.squish_node.squish(parent.lJump_squash)
 		
 		# Set crouch jumpint to true
 		parent.crouchJumping = true
