@@ -688,9 +688,8 @@ texture = ExtResource("1_v8b5t")
 1:5/0/physics_layer_2/angular_velocity = 0.0
 1:5/0/terrains_peering_bit/top_side = 0
 1:5/0/metadata/_better_terrain = {
-12: [1],
 "symmetry": 1,
-"type": 5
+"type": 9
 }
 2:5/0 = 0
 2:5/0/terrain_set = 0
@@ -705,9 +704,8 @@ texture = ExtResource("1_v8b5t")
 2:5/0/physics_layer_2/angular_velocity = 0.0
 2:5/0/terrains_peering_bit/top_side = 0
 2:5/0/metadata/_better_terrain = {
-12: [1],
 "symmetry": 1,
-"type": 5
+"type": 9
 }
 8:5/0 = 0
 8:5/0/terrain_set = 0
@@ -736,8 +734,8 @@ texture = ExtResource("1_v8b5t")
 14:5/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 14:5/0/physics_layer_2/angular_velocity = 0.0
 14:5/0/metadata/_better_terrain = {
-0: [6],
-"type": 6
+0: [7],
+"type": 7
 }
 15:5/0 = 0
 15:5/0/terrain_set = 0
@@ -751,9 +749,9 @@ texture = ExtResource("1_v8b5t")
 15:5/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 15:5/0/physics_layer_2/angular_velocity = 0.0
 15:5/0/metadata/_better_terrain = {
-0: [6],
-8: [6],
-"type": 6
+0: [7],
+8: [7],
+"type": 7
 }
 16:5/0 = 0
 16:5/0/terrain_set = 0
@@ -768,8 +766,8 @@ texture = ExtResource("1_v8b5t")
 16:5/0/physics_layer_2/angular_velocity = 0.0
 16:5/0/metadata/_better_terrain = {
 0: [1],
-8: [6],
-"type": 6
+8: [7],
+"type": 7
 }
 8:6/0 = 0
 8:6/0/terrain_set = 0
@@ -812,9 +810,9 @@ texture = ExtResource("1_v8b5t")
 14:6/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 14:6/0/physics_layer_2/angular_velocity = 0.0
 14:6/0/metadata/_better_terrain = {
-0: [7],
+0: [8],
 8: [1],
-"type": 7
+"type": 8
 }
 15:6/0 = 0
 15:6/0/terrain_set = 0
@@ -828,9 +826,9 @@ texture = ExtResource("1_v8b5t")
 15:6/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 15:6/0/physics_layer_2/angular_velocity = 0.0
 15:6/0/metadata/_better_terrain = {
-0: [7],
-8: [7],
-"type": 7
+0: [8],
+8: [8],
+"type": 8
 }
 16:6/0 = 0
 16:6/0/terrain_set = 0
@@ -844,8 +842,8 @@ texture = ExtResource("1_v8b5t")
 16:6/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 16:6/0/physics_layer_2/angular_velocity = 0.0
 16:6/0/metadata/_better_terrain = {
-8: [7],
-"type": 7
+8: [8],
+"type": 8
 }
 1:6/0 = 0
 1:6/0/terrain_set = 0
@@ -1028,8 +1026,8 @@ texture = ExtResource("1_v8b5t")
 16:7/0/physics_layer_2/angular_velocity = 0.0
 16:7/0/metadata/_better_terrain = {
 0: [1],
-8: [7],
-"type": 7
+8: [8],
+"type": 8
 }
 15:7/0 = 0
 15:7/0/terrain_set = 0
@@ -1043,8 +1041,8 @@ texture = ExtResource("1_v8b5t")
 15:7/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 15:7/0/physics_layer_2/angular_velocity = 0.0
 15:7/0/metadata/_better_terrain = {
-0: [7],
-"type": 7
+0: [8],
+"type": 8
 }
 17:5/0 = 0
 17:5/0/terrain_set = 0
@@ -1058,9 +1056,9 @@ texture = ExtResource("1_v8b5t")
 17:5/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 17:5/0/physics_layer_2/angular_velocity = 0.0
 17:5/0/metadata/_better_terrain = {
-0: [6],
+0: [7],
 8: [1],
-"type": 6
+"type": 7
 }
 18:1/0 = 0
 18:1/0/terrain_set = 0
@@ -1165,8 +1163,8 @@ texture = ExtResource("1_v8b5t")
 18:5/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 18:5/0/physics_layer_2/angular_velocity = 0.0
 18:5/0/metadata/_better_terrain = {
-8: [6],
-"type": 6
+8: [7],
+"type": 7
 }
 17:6/0 = 0
 17:6/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -1179,8 +1177,8 @@ texture = ExtResource("1_v8b5t")
 17:6/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 17:6/0/physics_layer_2/angular_velocity = 0.0
 17:6/0/metadata/_better_terrain = {
-0: [7],
-"type": 7
+0: [8],
+"type": 8
 }
 18:6/0 = 0
 18:6/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -1193,8 +1191,8 @@ texture = ExtResource("1_v8b5t")
 18:6/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 18:6/0/physics_layer_2/angular_velocity = 0.0
 18:6/0/metadata/_better_terrain = {
-8: [7],
-"type": 7
+8: [8],
+"type": 8
 }
 17:4/0 = 0
 17:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -1207,8 +1205,8 @@ texture = ExtResource("1_v8b5t")
 17:4/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 17:4/0/physics_layer_2/angular_velocity = 0.0
 17:4/0/metadata/_better_terrain = {
-0: [6],
-"type": 6
+0: [7],
+"type": 7
 }
 18:4/0 = 0
 18:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -1221,8 +1219,8 @@ texture = ExtResource("1_v8b5t")
 18:4/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 18:4/0/physics_layer_2/angular_velocity = 0.0
 18:4/0/metadata/_better_terrain = {
-8: [6],
-"type": 6
+8: [7],
+"type": 7
 }
 2:0/0 = 0
 2:0/0/terrain_set = 0
@@ -1359,9 +1357,7 @@ texture = ExtResource("3_omlka")
 1:3/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 1:3/0/physics_layer_2/angular_velocity = 0.0
 1:3/0/metadata/_better_terrain = {
-4: [2],
-"symmetry": 1,
-"type": 5
+"type": 6
 }
 2:3/0 = 0
 2:3/0/terrain_set = 0
@@ -1418,9 +1414,7 @@ texture = ExtResource("3_omlka")
 4:3/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 4:3/0/physics_layer_2/angular_velocity = 0.0
 4:3/0/metadata/_better_terrain = {
-4: [2],
-"symmetry": 1,
-"type": 5
+"type": 6
 }
 0:4/0 = 0
 0:4/0/terrain_set = 0
@@ -1707,9 +1701,8 @@ texture = ExtResource("3_omlka")
 1:6/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 1:6/0/physics_layer_2/angular_velocity = 0.0
 1:6/0/metadata/_better_terrain = {
-12: [2],
 "symmetry": 1,
-"type": 5
+"type": 10
 }
 2:6/0 = 0
 2:6/0/terrain_set = 0
@@ -1766,9 +1759,8 @@ texture = ExtResource("3_omlka")
 4:6/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 4:6/0/physics_layer_2/angular_velocity = 0.0
 4:6/0/metadata/_better_terrain = {
-12: [2],
 "symmetry": 1,
-"type": 5
+"type": 10
 }
 2:7/0 = 0
 2:7/0/terrain_set = 0
@@ -2631,11 +2623,20 @@ metadata/_better_terrain = {
 }], ["TunnelGrass", Color(0.619191, 0.33218, 0.594693, 1), 0, [0], {
 "coord": Vector2i(5, 6),
 "source_id": 0
-}], ["Foliage", Color(0.737255, 0.952941, 0.0588235, 1), 0, [0], {
-"path": ""
+}], ["decorGrass", Color(0.737255, 0.952941, 0.0588235, 1), 0, [], {
+"coord": Vector2i(5, 4),
+"source_id": 0
+}], ["halfGrass", Color(0.889016, 0.338686, 0.976855, 1), 0, [], {
+"coord": Vector2i(4, 3),
+"source_id": 1
 }], ["HighPlats", Color(0.548414, 0.93121, 0.584349, 1), 0, [], {
 "path": ""
 }], ["LowPlats", Color(0.0256884, 0.65901, 0.457011, 1), 0, [], {
+"path": ""
+}], ["Vines", Color(0.23016, 0.691953, 0.275824, 1), 0, [], {
+"coord": Vector2i(1, 5),
+"source_id": 0
+}], ["HalfVine", Color(0.400722, 0.720546, 0.867027, 1), 0, [], {
 "path": ""
 }]],
 "version": "0.2"
