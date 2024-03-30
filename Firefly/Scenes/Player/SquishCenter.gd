@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var rebound_speed: float = 1.75
+@export var rebound_speed: float = 0.5
 @export var bounce_curve: Curve
 
 # State
@@ -9,6 +9,7 @@ var squish_from: Vector2 = Vector2.ZERO
 var interpolating: bool = false
 var interpolation_time: float = 0.0
 var initial_difference: Vector2 = Vector2()
+ 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -18,12 +19,11 @@ func _process(delta):
 		var curve_value = bounce_curve.sample(t)
 		scale = lerp(squish_from, original_scale, curve_value)
 		
-		print(scale)
 		if t >= 1.0:
 			interpolating = false  # Stop interpolating
 
 # Set the scale for squash/stretch and start interpolating back to original scale
-func squish(new_scale: Vector2) -> void:
+func squish(new_scale: Vector2, new_speed: float = rebound_speed) -> void:
 	scale = new_scale
 	squish_from = new_scale
 	initial_difference = new_scale - original_scale

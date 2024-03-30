@@ -1,10 +1,27 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dtqfsbjdbbwas"]
 
+[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="1_ebqit"]
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_ht7w3"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vve56"]
-bg_color = Color(0.6, 0.6, 0.6, 0.231373)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkirc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ioor"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bogsa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nrjkd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ugbje"]
 
 [resource]
 default_font = ExtResource("1_ht7w3")
-Button/styles/normal = SubResource("StyleBoxFlat_vve56")
+Button/colors/font_focus_color = Color(0.890196, 0.921569, 0.34902, 1)
+Button/colors/font_hover_color = Color(0.890196, 0.921569, 0.34902, 1)
+Button/font_sizes/font_size = 64
+Button/fonts/font = ExtResource("1_ebqit")
+Button/styles/disabled = SubResource("StyleBoxEmpty_jkirc")
+Button/styles/focus = SubResource("StyleBoxEmpty_3ioor")
+Button/styles/hover = SubResource("StyleBoxEmpty_bogsa")
+Button/styles/normal = SubResource("StyleBoxEmpty_nrjkd")
+Button/styles/pressed = SubResource("StyleBoxEmpty_ugbje")
+HBoxContainer/constants/separation = 150

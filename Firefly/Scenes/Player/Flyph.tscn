@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=88 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -28,6 +28,9 @@
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
 [ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
 [ext_resource type="Script" path="res://Scenes/Player/Speedometer.gd" id="26_0wrd0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6vnjo"]
+size = Vector2(6, 15)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_143ut"]
 size = Vector2(6, 15)
@@ -433,20 +436,26 @@ movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtRe
 star = NodePath("UI_FX/Star")
 debug_info = NodePath("UI_FX/debug info")
 meter = NodePath("UI_FX/Control/Meter")
-jump_squash = Vector2(0.7, 1.3)
-lJump_squash = Vector2(0.8, 1.4)
+lJump_squash = Vector2(0.4, 1.6)
 wJump_squash = Vector2(0.7, 1.3)
 falling_squash = Vector2(0.8, 1.2)
 landing_squash = Vector2(1.6, 0.4)
 crouch_squash = Vector2(1.3, 0.7)
 stand_up_squash = Vector2(1.3, 0.7)
-turn_around_squash = Vector2(0.7, 0.9)
+turn_around_squash = Vector2(0.9, 1.1)
 death_squash = Vector2(0.5, 1.5)
 
+[node name="Collider" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_6vnjo")
+debug_color = Color(0.890196, 0.921569, 0.34902, 0.733333)
+
 [node name="Standing_Collider" type="CollisionShape2D" parent="."]
+visible = false
 z_index = 1
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_143ut")
+disabled = true
 debug_color = Color(0.733333, 0.764706, 0, 0.419608)
 
 [node name="Crouching_Collider" type="CollisionShape2D" parent="."]
@@ -460,7 +469,6 @@ debug_color = Color(0, 0.764706, 0, 0.372549)
 
 [node name="SquishCenter" type="Node2D" parent="Visuals"]
 script = ExtResource("5_t485n")
-rebound_speed = 0.5
 bounce_curve = SubResource("Curve_umqtl")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
@@ -507,7 +515,35 @@ modulate = Color(3, 3, 1, 1)
 z_index = -1
 position = Vector2(-1, -9)
 emitting = false
-amount = 24
+amount = 32
+randomness = 0.32
+texture = ExtResource("8_shld8")
+emission_shape = 1
+emission_sphere_radius = 10.0
+gravity = Vector2(0, -20)
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+orbit_velocity_min = -0.1
+orbit_velocity_max = 0.1
+radial_accel_min = -10.0
+radial_accel_max = 10.0
+damping_min = 0.1
+damping_max = 0.2
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.1
+scale_amount_max = 0.2
+color = Color(3, 3, 0, 1)
+color_ramp = SubResource("Gradient_r3nhe")
+
+[node name="PromotionFx" type="CPUParticles2D" parent="Particles"]
+modulate = Color(3, 3, 1, 1)
+z_index = -1
+position = Vector2(-1, -9)
+emitting = false
+amount = 48
+one_shot = true
+explosiveness = 0.7
 randomness = 0.32
 texture = ExtResource("8_shld8")
 emission_shape = 1
@@ -615,7 +651,7 @@ enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
 target_position = Vector2(3, 0)
 max_results = 1
-collision_mask = 2
+collision_mask = 18
 
 [node name="Left_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
 position = Vector2(-3, 0)
@@ -623,7 +659,7 @@ enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
 target_position = Vector2(-3, 0)
 max_results = 1
-collision_mask = 2
+collision_mask = 18
 
 [node name="VerticalSmoothing" type="Node2D" parent="Raycasts"]
 
@@ -717,32 +753,39 @@ hit_from_inside = true
 [node name="LandingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("15_o0d2x")
 volume_db = -10.0
+bus = &"SFX"
 
 [node name="JumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("12_m3poj")
 volume_db = -5.0
 pitch_scale = 0.66
+bus = &"SFX"
 
 [node name="CrouchJumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("12_m3poj")
 volume_db = -5.0
 pitch_scale = 0.6
+bus = &"SFX"
 
 [node name="SlidingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("17_r3q20")
+bus = &"SFX"
 
 [node name="WallSlideSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("17_r3q20")
 pitch_scale = 2.0
+bus = &"SFX"
 
 [node name="WallJumpSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("14_hplrh")
 volume_db = -7.0
 pitch_scale = 1.33
+bus = &"SFX"
 
 [node name="RunSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("19_pmf6f")
 volume_db = -5.0
+bus = &"SFX"
 
 [node name="UI_FX" type="CanvasLayer" parent="."]
 

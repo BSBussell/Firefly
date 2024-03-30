@@ -61,7 +61,7 @@ func enter() -> void:
 	shopped = false
 	
 	
-	if (parent.current_animation != parent.ANI_STATES.JUMP and not parent.crouchJumping and parent.current_animation != parent.ANI_STATES.CRAWL):
+	if (parent.current_animation != parent.ANI_STATES.JUMP and not parent.crouchJumping):
 		parent.current_animation = parent.ANI_STATES.FALLING
 	
 	ticks = 0
@@ -156,7 +156,6 @@ func process_frame(delta):
 	
 	# Fall squishing :3
 	if parent.velocity.y > 0:
-		print("Squishing our fall")
 		var spriteBlend = min(parent.velocity.y / parent.movement_data.MAX_FALL_SPEED, 1)
 		var squishVal = Vector2()
 		squishVal.x = lerp(1.0, parent.falling_squash.x, spriteBlend)

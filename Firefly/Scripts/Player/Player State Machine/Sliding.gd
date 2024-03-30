@@ -29,6 +29,7 @@ var entryVel: float
 var slidingDown = false
 var jumpExit = false
 
+var usingHill = false
 
 # Called on state entrance, setup
 func enter() -> void:
@@ -39,15 +40,18 @@ func enter() -> void:
 	
 	# Give dust on landing
 	if (parent.current_animation == parent.ANI_STATES.FALLING):
+		
+		
 		var new_cloud = parent.LANDING_DUST.instantiate()
-		new_cloud.set_name("landing_dust_temp")
+		new_cloud.set_name("landing_dust_temp_sliding")
 		landing_dust.add_child(new_cloud)
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
 		
 		landing_sfx.play(0)
 	
-		parent.squish_node.squish(GROUNDED_STATE.calc_landing_squish())
+		if jump_buffer.time_left == 0:
+			parent.squish_node.squish(GROUNDED_STATE.calc_landing_squish())
 	
 		# Crouch Animation
 		parent.current_animation = parent.ANI_STATES.LANDING
@@ -160,11 +164,9 @@ func apply_friction(delta, direction):
 	if parent.get_floor_normal() == Vector2.UP:
 		var friction = parent.slide_friction
 		
-		# My favorite implication of this, is that it won't immediately clamp the players velocity
-		# To the min, so if the player has a faster air speed than ground speed, then they can 
-		# Crouch for just a second before jumping again to retain that speed...
+		# Begin slowing down the player
 		parent.velocity.x = move_toward(parent.velocity.x, 0, friction * delta)
-		slidingDown = false
+		#slidingDown = false
 	
 	# Sliding Downhill
 	else:
@@ -174,6 +176,8 @@ func apply_friction(delta, direction):
 		
 		var speed = sign * parent.hill_speed
 		var accel = parent.hill_accel
+		
+		slidingDown = true
 		
 		parent.velocity.x = move_toward(parent.velocity.x, speed, accel*delta)
 		
@@ -221,11 +225,17 @@ func update_state(direction):
 	# Change direction
 	if direction > 0 and parent.animation.flip_h:
 		parent.animation.flip_h = false
-		parent.squish_node.squish(parent.turn_around_squash)
+		
+		# don't interfere with cj squish :3
+		if not parent.crouchJumping:
+			parent.squish_node.squish(parent.turn_around_squash)
 		
 	elif direction < 0 and not parent.animation.flip_h:
 		parent.animation.flip_h = true
-		parent.squish_node.squish(parent.turn_around_squash)
+		
+		# don't interfere with cj squish :3
+		if not parent.crouchJumping:
+			parent.squish_node.squish(parent.turn_around_squash)
 
 	# Stop sfx when we stop moving
 	if parent.velocity.x == 0:
@@ -276,8 +286,9 @@ func crouch_jump() -> bool:
 		# Squash the sprite
 		parent.squish_node.squish(parent.lJump_squash)
 		
-		# Set crouch jumpint to true
-		parent.crouchJumping = true
+		# Set crouch jump to true if we aren't jumping off a hill
+		if not slidingDown:
+			parent.crouchJumping = true
 		
 		
 		return true

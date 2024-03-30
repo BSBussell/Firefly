@@ -47,8 +47,10 @@ color_ramp = SubResource("Gradient_8qie6")
 [node name="FireLit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_xvpry")
 volume_db = -10.0
+bus = &"SFX"
 
 [node name="FireRumble" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_4gy3n")
 volume_db = -5.0
 pitch_scale = 0.8
+bus = &"SFX"

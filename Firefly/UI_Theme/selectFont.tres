@@ -1,0 +1,7 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://4yd1xq3pf4m6"]
+
+[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="1_qyl7e"]
+
+[resource]
+font = ExtResource("1_qyl7e")
+font_size = 64

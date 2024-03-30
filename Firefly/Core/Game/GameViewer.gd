@@ -1,13 +1,16 @@
 extends Node2D
 
 @onready var game_container = $GameContainer
-@onready var label = $UI/UIViewPort/ColorRect/VBoxContainer/CenterContainer2/Label
-@onready var color_rect = $UI/UIViewPort/ColorRect
+@onready var label = $UI/UIViewPort/Results/ColorRect/VBoxContainer/CenterContainer2/Label
+@onready var color_rect = $UI/UIViewPort/Results/ColorRect
+
+
+@onready var pause_menu = $UI/UIViewPort/Pause
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	#Engine.time_scale = 0.25
+	#Engine.time_scale = 0.5
 	
 	# Set our global viewports
 	_viewports.game_viewport_container = $GameContainer
@@ -17,12 +20,12 @@ func _ready():
 	_viewports.ui_viewport = $UI/UIViewPort
 	
 	# Global UI Elements
-	_ui.COUNTER = $UI/UIViewPort/Label
-	_ui.COUNTER_ANIMATOR = $UI/UIViewPort/AnimationPlayer
-	_ui.ANIMATION_TIMER = $UI/UIViewPort/HideTimer
+	_ui.COUNTER = $UI/UIViewPort/Results/Label
+	_ui.COUNTER_ANIMATOR = $UI/UIViewPort/Results/AnimationPlayer
+	_ui.ANIMATION_TIMER = $UI/UIViewPort/Results/HideTimer
 	_ui.connect_timer()
 	
-	_ui.Victory = $UI/UIViewPort/ColorRect
+	_ui.Victory = $UI/UIViewPort/Results/ColorRect
 	
 	# Let us process input even when game beat
 	set_process_input(true)
@@ -54,9 +57,9 @@ func _input(event: InputEvent) -> void:
 
 	
 		
-	if Input.is_action_just_pressed("Pause"):
+	if Input.is_action_just_pressed("Pause") and not color_rect.visible:
 		_ui.show_counter()
-		swap_fullscreen_mode()
+		pause_menu.toggle_pause()
 		
 	if Input.is_action_just_pressed("reset"):
 		# Get the current scene's root node

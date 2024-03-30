@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://k52u7c7on45i"]
+
+[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="1_rdqbi"]
+
+[resource]
+font = ExtResource("1_rdqbi")
+font_size = 128
+font_color = Color(0.890196, 0.921569, 0.34902, 1)

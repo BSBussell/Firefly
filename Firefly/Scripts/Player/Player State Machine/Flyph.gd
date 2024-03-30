@@ -27,6 +27,7 @@ extends CharacterBody2D
 @onready var StateMachine = $StateMachine
 
 # Colliders
+@onready var collider = $Collider
 @onready var standing_collider = $Standing_Collider
 @onready var crouching_collider = $Crouching_Collider
 
@@ -41,6 +42,11 @@ extends CharacterBody2D
 @onready var light: PointLight2D = $Visuals/Spotlight
 @onready var trail: Line2D = $Visuals/Trail
 @onready var deathDust: Marker2D = $Particles/JumpDustSpawner
+
+@onready var glow_aura = $Particles/GlowAura
+@onready var mega_speed_particles = $Particles/MegaSpeedParticles
+@onready var wall_slide_dust = $Particles/WallSlideDust
+
 
 # Timers
 @onready var jump_buffer: Timer = $Timers/JumpBuffer
@@ -226,6 +232,8 @@ func _ready() -> void:
 	# I hate myself
 	calculate_properties()
 	
+	# idk why this happens sometimes but on reset occasionally game gets confused
+	set_standing_collider()
 	
 	glow_manager.startup()
 
@@ -256,7 +264,7 @@ func _physics_process(delta: float) -> void:
 		# Calls the physics proceess
 		StateMachine.process_physics(delta)
 		
-		
+		# Actual movement operations
 		move_and_slide()
 		
 		# Corner Smoothing when jumping up
@@ -337,8 +345,8 @@ func _on_animated_sprite_2d_animation_finished():
 # This sucks but idk man
 func set_crouch_collider():
 	#pass
-	standing_collider.position = crouching_collider.position
-	standing_collider.shape.size = crouching_collider.shape.size
+	collider.position = crouching_collider.position
+	collider.shape.size = crouching_collider.shape.size
 	
 	# Enable the crouching one
 	#crouching_collider.disabled = false
@@ -348,8 +356,8 @@ func set_crouch_collider():
 
 func set_standing_collider():
 	#pass
-	standing_collider.position = standing_collider_pos
-	standing_collider.shape.size = standing_collider_shape
+	collider.position = standing_collider.position
+	collider.shape.size = standing_collider.shape.size
 	
 	# Enable it first
 	#standing_collider.disabled = false
@@ -472,7 +480,7 @@ func horizontal_corner_correction(delta):
 				offset += 6
 				correction_speed = 250
 			else:
-				#offset += 2
+				offset += 2
 				correction_speed = 100
 				
 			# Attempt to smoothly
@@ -532,6 +540,14 @@ func get_glow_score():
 
 func get_glow_level():
 	return glow_manager.movement_level
+	
+## Automatically use glow as soon as obtained
+func enable_auto_glow():
+	glow_manager.auto_glow = true
+
+## Requires pressing a button to glow
+func disable_auto_glow():
+	glow_manager.auto_glow = false
 	
 # Recalculated all the players movement properties
 #     Necessary because the player parameters are described in ways that are easier to measure,and quantify
@@ -621,11 +637,16 @@ func calculate_properties():
 	
 	
 		
+func give_boost(boost_speed: float) -> void:
+	
+	velocity.x += boost_speed * horizontal_axis 
+	var facing = (-1 if animation.flip_h else 1)
 		
+		
+	
+	#velocity += boost  * horizontal_axis
 
-# DEATH RELATED METHODS!
-##############################
-##############################
+## DEATH RELATED METHODS!
 # Whatever we need to do when the player dies can be called here
 func kill():
 	
@@ -638,9 +659,21 @@ func kill():
 	var death_animation = new_cloud.get_node("AnimationPlayer")
 	death_animation.play("Start")
 	
+	squish_node.squish(Vector2(0.5, 0.5))
+	
 	animation.visible = false
+	glow_aura.emitting = false
+	wall_slide_dust.emitting = false
+	mega_speed_particles.emitting = false
+	
+	
 	dying = true
+	
+	$Particles/GlowAura.emitting = false
+	
+	
 	glow_manager.reset_glow()
+	glow_manager.GLOW_ENABLED = false
 	
 	await get_tree().create_timer(1.5).timeout
 	global_position = starting_position
@@ -653,10 +686,12 @@ func kill():
 	respawn_animation.play("Start")
 	
 	await get_tree().create_timer(0.7).timeout
+	glow_manager.GLOW_ENABLED = true
 	
 	_stats.DEATHS += 1
 	global_position = starting_position
 	velocity = Vector2.ZERO
+	
 	squish_node.squish(death_squash)
 	animation.visible = true
 	dying = false

@@ -50,7 +50,8 @@ func enter() -> void:
 		landing_sfx.play(0)
 	
 		# Squish
-		parent.squish_node.squish(calc_landing_squish())
+		if jump_buffer.time_left == 0:
+			parent.squish_node.squish(calc_landing_squish())
 	
 		# Land into a sprint!
 		if abs(parent.velocity.x) >= parent.run_threshold:
@@ -61,7 +62,7 @@ func enter() -> void:
 
 		# Give dust on landing
 		var new_cloud = parent.LANDING_DUST.instantiate()
-		new_cloud.set_name("landing_dust_temp")
+		new_cloud.set_name("landing_dust_temp_grounded")
 		landing_dust.add_child(new_cloud)
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
@@ -251,5 +252,4 @@ func calc_landing_squish() -> Vector2:
 	var squish_blend = abs(parent.landing_speed) / parent.movement_data.MAX_FALL_SPEED
 	var x_squish = lerp(1.0, parent.landing_squash.x, squish_blend)
 	var y_squish = lerp(1.0, parent.landing_squash.y, squish_blend)
-	print(parent.landing_speed)
 	return Vector2(x_squish, y_squish)

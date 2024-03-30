@@ -11,6 +11,7 @@ extends Node
 @onready var meter = $"../UI_FX/Control/Meter"
 @onready var stars = $"../UI_FX/Star"
 @onready var glow_aura = $"../Particles/GlowAura"
+@onready var promotion_fx = $"../Particles/PromotionFx"
 
 
 
@@ -18,6 +19,8 @@ extends Node
 var movement_level: int = 0
 var max_level: int
 var score: float = 0
+
+var auto_glow: bool = false
 
 var GLOW_ENABLED: bool = true
 
@@ -76,8 +79,6 @@ func _process(delta):
 			# Start timer
 			MOMENTUM_TIMER.start()
 			
-			print("Starting Timer")
-		
 		# If we start moving then we stop the timer
 		elif PLAYER.velocity.x != 0 and not MOMENTUM_TIMER.is_stopped():
 			MOMENTUM_TIMER.stop()
@@ -107,7 +108,7 @@ func _process(delta):
 			
 	# Upgrading is the glow up is pressed and score is peaked
 	if movement_level <= max_level:
-		if round(glow_points) >= 100 and Input.is_action_just_pressed("Glow_Up"):
+		if round(glow_points) >= 100 and (Input.is_action_just_pressed("Glow_Up") or auto_glow):
 			promote()
 				
 	
@@ -118,13 +119,14 @@ func _process(delta):
 # Returns the current speed normalized to "expected" max speeds.
 func calc_speed() -> float:
 	
-	var new_speed: float = 0.0
 	
-	# If we're walljumping give bonus points :3
-	if (PLAYER.current_wj == PLAYER.WALLJUMPS.UPWARD or PLAYER.current_wj == PLAYER.WALLJUMPS.DOWNWARD):
-		new_speed = abs(PLAYER.velocity.y) * 3
-	else:
-		new_speed = abs(PLAYER.velocity.x)
+	
+	# If we're walljumping just give full points
+	if PLAYER.wallJumping and (PLAYER.current_wj == PLAYER.WALLJUMPS.UPWARD or PLAYER.current_wj == PLAYER.WALLJUMPS.DOWNWARD):
+		return 1.0
+	
+	var new_speed: float = 0.0
+	new_speed = abs(PLAYER.velocity.x)
 	
 	if PLAYER.is_on_floor():
 		return new_speed / PLAYER.air_speed
@@ -145,7 +147,6 @@ func calc_score():
 		var surplus: float = speed - 1
 		surplus *= surplus_multiplier
 		spd_score = 1 + surplus
-		print(surplus)
 	
 	
 	return spd_score
@@ -168,7 +169,7 @@ func reset_glow():
 
 # How we should be accessing change_state() 99% of the time unless in debug
 # Returns whether or not we promoted
-func promote() -> bool:
+func promote(starting_points: int = 20) -> bool:
 	if movement_level < max_level:
 		stars.emitting = true
 		
@@ -176,10 +177,19 @@ func promote() -> bool:
 		
 		# Setup new points
 		if movement_level != max_level:
-			glow_points = 20
+			glow_points = starting_points
+		
+		PLAYER.give_boost(200)
+		promotion_fx.emitting = true
 		
 		return true
-	return false
+		
+	# Just use the boost and consume points
+	else:
+		
+		PLAYER.give_boost(250)
+		glow_points = 10
+		return false
 
 # How we should be accessing change_state() 99% of the time unless debug mode
 func demote() -> bool:
@@ -230,7 +240,6 @@ func _on_momentum_time_timeout():
 	# If we still aren't moving
 	if PLAYER.velocity.x == 0:
 		
-		print("decaying irl")
 		
 		# Start decaying our points
 		decaying = true

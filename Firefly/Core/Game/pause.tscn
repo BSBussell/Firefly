@@ -1,0 +1,249 @@
+[gd_scene load_steps=8 format=3 uid="uid://mohrwc5amu2o"]
+
+[ext_resource type="Script" path="res://Scripts/Pause/pause.gd" id="1_7kahw"]
+[ext_resource type="LabelSettings" uid="uid://k52u7c7on45i" path="res://UI_Theme/HeaderText.tres" id="1_apw1f"]
+[ext_resource type="LabelSettings" uid="uid://4yd1xq3pf4m6" path="res://UI_Theme/selectFont.tres" id="2_1enlb"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="2_tdrhd"]
+[ext_resource type="PackedScene" uid="uid://xwwdv0rc1i5s" path="res://Core/CustomUIElements/AnimatedToggle.tscn" id="5_6x1tv"]
+
+[sub_resource type="Animation" id="Animation_5tj8j"]
+resource_name = "UnFold"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iw36x"]
+_data = {
+"UnFold": SubResource("Animation_5tj8j")
+}
+
+[node name="PauseMenu" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+color = Color(0.219608, 0.184314, 0.466667, 0.592157)
+script = ExtResource("1_7kahw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = -275.0
+offset_right = 352.0
+offset_bottom = 175.0
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="HeaderText" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "PAUSED"
+label_settings = ExtResource("1_apw1f")
+
+[node name="Items" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 150
+
+[node name="Top" type="VBoxContainer" parent="VBoxContainer/Items"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/separation = 20
+
+[node name="ResumeButton" type="Button" parent="VBoxContainer/Items/Top"]
+layout_mode = 2
+size_flags_horizontal = 0
+focus_neighbor_top = NodePath("../QuitButton")
+focus_neighbor_bottom = NodePath("../Settings/SettingsButton")
+theme = ExtResource("2_tdrhd")
+text = "Resume"
+
+[node name="Settings" type="HBoxContainer" parent="VBoxContainer/Items/Top"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 100
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer/Items/Top/Settings"]
+layout_mode = 2
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../../ResumeButton")
+focus_neighbor_right = NodePath("../SettingsContainer/AudioSettingContainer/Audio")
+focus_neighbor_bottom = NodePath("../../QuitButton")
+theme = ExtResource("2_tdrhd")
+text = "Settings"
+alignment = 0
+
+[node name="Control" type="Control" parent="VBoxContainer/Items/Top/Settings"]
+layout_mode = 2
+
+[node name="SettingsContainer" type="VBoxContainer" parent="VBoxContainer/Items/Top/Settings"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Padding" type="Control" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+
+[node name="AudioSettingContainer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="Audio" type="Button" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../../SettingsButton")
+focus_neighbor_right = NodePath("../MixerSetting/Music/MusicSlider")
+focus_neighbor_bottom = NodePath("../../FullScreenContainer/FullScreenToggle")
+theme = ExtResource("2_tdrhd")
+text = "Audio Mixer"
+alignment = 0
+
+[node name="MixerSetting" type="VBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Padding2" type="Control" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+
+[node name="Music" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+theme_override_constants/separation = 335
+
+[node name="MusicLabel" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+text = "Music"
+label_settings = ExtResource("2_1enlb")
+
+[node name="MusicSlider" type="HSlider" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../Audio")
+focus_neighbor_top = NodePath("../../../Audio")
+focus_neighbor_bottom = NodePath("../../SFX/SFXSlider")
+theme = ExtResource("2_tdrhd")
+max_value = 1.0
+step = 0.05
+value = 0.5
+scrollable = false
+
+[node name="SFX" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+theme_override_constants/separation = 385
+
+[node name="FullScreen" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+text = "SFX"
+label_settings = ExtResource("2_1enlb")
+
+[node name="SFXSlider" type="HSlider" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../Audio")
+focus_neighbor_top = NodePath("../../Music/MusicSlider")
+focus_neighbor_bottom = NodePath("../../Ambience/AmbienceSlider")
+theme = ExtResource("2_tdrhd")
+max_value = 1.0
+step = 0.05
+value = 0.5
+scrollable = false
+
+[node name="Ambience" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+theme_override_constants/separation = 250
+
+[node name="FullScreen" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+text = "Ambience"
+label_settings = ExtResource("2_1enlb")
+
+[node name="AmbienceSlider" type="HSlider" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../Audio")
+focus_neighbor_top = NodePath("../../SFX/SFXSlider")
+focus_neighbor_bottom = NodePath("../../../../FullScreenContainer/FullScreenToggle")
+theme = ExtResource("2_tdrhd")
+max_value = 1.0
+step = 0.05
+value = 0.5
+scrollable = false
+
+[node name="FullScreenContainer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+theme_override_constants/separation = 300
+
+[node name="FullScreen" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+text = "Fullscreen"
+label_settings = ExtResource("2_1enlb")
+
+[node name="FullScreenToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer" instance=ExtResource("5_6x1tv")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../AudioSettingContainer/Audio")
+focus_neighbor_bottom = NodePath("../../GlowModeContainer/GlowModeToggle")
+
+[node name="GlowModeContainer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+theme_override_constants/separation = 140
+
+[node name="Label" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer"]
+layout_mode = 2
+text = "Auto Glow Mode"
+label_settings = ExtResource("2_1enlb")
+
+[node name="GlowModeToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer" instance=ExtResource("5_6x1tv")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../FullScreenContainer/FullScreenToggle")
+focus_neighbor_bottom = NodePath("../../AudioSettingContainer/Audio")
+
+[node name="UnFolder" type="AnimationPlayer" parent="VBoxContainer/Items/Top/Settings"]
+libraries = {
+"": SubResource("AnimationLibrary_iw36x")
+}
+
+[node name="QuitButton" type="Button" parent="VBoxContainer/Items/Top"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("2_tdrhd")
+text = "Quit"
+
+[connection signal="pressed" from="VBoxContainer/Items/Top/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Items/Top/Settings/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/Audio" to="." method="_on_audio_pressed"]
+[connection signal="drag_ended" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music/MusicSlider" to="." method="_on_music_slider_drag_ended"]
+[connection signal="focus_entered" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music/MusicSlider" to="." method="_on_music_slider_focus_entered"]
+[connection signal="drag_ended" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX/SFXSlider" to="." method="_on_sfx_slider_drag_ended"]
+[connection signal="drag_ended" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience/AmbienceSlider" to="." method="_on_ambience_slider_drag_ended"]
+[connection signal="focus_entered" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience/AmbienceSlider" to="." method="_on_ambience_slider_focus_entered"]
+[connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer/FullScreenToggle" to="." method="_on_full_screen_toggle_switched_off"]
+[connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer/FullScreenToggle" to="." method="_on_full_screen_toggle_switched_on"]
+[connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle" to="." method="_on_glow_mode_toggle_switched_off"]
+[connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle" to="." method="_on_glow_mode_toggle_switched_on"]
+[connection signal="pressed" from="VBoxContainer/Items/Top/QuitButton" to="." method="_on_quit_button_pressed"]

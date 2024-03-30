@@ -21,8 +21,7 @@ var cache_airdrift
 
 # Called on state entrance, setup
 func enter() -> void:
-	print("Enter Wall State")
-	print("Stored Velocity: %f" % parent.velocity.x )
+	print("Wall State")
 	
 	pass
 
