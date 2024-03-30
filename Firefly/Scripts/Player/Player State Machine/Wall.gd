@@ -130,6 +130,8 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		var pitch = 0.2 * jump_dir
 		wall_jump_sfx.pitch_scale = 1 + pitch 
 		
+		Input.start_joy_vibration(1, 0.1, 0.1, 0.175)
+		
 		var new_cloud = parent.WJ_DUST.instantiate()
 		new_cloud.set_name("WJ_dust_temp")
 		wj_dust_spawner.add_child(new_cloud)

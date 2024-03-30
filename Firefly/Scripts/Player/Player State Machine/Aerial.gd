@@ -136,6 +136,7 @@ func process_physics(delta: float) -> PlayerState:
 	if parent.is_on_floor():
 		
 		parent.landing_speed = min_fall_speed
+		Input.start_joy_vibration(1, 0.1, 0.08, 0.175)
 		if Input.is_action_pressed("Down") or not have_stand_room():
 			
 			# IF the player stays crouching the whole time they can't chain it again

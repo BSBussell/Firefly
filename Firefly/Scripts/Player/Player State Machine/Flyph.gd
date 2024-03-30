@@ -653,6 +653,7 @@ func kill():
 	trail.clear_points()
 	
 	# DEATH EXPLOSION
+	Input.start_joy_vibration(1, 0.1, 0.2, 0.2)
 	var new_cloud = DEATH_DUST.instantiate()
 	new_cloud.set_name("death_dust_temp")
 	deathDust.add_child(new_cloud)

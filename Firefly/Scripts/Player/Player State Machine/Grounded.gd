@@ -45,6 +45,8 @@ func enter() -> void:
 	parent.set_standing_collider()
 	
 	
+	
+	
 	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
 		
 		landing_sfx.play(0)
@@ -66,6 +68,8 @@ func enter() -> void:
 		landing_dust.add_child(new_cloud)
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
+		
+		
 			
 		parent.wallJumping = false
 
