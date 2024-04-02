@@ -8,11 +8,13 @@ extends PlayerState
 @export_subgroup("Input Assists")
 @export var jump_buffer: Timer
 @export var coyote_time: Timer
+@onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
 
 # Particle Effects
 @onready var dash_dust = $"../../Particles/DashDust"
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
+@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 
 # Sound Effects
 @onready var landing_sfx = $"../../Audio/LandingSFX"
@@ -33,16 +35,25 @@ func enter() -> void:
 	
 	parent.crouchJumping = false
 	
+	# If we go to grounded we regain the ability to crouch jump
+	parent.canCrouchJump = true
+	
 	# Clamp Velocity because i hate fun rahh
-	clampf(parent.velocity.x, parent.speed * -1, parent.speed)
+	#clampf(parent.velocity.x, parent.speed * -1, parent.speed)
 	
 	# Setup the proper colliders for this state :3
 	parent.set_standing_collider()
 	
 	
+	
+	
 	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
 		
 		landing_sfx.play(0)
+	
+		# Squish
+		if jump_buffer.time_left == 0:
+			parent.squish_node.squish(calc_landing_squish())
 	
 		# Land into a sprint!
 		if abs(parent.velocity.x) >= parent.run_threshold:
@@ -53,10 +64,12 @@ func enter() -> void:
 
 		# Give dust on landing
 		var new_cloud = parent.LANDING_DUST.instantiate()
-		new_cloud.set_name("landing_dust_temp")
+		new_cloud.set_name("landing_dust_temp_grounded")
 		landing_dust.add_child(new_cloud)
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
+		
+		
 			
 		parent.wallJumping = false
 
@@ -103,9 +116,23 @@ func process_physics(delta: float) -> PlayerState:
 		return AERIAL_STATE
 	#parent.move_and_slide()
 	
+	# If for whatever reason we end up not having room above us then force the
+	# Player into crouch, might be used with Auto entering tunnel
+	if not AERIAL_STATE.have_stand_room():
+		parent.current_animation = parent.ANI_STATES.CROUCH
+		# parent.veloity.x = parent.prev_velocity_x
+		
+		return SLIDING_STATE
 	
 		
 	return null
+	
+func process_frame(delta):
+	if abs(parent.velocity.x) > parent.speed:
+		speed_particles.emitting = true
+		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
+	else:
+		speed_particles.emitting = false
 	
 # Our logic for making the player jumping
 func jump_logic(_delta):
@@ -127,7 +154,9 @@ func jump_logic(_delta):
 		
 		# TODO: One day explore the potential of a horizontal boost to the jump
 		parent.velocity.y = parent.jump_velocity
+		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
 		
+		parent.squish_node.squish(parent.jump_squash)
 		
 		jump_exit = true
 		
@@ -145,7 +174,13 @@ func handle_acceleration(delta, direction):
 	# Can't move forward when crouching or landing
 	if direction:  
 		if parent.current_animation != parent.ANI_STATES.CRAWL:
-			parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.accel * delta)
+			# Thank you maddy/noel/whoever on the exOK team came up with this, this was genius
+			if (abs(parent.velocity.x) > parent.speed and sign(parent.velocity.x) == sign(direction)):
+				# Reducing Speed to the cap 
+				parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.movement_data.SPEED_REDUCTION * delta)
+			else:
+				# Increasing speed
+				parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.accel * delta)
 	
 # Stop the character when they let go of the button
 func apply_friction(delta, direction):
@@ -170,11 +205,13 @@ func apply_friction(delta, direction):
 func update_state(direction):
 	
 	# Change direction
-	if direction > 0:
+	if direction > 0 and parent.animation.flip_h:
 		parent.animation.flip_h = false
+		parent.squish_node.squish(parent.turn_around_squash)
 		
-	elif direction < 0:
+	elif direction < 0 and not parent.animation.flip_h:
 		parent.animation.flip_h = true
+		parent.squish_node.squish(parent.turn_around_squash)
 	
 	# If set to running/walking from grounded state
 	if direction:
@@ -212,3 +249,11 @@ func animation_end() -> PlayerState:
 		parent.current_animation = parent.ANI_STATES.IDLE
 	
 	return null
+
+## Funny Method for calculating the landing squish using lerps
+func calc_landing_squish() -> Vector2:
+	
+	var squish_blend = abs(parent.landing_speed) / parent.movement_data.MAX_FALL_SPEED
+	var x_squish = lerp(1.0, parent.landing_squash.x, squish_blend)
+	var y_squish = lerp(1.0, parent.landing_squash.y, squish_blend)
+	return Vector2(x_squish, y_squish)

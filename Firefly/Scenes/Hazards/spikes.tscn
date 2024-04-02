@@ -10,6 +10,7 @@ position = Vector2(8, -8)
 texture = ExtResource("1_3r856")
 
 [node name="HazardArea" parent="." instance=ExtResource("2_eiied")]
+visible = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HazardArea"]
 polygon = PackedVector2Array(2, 0, 8, -10, 14, 0)

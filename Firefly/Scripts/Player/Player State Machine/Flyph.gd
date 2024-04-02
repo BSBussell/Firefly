@@ -8,12 +8,26 @@ extends CharacterBody2D
 @export_subgroup("MISC")
 @export var star: CPUParticles2D
 @export var debug_info: Label
+@export var meter: TextureProgressBar
 @export var MusicPlayer: AudioStreamPlayer
+
+@export_category("Visual Tweaks")
+@export_subgroup("Squash Constants")
+@export var jump_squash = Vector2(0.6, 1.4)
+@export var lJump_squash = Vector2(0.6, 1.4)
+@export var wJump_squash = Vector2(0.6, 1.4)
+@export var falling_squash = Vector2(0.5, 1.5)
+@export var landing_squash = Vector2( 1.5, 0.5)
+@export var crouch_squash = Vector2(1.4,0.6)
+@export var stand_up_squash = Vector2(1.4, 0.6)
+@export var turn_around_squash = Vector2(0.6, 1.0)
+@export var death_squash = Vector2(1.5, 0.5)
 
 # Our State Machine
 @onready var StateMachine = $StateMachine
 
 # Colliders
+@onready var collider = $Collider
 @onready var standing_collider = $Standing_Collider
 @onready var crouching_collider = $Crouching_Collider
 
@@ -22,20 +36,26 @@ extends CharacterBody2D
 
 
 # Visual Nodes
-@onready var animation = $Visuals/AnimatedSprite2D
-@onready var spotlight = $Visuals/Spotlight
-@onready var light = $Visuals/Spotlight
-@onready var trail = $Visuals/Trail
-@onready var deathDust = $Particles/JumpDustSpawner
+@onready var animation: AnimatedSprite2D = $Visuals/SquishCenter/AnimatedSprite2D
+@onready var squish_node: Node2D = $Visuals/SquishCenter
+@onready var spotlight: PointLight2D = $Visuals/Spotlight
+@onready var light: PointLight2D = $Visuals/Spotlight
+@onready var trail: Line2D = $Visuals/Trail
+@onready var deathDust: Marker2D = $Particles/JumpDustSpawner
+
+@onready var glow_aura = $Particles/GlowAura
+@onready var mega_speed_particles = $Particles/MegaSpeedParticles
+@onready var wall_slide_dust = $Particles/WallSlideDust
+
 
 # Timers
-@onready var jump_buffer = $Timers/JumpBuffer
-@onready var coyote_time = $Timers/CoyoteTime
-@onready var momentum_time = $Timers/MomentumTime
+@onready var jump_buffer: Timer = $Timers/JumpBuffer
+@onready var coyote_time: Timer = $Timers/CoyoteTime
+@onready var momentum_time: Timer = $Timers/MomentumTime
 
 # Vertical Corner Correction Raycasts
-@onready var top_left = $Raycasts/VerticalSmoothing/TopLeft
-@onready var top_right = $Raycasts/VerticalSmoothing/TopRight
+@onready var top_left: RayCast2D = $Raycasts/VerticalSmoothing/TopLeft
+@onready var top_right: RayCast2D = $Raycasts/VerticalSmoothing/TopRight
 
 # Horizontal Corner Correction Raycasts
 @onready var bottom_right = $Raycasts/HorizontalSmoothing/BottomRight
@@ -75,6 +95,9 @@ extends CharacterBody2D
 
 @onready var hill_speed: float
 @onready var hill_accel: float
+
+# Crouch Values
+@onready var longjump_velocity: float
 
 # Air Speed
 @onready var air_speed: float
@@ -122,8 +145,10 @@ const TILE_SIZE: int = 16
 
 const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
 const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
+const CROUCH_JUMP_DUST = preload("res://Scenes/Player/particles/crouchJumpDust.tscn")
 const WJ_DUST = preload("res://Scenes/Player/particles/wallJumpDust.tscn")
 const DEATH_DUST = preload("res://Scenes/Player/particles/DeathParticle.tscn")
+const RESPAWN_DUST = preload("res://Scenes/Player/particles/RespawnParticle.tscn")
 
 enum ANI_STATES { 
 	
@@ -141,16 +166,23 @@ enum ANI_STATES {
 
 # lol
 enum WALLJUMPS { NEUTRAL, UPWARD, DOWNWARD }
-var current_wj = WALLJUMPS.NEUTRAL
+var current_wj: WALLJUMPS = WALLJUMPS.NEUTRAL
+var current_wj_dir: float = 0
 
 # Various Player States Shared Across Bleh :3
-var fastFalling = false
-var airDriftDisabled = false
-var wallJumping = false
-var turningAround = false
-var crouchJumping = false
+var fastFalling: bool = false
+var airDriftDisabled: bool = false
+var wallJumping: bool = false
+var turningAround: bool = false
+var crouchJumping: bool = false
+var canCrouchJump: bool = true
 
+# Used for when hitting a wall kills our velocity and we wanna get it back
+var prev_velocity_x: float = 0.0
+var prev_velocity_y: float = 0.0
 
+## The Speed the player was moving before hitting the ground
+var landing_speed: float = 0.0
 
 # Animation values
 var current_animation: ANI_STATES
@@ -158,26 +190,31 @@ var prev_animation: ANI_STATES
 var restart_animation: bool = false
 
 # Input values
-var vertical_axis = 0
-var horizontal_axis = 0
+var vertical_axis: float = 0
+var horizontal_axis: float = 0
 
 # DEATH
 var dying: bool = false
 
 # Players Movement Score
-var movement_level = 0
-var score = 0
 
-const MAX_ENTRIES = 180
-const SPEEDOMETER_ENTRIES = 120
-const FF_ENTRIES = 10
-const SLIDE_ENTRIES = 10
+@onready var glow_manager: Glow_Manager = $GlowManager
 
-var air_speed_buffer = []
-var ground_speed_buffer = []
-var slide_buffer = []
-var speedometer_buffer = []
-var landings_buffer = [] # I think this one might be stupid ngl
+
+
+var movement_level: int = 0
+var score: float = 0
+
+const MAX_ENTRIES: int = 180
+const SPEEDOMETER_ENTRIES: int = 120
+const FF_ENTRIES: int = 10
+const SLIDE_ENTRIES: int = 10
+
+var air_speed_buffer: Array = []
+var ground_speed_buffer: Array = []
+var slide_buffer: Array = []
+var speedometer_buffer: Array = []
+var landings_buffer: Array = [] # I think this one might be stupid ngl
 
 var average_speed: float = 0
 var air_normalized_average_speed: float = 0
@@ -187,7 +224,7 @@ var average_slides: float = 0
 var tmp_modifier: float = 0
 
 
-var GLOW_ENABLED = true
+var GLOW_ENABLED: bool = true
 
 # I'm Being really annoying about this btw
 func _ready() -> void:
@@ -195,18 +232,10 @@ func _ready() -> void:
 	# I hate myself
 	calculate_properties()
 	
-	# Setting up our buffers
-	air_speed_buffer.resize(MAX_ENTRIES)
-	ground_speed_buffer.resize(MAX_ENTRIES)
-	landings_buffer.resize(FF_ENTRIES)
-	speedometer_buffer.resize(SPEEDOMETER_ENTRIES)
-	slide_buffer.resize(SLIDE_ENTRIES)
-
-	speedometer_buffer.fill(0)
-	air_speed_buffer.fill(0)
-	ground_speed_buffer.fill(0)
-	landings_buffer.fill(0)
-	slide_buffer.fill(0)
+	# idk why this happens sometimes but on reset occasionally game gets confused
+	set_standing_collider()
+	
+	glow_manager.startup()
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)
@@ -220,10 +249,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	# For quickly chaning states
 	if OS.is_debug_build():
-		if Input.is_action_just_pressed("debug_up") and movement_level != max_level:
-			change_state(movement_level + 1)
-		if Input.is_action_just_pressed("debug_down") and movement_level > 0:
-			change_state(movement_level - 1)
+		if Input.is_action_just_pressed("debug_up"):
+			glow_manager.promote()
+		if Input.is_action_just_pressed("debug_down") and glow_manager.movement_level > 0:
+			glow_manager.demote()
 		if Input.is_action_just_pressed("reset"):
 			calculate_properties()
 	
@@ -235,30 +264,25 @@ func _physics_process(delta: float) -> void:
 		# Calls the physics proceess
 		StateMachine.process_physics(delta)
 		
-		
+		# Actual movement operations
 		move_and_slide()
 		
 		# Corner Smoothing when jumping up
-		if velocity.y < 0 and not is_on_wall():
-			jump_corner_correction(delta)
+		if velocity.y < 0 and not is_on_wall(): jump_corner_correction(delta)
 			
 		# If they are moving horizontally or trying to move horizontally :3
-		if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0):
-			horizontal_corner_correction(delta) # Kinda a misleading name but pretty much we will gravitate the player towards small dips that it feels like the character should be able to step up
+		if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta) # Kinda a misleading name but pretty much we will gravitate the player towards small dips that it feels like the character should be able to step up
 		
 		# Auto Enter Tunnel
-		if is_on_wall_only():
-			auto_enter_tunnel(delta)
+		if is_on_wall(): auto_enter_tunnel(delta)
 		
+		## Update Scoring information based on movement speed, etc.
+		#update_speed()
+		#score = calc_score()
 		
-		
-		
-			
-		
-		
-		# Update Scoring information based on movement speed, etc.
-		update_speed()
-		score = calc_score()
+		# Store the velocity for next frame
+		prev_velocity_x = velocity.x
+		prev_velocity_y = velocity.y
 	
 func _process(delta: float) -> void:
 	
@@ -277,7 +301,8 @@ func _process(delta: float) -> void:
 
 	# Display current score for dev purposes.
 	# TODO: Use a meter of some kinda for this.
-	debug_info.text = "%.02f" % score
+	#debug_info.text = "%.02f" % score
+	#meter.set_score(score * 100)
 
 	
 # Update the current animation based on the current_Animatino variable
@@ -320,8 +345,8 @@ func _on_animated_sprite_2d_animation_finished():
 # This sucks but idk man
 func set_crouch_collider():
 	#pass
-	standing_collider.position = crouching_collider.position
-	standing_collider.shape.size = crouching_collider.shape.size
+	collider.position = crouching_collider.position
+	collider.shape.size = crouching_collider.shape.size
 	
 	# Enable the crouching one
 	#crouching_collider.disabled = false
@@ -331,8 +356,8 @@ func set_crouch_collider():
 
 func set_standing_collider():
 	#pass
-	standing_collider.position = standing_collider_pos
-	standing_collider.shape.size = standing_collider_shape
+	collider.position = standing_collider.position
+	collider.shape.size = standing_collider.shape.size
 	
 	# Enable it first
 	#standing_collider.disabled = false
@@ -348,10 +373,14 @@ func auto_enter_tunnel(delta):
 	
 	if (not crouch_left.is_colliding() and not bottom_left.is_colliding()) and get_wall_normal().x > 0: 
 		set_crouch_collider()
+		velocity.x = prev_velocity_x
+		squish_node.squish(crouch_squash)
 		crouchJumping = true
 	
-	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x > 0:
+	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x < 0:
 		set_crouch_collider()
+		velocity.x = prev_velocity_x
+		squish_node.squish(crouch_squash)
 		crouchJumping = true
 
 # When jumping if theres a corner above us we will attempt to guide the player
@@ -367,9 +396,11 @@ func jump_corner_correction(delta):
 		
 		if not test_move(global_transform, Vector2(strength * delta, 0)):
 			position.x += strength * delta
+			squish_node.squish(jump_squash)
 	elif not top_left.is_colliding() and top_right.is_colliding():
 		if not test_move(global_transform, Vector2(-strength * delta, 0)):
 			position.x -= strength * delta
+			squish_node.squish(jump_squash)
 		#position.x -= strength * delta
 
 
@@ -425,6 +456,7 @@ func horizontal_corner_correction(delta):
 			if not test_move(global_transform, motion):
 				# If no collision, update the position
 				position.y = test_y
+				squish_node.squish( Vector2(1.2, 0.8))
 
 				
 	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
@@ -448,7 +480,7 @@ func horizontal_corner_correction(delta):
 				offset += 6
 				correction_speed = 250
 			else:
-				#offset += 2
+				offset += 2
 				correction_speed = 100
 				
 			# Attempt to smoothly
@@ -462,6 +494,7 @@ func horizontal_corner_correction(delta):
 			if not test_move(global_transform, motion):
 				# If no collision, update the position
 				position.y = test_y
+				squish_node.squish( Vector2(1.2, 0.8))
 
 			
 
@@ -481,125 +514,40 @@ func set_corner_snapping_length(offset: float):
 
 
 
-#  Glow State Functions
+##  Glow State Functions
 #######################################
 #######################################
+func enable_glow():
+	#glow_manager.reset_score()
+	glow_manager.GLOW_ENABLED = true
+	
+func disable_glow():
+	
+	# Reset our level and bleh :3
+	glow_manager.change_state(0)
+	#glow_manager.reset_score()
+	glow_manager.GLOW_ENABLED = false
+	
+# Just an external setter
+func add_glow(amount: float) -> void:
+	glow_manager.add_score(amount)
 
-# Record Current Speed
-func update_speed():
-	
-	var new_speed: float = 0.0
-	
-	if (current_wj == WALLJUMPS.UPWARD or current_wj == WALLJUMPS.DOWNWARD):
-		new_speed = abs(velocity.y) * 3
-	else:
-		new_speed = abs(velocity.x)
-	
-	
-	
-	var air_percentage_value = new_speed / air_speed
-	var ground_percentage_value = new_speed / speed
-	
-	# Add the new speed value to the buffer and remove the oldest entry
-	air_speed_buffer.pop_front()
-	air_speed_buffer.append(air_percentage_value)
-	
-	ground_speed_buffer.pop_front()
-	ground_speed_buffer.append(ground_percentage_value)
-	
-	speedometer_buffer.pop_front()
-	speedometer_buffer.append(new_speed)
-	
-	# Update the average speed using reduce()
-	air_normalized_average_speed = air_speed_buffer.reduce(func(acc, num): return acc + num) / air_speed_buffer.size()
-	ground_normalized_average_speed = ground_speed_buffer.reduce(func(acc, num): return acc + num) / ground_speed_buffer.size()
-	average_speed = speedometer_buffer.reduce(func(acc, num): return acc + num) / speedometer_buffer.size()
+func force_glow_update():
+	glow_manager.update_score()
 
-# Called each landing, we counts how often we land with a fast fall
-# The assumption being that a player fast falling often is moving quickly lol
-func update_ff_landings(did_ff_land):
-	# Add the new fast-fall landing value (1.0 for yes, 0.0 for no) to the buffer and remove the oldest entry
-	landings_buffer.pop_front()
-	landings_buffer.append(did_ff_land)
-	# Update the average fast-fall landings using reduce()
-	average_ff_landings = landings_buffer.reduce(func(acc, num): return acc + num) / landings_buffer.size()
+func get_glow_score():
+	return glow_manager.glow_points
 
-# Called on every slide, allows us to count how often the player slides optimally
-func update_slides(was_optimal):
+func get_glow_level():
+	return glow_manager.movement_level
 	
-	slide_buffer.pop_front()
-	slide_buffer.append(was_optimal)
-	
-	average_slides = slide_buffer.reduce(func(acc, num): return acc + num) / slide_buffer.size()
+## Automatically use glow as soon as obtained
+func enable_auto_glow():
+	glow_manager.auto_glow = true
 
-# Updates the score and change states if appropriate
-func update_score():
-	
-	score = calc_score()
-	
-	if GLOW_ENABLED:
-		if score >= movement_data.UPGRADE_SCORE and movement_level != max_level:
-			
-			star.emitting = true
-			change_state(movement_level + 1)
-			
-		elif score <= movement_data.DOWNGRADE_SCORE and movement_level != 0:
-			
-			change_state(movement_level - 1)
-
-# This is its own function so it can easily be changed
-func calc_score():
-	
-	var ff_score = (0.2 * average_ff_landings)
-	var slide_score = (0.2 * average_slides)
-	
-	# Speed Score (these numbers are not arbitrary lmao)
-	var air_spd_score = (0.1625 * air_normalized_average_speed)
-	var ground_spd_score = (0.4875 * ground_normalized_average_speed)
-	
-	# Honestly this is probably a shitty way of doing this lmao
-	
-	var spd_score = air_spd_score + ground_spd_score
-	
-	
-	return ff_score + spd_score + slide_score + tmp_modifier
-
-# Timer that determines how often we are checking the score
-func _on_momentum_time_timeout():
-	update_score()
-	
-# A public facing method that can be called by other scripts (ex, collectibles) in order to increase
-# 	Player's momentum value
-func add_score(amount: float, weight: float) -> void:
-	tmp_modifier += amount
-	await get_tree().create_timer(weight).timeout
-	tmp_modifier -= amount
-
-func reset_score():
-	
-	speedometer_buffer.fill(0)
-	air_speed_buffer.fill(0)
-	ground_speed_buffer.fill(0)
-	landings_buffer.fill(0)
-	slide_buffer.fill(0)
-
-# Recalculating variables changing state
-# This is a big weird but by doing it like this it enables us to jump around levels
-# In debug or just whatever
-func change_state(level: int):
-	
-	# This should only be called when im lazy
-	#if level == movement_level:
-		#return
-	
-	movement_level = level
-	
-	# Ok set the new movement level
-	movement_data = movement_states[movement_level]
-	
-	# Big ass math moment
-	calculate_properties()
-	
+## Requires pressing a button to glow
+func disable_auto_glow():
+	glow_manager.auto_glow = false
 	
 # Recalculated all the players movement properties
 #     Necessary because the player parameters are described in ways that are easier to measure,and quantify
@@ -686,38 +634,72 @@ func calculate_properties():
 	light.set_brightness(movement_data.BRIGHTNESS)
 	trail.set_glow(movement_data.GLOW)
 	animation.set_glow(movement_data.GLOW)
+	
+	
+		
+func give_boost(boost_speed: float) -> void:
+	
+	velocity.x += boost_speed * horizontal_axis 
+	var facing = (-1 if animation.flip_h else 1)
+		
+		
+	
+	#velocity += boost  * horizontal_axis
 
+## DEATH RELATED METHODS!
 # Whatever we need to do when the player dies can be called here
 func kill():
 	
 	trail.clear_points()
 	
-	# Give dust on landing
+	# DEATH EXPLOSION
+	Input.start_joy_vibration(1, 0.1, 0.2, 0.2)
 	var new_cloud = DEATH_DUST.instantiate()
 	new_cloud.set_name("death_dust_temp")
 	deathDust.add_child(new_cloud)
 	var death_animation = new_cloud.get_node("AnimationPlayer")
 	death_animation.play("Start")
 	
+	squish_node.squish(Vector2(0.5, 0.5))
+	
 	animation.visible = false
+	glow_aura.emitting = false
+	wall_slide_dust.emitting = false
+	mega_speed_particles.emitting = false
+	
+	
 	dying = true
+	
+	$Particles/GlowAura.emitting = false
+	
+	
+	glow_manager.reset_glow()
+	glow_manager.GLOW_ENABLED = false
 	
 	await get_tree().create_timer(1.5).timeout
 	global_position = starting_position
+	
+	# LIFE EXPLOSION
+	var respawn_cloud = RESPAWN_DUST.instantiate()
+	respawn_cloud.set_name("Respawn_dust_temp")
+	deathDust.add_child(respawn_cloud)
+	var respawn_animation = respawn_cloud.get_node("AnimationPlayer")
+	respawn_animation.play("Start")
+	
+	await get_tree().create_timer(0.7).timeout
+	glow_manager.GLOW_ENABLED = true
+	
+	_stats.DEATHS += 1
+	global_position = starting_position
 	velocity = Vector2.ZERO
+	
+	squish_node.squish(death_squash)
 	animation.visible = true
 	dying = false
-	change_state(0)
-	reset_score()
+	
 
 func _on_hazard_detector_area_entered(area):
-	
-	
-	print("y")
 	kill()
-
-
 
 func _on_hazard_detector_body_entered(body):
 	kill()
-	pass # Replace with function body.

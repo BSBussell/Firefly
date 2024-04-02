@@ -1,21 +1,401 @@
-[gd_scene load_steps=4 format=3 uid="uid://rlrtgfd0qf8k"]
+[gd_scene load_steps=14 format=3 uid="uid://rlrtgfd0qf8k"]
 
 [ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="1_m3sud"]
 [ext_resource type="Script" path="res://Scripts/Collectibles/FlyJar.gd" id="1_thq2o"]
+[ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="2_u78lh"]
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="3_58wft"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_sikls"]
+[ext_resource type="AudioStream" uid="uid://n1jp21srkgrf" path="res://Scenes/glass_hit_2.mp3" id="4_6sys7"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rubtm"]
 radius = 7.0
 height = 20.0
 
+[sub_resource type="Animation" id="Animation_807ua"]
+resource_name = "Start"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("+/DeathDustN:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Smoke/DeathSmoke:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("+/DeathDustS:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("+/DeathDustE:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("+/DeathDustW:emitting")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Smoke/DeathSmoke_S:emitting")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r0iy2"]
+_data = {
+"Start": SubResource("Animation_807ua")
+}
+
+[sub_resource type="Gradient" id="Gradient_a3cyy"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.336066, 0.8, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 1, 1, 0.670588, 1, 1, 1, 0)
+
+[sub_resource type="Animation" id="Animation_1h70t"]
+resource_name = "Grab"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.2, 1), Vector2(0, 1)]
+}
+tracks/1/type = "animation"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Explosion/AnimationPlayer")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"clips": PackedStringArray("Start"),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FireFlies:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D:energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_ejuv7"]
+resource_name = "Idle"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 5), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_df1wb"]
+_data = {
+"Grab": SubResource("Animation_1h70t"),
+"Idle": SubResource("Animation_ejuv7")
+}
+
 [node name="FlyJar" type="Area2D"]
 collision_layer = 4
-collision_mask = 32
+collision_mask = 17
 script = ExtResource("1_thq2o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_rubtm")
 
+[node name="Explosion" type="Node2D" parent="."]
+modulate = Color(2, 2, 1, 1)
+rotation = 0.785398
+scale = Vector2(0.75, 0.75)
+
+[node name="+" type="Node2D" parent="Explosion"]
+modulate = Color(1, 1, 0, 1)
+
+[node name="DeathDustN" type="CPUParticles2D" parent="Explosion/+"]
+emitting = false
+amount = 3
+lifetime = 2.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.5
+randomness = 0.6
+texture = ExtResource("2_u78lh")
+emission_shape = 3
+emission_rect_extents = Vector2(5, 5)
+direction = Vector2(0, -1)
+spread = 0.0
+gravity = Vector2(0, 20)
+initial_velocity_min = 40.0
+initial_velocity_max = 40.0
+linear_accel_max = 5.0
+damping_min = 3.425
+damping_max = 3.425
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.2
+scale_amount_max = 0.5
+
+[node name="DeathDustE" type="CPUParticles2D" parent="Explosion/+"]
+emitting = false
+amount = 3
+lifetime = 2.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.5
+randomness = 0.6
+texture = ExtResource("2_u78lh")
+emission_shape = 3
+emission_rect_extents = Vector2(5, 5)
+spread = 0.0
+gravity = Vector2(-20, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 40.0
+linear_accel_max = 5.0
+damping_min = 3.425
+damping_max = 3.425
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.2
+scale_amount_max = 0.5
+
+[node name="DeathDustS" type="CPUParticles2D" parent="Explosion/+"]
+emitting = false
+amount = 3
+lifetime = 2.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.5
+randomness = 0.6
+texture = ExtResource("2_u78lh")
+emission_shape = 3
+emission_rect_extents = Vector2(5, 5)
+direction = Vector2(0, 1)
+spread = 0.0
+gravity = Vector2(0, -20)
+initial_velocity_min = 40.0
+initial_velocity_max = 40.0
+linear_accel_min = -5.0
+linear_accel_max = 2.0
+damping_min = 3.425
+damping_max = 3.425
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.2
+scale_amount_max = 0.5
+
+[node name="DeathDustW" type="CPUParticles2D" parent="Explosion/+"]
+emitting = false
+amount = 3
+lifetime = 2.0
+one_shot = true
+speed_scale = 3.0
+explosiveness = 0.5
+randomness = 0.6
+texture = ExtResource("2_u78lh")
+emission_shape = 3
+emission_rect_extents = Vector2(5, 5)
+direction = Vector2(-1, 0)
+spread = 0.0
+gravity = Vector2(20, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 40.0
+linear_accel_max = 5.0
+damping_min = 3.425
+damping_max = 3.425
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.2
+scale_amount_max = 0.5
+
+[node name="Smoke" type="Node2D" parent="Explosion"]
+modulate = Color(1, 1, 0, 1)
+
+[node name="DeathSmoke" type="CPUParticles2D" parent="Explosion/Smoke"]
+emitting = false
+amount = 5
+lifetime = 2.0
+one_shot = true
+speed_scale = 2.0
+explosiveness = 0.5
+randomness = 0.6
+lifetime_randomness = 0.25
+texture = ExtResource("3_58wft")
+emission_shape = 3
+emission_rect_extents = Vector2(8, 5)
+direction = Vector2(0, -1)
+gravity = Vector2(0, 20)
+initial_velocity_min = 29.29
+initial_velocity_max = 29.29
+linear_accel_max = 5.0
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.2
+scale_amount_max = 0.4
+
+[node name="DeathSmoke_S" type="CPUParticles2D" parent="Explosion/Smoke"]
+emitting = false
+amount = 5
+lifetime = 2.0
+one_shot = true
+speed_scale = 2.0
+explosiveness = 0.5
+randomness = 0.6
+lifetime_randomness = 0.25
+texture = ExtResource("3_58wft")
+emission_shape = 3
+emission_rect_extents = Vector2(8, 5)
+direction = Vector2(0, 1)
+gravity = Vector2(0, -20)
+initial_velocity_min = 29.29
+initial_velocity_max = 29.29
+linear_accel_max = 5.0
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.2
+scale_amount_max = 0.4
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Explosion"]
+stream = ExtResource("4_6sys7")
+volume_db = -5.0
+pitch_scale = 1.6
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Explosion"]
+libraries = {
+"": SubResource("AnimationLibrary_r0iy2")
+}
+
+[node name="FireFlies" type="CPUParticles2D" parent="."]
+modulate = Color(6, 6, 2.5, 1)
+position = Vector2(0, 5)
+amount = 10
+speed_scale = 0.8
+randomness = 1.0
+emission_shape = 1
+emission_sphere_radius = 8.3
+direction = Vector2(0, -1)
+gravity = Vector2(0, -50)
+orbit_velocity_min = -1.0
+orbit_velocity_max = 1.0
+damping_min = 10.0
+damping_max = 10.0
+scale_amount_max = 1.5
+color = Color(0.890196, 0.921569, 0, 1)
+color_ramp = SubResource("Gradient_a3cyy")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1.5, 1.5, 1, 1)
+position = Vector2(0, 0.0317688)
 texture = ExtResource("1_m3sud")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_df1wb")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.8
+texture = ExtResource("3_sikls")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

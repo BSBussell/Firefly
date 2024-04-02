@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=88 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://csjt8cboxggev" path="res://Scenes/Player/Movement_Presets/Stage1Movement.tres" id="3_w3b7s"]
 [ext_resource type="Resource" uid="uid://dsjjsd36v17p1" path="res://Scenes/Player/Movement_Presets/Stage2Movement.tres" id="4_66rk6"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="5_63g2f"]
+[ext_resource type="Script" path="res://Scenes/Player/SquishCenter.gd" id="5_t485n"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="6_bo4q8"]
 [ext_resource type="Script" path="res://Scenes/Player/Modulation.gd" id="6_vid37"]
 [ext_resource type="Script" path="res://Scenes/Player/trail.gd" id="7_se6t7"]
@@ -19,16 +20,29 @@
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
 [ext_resource type="AudioStream" uid="uid://dabydr3n6ho76" path="res://Assets/SFX/Player/jump_1.mp3" id="12_m3poj"]
 [ext_resource type="AudioStream" uid="uid://b6jwf7oavshmg" path="res://Assets/SFX/Player/jump_2.mp3" id="14_hplrh"]
-[ext_resource type="Script" path="res://Scenes/Player/Sliding.gd" id="14_n2n20"]
 [ext_resource type="AudioStream" uid="uid://drn56tacwbwh1" path="res://Assets/SFX/Player/Landing.wav" id="15_o0d2x"]
 [ext_resource type="AudioStream" uid="uid://dhvsjt5lta3gk" path="res://Assets/SFX/Player/Sliding.wav" id="17_r3q20"]
+[ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="18_mioiu"]
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
+[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Sliding.gd" id="23_0bu6o"]
+[ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
+[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
+[ext_resource type="Script" path="res://Scenes/Player/Speedometer.gd" id="26_0wrd0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6vnjo"]
+size = Vector2(6, 15)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_143ut"]
 size = Vector2(6, 15)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_seiic"]
 size = Vector2(6, 8.5)
+
+[sub_resource type="Curve" id="Curve_umqtl"]
+max_value = 2.0
+_data = [Vector2(0, 0), 0.0, 3.0, 0, 0, Vector2(0.25, 1.2), -1.5, -1.5, 0, 0, Vector2(0.5, 0.8), 1.0, 1.0, 0, 0, Vector2(1, 1), 0.25, 0.0, 0, 0]
+point_count = 4
+metadata/_snap_enabled = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpwsx"]
 atlas = ExtResource("5_63g2f")
@@ -375,12 +389,21 @@ point_count = 2
 _data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="Gradient" id="Gradient_r3nhe"]
+offsets = PackedFloat32Array(0.879781, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
 [sub_resource type="Gradient" id="Gradient_xmxui"]
 offsets = PackedFloat32Array(0.555256, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
+[sub_resource type="Gradient" id="Gradient_diik4"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.710383, 0.803279, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.588921, 1, 1, 1, 0)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_polx2"]
-size = Vector2(6.5, 10.5)
+size = Vector2(6.5, 13.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dj0fv"]
 size = Vector2(0, 10)
@@ -399,7 +422,10 @@ colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0
 font = ExtResource("10_nb4h7")
 font_size = 8
 
-[node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info")]
+[sub_resource type="LabelSettings" id="LabelSettings_yau3k"]
+font = ExtResource("25_bx13g")
+
+[node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info", "meter")]
 position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 34
@@ -409,10 +435,27 @@ script = ExtResource("1_hphyi")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 star = NodePath("UI_FX/Star")
 debug_info = NodePath("UI_FX/debug info")
+meter = NodePath("UI_FX/Control/Meter")
+lJump_squash = Vector2(0.4, 1.6)
+wJump_squash = Vector2(0.7, 1.3)
+falling_squash = Vector2(0.8, 1.2)
+landing_squash = Vector2(1.6, 0.4)
+crouch_squash = Vector2(1.3, 0.7)
+stand_up_squash = Vector2(1.3, 0.7)
+turn_around_squash = Vector2(0.9, 1.1)
+death_squash = Vector2(0.5, 1.5)
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_6vnjo")
+debug_color = Color(0.890196, 0.921569, 0.34902, 0.733333)
 
 [node name="Standing_Collider" type="CollisionShape2D" parent="."]
+visible = false
+z_index = 1
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_143ut")
+disabled = true
 debug_color = Color(0.733333, 0.764706, 0, 0.419608)
 
 [node name="Crouching_Collider" type="CollisionShape2D" parent="."]
@@ -424,13 +467,18 @@ debug_color = Color(0, 0.764706, 0, 0.372549)
 
 [node name="Visuals" type="Node2D" parent="."]
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
+[node name="SquishCenter" type="Node2D" parent="Visuals"]
+script = ExtResource("5_t485n")
+bounce_curve = SubResource("Curve_umqtl")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"falling"
+animation = &"landing"
 autoplay = "idle"
+frame = 2
+frame_progress = 1.0
 script = ExtResource("6_vid37")
-metadata/_edit_lock_ = true
 
 [node name="Trail" type="Line2D" parent="Visuals"]
 modulate = Color(2.5, 2.6, 1.25, 1)
@@ -462,11 +510,72 @@ metadata/_edit_lock_ = true
 
 [node name="Particles" type="Node2D" parent="."]
 
+[node name="GlowAura" type="CPUParticles2D" parent="Particles"]
+modulate = Color(3, 3, 1, 1)
+z_index = -1
+position = Vector2(-1, -9)
+emitting = false
+amount = 32
+randomness = 0.32
+texture = ExtResource("8_shld8")
+emission_shape = 1
+emission_sphere_radius = 10.0
+gravity = Vector2(0, -20)
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+orbit_velocity_min = -0.1
+orbit_velocity_max = 0.1
+radial_accel_min = -10.0
+radial_accel_max = 10.0
+damping_min = 0.1
+damping_max = 0.2
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.1
+scale_amount_max = 0.2
+color = Color(3, 3, 0, 1)
+color_ramp = SubResource("Gradient_r3nhe")
+
+[node name="PromotionFx" type="CPUParticles2D" parent="Particles"]
+modulate = Color(3, 3, 1, 1)
+z_index = -1
+position = Vector2(-1, -9)
+emitting = false
+amount = 48
+one_shot = true
+explosiveness = 0.7
+randomness = 0.32
+texture = ExtResource("8_shld8")
+emission_shape = 1
+emission_sphere_radius = 10.0
+gravity = Vector2(0, -20)
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+orbit_velocity_min = -0.1
+orbit_velocity_max = 0.1
+radial_accel_min = -10.0
+radial_accel_max = 10.0
+damping_min = 0.1
+damping_max = 0.2
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.1
+scale_amount_max = 0.2
+color = Color(3, 3, 0, 1)
+color_ramp = SubResource("Gradient_r3nhe")
+
 [node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
 z_index = 1
 position = Vector2(0, -1)
 emitting = false
 emission_rect_extents = Vector2(2, 3)
+
+[node name="WallSlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
+z_index = 1
+position = Vector2(0, -8)
+emitting = false
+emission_rect_extents = Vector2(2, 3)
+direction = Vector2(2, -10)
 
 [node name="WJDustSpawner" type="Marker2D" parent="Particles"]
 position = Vector2(-6, -7)
@@ -489,19 +598,47 @@ emission_shape = 3
 emission_rect_extents = Vector2(1, 2.5)
 gravity = Vector2(0, 0)
 scale_amount_min = 0.15
-scale_amount_max = 0.25
-color = Color(0.403922, 1, 0.521569, 1)
+scale_amount_max = 0.3
 color_ramp = SubResource("Gradient_xmxui")
 metadata/_edit_lock_ = true
 
+[node name="MegaSpeedParticles" type="CPUParticles2D" parent="Particles"]
+position = Vector2(-1, -9)
+emitting = false
+lifetime = 0.5
+randomness = 1.0
+lifetime_randomness = 1.0
+texture = ExtResource("8_shld8")
+emission_shape = 3
+emission_rect_extents = Vector2(2, 6)
+direction = Vector2(-1, 0)
+spread = 12.26
+gravity = Vector2(0, 0)
+initial_velocity_min = 25.0
+initial_velocity_max = 25.0
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+orbit_velocity_min = -0.13
+orbit_velocity_max = 0.13
+linear_accel_min = 10.0
+linear_accel_max = 10.0
+damping_min = 41.841
+damping_max = 48.117
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.2
+scale_amount_max = 0.3
+color = Color(1, 1, 0, 1)
+color_ramp = SubResource("Gradient_diik4")
+
 [node name="Physics" type="Node2D" parent="."]
+visible = false
 
 [node name="HazardDetector" type="Area2D" parent="Physics"]
-visible = false
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
-position = Vector2(-1, -7)
+position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="Raycasts" type="Node2D" parent="."]
@@ -514,7 +651,7 @@ enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
 target_position = Vector2(3, 0)
 max_results = 1
-collision_mask = 2
+collision_mask = 18
 
 [node name="Left_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
 position = Vector2(-3, 0)
@@ -522,7 +659,7 @@ enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
 target_position = Vector2(-3, 0)
 max_results = 1
-collision_mask = 2
+collision_mask = 18
 
 [node name="VerticalSmoothing" type="Node2D" parent="Raycasts"]
 
@@ -616,30 +753,46 @@ hit_from_inside = true
 [node name="LandingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("15_o0d2x")
 volume_db = -10.0
+bus = &"SFX"
 
 [node name="JumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("12_m3poj")
 volume_db = -5.0
 pitch_scale = 0.66
+bus = &"SFX"
+
+[node name="CrouchJumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("12_m3poj")
+volume_db = -5.0
+pitch_scale = 0.6
+bus = &"SFX"
 
 [node name="SlidingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("17_r3q20")
+bus = &"SFX"
+
+[node name="WallSlideSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("17_r3q20")
+pitch_scale = 2.0
+bus = &"SFX"
 
 [node name="WallJumpSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("14_hplrh")
 volume_db = -7.0
 pitch_scale = 1.33
+bus = &"SFX"
 
 [node name="RunSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("19_pmf6f")
 volume_db = -5.0
+bus = &"SFX"
 
 [node name="UI_FX" type="CanvasLayer" parent="."]
 
 [node name="Star" type="CPUParticles2D" parent="UI_FX"]
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
-position = Vector2(159, 0)
+position = Vector2(160, 180)
 emitting = false
 amount = 16
 one_shot = true
@@ -648,6 +801,7 @@ local_coords = true
 texture = ExtResource("8_shld8")
 emission_shape = 3
 emission_rect_extents = Vector2(180, 1)
+gravity = Vector2(0, -980)
 damping_min = 8.908
 damping_max = 8.908
 angle_min = -180.0
@@ -655,15 +809,39 @@ angle_max = 180.0
 color = Color(1, 1, 0.337255, 1)
 color_ramp = SubResource("Gradient_k6x1h")
 
+[node name="Control" type="Control" parent="UI_FX"]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Meter" parent="UI_FX/Control" instance=ExtResource("18_mioiu")]
+layout_mode = 0
+offset_right = 90.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+min_value = -33.0
+increase_speed = 900.0
+decrease_speed = 900.0
+
 [node name="debug info" type="Label" parent="UI_FX"]
+visible = false
 light_mask = 0
 anchors_preset = -1
 anchor_right = 0.044
 anchor_bottom = 0.032
 offset_left = 257.0
 offset_top = 157.0
-offset_right = 298.92
-offset_bottom = 169.24
+offset_right = 315.68
+offset_bottom = 170.816
 text = "Score"
 label_settings = SubResource("LabelSettings_iomiv")
 
@@ -694,11 +872,15 @@ SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
 [node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "coyote_time")]
-script = ExtResource("14_n2n20")
+script = ExtResource("23_0bu6o")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
+
+[node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
+script = ExtResource("25_5it1v")
+MOMENTUM_TIMER = NodePath("../Timers/MomentumTime")
 
 [node name="Timers" type="Node" parent="."]
 
@@ -712,9 +894,27 @@ one_shot = true
 
 [node name="MomentumTime" type="Timer" parent="Timers"]
 wait_time = 3.0
-autostart = true
+one_shot = true
 
-[connection signal="animation_finished" from="Visuals/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[node name="CrouchJumpWindow" type="Timer" parent="Timers"]
+wait_time = 0.05
+one_shot = true
+
+[node name="Debug" type="Node2D" parent="."]
+visible = false
+
+[node name="Speedometer" type="Label" parent="Debug"]
+offset_left = -10.0
+offset_top = -29.0
+offset_right = 8.0
+offset_bottom = -15.0
+text = "120"
+label_settings = SubResource("LabelSettings_yau3k")
+horizontal_alignment = 1
+script = ExtResource("26_0wrd0")
+
+[connection signal="animation_finished" from="Visuals/SquishCenter/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
 [connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
-[connection signal="timeout" from="Timers/MomentumTime" to="." method="_on_momentum_time_timeout"]
+[connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
+[connection signal="timeout" from="Timers/CrouchJumpWindow" to="StateMachine/Sliding" method="_on_crouch_jump_window_timeout"]

@@ -1,19 +1,31 @@
+## TODO: Fix the trail getting longer/shorter the lower the fps
+
 extends Line2D
 
-@export var length = 10
-var point = Vector2()
+@export var length: int = 10
+
+# Color values
+@onready var current_color: Color = modulate
+@onready var goal_color: Color = modulate
+
+
+
 
 # Interpolation state
 var interpolating: bool = false
 var interpolation_time: float = 0.0
 var interpolation_duration: float = 1.0  # Adjust this to control the speed of the interpolation
 
-# Color values
-@onready var current_color: Color = modulate
-@onready var goal_color: Color = modulate
+var point = Vector2()
+
+var fps_adjusted_length: int = 10
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	fps_adjusted_length = length * (Engine.get_frames_per_second() / 60)
+	
 	global_position = Vector2(0, 0)
 	global_rotation = 0
 
@@ -22,7 +34,7 @@ func _process(delta):
 
 	add_point(point)
 
-	while get_point_count() > length:
+	while get_point_count() > fps_adjusted_length:
 		remove_point(0)
 
 	if interpolating:

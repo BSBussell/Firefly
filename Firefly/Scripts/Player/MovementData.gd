@@ -7,18 +7,22 @@ extends Resource
 @export var TIME_TO_ACCEL: float = 0.5
 @export var FRICTION: float = 31.25 		# In terms of how far the player will slide without acceleration
 @export var TURN_FRICTION: float = 50.0
+@export var SPEED_REDUCTION: float = 400	# The speed at which the players speed will decrease
 
 @export_subgroup("Jump Properties")
 
 @export var MAX_JUMP_HEIGHT: float = 2			# The max height of our jump in tiles because im so silly like that
 @export var JUMP_RISE_TIME: float = 0.4			# The time it takes to reach that height
 @export var JUMP_FALL_TIME: float = 0.3 		# The time it takes to fall back down
+@export var JUMP_HORIZ_BOOST: float = 30		# The max speed added on jumping
 
 
 @export_subgroup("Air Movement")
 @export var AIR_SPEED: float = 10 			# The Speed in the air
 @export var AIR_TIME_TO_ACCEL: float = 20 			# Ability to change directions in air
 @export var AIR_FRICT: float = 30			# Friction but in the air
+@export var MAX_FALL_SPEED: float = 1300
+@export var AIR_SPEED_RECUTION: float = 120.0		# The rate of deceleration when above max speed
 
 # How far you fall after
 @export var FASTFALL_MULTIPLIER: float = 2.5
@@ -34,15 +38,19 @@ extends Resource
 @export var WALL_JUMP_VECTOR: Vector2 = Vector2(2.0, 3.0)	 	# Approx. How many tiles a wall jump will send the player
 @export var DISABLE_DRIFT: bool = true
 @export var WJ_RISE_TIME: float = 0.25
+@export var WJ_VELOCITY_MULTI: float = 0.0					# The velocity that is added instead of set
 
 @export_subgroup("UP Wall Jump")
 @export var UP_WALL_JUMP_VECTOR: Vector2 = Vector2(2.0, 3.0) 	# Approx. How many tiles a Upward wall jump will send the player
 @export var UP_DISABLE_DRIFT: bool = false
 @export var UP_WJ_RISE_TIME: float = 0.25
+@export var UP_VELOCITY_MULTI: float = 0.0
+@export var UP_AIR_DRIFT_MULTI: float = 2.0
 
 @export_subgroup("DOWN Wall Jump")
 @export var DOWN_WALL_JUMP_VECTOR: Vector2 = Vector2(-1.0, 3.0)	# Approx. How many tiles a Downward wall jump will send the player
 @export var DOWN_DISABLE_DRIFT: bool = false
+@export var DOWN_VELOCITY_MULTI: float = 0.0
 
 
 @export_group("Slide Properties")
@@ -51,6 +59,13 @@ extends Resource
 @export var HILL_TIME_TO_ACCEL: float = 1.2
 
 @export var TUNNEL_JUMP_ACCEL: float = 0.14
+
+@export_subgroup("Crouch Jump")
+@export var CROUCH_JUMP_HEIGHT_MULTI: float = 1.0
+@export var CROUCH_JUMP_BOOST: float = 100.0
+@export var CROUCH_JUMP_THRES: float = 30.0
+@export var CJ_REVERSE_MULTIPLIER: float = 0.0 # When direction changed 
+@export var CROUCH_SPEED_REDUCTION: float = 400000.0
 
 @export_group("Assists")
 @export var COYOTE_TIME: float = 0.1
@@ -64,6 +79,11 @@ extends Resource
 @export var GLOW: Color = Color(1.0, 1.0, 1.0)
 
 @export_group("Threshold")
-@export var DOWNGRADE_SCORE: float = 0
-@export var UPGRADE_SCORE: float = 0.6
+@export var GLOW_GROWTH_RATE: float = 5
+@export var GLOW_DECAY_RATE: float = 3
+
+## When the normalized speed is > 1 we multiplier the surplus by this
+@export var SURPLUS_MULTIPLIER: float = 2.0		# When the normalized speed is > 1 we multiplier the surplus by this
+#@export var DOWNGRADE_SCORE: float = 0
+#@export var UPGRADE_SCORE: float = 0.6
 @export var STRICTNESS: float = 3.0

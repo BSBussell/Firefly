@@ -4,6 +4,7 @@ extends State
 @export_group("Transition States")
 @export var FOLLOW: State
 @export var IDLE: State
+@export var FALLING: State
 
 @export_group("Parameters")
 @export var Max_Distance: int = 80
@@ -100,8 +101,9 @@ func move_cursor(delta, Player):
 	control.camera_speed = lerp(control.camera_speed, speed, speed_factor)  # Ease-in function for speed
 	
 	# Smoothly move the marker towards the target position
-	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, control.camera_speed * delta)
-	control.actual_cam_pos.y = _gerblesh.lerpi(control.actual_cam_pos.y, target_position.y, control.camera_speed * delta)
+	var blend = 1 - pow(0.5, control.camera_speed * delta)
+	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, blend)
+	control.actual_cam_pos.y = _gerblesh.lerpi(control.actual_cam_pos.y, target_position.y, blend)
 	
 	# Set the global position to a rounded position of the actual cam
 	control.global_position = control.actual_cam_pos.round()
@@ -112,6 +114,10 @@ func move_cursor(delta, Player):
 	
 	
 func check_state(player):
+	
+	# If player is falling lets show the ground below
+	if player.velocity.y > control.fallingThres:
+		return FALLING
 	
 	#if player.velocity.length() == 0:
 		#return IDLE

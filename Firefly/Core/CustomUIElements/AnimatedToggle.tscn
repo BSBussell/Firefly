@@ -1,0 +1,113 @@
+[gd_scene load_steps=13 format=3 uid="uid://xwwdv0rc1i5s"]
+
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="1_mn8y5"]
+[ext_resource type="Script" path="res://Core/CustomUIElements/AnimatedToggle.gd" id="2_jt658"]
+[ext_resource type="Texture2D" uid="uid://uhqk7sjpapxp" path="res://Assets/Graphics/UI/checkButton.png" id="3_88e3s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qw0yg"]
+atlas = ExtResource("3_88e3s")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_plmiw"]
+atlas = ExtResource("3_88e3s")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wucva"]
+atlas = ExtResource("3_88e3s")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8c2ty"]
+atlas = ExtResource("3_88e3s")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qeihc"]
+atlas = ExtResource("3_88e3s")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hufl0"]
+atlas = ExtResource("3_88e3s")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dcud1"]
+atlas = ExtResource("3_88e3s")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1gc83"]
+atlas = ExtResource("3_88e3s")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nni16"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qw0yg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_plmiw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wucva")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8c2ty")
+}],
+"loop": false,
+"name": &"Off",
+"speed": 45.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qeihc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hufl0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dcud1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1gc83")
+}],
+"loop": false,
+"name": &"On",
+"speed": 45.0
+}]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+focus_mode = 2
+script = ExtResource("2_jt658")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0.560784, 0.560784, 0.560784, 1)
+texture_filter = 1
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_nni16")
+animation = &"Off"
+frame = 3
+frame_progress = 1.0
+
+[node name="button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -67.0
+offset_top = -43.0
+offset_right = 27.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_mn8y5")
+flat = true
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="button" to="." method="_on_button_focus_exited"]
+[connection signal="pressed" from="button" to="." method="_on_pressed"]

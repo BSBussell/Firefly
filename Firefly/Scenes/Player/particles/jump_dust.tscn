@@ -3,8 +3,8 @@
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_lt6hb"]
 
 [sub_resource type="Gradient" id="Gradient_w02w3"]
-offsets = PackedFloat32Array(0.76378, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+offsets = PackedFloat32Array(0.281421, 0.418033, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.920732, 0.920732, 0.920732, 0.920732, 0, 0, 0, 0)
 
 [sub_resource type="Animation" id="Animation_6pndg"]
 length = 0.001
@@ -61,11 +61,14 @@ emitting = false
 amount = 4
 lifetime = 0.5
 one_shot = true
-explosiveness = 1.0
+explosiveness = 0.97
+randomness = 0.15
 texture = ExtResource("1_lt6hb")
 emission_shape = 3
 emission_rect_extents = Vector2(5, 2)
 gravity = Vector2(-5, -50)
+damping_min = 10.0
+damping_max = 15.0
 angle_min = -30.2
 angle_max = 30.0
 scale_amount_min = 0.25

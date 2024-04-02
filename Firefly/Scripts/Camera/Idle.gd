@@ -3,6 +3,7 @@ extends State
 @export_category("Idle State")
 @export_group("Transition States")
 @export var FOLLOW: State
+@export var FALLING: State
 
 @export_group("Properties")
 
@@ -20,13 +21,21 @@ var control: PlayerCam
 # Called on state entrance, setup
 func enter() -> void:
 	
+	print("Exiting Idle")
+	
 	# Cast the parent to a playercam
 	control = parent as PlayerCam
 	pass
 
 # Called before exiting the state, cleanup
 func exit() -> void:
+	
+	print("Exiting Idle")
 	pass
+
+#func process_input(event: InputEvent) -> State:
+	
+	
 
 # Processing Frames in this state, returns nil or new state
 func process_frame(delta: float) -> State:
@@ -50,10 +59,17 @@ func settle_cam(delta: float, Player: Flyph):
 
 	# Camera speed decreases the longer it goes, just trying things, helps to ease in
 	control.camera_speed = max(0, control.camera_speed - deceleration_speed)
+	
+	if control.camera_speed < 0.01:
+		control.camera_speed = 0
 
 	# Smoothly move the marker towards the target position
-	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, control.camera_speed * delta)
-	control.actual_cam_pos.y = _gerblesh.lerpi(control.actual_cam_pos.y, target_position.y, control.camera_speed * delta)
+	var blend = 1 - pow(0.5, control.camera_speed * delta)
+	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, blend)
+	control.actual_cam_pos.y = _gerblesh.lerpi(control.actual_cam_pos.y, target_position.y, blend)
+
+	
+
 
 	# Set the global position to a rounded position of the actual cam
 	control.global_position = control.actual_cam_pos.round()
@@ -64,12 +80,17 @@ func settle_cam(delta: float, Player: Flyph):
 
 func check_state(Player) -> State:
 	
+	# If player is falling lets show the ground below
+	#if Player.velocity.y > 100:
+		#return FALLING
+	
 	if has_escape_margin(Player, idle_Margin) and Player.is_on_floor():
 		return FOLLOW
 	
 	# Even if they're in the air if they get too far we should start following them
 	elif has_escape_margin(Player, mega_Margin):
 		return FOLLOW
+	
 	
 	return null
 	

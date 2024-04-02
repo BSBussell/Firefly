@@ -24,12 +24,22 @@ extends PlayerState
 @onready var stand_room_left = $"../../Raycasts/Colliders/Stand_Room_Left"
 @onready var stand_room_right = $"../../Raycasts/Colliders/Stand_Room_Right"
 
+# Speed FX
+@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 
 # Jump SFX
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 
+# For Coyote CJ
+@onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
 
+var min_fall_speed = 0.0
+# Timer to wait before slowing down the player
+#@onready var crouch_jump_window = $"../../Timers/CrouchJumpReleaseWindow"
 
+var ticks: float = 0
+
+var stored_velocity_x: float
 
 var shopped: bool = false
 
@@ -46,11 +56,17 @@ func enter() -> void:
 	top_right.enabled = true
 	top_left.enabled = true
 	
+	parent.canCrouchJump = true
+	
 	shopped = false
+	
 	
 	if (parent.current_animation != parent.ANI_STATES.JUMP and not parent.crouchJumping):
 		parent.current_animation = parent.ANI_STATES.FALLING
 	
+	ticks = 0
+	
+	min_fall_speed = 0.0
 	
 
 # Called before exiting the state, cleanup
@@ -63,16 +79,15 @@ func exit() -> void:
 	top_right.enabled = false
 	top_left.enabled = false
 	
+	speed_particles.emitting = false
+	
+	
+	
 	if (parent.fastFalling):
-		
-		# Landing in fast fall
-		parent.update_ff_landings(1.0)
 		
 		parent.fastFalling = false
 		parent.animation.speed_scale = 1.0
-		
-	else:
-		parent.update_ff_landings(0.0)
+	
 
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
@@ -81,9 +96,11 @@ func process_input(_event: InputEvent) -> PlayerState:
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
 		
-	if Input.is_action_just_released("Down") and have_stand_room():
+	if parent.crouchJumping and not Input.is_action_pressed("Down") and have_stand_room():
+	#Input.is_action_released("Down") and have_stand_room():
 		parent.crouchJumping = false
 		parent.current_animation = parent.ANI_STATES.FALLING
+		#parent.squish_node.scale = parent.stand_up_squash
 		parent.set_standing_collider()
 		
 	if Input.is_action_just_pressed("Jump"):
@@ -94,10 +111,6 @@ func process_input(_event: InputEvent) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 	
-	
-	
-	if parent.velocity.y > 0:
-		parent.animation.scale = Vector2(1, 1)
 	
 	apply_gravity(delta)
 	
@@ -115,20 +128,49 @@ func process_physics(delta: float) -> PlayerState:
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
 	
+	ticks += delta
+	
+	min_fall_speed = min(min_fall_speed, parent.velocity.y)
+	
 	# Make Sure we're still grounded after this
 	if parent.is_on_floor():
+		
+		parent.landing_speed = min_fall_speed
+		Input.start_joy_vibration(1, 0.1, 0.08, 0.175)
 		if Input.is_action_pressed("Down") or not have_stand_room():
+			
+			# IF the player stays crouching the whole time they can't chain it again
+			# The point is to discourage just abusing the "crouched" variant other than
+			# For slight adjustments/etc.
+			if (parent.crouchJumping):
+				parent.canCrouchJump = false
+			
 			return SLIDING_STATE
 		else:
 			return GROUNDED_STATE
 	elif parent.is_on_wall_only():
 		return WALL_STATE
 	
-	#parent.move_and_slide()
-	
-	
 	return null
+
+func process_frame(delta):
 	
+	# Fall squishing :3
+	if parent.velocity.y > 0:
+		var spriteBlend = min(parent.velocity.y / parent.movement_data.MAX_FALL_SPEED, 1)
+		var squishVal = Vector2()
+		squishVal.x = lerp(1.0, parent.falling_squash.x, spriteBlend)
+		squishVal.y =  lerp(1.0, parent.falling_squash.y, spriteBlend)
+		parent.squish_node.squish(squishVal)
+	
+	
+	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST:
+		speed_particles.emitting = true
+		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
+	else:
+		speed_particles.emitting = false
+	pass
+
 func animation_end() -> PlayerState:
 
 	if (parent.current_animation == parent.ANI_STATES.JUMP):
@@ -148,18 +190,28 @@ func handle_coyote(_delta):
 			#jump_buffer.wait_time = -1
 			
 			# Apply Velocity
-			parent.velocity.y = parent.jump_velocity
-			
-			# Play Jump Cloud
-			var new_cloud = parent.JUMP_DUST.instantiate()
-			new_cloud.set_name("jump_dust_temp")
-			jump_dust.add_child(new_cloud)
-			var animation = new_cloud.get_node("AnimationPlayer")
-			animation.play("free")
-			
-			jumping_sfx.play(0)
 			
 			
+			
+			if not (parent.current_animation == parent.ANI_STATES.CRAWL and SLIDING_STATE.crouch_jump()):
+				parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
+				
+				parent.velocity.y = parent.jump_velocity
+				
+				# Play Jump Cloud
+				var new_cloud = parent.JUMP_DUST.instantiate()
+				new_cloud.set_name("jump_dust_temp")
+				jump_dust.add_child(new_cloud)
+				var animation = new_cloud.get_node("AnimationPlayer")
+				animation.play("free")
+				
+				jumping_sfx.play(0)
+			
+			else:
+				ticks = 0
+			
+			
+				
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):
 				parent.current_animation = parent.ANI_STATES.FALLING
 	
@@ -199,24 +251,52 @@ func get_gravity() -> float:
 		# Apply fast falling gravity
 		gravity_to_apply = parent.ff_gravity
 		
+	#if abs(parent.velocity.y) <= 10:
+		#gravity_to_apply *= 0.6
 	
 	return gravity_to_apply
 
 func apply_gravity(delta):
 	
 	parent.velocity.y -= get_gravity() * delta
+	parent.velocity.y = min(parent.velocity.y, parent.movement_data.MAX_FALL_SPEED)
 
 func handle_acceleration(delta, direction):
 	
 	var airDrift = 0
+	var airReduction = parent.movement_data.AIR_SPEED_RECUTION
 	
 	# If air drift has been disabled then set it to 0
 	if parent.airDriftDisabled:
 		airDrift = 0
 	
-	# If player is jumping in a tunnel
-	elif parent.crouchJumping and not have_stand_room():
-		airDrift = parent.tunnel_jump_accel
+	# If player is jumping while crouching
+	elif parent.crouchJumping:
+		
+		var crouch_release_window = 30/60 # So this should be roughly one frame
+		
+		# So they have that much time to release down before velocity is capped
+		# I have this because I don't like the idea of players flying around in crouch
+		# And also I found that the motion of releasing crouch felt inline with 
+		if ticks > crouch_release_window:
+			parent.velocity.x = clamp(parent.velocity.x, -abs(parent.air_speed), parent.air_speed)
+			
+		# If we're in a tunnel we increase accel
+		if not have_stand_room():
+			airDrift = parent.tunnel_jump_accel
+		else:
+			airDrift = parent.air_accel
+			
+	# If we are wall jumping up and holding into a wall we give a boost in air accel in order to help
+	# with climbing / make it possible
+	elif parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD and sign(direction) != parent.current_wj_dir:
+		
+		# Give us the drift we need to go back to wall
+		airDrift = parent.air_accel * parent.movement_data.UP_AIR_DRIFT_MULTI
+		
+		# Sneakily remove analog inputs to help the gampad players
+		# with this weird input
+		direction = round(direction)
 	
 	# Otherwise use the default airDrift
 	else:
@@ -228,7 +308,13 @@ func handle_acceleration(delta, direction):
 	
 	if direction:
 		# AIR ACCEL
-		parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airDrift * delta)
+		# Slow ourselves down in the air
+		if (abs(parent.velocity.x) > parent.air_speed and sign(parent.velocity.x) == sign(direction)):
+			parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airReduction * delta)
+		
+		# Speed ourselves up
+		else:
+			parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airDrift * delta)
 	
 
 func apply_airResistance(delta, direction):

@@ -13,15 +13,22 @@ extends PlayerState
 
 @onready var wj_dust_spawner = $"../../Particles/WJDustSpawner"
 
+@onready var sliding_sfx = $"../../Audio/WallSlideSFX"
+@onready var wall_slide_dust = $"../../Particles/WallSlideDust"
+
+
 var cache_airdrift
 
 # Called on state entrance, setup
 func enter() -> void:
-	print("Enter Wall State")
+	print("Wall State")
+	
 	pass
 
 # Called before exiting the state, cleanup
 func exit() -> void:
+	
+	wall_slide_dust.emitting = false
 	pass
 
 # Processing input in this state, returns nil or new state
@@ -42,6 +49,7 @@ func process_physics(delta: float) -> PlayerState:
 	
 	apply_gravity(delta, parent.horizontal_axis)
 	handle_walljump(delta, parent.vertical_axis)
+	AERIAL_STATE.handle_sHop(delta)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
@@ -79,16 +87,32 @@ func apply_gravity(delta, _direction):
 
 	# If holding into wall and falling, slow our fall
 	if parent.velocity.y > 0 and Input.is_action_pressed(get_which_wall_collided()):  # Ensure we're moving downwards
+		
+		sliding_sfx.play(sliding_sfx.get_playback_position())
+		
+		wall_slide_dust.direction.x = -2 if (parent.get_wall_normal().x > 0) else 2
+		wall_slide_dust.emitting = true
+		
+		# Hit them with the velocity
 		parent.velocity.y -= silly_grav * delta * (1/parent.movement_data.WALL_FRICTION_MULTIPLIER)  # Reduce the gravity's effect to slow down descent
 	
 	# otherwise just fall normally
 	else:
 		parent.velocity.y -= silly_grav * delta
+		sliding_sfx.stop()
 		
+	
+	# Cap fall speed
+	parent.velocity.y = min(parent.velocity.y, parent.movement_data.MAX_FALL_SPEED)
 
 func handle_walljump(delta, vc_direction, dir = 0):	
 	
 	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
+	
+		# If the player is trying to do an upward wall jump and we're coming from the padding abort
+		# Upward wall jumps get frustrating when the padding starts pushing the player away from the wall
+		#if vc_direction > 0 and dir != 0:
+			#return
 	
 		# Set Flag for gravity :3
 		parent.wallJumping = true
@@ -106,6 +130,8 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		var pitch = 0.2 * jump_dir
 		wall_jump_sfx.pitch_scale = 1 + pitch 
 		
+		Input.start_joy_vibration(1, 0.1, 0.1, 0.175)
+		
 		var new_cloud = parent.WJ_DUST.instantiate()
 		new_cloud.set_name("WJ_dust_temp")
 		wj_dust_spawner.add_child(new_cloud)
@@ -113,34 +139,53 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
 		
+		# Sprite squashing
+		parent.squish_node.squish(parent.wJump_squash)
+		
 		# TODO: Walljump Animation or something
 		if (parent.current_animation != parent.ANI_STATES.CRAWL):
 			parent.current_animation = parent.ANI_STATES.FALLING
 			parent.restart_animation = true
 			
+		
+		parent.current_wj_dir = jump_dir
+			
 		# Ok so if you are up on a walljump it'll launch you up
 		if vc_direction > 0:
 			
-			parent.velocity.x = parent.up_walljump_velocity_x * jump_dir
+			# Generally this will be 0 unless I want a wj that gives speed boosts
+			var velocity_multi: float = parent.movement_data.UP_VELOCITY_MULTI
+			
+			# Flip the velocity first
+			parent.velocity.x = parent.prev_velocity_x * - velocity_multi
+			
+			# Then add to it
+			parent.velocity.x += parent.up_walljump_velocity_x * jump_dir
 			parent.velocity.y = parent.up_walljump_velocity_y
 			
 			# Facing the fall we're jumping up 
-			if (parent.movement_data.UP_WALL_JUMP_VECTOR.x < 5):
-				parent.animation.flip_h = (jump_dir > 0)
-			else:
-				parent.animation.flip_h = (jump_dir < 0)
+			#if (parent.movement_data.UP_WALL_JUMP_VECTOR.x < 5):
+			parent.animation.flip_h = (jump_dir >= parent.horizontal_axis)
+			#else:
+				#parent.animation.flip_h = (jump_dir <= parent.horizontal_axis)
 			
 			if parent.movement_data.UP_DISABLE_DRIFT:
 				parent.airDriftDisabled = true
 			else:
 				parent.airDriftDisabled = false
 			
+			# Let any other potential states know we walljumpin
 			parent.current_wj = parent.WALLJUMPS.UPWARD
 			
 		# Secret Downward WallJump :3
 		elif vc_direction < 0 and not parent.crouchJumping:
 			
-			parent.velocity.x = parent.down_walljump_velocity_x * jump_dir
+			var velocity_multi: float = parent.movement_data.DOWN_VELOCITY_MULTI
+			
+			parent.velocity.x =  parent.prev_velocity_x * -velocity_multi
+			parent.velocity.x += parent.down_walljump_velocity_x * jump_dir
+			
+			
 			parent.velocity.y = parent.down_walljump_velocity_y
 			
 			# Face away from the wall we jumping off of
@@ -158,9 +203,13 @@ func handle_walljump(delta, vc_direction, dir = 0):
 			
 		# else itll launch you away
 		else:
-			
-			parent.velocity.x = parent.walljump_velocity_x * jump_dir
-			parent.velocity.y = parent.walljump_velocity_y
+			var velocity_multi: float = parent.movement_data.WJ_VELOCITY_MULTI
+			# Flip the velocity first
+			parent.velocity.x =  parent.prev_velocity_x * -velocity_multi
+			parent.velocity.x += parent.walljump_velocity_x * jump_dir
+
+				
+			parent.velocity.y = parent.walljump_velocity_y	
 		
 			# Face away from the wall we jumping off of
 			parent.animation.flip_h = (jump_dir < 0)

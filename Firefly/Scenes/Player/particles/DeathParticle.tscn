@@ -116,6 +116,7 @@ modulate = Color(5, 5, 1, 1)
 
 [node name="+" type="Node2D" parent="."]
 modulate = Color(1, 1, 0, 1)
+z_index = 5
 
 [node name="DeathDustN" type="CPUParticles2D" parent="+"]
 emitting = false
@@ -215,6 +216,7 @@ scale_amount_max = 0.5
 
 [node name="Smoke" type="Node2D" parent="."]
 modulate = Color(1, 1, 0, 1)
+z_index = 5
 
 [node name="DeathSmoke" type="CPUParticles2D" parent="Smoke"]
 emitting = false

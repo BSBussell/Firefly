@@ -5,6 +5,7 @@ extends "res://Scripts/Events/base_event.gd"
 @export var score_thres: float = 0.6
 @export var score_amount: float = 0.6
 @export var score_duration: float = 30
+@export var update: bool = false
 
 @onready var animator = $"Nice!"
 
@@ -28,9 +29,11 @@ func _physics_process(_delta):
 		if not player:
 			print("ah shit")
 			
-		player.GLOW_ENABLED = true
-		if player.score < score_thres:
-			player.add_score(score_amount, score_duration)
+		player.enable_glow()
+		if player.get_glow_score() < score_thres:
+			player.add_glow(score_amount)
+			if update:
+				player.force_glow_update()
 			
 		animationEnded = false
 		set_physics_process(false)

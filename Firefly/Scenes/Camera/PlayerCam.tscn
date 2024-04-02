@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://chji8mvt4o3jg"]
+[gd_scene load_steps=9 format=3 uid="uid://chji8mvt4o3jg"]
 
-[ext_resource type="Script" path="res://Scenes/Player/CameraAnchor.gd" id="1_hjjau"]
+[ext_resource type="Script" path="res://Scripts/Camera/CameraAnchor.gd" id="1_hjjau"]
 [ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_f7duo"]
 [ext_resource type="Texture2D" uid="uid://bury6i0qclg2g" path="res://Assets/Graphics/Camera/cursor.png" id="3_2gg2l"]
 [ext_resource type="Script" path="res://Scripts/State_Machine/StateMachine.gd" id="5_67mh8"]
 [ext_resource type="Script" path="res://Scripts/Camera/Idle.gd" id="5_mfikc"]
 [ext_resource type="Script" path="res://Scripts/Camera/Follow.gd" id="6_y5nkv"]
 [ext_resource type="Script" path="res://Scripts/Camera/LookAhead.gd" id="7_pjrc4"]
+[ext_resource type="Script" path="res://Scenes/Camera/Falling.gd" id="8_71vy3"]
 
 [node name="CameraTarget" type="Marker2D"]
 script = ExtResource("1_hjjau")
@@ -17,43 +18,54 @@ material = ExtResource("2_f7duo")
 texture = ExtResource("3_2gg2l")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2(0, -35)
+offset = Vector2(0, -25)
 process_callback = 0
 limit_smoothed = true
 position_smoothing_speed = 7.0
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
 drag_left_margin = 0.25
 drag_top_margin = 0.4
 drag_right_margin = 0.25
 drag_bottom_margin = 0.25
 editor_draw_drag_margin = true
-metadata/_edit_lock_ = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("5_67mh8")
-starting_state = NodePath("Idle")
+starting_state = NodePath("Follow")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW", "FALLING")]
 script = ExtResource("5_mfikc")
 FOLLOW = NodePath("../Follow")
-deceleration_speed = 0.2
+FALLING = NodePath("../Falling")
+idle_Margin = Vector4(0.25, 0.3, 0.25, 0.3)
+mega_Margin = Vector4(0.4, 0.5, 0.4, 0.5)
 
-[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("IDLE", "LOOKAHEAD", "follow_timer")]
+[node name="Follow" type="Node" parent="StateMachine" node_paths=PackedStringArray("IDLE", "LOOKAHEAD", "FALLING", "follow_timer")]
 script = ExtResource("6_y5nkv")
 IDLE = NodePath("../Idle")
 LOOKAHEAD = NodePath("../LookAhead")
+FALLING = NodePath("../Falling")
 follow_timer = NodePath("../../FollowTimer")
+Maximum_Speed = 30.0
 Minimum_Speed = 0.01
-acceleration = 0.5
+acceleration = 0.75
 
-[node name="LookAhead" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW", "IDLE")]
+[node name="LookAhead" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW", "IDLE", "FALLING")]
 script = ExtResource("7_pjrc4")
 FOLLOW = NodePath("../Follow")
 IDLE = NodePath("../Idle")
+FALLING = NodePath("../Falling")
 Max_Distance = 70
 speed = 4.0
 horizontal_weight = 1.0
+
+[node name="Falling" type="Node" parent="StateMachine" node_paths=PackedStringArray("IDLE", "FOLLOW", "LOOKAHEAD")]
+script = ExtResource("8_71vy3")
+IDLE = NodePath("../Idle")
+FOLLOW = NodePath("../Follow")
+LOOKAHEAD = NodePath("../LookAhead")
+Maximum_Speed = 45.0
+Minimum_Speed = 10.0
+acceleration = 0.75
 
 [node name="FollowTimer" type="Timer" parent="."]
 wait_time = 0.5
