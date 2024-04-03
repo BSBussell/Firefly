@@ -253,7 +253,17 @@ func get_gravity() -> float:
 		
 	#if abs(parent.velocity.y) <= 10:
 		#gravity_to_apply *= 0.6
-	
+	if parent.velocity.y <= 0 and not shopped and parent.spring_gravity_active:
+		gravity_to_apply = parent.spring_gravity
+		
+	elif parent.velocity.y <= 0 and not shopped:
+		# Apply rising gravity
+		gravity_to_apply = parent.jump_gravity
+		
+		# Reset temporary gravity once the player starts falling
+	if parent.velocity.y > 0 and not parent.in_spring:
+		parent.spring_gravity_active = false
+		
 	return gravity_to_apply
 
 func apply_gravity(delta):
