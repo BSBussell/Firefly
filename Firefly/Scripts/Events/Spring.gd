@@ -7,6 +7,9 @@ func _ready():
 
 
 func _on_body_entered(body: Flyph):
+	
+	#body.set_temp_gravity(parent.spring)
+	
 	body.spring_body_entered(body)
 	pass # Play animation here?
 

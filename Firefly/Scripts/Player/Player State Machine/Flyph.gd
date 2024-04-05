@@ -718,11 +718,20 @@ func _on_hazard_detector_body_entered(body):
 	kill()
 
 
+var temp_gravity_active: bool = false
+var temp_gravtity: float = 0.0
+
+# Set a temporary gravity for launches
+func set_temp_gravity(grav: float):
+	
+	temp_gravity_active = true
+	temp_gravtity = grav
+	
+
 func spring_body_entered(body):
-	spring_gravity_active = true
-	in_spring = true
+	set_temp_gravity(spring_gravity)
 	velocity.y = spring_velocity
-	squish_node.squish(Vector2(0.8, 1.2))
+	squish_node.squish(Vector2(0.5, 1.5))
 
 
 func spring_body_exited(body):
