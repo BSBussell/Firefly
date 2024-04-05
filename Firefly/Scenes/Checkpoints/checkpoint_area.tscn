@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://cqhy4krqlj322"]
+
+[node name="CheckpointArea" type="Area2D"]
+collision_layer = 17

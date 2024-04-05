@@ -427,7 +427,7 @@ font = ExtResource("25_bx13g")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gagar"]
 
-[node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info", "meter")]
+[node name="Flyph" type="CharacterBody2D"]
 position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 34
@@ -435,9 +435,6 @@ floor_constant_speed = true
 floor_snap_length = 7.0
 script = ExtResource("1_hphyi")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
-star = NodePath("UI_FX/Star")
-debug_info = NodePath("UI_FX/debug info")
-meter = NodePath("UI_FX/Control/Meter")
 jump_squash = null
 lJump_squash = Vector2(0.4, 1.6)
 wJump_squash = Vector2(0.7, 1.3)
@@ -447,6 +444,12 @@ crouch_squash = Vector2(1.3, 0.7)
 stand_up_squash = Vector2(1.3, 0.7)
 turn_around_squash = Vector2(0.9, 1.1)
 death_squash = Vector2(0.5, 1.5)
+star = Object(CPUParticles2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1.5, 1.5, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":0,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(160, 180),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"emitting":false,"amount":16,"lifetime":1.0,"one_shot":true,"preprocess":0.0,"speed_scale":1.0,"explosiveness":0.78,"randomness":0.0,"lifetime_randomness":0.0,"fixed_fps":0,"fract_delta":true,"local_coords":true,"draw_order":0,"texture":ExtResource("8_shld8"),"emission_shape":3,"emission_rect_extents":Vector2(180, 1),"particle_flag_align_y":false,"direction":Vector2(1, 0),"spread":45.0,"gravity":Vector2(0, -980),"initial_velocity_min":0.0,"initial_velocity_max":0.0,"angular_velocity_min":0.0,"angular_velocity_max":0.0,"angular_velocity_curve":null,"orbit_velocity_min":0.0,"orbit_velocity_max":0.0,"orbit_velocity_curve":null,"linear_accel_min":0.0,"linear_accel_max":0.0,"linear_accel_curve":null,"radial_accel_min":0.0,"radial_accel_max":0.0,"radial_accel_curve":null,"tangential_accel_min":0.0,"tangential_accel_max":0.0,"tangential_accel_curve":null,"damping_min":8.908,"damping_max":8.908,"damping_curve":null,"angle_min":-180.0,"angle_max":180.0,"angle_curve":null,"scale_amount_min":1.0,"scale_amount_max":1.0,"scale_amount_curve":null,"split_scale":false,"color":Color(1, 1, 0.337255, 1),"color_ramp":SubResource("Gradient_k6x1h"),"color_initial_ramp":null,"hue_variation_min":0.0,"hue_variation_max":0.0,"hue_variation_curve":null,"anim_speed_min":0.0,"anim_speed_max":0.0,"anim_speed_curve":null,"anim_offset_min":0.0,"anim_offset_max":0.0,"anim_offset_curve":null,"script":null)
+
+debug_info = Object(Label,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":0,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":3,"anchors_preset":-1,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.044,"anchor_bottom":0.032,"offset_left":257.0,"offset_top":157.0,"offset_right":315.68,"offset_bottom":170.816,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":1,"size_flags_vertical":4,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":2,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","text":"Score","label_settings":SubResource("LabelSettings_iomiv"),"horizontal_alignment":0,"vertical_alignment":0,"autowrap_mode":0,"justification_flags":163,"clip_text":false,"text_overrun_behavior":0,"uppercase":false,"tab_stops":PackedFloat32Array(),"lines_skipped":0,"max_lines_visible":-1,"visible_characters":-1,"visible_characters_behavior":0,"visible_ratio":1.0,"text_direction":0,"language":"","structured_text_bidi_override":0,"structured_text_bidi_override_options":[],"script":null)
+
+meter = Object(TextureProgressBar,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"clip_children":0,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"clip_contents":false,"custom_minimum_size":Vector2(0, 0),"layout_direction":0,"layout_mode":0,"anchors_preset":0,"anchor_left":0.0,"anchor_top":0.0,"anchor_right":0.0,"anchor_bottom":0.0,"offset_left":0.0,"offset_top":0.0,"offset_right":90.0,"offset_bottom":40.0,"grow_horizontal":1,"grow_vertical":1,"rotation":0.0,"scale":Vector2(1, 1),"pivot_offset":Vector2(0, 0),"size_flags_horizontal":4,"size_flags_vertical":4,"size_flags_stretch_ratio":1.0,"auto_translate":true,"localize_numeral_system":true,"tooltip_text":"","focus_neighbor_left":NodePath(""),"focus_neighbor_top":NodePath(""),"focus_neighbor_right":NodePath(""),"focus_neighbor_bottom":NodePath(""),"focus_next":NodePath(""),"focus_previous":NodePath(""),"focus_mode":0,"mouse_filter":1,"mouse_force_pass_scroll_events":true,"mouse_default_cursor_shape":0,"shortcut_context":null,"theme":null,"theme_type_variation":&"","min_value":-33.0,"max_value":100.0,"step":1.0,"page":0.0,"value":100.0,"exp_edit":false,"rounded":false,"allow_greater":true,"allow_lesser":true,"fill_mode":3,"nine_patch_stretch":false,"stretch_margin_left":0,"stretch_margin_top":0,"stretch_margin_right":0,"stretch_margin_bottom":0,"texture_under":Resource("res://Assets/Graphics/Meter/back.png"),"texture_over":Resource("res://Assets/Graphics/Meter/front_vines.png"),"texture_progress":Resource("res://Assets/Graphics/Meter/filling.png"),"texture_progress_offset":Vector2(0, 0),"tint_under":Color(1, 1, 1, 1),"tint_over":Color(1, 1, 1, 1),"tint_progress":Color(1.8, 1.8, 1, 1),"radial_initial_angle":0.0,"radial_fill_degrees":360.0,"radial_center_offset":Vector2(0, 0),"script":Resource("res://Scenes/Player/Meter.gd"),"increase_speed":900.0,"decrease_speed":900.0)
+
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -8)
@@ -736,196 +739,4 @@ target_position = Vector2(0, -6.5)
 collision_mask = 2
 hit_from_inside = true
 
-[node name="AutoTunnel" type="Node2D" parent="Raycasts"]
-visible = false
-
-[node name="CrouchLeft" type="RayCast2D" parent="Raycasts/AutoTunnel"]
-position = Vector2(-4, -1)
-target_position = Vector2(-3, 0)
-collision_mask = 2
-hit_from_inside = true
-
-[node name="CrouchRight" type="RayCast2D" parent="Raycasts/AutoTunnel"]
-position = Vector2(3, -1)
-target_position = Vector2(3, 0)
-collision_mask = 2
-hit_from_inside = true
-
-[node name="Audio" type="Node2D" parent="."]
-
-[node name="LandingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("15_o0d2x")
-volume_db = -10.0
-bus = &"SFX"
-
-[node name="JumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("12_m3poj")
-volume_db = -5.0
-pitch_scale = 0.66
-bus = &"SFX"
-
-[node name="CrouchJumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("12_m3poj")
-volume_db = -5.0
-pitch_scale = 0.6
-bus = &"SFX"
-
-[node name="SlidingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("17_r3q20")
-bus = &"SFX"
-
-[node name="WallSlideSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("17_r3q20")
-pitch_scale = 2.0
-bus = &"SFX"
-
-[node name="WallJumpSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("14_hplrh")
-volume_db = -7.0
-pitch_scale = 1.33
-bus = &"SFX"
-
-[node name="RunSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("19_pmf6f")
-volume_db = -5.0
-bus = &"SFX"
-
-[node name="UI_FX" type="CanvasLayer" parent="."]
-
-[node name="Star" type="CPUParticles2D" parent="UI_FX"]
-modulate = Color(1.5, 1.5, 1, 1)
-light_mask = 0
-position = Vector2(160, 180)
-emitting = false
-amount = 16
-one_shot = true
-explosiveness = 0.78
-local_coords = true
-texture = ExtResource("8_shld8")
-emission_shape = 3
-emission_rect_extents = Vector2(180, 1)
-gravity = Vector2(0, -980)
-damping_min = 8.908
-damping_max = 8.908
-angle_min = -180.0
-angle_max = 180.0
-color = Color(1, 1, 0.337255, 1)
-color_ramp = SubResource("Gradient_k6x1h")
-
-[node name="Control" type="Control" parent="UI_FX"]
-layout_mode = 3
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -40.0
-offset_right = -10.0
-offset_bottom = -10.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="Meter" parent="UI_FX/Control" instance=ExtResource("18_mioiu")]
-layout_mode = 0
-offset_right = 90.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-min_value = -33.0
-increase_speed = 900.0
-decrease_speed = 900.0
-
-[node name="debug info" type="Label" parent="UI_FX"]
-visible = false
-light_mask = 0
-anchors_preset = -1
-anchor_right = 0.044
-anchor_bottom = 0.032
-offset_left = 257.0
-offset_top = 157.0
-offset_right = 315.68
-offset_bottom = 170.816
-text = "Score"
-label_settings = SubResource("LabelSettings_iomiv")
-
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
-script = ExtResource("10_amheu")
-starting_state = NodePath("Grounded")
-
-[node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "coyote_time")]
-script = ExtResource("7_x3sml")
-AERIAL_STATE = NodePath("../Aerial")
-SLIDING_STATE = NodePath("../Sliding")
-jump_buffer = NodePath("../../Timers/JumpBuffer")
-coyote_time = NodePath("../../Timers/CoyoteTime")
-
-[node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "coyote_time", "jump_buffer")]
-script = ExtResource("9_vj5hi")
-WALL_STATE = NodePath("../Wall")
-GROUNDED_STATE = NodePath("../Grounded")
-SLIDING_STATE = NodePath("../Sliding")
-coyote_time = NodePath("../../Timers/CoyoteTime")
-jump_buffer = NodePath("../../Timers/JumpBuffer")
-
-[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "jump_buffer")]
-script = ExtResource("10_eck16")
-GROUNDED_STATE = NodePath("../Grounded")
-AERIAL_STATE = NodePath("../Aerial")
-SLIDING_STATE = NodePath("../Sliding")
-jump_buffer = NodePath("../../Timers/JumpBuffer")
-
-[node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "coyote_time")]
-script = ExtResource("23_0bu6o")
-GROUNDED_STATE = NodePath("../Grounded")
-AERIAL_STATE = NodePath("../Aerial")
-jump_buffer = NodePath("../../Timers/JumpBuffer")
-coyote_time = NodePath("../../Timers/CoyoteTime")
-
-[node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
-script = ExtResource("25_5it1v")
-MOMENTUM_TIMER = NodePath("../Timers/MomentumTime")
-
-[node name="Timers" type="Node" parent="."]
-
-[node name="JumpBuffer" type="Timer" parent="Timers"]
-wait_time = 0.125
-one_shot = true
-
-[node name="CoyoteTime" type="Timer" parent="Timers"]
-wait_time = 0.1
-one_shot = true
-
-[node name="MomentumTime" type="Timer" parent="Timers"]
-wait_time = 3.0
-one_shot = true
-
-[node name="CrouchJumpWindow" type="Timer" parent="Timers"]
-wait_time = 0.05
-one_shot = true
-
-[node name="Debug" type="Node2D" parent="."]
-visible = false
-
-[node name="Speedometer" type="Label" parent="Debug"]
-offset_left = -10.0
-offset_top = -29.0
-offset_right = 8.0
-offset_bottom = -15.0
-text = "120"
-label_settings = SubResource("LabelSettings_yau3k")
-horizontal_alignment = 1
-script = ExtResource("26_0wrd0")
-
-[node name="CheckpointDetector" type="Area2D" parent="."]
-collision_mask = 16
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CheckpointDetector"]
-position = Vector2(-1, -10)
-shape = SubResource("RectangleShape2D_gagar")
-
-[connection signal="animation_finished" from="Visuals/SquishCenter/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
-[connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
-[connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
-[connection signal="timeout" from="Timers/CrouchJumpWindow" to="StateMachine/Sliding" method="_on_crouch_jump_window_timeout"]
-[connection signal="area_entered" from="CheckpointDetector" to="." method="_on_checkpoint_detector_area_entered"]
+[node name="AutoT
