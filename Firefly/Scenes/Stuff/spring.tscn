@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://52vkpp5l5cdo"]
+
+[ext_resource type="Script" path="res://Scripts/Events/Spring.gd" id="1_bfd0d"]
+[ext_resource type="Texture2D" uid="uid://cdude3ng54o4n" path="res://Assets/Graphics/Hazards/temp_spring.png" id="2_88jph"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3es8a"]
+
+[node name="Spring" type="Area2D"]
+position = Vector2(205, 613)
+collision_layer = 32
+script = ExtResource("1_bfd0d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(34, 45)
+shape = SubResource("RectangleShape2D_3es8a")
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
+texture = ExtResource("2_88jph")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

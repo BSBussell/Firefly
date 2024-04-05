@@ -47,6 +47,13 @@ extends CharacterBody2D
 @onready var mega_speed_particles = $Particles/MegaSpeedParticles
 @onready var wall_slide_dust = $Particles/WallSlideDust
 
+# Spring (hope ur ok with this spot)
+@onready var spring_gravity_active: bool
+@onready var spring_gravity: float
+@onready var spring_velocity: float
+@onready var spring_jump_height: float
+@onready var spring_actual_height: float
+@onready var in_spring: bool
 
 # Timers
 @onready var jump_buffer: Timer = $Timers/JumpBuffer
@@ -621,6 +628,12 @@ func calculate_properties():
 	ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
 	ff_gravity = fall_gravity * movement_data.FASTFALL_MULTIPLIER
 
+	# Spring Motion
+	spring_actual_height = movement_data.MAX_SPRING_HEIGHT * TILE_SIZE
+	spring_velocity = ((-2.0 * spring_actual_height) / movement_data.SPRING_RISE_TIME)
+	spring_gravity = (-2.0 * spring_actual_height) / (movement_data.SPRING_RISE_TIME * movement_data.SPRING_RISE_TIME)
+	#spring_gravity = (-2.0 * spring_actual_height) / (movement_data.SPRING_FALL_TIME * movement_data.JUMP_FALL_TIME)
+
 	# Set timers
 	coyote_time.wait_time = movement_data.COYOTE_TIME
 	jump_buffer.wait_time = movement_data.JUMP_BUFFER
@@ -703,3 +716,16 @@ func _on_hazard_detector_area_entered(area):
 
 func _on_hazard_detector_body_entered(body):
 	kill()
+
+
+func spring_body_entered(body):
+	spring_gravity_active = true
+	in_spring = true
+	velocity.y = spring_velocity
+	squish_node.squish(Vector2(0.8, 1.2))
+
+
+func spring_body_exited(body):
+	in_spring = false
+	if velocity.y == 0:
+		spring_gravity_active = false
