@@ -432,7 +432,8 @@ position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 34
 floor_constant_speed = true
-floor_snap_length = 7.0
+floor_max_angle = 1.55334
+floor_snap_length = 10.0
 script = ExtResource("1_hphyi")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 star = NodePath("UI_FX/Star")
@@ -477,10 +478,8 @@ bounce_curve = SubResource("Curve_umqtl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"landing"
+animation = &"falling"
 autoplay = "idle"
-frame = 2
-frame_progress = 1.0
 script = ExtResource("6_vid37")
 
 [node name="Trail" type="Line2D" parent="Visuals"]

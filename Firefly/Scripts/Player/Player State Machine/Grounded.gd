@@ -38,13 +38,11 @@ func enter() -> void:
 	# If we go to grounded we regain the ability to crouch jump
 	parent.canCrouchJump = true
 	
-	# Clamp Velocity because i hate fun rahh
-	#clampf(parent.velocity.x, parent.speed * -1, parent.speed)
-	
 	# Setup the proper colliders for this state :3
 	parent.set_standing_collider()
 	
-	
+	# Also disable temp gravity when landing just incase we land without falling lol
+	parent.temp_gravity_active = false
 	
 	
 	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
@@ -107,27 +105,30 @@ func process_physics(delta: float) -> PlayerState:
 	jump_logic(delta)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
-	apply_friction(delta, parent.horizontal_axis)
+	
+	if (apply_friction(delta, parent.horizontal_axis) != null):
+		return SLIDING_STATE
+	
 	
 	update_state(parent.horizontal_axis)
 	
 	# Make Sure we're still grounded after this
 	if not parent.is_on_floor():
 		return AERIAL_STATE
-	#parent.move_and_slide()
 	
 	# If for whatever reason we end up not having room above us then force the
 	# Player into crouch, might be used with Auto entering tunnel
 	if not AERIAL_STATE.have_stand_room():
-		parent.current_animation = parent.ANI_STATES.CROUCH
-		# parent.veloity.x = parent.prev_velocity_x
 		
+		parent.current_animation = parent.ANI_STATES.CROUCH
 		return SLIDING_STATE
 	
 		
 	return null
 	
 func process_frame(delta):
+	
+	
 	if abs(parent.velocity.x) > parent.speed:
 		speed_particles.emitting = true
 		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
@@ -173,32 +174,76 @@ func handle_acceleration(delta, direction):
 	
 	# Can't move forward when crouching or landing
 	if direction:  
-		if parent.current_animation != parent.ANI_STATES.CRAWL:
-			# Thank you maddy/noel/whoever on the exOK team came up with this, this was genius
-			if (abs(parent.velocity.x) > parent.speed and sign(parent.velocity.x) == sign(direction)):
-				# Reducing Speed to the cap 
-				parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.movement_data.SPEED_REDUCTION * delta)
-			else:
-				# Increasing speed
-				parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.accel * delta)
+		if (abs(parent.velocity.x) > parent.speed and sign(parent.velocity.x) == sign(direction)):
+			# Reducing Speed to the cap 
+			parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.movement_data.SPEED_REDUCTION * delta)
+		else:
+			
+			var accel: float = parent.accel
+			var speed: float = parent.speed
+			
+			var slope_angle = rad_to_deg(parent.get_floor_angle(Vector2.UP))
+			#print(slope_angle)
+			
+			var speed_mod: float = 1.0
+			var accel_mod: float = 1.0
+			
+			# At 45 degrees start slowing down acceleration based on the steepness
+			if slope_angle > 50 and slope_angle < 90:
+				if sign(parent.get_floor_normal().x) != sign(direction):  # Uphill
+					speed_mod = lerp(1.0, 0.5, min(slope_angle, 90) / 90)
+					accel_mod = lerp(1.0, 0.5, min(slope_angle, 90) / 90)
+					print("uphill")
+				else:  # Downhill
+					print("downhill")
+					speed_mod = lerp(1.0, 1.5, min(slope_angle, 90) / 90)
+					accel_mod = lerp(1.0, 1.5, min(slope_angle, 90) / 90)
+					
+				print("bleh")
+			
+			speed *= speed_mod
+			accel *= accel_mod
+			
+			# Increasing speed
+			parent.velocity.x = move_toward(parent.velocity.x, speed*direction, accel * delta)
 	
 # Stop the character when they let go of the button
-func apply_friction(delta, direction):
+func apply_friction(delta, direction) -> PlayerState:
 	
 	parent.turningAround = false
 	
 	
 	# Ok this makes the game really slippery when changing direction
 	if direction == 0:
-			# Non crouch friction
-			if parent.current_animation != parent.ANI_STATES.CRAWL:
+		
+			# IF LEVEL GROUND
+			
+			var slope_angle = rad_to_deg(parent.get_floor_angle(Vector2.UP))			
+			if slope_angle < 60:
+				
+				# Apply our usual friction
 				parent.velocity.x = move_toward(parent.velocity.x, 0, parent.friction * delta)
+			
+			# Sliding Downhill
+			else:
+				
+				var sign = sign(parent.get_floor_normal().x)
+				parent.animation.flip_h = sign(parent.get_floor_normal().x) <= 0 # Flip the sprite based on slide dir
+				
+				var speed = sign * parent.hill_speed
+				var accel = parent.hill_accel
+				
+				parent.velocity.x = move_toward(parent.velocity.x, speed, accel*delta)
+				
+				return SLIDING_STATE
 				
 		
 	# IF Turning around
 	elif not (direction * parent.velocity.x > 0):
 		parent.turningAround = true
 		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.turn_friction)
+		
+	return null
 	
 		
 # Updates animation states based on changes in physics
