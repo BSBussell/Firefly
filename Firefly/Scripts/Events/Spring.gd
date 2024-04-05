@@ -7,4 +7,11 @@ func _ready():
 
 
 func _on_body_entered(body: Flyph):
+	body.spring_body_entered(body)
 	pass # Play animation here?
+
+
+
+func _on_body_exited(body: Flyph):
+	body.spring_body_exited(body)
+	pass # Replace with function body.

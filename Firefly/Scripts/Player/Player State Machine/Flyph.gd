@@ -53,7 +53,7 @@ extends CharacterBody2D
 @onready var spring_velocity: float
 @onready var spring_jump_height: float
 @onready var spring_actual_height: float
-@onready var in_spring: float
+@onready var in_spring: bool
 
 # Timers
 @onready var jump_buffer: Timer = $Timers/JumpBuffer
@@ -631,8 +631,8 @@ func calculate_properties():
 	# Spring Motion
 	spring_actual_height = movement_data.MAX_SPRING_HEIGHT * TILE_SIZE
 	spring_velocity = ((-2.0 * spring_actual_height) / movement_data.SPRING_RISE_TIME)
-	spring_gravity = (-2.0 * spring_actual_height) / (movement_data.SPRING_RISE_TIME * movement_data.JUMP_RISE_TIME)
-	spring_gravity = (-2.0 * spring_actual_height) / (movement_data.SPRING_FALL_TIME * movement_data.JUMP_FALL_TIME)
+	spring_gravity = (-2.0 * spring_actual_height) / (movement_data.SPRING_RISE_TIME * movement_data.SPRING_RISE_TIME)
+	#spring_gravity = (-2.0 * spring_actual_height) / (movement_data.SPRING_FALL_TIME * movement_data.JUMP_FALL_TIME)
 
 	# Set timers
 	coyote_time.wait_time = movement_data.COYOTE_TIME
@@ -718,12 +718,14 @@ func _on_hazard_detector_body_entered(body):
 	kill()
 
 
-func _on_spring_body_entered(body):
+func spring_body_entered(body):
 	spring_gravity_active = true
 	in_spring = true
+	velocity.y = spring_velocity
+	squish_node.squish(Vector2(0.8, 1.2))
 
 
-func _on_spring_body_exited(body):
+func spring_body_exited(body):
 	in_spring = false
 	if velocity.y == 0:
 		spring_gravity_active = false
