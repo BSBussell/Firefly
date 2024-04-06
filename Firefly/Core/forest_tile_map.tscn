@@ -1,5 +1,6 @@
-[gd_scene load_steps=35 format=3 uid="uid://cpc5ssjndq6qc"]
+[gd_scene load_steps=37 format=3 uid="uid://cpc5ssjndq6qc"]
 
+[ext_resource type="Shader" path="res://Core/wind.gdshader" id="1_ugprn"]
 [ext_resource type="Texture2D" uid="uid://bkc8jbna0iql3" path="res://Assets/Graphics/Forest_Tile_Set_Extended/forest_tiles_bee_mods.png" id="1_v8b5t"]
 [ext_resource type="Texture2D" uid="uid://w1wqvh6k5alv" path="res://Assets/Graphics/Forest_Tile_Set_Extended/forest_tiles_bee_2.png" id="3_omlka"]
 [ext_resource type="Texture2D" uid="uid://cps43u8xb2qxm" path="res://forest_tiles_bee_mods.png" id="3_wr7b7"]
@@ -109,6 +110,18 @@ polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_tw0cs"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h216o"]
+shader = ExtResource("1_ugprn")
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 100.0
+shader_parameter/interval = 3.5
+shader_parameter/detail = 1.0
+shader_parameter/distortion = null
+shader_parameter/heightOffset = null
+shader_parameter/offset = 0.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_w3l0f"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, -4, -8, -4)
@@ -589,6 +602,7 @@ texture = ExtResource("1_v8b5t")
 14:3/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 14:3/0/physics_layer_2/angular_velocity = 0.0
 4:4/0 = 0
+4:4/0/material = SubResource("ShaderMaterial_h216o")
 4:4/0/terrain_set = 0
 4:4/0/terrain = 2
 4:4/0/probability = 0.25
@@ -2174,7 +2188,7 @@ texture = ExtResource("3_omlka")
 11:1/0 = 0
 11:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 11:1/0/physics_layer_0/angular_velocity = 0.0
-11:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, -8, -1, 8, 8, 8)
+11:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, -8, -8, 0, 8, 8, 8)
 11:1/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 11:1/0/physics_layer_1/angular_velocity = 0.0
 11:1/0/physics_layer_2/linear_velocity = Vector2(0, 0)
@@ -2190,7 +2204,7 @@ texture = ExtResource("3_omlka")
 12:1/0 = 0
 12:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 12:1/0/physics_layer_0/angular_velocity = 0.0
-12:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 1, 8, -8, 8)
+12:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 0, 8, -8, 8)
 12:1/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 12:1/0/physics_layer_1/angular_velocity = 0.0
 12:1/0/physics_layer_2/linear_velocity = Vector2(0, 0)
@@ -2206,7 +2220,7 @@ texture = ExtResource("3_omlka")
 12:0/0 = 0
 12:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 12:0/0/physics_layer_0/angular_velocity = 0.0
-12:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 8, 8, 8, 1, -8, -8, -8)
+12:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 8, 8, 8, 0, -8, -8, -8)
 12:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 12:0/0/physics_layer_1/angular_velocity = 0.0
 12:0/0/physics_layer_2/linear_velocity = Vector2(0, 0)
@@ -2222,7 +2236,7 @@ texture = ExtResource("3_omlka")
 11:0/0 = 0
 11:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 11:0/0/physics_layer_0/angular_velocity = 0.0
-11:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 8, -8, 8, -1, -8, 8, -8)
+11:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 8, -8, 8, 0, -8, 8, -8)
 11:0/0/physics_layer_1/linear_velocity = Vector2(0, 0)
 11:0/0/physics_layer_1/angular_velocity = 0.0
 11:0/0/physics_layer_2/linear_velocity = Vector2(0, 0)

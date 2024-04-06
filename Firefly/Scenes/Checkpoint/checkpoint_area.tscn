@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://c5tvp16swkg7g"]
-
-[node name="CheckpointArea" type="Area2D"]
-collision_layer = 4
-collision_mask = 0

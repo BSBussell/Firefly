@@ -216,10 +216,11 @@ func handle_coyote(_delta):
 				parent.current_animation = parent.ANI_STATES.FALLING
 	
 func handle_sHop(_delta):
-	if Input.is_action_just_released("Jump") and parent.velocity.y < parent.ff_velocity:
+	if Input.is_action_just_released("Jump"):
+		if parent.velocity.y < parent.ff_velocity and not parent.wallJumping:
 			
-				shopped = true
-				parent.velocity.y = parent.ff_velocity
+			shopped = true
+			parent.velocity.y = parent.ff_velocity
 				
 func get_gravity() -> float:
 
@@ -251,9 +252,14 @@ func get_gravity() -> float:
 		# Apply fast falling gravity
 		gravity_to_apply = parent.ff_gravity
 		
-	#if abs(parent.velocity.y) <= 10:
-		#gravity_to_apply *= 0.6
-	
+	if parent.temp_gravity_active:
+		gravity_to_apply = parent.temp_gravtity
+		
+		
+	# Reset temporary gravity once the player starts falling
+	if parent.velocity.y > 0 :
+		parent.temp_gravity_active = false
+		
 	return gravity_to_apply
 
 func apply_gravity(delta):

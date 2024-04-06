@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://80ah8jk6tjnh"
-path="res://.godot/imported/checkpoint.png-4c922242498b70a85faf890dbe94645b.ctex"
+uid="uid://cdude3ng54o4n"
+path="res://.godot/imported/temp_spring.png-ec49e7e17620f4b5eee06e1e21b26a2a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Checkpoint/checkpoint.png"
-dest_files=["res://.godot/imported/checkpoint.png-4c922242498b70a85faf890dbe94645b.ctex"]
+source_file="res://Assets/Graphics/Hazards/temp_spring.png"
+dest_files=["res://.godot/imported/temp_spring.png-ec49e7e17620f4b5eee06e1e21b26a2a.ctex"]
 
 [params]
 
