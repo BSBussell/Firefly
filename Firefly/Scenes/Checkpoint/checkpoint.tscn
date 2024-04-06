@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bolicjjo8tbsn"]
+
+[ext_resource type="Texture2D" uid="uid://80ah8jk6tjnh" path="res://Scenes/Checkpoint/checkpoint.png" id="1_55txf"]
+[ext_resource type="PackedScene" uid="uid://c5tvp16swkg7g" path="res://Scenes/Checkpoint/checkpoint_area.tscn" id="2_aqdap"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ff05q"]
+size = Vector2(5, 15)
+
+[node name="Checkpoint" type="Node2D"]
+
+[node name="Checkpoint" type="Sprite2D" parent="."]
+position = Vector2(8, -8)
+texture = ExtResource("1_55txf")
+
+[node name="CheckpointArea" parent="." instance=ExtResource("2_aqdap")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CheckpointArea"]
+position = Vector2(8, -7.5)
+shape = SubResource("RectangleShape2D_ff05q")

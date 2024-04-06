@@ -703,3 +703,6 @@ func _on_hazard_detector_area_entered(area):
 
 func _on_hazard_detector_body_entered(body):
 	kill()
+
+func _on_checkpoint_area_area_entered(area):
+	starting_position = global_position
