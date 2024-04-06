@@ -95,7 +95,6 @@ offset_bottom = 176.0
 scale = Vector2(6, 6)
 
 [node name="GameViewPort" type="SubViewport" parent="GameContainer"]
-process_mode = 1
 disable_3d = true
 handle_input_locally = false
 snap_2d_transforms_to_pixel = true
@@ -107,6 +106,7 @@ size = Vector2i(322, 182)
 render_target_update_mode = 4
 
 [node name="World" parent="GameContainer/GameViewPort" instance=ExtResource("3_u1u8g")]
+process_mode = 1
 
 [node name="UI" type="SubViewportContainer" parent="."]
 offset_right = 40.0

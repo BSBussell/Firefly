@@ -56,7 +56,6 @@ PLAYER = Object(CharacterBody2D,"_import_path":NodePath(""),"unique_name_in_owne
 [node name="PP + FX" type="Node" parent="."]
 
 [node name="Moonlight" type="DirectionalLight2D" parent="PP + FX"]
-visible = false
 rotation = -0.698132
 color = Color(0.780392, 0.87451, 0.921569, 1)
 energy = 0.1
@@ -69,7 +68,6 @@ height = 1.0
 metadata/_edit_lock_ = true
 
 [node name="ShadowFilter" type="CanvasModulate" parent="PP + FX"]
-visible = false
 color = Color(0.0528417, 0.0389777, 0.153542, 1)
 metadata/_edit_lock_ = true
 
