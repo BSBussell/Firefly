@@ -430,8 +430,7 @@ position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 34
 floor_constant_speed = true
-floor_max_angle = 1.55334
-floor_snap_length = 10.0
+floor_snap_length = 7.0
 script = ExtResource("1_hphyi")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 star = NodePath("UI_FX/Star")
@@ -475,8 +474,10 @@ bounce_curve = SubResource("Curve_umqtl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"falling"
+animation = &"landing"
 autoplay = "idle"
+frame = 2
+frame_progress = 1.0
 script = ExtResource("6_vid37")
 
 [node name="Trail" type="Line2D" parent="Visuals"]
@@ -637,6 +638,14 @@ visible = false
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
+position = Vector2(-1, -8.375)
+shape = SubResource("RectangleShape2D_polx2")
+
+[node name="CheckpointArea" type="Area2D" parent="Physics"]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/CheckpointArea"]
 position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
@@ -915,5 +924,7 @@ script = ExtResource("26_0wrd0")
 [connection signal="animation_finished" from="Visuals/SquishCenter/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
 [connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
+[connection signal="area_entered" from="Physics/CheckpointArea" to="." method="_on_checkpoint_area_area_entered"]
+[connection signal="area_entered" from="Physics/CheckpointArea" to="." method="_on_area_2d_area_entered"]
 [connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
 [connection signal="timeout" from="Timers/CrouchJumpWindow" to="StateMachine/Sliding" method="_on_crouch_jump_window_timeout"]

@@ -95,7 +95,6 @@ offset_bottom = 176.0
 scale = Vector2(6, 6)
 
 [node name="GameViewPort" type="SubViewport" parent="GameContainer"]
-process_mode = 1
 disable_3d = true
 handle_input_locally = false
 snap_2d_transforms_to_pixel = true
