@@ -121,10 +121,11 @@ func process_physics(delta: float) -> PlayerState:
 	handle_sHop(delta)
 	
 	# Grace Wall Jumps
-	if right_wj_grace.is_colliding() and round(right_wj_grace.get_collision_normal(0).x) == right_wj_grace.get_collision_normal(0).x :
-		WALL_STATE.handle_walljump(delta, parent.vertical_axis, -1)
-	elif left_wj_grace.is_colliding() and round(left_wj_grace.get_collision_normal(0).x) == left_wj_grace.get_collision_normal(0).x:
-		WALL_STATE.handle_walljump(delta, parent.vertical_axis, 1)
+	if not parent.temp_gravity_active:
+		if right_wj_grace.is_colliding() and round(right_wj_grace.get_collision_normal(0).x) == right_wj_grace.get_collision_normal(0).x :
+			WALL_STATE.handle_walljump(delta, parent.vertical_axis, -1)
+		elif left_wj_grace.is_colliding() and round(left_wj_grace.get_collision_normal(0).x) == left_wj_grace.get_collision_normal(0).x:
+			WALL_STATE.handle_walljump(delta, parent.vertical_axis, 1)
 	
 	
 	handle_acceleration(delta, parent.horizontal_axis)
@@ -220,6 +221,7 @@ func handle_coyote(_delta):
 func handle_sHop(_delta):
 	
 	if parent.temp_gravity_active:
+		shopped = false
 		return
 	
 	if Input.is_action_just_released("Jump"):
@@ -260,11 +262,13 @@ func get_gravity() -> float:
 		
 	if parent.temp_gravity_active:
 		gravity_to_apply = parent.temp_gravtity
+		print("Using Temp Grav!")
 		
 		
 	# Reset temporary gravity once the player starts falling
-	if parent.velocity.y > 0 :
+	if parent.temp_gravity_active and parent.velocity.y > 0 :
 		parent.temp_gravity_active = false
+		print("Disabling Temp Gravity")
 		
 	return gravity_to_apply
 

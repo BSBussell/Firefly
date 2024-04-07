@@ -87,6 +87,7 @@ size = Vector2(10, 8)
 position = Vector2(208, 612)
 collision_layer = 32
 script = ExtResource("1_bfd0d")
+SPRING_SQUASH = Vector2(0.8, 1.2)
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -1
@@ -104,4 +105,3 @@ shape = SubResource("RectangleShape2D_3es8a")
 stream = ExtResource("3_454p6")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="animation_finished" from="Sprite2D" to="." method="_on_sprite_2d_animation_finished"]

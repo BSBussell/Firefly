@@ -8,6 +8,7 @@ extends PlayerState
 # And check the jump buffer on landing
 @export_subgroup("Input Assists")
 @export var jump_buffer: Timer
+@export var post_jump_buffer: Timer
 @export var coyote_time: Timer
 
 # Particle Effects
@@ -215,6 +216,8 @@ func jump_logic(_delta):
 			# Normal Jump SFX
 			GROUNDED_STATE.jumping_sfx.play(0)
 			parent.crouchJumping = true
+			
+			post_jump_buffer.start()
 		
 			parent.squish_node.squish(parent.jump_squash)
 		
@@ -288,6 +291,8 @@ func crouch_jump() -> bool:
 		
 		# Squash the sprite
 		parent.squish_node.squish(parent.lJump_squash)
+		
+		post_jump_buffer.start()
 		
 		# Set crouch jump to true if we aren't jumping off a hill
 		if not slidingDown:

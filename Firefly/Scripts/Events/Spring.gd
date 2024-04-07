@@ -21,6 +21,8 @@ extends Area2D
 
 @export var SPRING_SQUASH: Vector2 = Vector2(0.7, 1.3)
 
+var primed: bool = false
+
 var spring_actual_height: float
 var spring_velocity: float
 var spring_gravity: float
@@ -30,6 +32,7 @@ var spring_jb_velocity: float
 var spring_jb_gravity: float
 
 var jump_buffer: Timer
+var post_jump_buffer: Timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -50,23 +53,28 @@ func _ready():
 var spring_active: bool = false
 
 var flyph: Flyph
+
 func _on_body_entered(body: Flyph):
 	
-	#body.set_temp_gravity(parent.spring)
+	# If this spring is currently being pressed do nothing
+	if primed: return
+	
+	# Prime the spring
+	primed = true
+	
+	# Set Flyph Up
 	flyph = body
 	
+	# If jump button has been pressed within X window
 	var buffered_jump: bool = false
-	var coyote_timer: Timer
 	
-	coyote_timer = flyph.get_node("Timers/CoyoteTime")
+	# Play the effects that queue on spring down
+	spring_down_fx()
+	
+	# Grab buffers and get current status
 	jump_buffer = flyph.get_node("Timers/JumpBuffer")
-	buffered_jump = jump_buffer.time_left > 0 
-	#print(jump_buffer.time_left)
-	
-	sprite_2d.play("bounce")
-	sprite_2d.frame = 1
-	
-	Input.start_joy_vibration(1, 0.1, 0.3, 0.11)
+	post_jump_buffer = flyph.get_node("Timers/PostJumpBuffer")
+	buffered_jump = jump_buffer.time_left > 0 or post_jump_buffer.time_left > 0 or Input.is_action_just_pressed("Jump")
 	
 	# The faster the player is going (ie the more likely they are to leave the spring quickly)
 	# The shorter the delay. This lets us have a delay sometimes, and if the players moving too fast for this then we don't 
@@ -76,91 +84,164 @@ func _on_body_entered(body: Flyph):
 	# Wait a bit
 	await get_tree().create_timer(timeout).timeout
 	
+	# Launch the player
+	spring_jump(buffered_jump)
 	
-	var launch_velocity: Vector2
-	var launch_gravity: float
+	# Play Spring Up Fx
+	spring_up_fx()
 	
-	launch_velocity.x = 0.0
-	launch_velocity.y = spring_velocity
+	# Re-enable the spring after a short delay to prevent immediate re-triggering
+	await get_tree().create_timer(0.2).timeout
+	primed = false
 	
-	launch_gravity = spring_gravity
+# Effects on spring down
+func spring_down_fx():
 	
-	print("Rot", rotation)
+	# Play spring bounce animation, jump to "spring pressed" frame
+	sprite_2d.play("bounce")
+	sprite_2d.frame = 1
 	
-	launch_velocity = launch_velocity.rotated(rotation)
+	if rotation == 0:
+		flyph.current_animation = flyph.ANI_STATES.JUMP
 	
-	# Both allows player to have initial velocity + allows massive boosts :3
-	var normaled_velocity_x = 0
+	# Vibrate controller
+	Input.start_joy_vibration(1, 0.1, 0.3, 0.11)
+
+# Effect on spring launch
+func spring_up_fx():
+	
+	# Just Sound :3
+	boing_.play(0)
+
+func spring_jump(buffered_jump: bool):
+	
+	# Values for the launch function
+	var launch_velocity: Vector2 = Vector2.ZERO
+	var launch_gravity: float = 0.0
+	
+	# The horizontal momentum; this value will be based on the players current movement speed
+	var momentum: Vector2 = Vector2.ZERO
 	
 	
-	# If we're already jumpin :3
-	if jump_buffer.time_left > 0 or buffered_jump or Input.is_action_just_pressed("Jump"):
-		print("Jump Boost!")
-		print(jump_buffer.time_left > 0)
-		print(coyote_timer.time_left > 0)
-		print("lol")
+	# Update Buffer Status
+	buffered_jump = buffered_jump or jump_buffer.time_left > 0 or post_jump_buffer.time_left > 0
+	
+	# Check if player is boosting upward by pressing a on the spring
+	if buffered_jump or Input.is_action_just_pressed("Jump") and not flyph.wallJumping:
+		
+		# Se tthe launch velocity and gravity to the spring_jb values
 		launch_velocity.y = spring_jb_velocity
 		launch_gravity = spring_jb_gravity
-		boing_.pitch_scale = 1.5
 		
-		print(Input.is_action_just_pressed("Jump"))
 		
 		# Clear the buffer
 		jump_buffer.stop()
-		coyote_timer.stop()
+		post_jump_buffer.stop()
 		
 		# Recklessly allow Speed to stack if you are doing jump boosts
-		normaled_velocity_x = min(flyph.velocity.x, flyph.speed) * 0.5
-		normaled_velocity_x += (flyph.velocity.x - normaled_velocity_x) * 0.75
+		momentum = _jump_boost_momentum_set()
 		
+		# Make the SFX higher
+		boing_.pitch_scale = 1.3
 		
-		
+	# Otherwise we just bounce off the spring
 	else:
 		
-		# If not rotated allow h velocity to carry over
-		if rotation == 0.0:
-			normaled_velocity_x = flyph.velocity.x
+		# Initial Values in a vaccum and an upright spring
+		launch_velocity.y = spring_velocity
+		launch_gravity = spring_gravity
+	
+		
+		momentum = _bounce_momentum_set()
 			
+		# Play audio at default pitch
 		boing_.pitch_scale = 1.0
 		
 	
+	# At this point the launch velocity is primed as if its an upright spring
+	# So we Rotate the Launch Velocity so that its aligned with the springs rotation
+	launch_velocity = launch_velocity.rotated(rotation)
 	
 	
-	
-	# If rotated point velocity boost in direction of rotation
-	if rotation != 0:
-		normaled_velocity_x = abs(normaled_velocity_x) * sign(rotation)
-		#flyph.horizontal_axis = sign(rotation)
+	# Then we align the momentum to work with the springs rotation
+	# (Momentum is set in the direction of the rotation)
+	momentum = _set_momentum_sign(momentum)
 	
 	
-	print("hBoost: ", normaled_velocity_x)
-	launch_velocity.x += normaled_velocity_x
+	print("hBoost: ", momentum)
 	
-	# Lets this chain into other springs that launch the player
-	if flyph.temp_gravity_active:
-		print("Chain :3")
-		# Allows chaining without giving a massive boosts
-		launch_velocity.y += (flyph.velocity.y * 0.5)
+	
+	# Add our "adjusted" momentum to the launch
+	launch_velocity += momentum
 	
 	
 	
 	print(launch_velocity)
 	
-	boing_.play(0)
+	
 	
 	flyph.launch(launch_velocity, launch_gravity, SPRING_SQUASH)
+
+
+## Do Momentum Math for a Job Boost
+func _jump_boost_momentum_set() -> Vector2:
+	
+	var momentum: Vector2 = Vector2.ZERO
+	
+	
+	# X Momentum
+
+	# Only allow speed to stack if we aren't wall jumping
+	if not flyph.wallJumping:
+
+		# Recklessly allow Speed to stack if you are doing jump boosts
+		momentum.x = min(flyph.velocity.x, flyph.speed) * 0.5
+		momentum.x += (flyph.velocity.x - momentum.x) * 0.75
+
+	# If we're wall jumping overwrite current speed with base run speed
+	#else:
+		#momentum.x = flyph.speed * flyph.horizontal_axis * 0.5
 	
 
+	# Y Momentum
+	momentum.y = _y_momentum_set()
 
 
-func _on_body_exited(body: Flyph):
-
-	# Doing this actually sucks
-	#spring_active = false
-	pass # Replace with function body.
-
-
-func _on_sprite_2d_animation_finished():
+	return momentum
 	
-	#flyph.spring_body_entered(flyph)
-	pass # Replace with function body.
+## Do Momentum for a basic bounce
+func _bounce_momentum_set() -> Vector2:
+	
+	var momentum: Vector2 = Vector2.ZERO
+	
+	# If not rotated allow h velocity to carry over
+	if rotation == 0.0:
+		momentum.x = flyph.velocity.x
+	
+
+	momentum.y = _y_momentum_set()
+
+	return momentum
+	
+
+## Gets the Y val for momentum
+func _y_momentum_set() -> float:
+	
+	var momentum: float = 0
+	
+	# Only carried over between launchers
+	if flyph.temp_gravity_active:
+		momentum = flyph.velocity.y * 0.5
+	
+	return momentum
+	
+func _set_momentum_sign(momentum: Vector2) -> Vector2:
+	
+	# If rotated point velocity boost in direction of rotation
+	if rotation != 0:
+		return Vector2(abs(momentum.x) * sign(rotation), momentum.y)
+	
+	# Otherwise have it be in the direction the player is holding?
+	else:
+		return Vector2(abs(momentum.x) * sign(flyph.horizontal_axis), momentum.y)
+		

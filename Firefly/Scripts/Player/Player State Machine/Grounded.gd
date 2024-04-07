@@ -8,6 +8,11 @@ extends PlayerState
 @export_subgroup("Input Assists")
 @export var jump_buffer: Timer
 @export var coyote_time: Timer
+
+# This one is used for things like "if the player jumps right before landing on a spring or rope
+# Have them know the player just jumped if i wanna give a buffer for that
+@export var post_jump_buffer: Timer
+
 @onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
 
 # Particle Effects
@@ -42,7 +47,9 @@ func enter() -> void:
 	parent.set_standing_collider()
 	
 	# Also disable temp gravity when landing just incase we land without falling lol
-	parent.temp_gravity_active = false
+	if parent.temp_gravity_active and parent.velocity.y >= 0:
+		print("disabling temp_gravity")
+		parent.temp_gravity_active = false
 	
 	
 	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
@@ -154,6 +161,10 @@ func jump_logic(_delta):
 		
 		# Prevent silly interactions between jumping and wall jumping
 		jump_buffer.stop()
+		
+		# If we enter a spring in the next 0.125 seconds then the player can do a jump boosted spring jump
+#		# Might rename this for something else tbh cause 
+		post_jump_buffer.start()
 		
 		jumping_sfx.play(0)
 		

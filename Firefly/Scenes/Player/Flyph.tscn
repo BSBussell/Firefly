@@ -475,8 +475,10 @@ bounce_curve = SubResource("Curve_umqtl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"idle"
+animation = &"jump"
 autoplay = "idle"
+frame = 2
+frame_progress = 1.0
 script = ExtResource("6_vid37")
 
 [node name="Trail" type="Line2D" parent="Visuals"]
@@ -848,12 +850,13 @@ label_settings = SubResource("LabelSettings_iomiv")
 script = ExtResource("10_amheu")
 starting_state = NodePath("Grounded")
 
-[node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "coyote_time")]
+[node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "coyote_time", "post_jump_buffer")]
 script = ExtResource("7_x3sml")
 AERIAL_STATE = NodePath("../Aerial")
 SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
+post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 
 [node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "coyote_time", "jump_buffer")]
 script = ExtResource("9_vj5hi")
@@ -863,18 +866,20 @@ SLIDING_STATE = NodePath("../Sliding")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
-[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "jump_buffer")]
+[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "post_jump_buffer")]
 script = ExtResource("10_eck16")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
 SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
+post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 
-[node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "coyote_time")]
+[node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "post_jump_buffer", "coyote_time")]
 script = ExtResource("23_0bu6o")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
+post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
@@ -886,6 +891,9 @@ MOMENTUM_TIMER = NodePath("../Timers/MomentumTime")
 [node name="JumpBuffer" type="Timer" parent="Timers"]
 wait_time = 0.125
 one_shot = true
+
+[node name="PostJumpBuffer" type="Timer" parent="Timers"]
+wait_time = 0.01
 
 [node name="CoyoteTime" type="Timer" parent="Timers"]
 wait_time = 0.1

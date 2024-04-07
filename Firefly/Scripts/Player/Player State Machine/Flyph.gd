@@ -544,7 +544,7 @@ func add_glow(amount: float) -> void:
 	glow_manager.add_score(amount)
 
 func force_glow_update():
-	glow_manager.update_score()
+	glow_manager.calc_score()
 
 func get_glow_score():
 	return glow_manager.glow_points

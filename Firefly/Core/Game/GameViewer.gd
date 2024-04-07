@@ -37,23 +37,24 @@ func _ready():
 func _input(event: InputEvent) -> void:
 	var base_resolution = Vector2i(320, 180)
 	var scale_factors = {
-		KEY_1: 1,
-		KEY_2: 2,
-		KEY_3: 3,
-		KEY_4: 4,
-		KEY_5: 5,
-		KEY_6: 6,
-		KEY_7: 7,
-		KEY_8: 8,
-		KEY_9: 9,
-		KEY_0: 12
+		KEY_1: 0.25,
+		KEY_2: 0.5,
+		KEY_3: 0.75,
+		KEY_4: 1,
+		KEY_5: 1.25,
+		KEY_6: 1.5,
+		KEY_7: 1.75,
+		KEY_8: 2,
+		KEY_9: 2.5,
+		KEY_0: 3
 	}
 
 	for key in scale_factors.keys():
-		if Input.is_key_pressed(key):
+		if Input.is_key_pressed(key) and Engine.time_scale != scale_factors[key]:
 			var scale_factor = scale_factors[key]
-			game_container.scale = Vector2(scale_factor, scale_factor)
-			get_window().content_scale_size = base_resolution * scale_factor
+			Engine.time_scale = scale_factor
+			#game_container.scale = Vector2(scale_factor, scale_factor)
+			#get_window().content_scale_size = base_resolution * scale_factor
 			break  # Exit the loop after the first match
 
 	

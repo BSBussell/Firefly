@@ -8,6 +8,7 @@ extends PlayerState
 # And check the jump buffer on landing
 @export_subgroup("Input Assists")
 @export var jump_buffer: Timer
+@export var post_jump_buffer: Timer
 
 @onready var wall_jump_sfx = $"../../Audio/WallJumpSFX"
 
@@ -107,18 +108,25 @@ func apply_gravity(delta, _direction):
 
 func handle_walljump(delta, vc_direction, dir = 0):	
 	
-	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
+	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0 and not parent.temp_gravity_active:
 	
 		# If the player is trying to do an upward wall jump and we're coming from the padding abort
 		# Upward wall jumps get frustrating when the padding starts pushing the player away from the wall
 		#if vc_direction > 0 and dir != 0:
 			#return
 	
+		print("Walljumping")
+	
 		# Set Flag for gravity :3
 		parent.wallJumping = true
 		
+		# Interrupt our launch custom gravity
+		if parent.temp_gravity_active:	
+			parent.temp_gravity_active = false
+		
 		# Prevent silly interactions between jumping and wall jumping
 		jump_buffer.stop()
+		post_jump_buffer.start()
 		
 		#var wall_normal = parent.get_wall_normal()
 		var jump_dir: float = dir
