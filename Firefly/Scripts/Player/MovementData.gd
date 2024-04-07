@@ -68,7 +68,7 @@ extends Resource
 @export var CROUCH_SPEED_REDUCTION: float = 400000.0
 
 @export_subgroup("Spring Jump") # Copy and pasted jump code so comments are the same
-@export var MAX_SPRING_HEIGHT: float = 8			# The max height of our jump in tiles because im so silly like that
+@export var MAX_SPRING_HEIGHT: float = 4			# The max height of our jump in tiles because im so silly like that
 @export var SPRING_RISE_TIME: float = 0.4			# The time it takes to reach that height
 @export var SPRING_FALL_TIME: float = 0.3 		# The time it takes to fall back down
 @export var SPRING_HORIZ_BOOST: float = 60		# The max speed added on jumping

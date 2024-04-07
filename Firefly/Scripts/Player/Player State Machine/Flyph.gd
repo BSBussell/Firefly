@@ -249,10 +249,14 @@ func _ready() -> void:
 	
 func _unhandled_input(event: InputEvent) -> void:
 	
+	# Log if a jump is pressed
+	if Input.is_action_just_pressed("Jump"):
+		jump_buffer.start()
+	
 	# Ok for some reason my joystick is giving like 0.9998 which when holding left, which apparently
 	# is enough for my player to move considerably slower than like i want them to... so im just gonna
 	horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 ) 
-	vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.5 ) # idek if im gonna use this one lol
+	vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
 	
 	# For quickly chaning states
 	if OS.is_debug_build():
@@ -726,12 +730,22 @@ func set_temp_gravity(grav: float):
 	
 	temp_gravity_active = true
 	temp_gravtity = grav
+
+## Launches the player with the given velocity, and a specified gravity
+func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vector2.ZERO):
 	
+	velocity = launch_velocity
+	
+	if gravity != -1:
+		set_temp_gravity(gravity)
+		
+	if (squash != Vector2.ZERO):
+		squish_node.squish(squash)
 
 func spring_body_entered(body):
 	set_temp_gravity(spring_gravity)
 	velocity.y = spring_velocity
-	squish_node.squish(Vector2(0.5, 1.5))
+	squish_node.squish(Vector2(0.75, 1.25))
 
 
 func spring_body_exited(body):

@@ -83,9 +83,7 @@ func exit() -> void:
 	
 	slide_dust.emitting = false
 	
-	if not jumpExit:
-		coyote_time.start()
-		parent.squish_node.squish(parent.stand_up_squash)
+	
 	
 	# This might be silly b/c i can't control it lol
 	parent.floor_constant_speed = true
@@ -125,6 +123,11 @@ func process_physics(delta: float) -> PlayerState:
 	if not parent.is_on_floor():
 		# Reset Animation State in case of change
 		parent.current_animation = parent.ANI_STATES.CRAWL
+		
+		if not jumpExit and not parent.temp_gravity_active:
+			coyote_time.start()
+			parent.squish_node.squish(parent.stand_up_squash)
+		
 		return AERIAL_STATE
 		
 	# Stay there til we let go of down

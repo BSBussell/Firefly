@@ -95,6 +95,9 @@ func process_input(_event: InputEvent) -> PlayerState:
 	if Input.is_action_just_pressed("Down"):
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
+		if parent.temp_gravity_active:
+			parent.temp_gravity_active = false
+			parent.velocity.y = max(parent.jump_velocity * 0.5, parent.velocity.y)
 		
 	if parent.crouchJumping and not Input.is_action_pressed("Down") and have_stand_room():
 	#Input.is_action_released("Down") and have_stand_room():
@@ -103,8 +106,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 		#parent.squish_node.scale = parent.stand_up_squash
 		parent.set_standing_collider()
 		
-	if Input.is_action_just_pressed("Jump"):
-		jump_buffer.start()
+	
 	
 	return null
 
@@ -164,7 +166,7 @@ func process_frame(delta):
 		parent.squish_node.squish(squishVal)
 	
 	
-	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST:
+	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active:
 		speed_particles.emitting = true
 		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
 	else:
@@ -182,7 +184,7 @@ func animation_end() -> PlayerState:
 	return null
 	
 func handle_coyote(_delta):
-	if coyote_time.time_left > 0.0:
+	if coyote_time.time_left > 0.0 and not parent.temp_gravity_active:
 		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
 			
 			# Prevent silly interactions between jumping and wall jumping
@@ -216,6 +218,10 @@ func handle_coyote(_delta):
 				parent.current_animation = parent.ANI_STATES.FALLING
 	
 func handle_sHop(_delta):
+	
+	if parent.temp_gravity_active:
+		return
+	
 	if Input.is_action_just_released("Jump"):
 		if parent.velocity.y < parent.ff_velocity and not parent.wallJumping:
 			

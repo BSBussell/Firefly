@@ -73,10 +73,7 @@ func enter() -> void:
 
 # Called before exiting the state, cleanup
 func exit() -> void:
-	# This is hard because we could either be falling or jumping in leaving this state
-	# So lets be silly how we handle that
-	if not jump_exit:
-		coyote_time.start()
+	
 	
 	run_sfx.stop()
 	dash_dust.emitting = false
@@ -114,6 +111,13 @@ func process_physics(delta: float) -> PlayerState:
 	
 	# Make Sure we're still grounded after this
 	if not parent.is_on_floor():
+		
+		# This is hard because we could either be falling or jumping in leaving this state
+		# So lets be silly how we handle that.
+		# Temp grav active check also ensures coyote time isn't started on launch
+		if not jump_exit and not parent.temp_gravity_active:
+			coyote_time.start()
+		
 		return AERIAL_STATE
 	
 	# If for whatever reason we end up not having room above us then force the
@@ -173,7 +177,17 @@ func jump_logic(_delta):
 func handle_acceleration(delta, direction):
 	
 	# Can't move forward when crouching or landing
-	if direction:  
+	if direction and parent.velocity.x and sign(direction) != sign(parent.velocity.x):
+		
+		print("Turning Around")
+		var accel: float = parent.accel * 3.5
+		var speed: float = parent.speed
+		# Increasing speed
+		print(parent.velocity.x)
+		parent.velocity.x = move_toward(parent.velocity.x, speed*direction, accel * delta)
+		print(parent.velocity.x)
+	
+	elif direction:  
 		if (abs(parent.velocity.x) > parent.speed and sign(parent.velocity.x) == sign(direction)):
 			# Reducing Speed to the cap 
 			parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.movement_data.SPEED_REDUCTION * delta)
@@ -193,13 +207,10 @@ func handle_acceleration(delta, direction):
 				if sign(parent.get_floor_normal().x) != sign(direction):  # Uphill
 					speed_mod = lerp(1.0, 0.5, min(slope_angle, 90) / 90)
 					accel_mod = lerp(1.0, 0.5, min(slope_angle, 90) / 90)
-					print("uphill")
+					
 				else:  # Downhill
-					print("downhill")
 					speed_mod = lerp(1.0, 1.5, min(slope_angle, 90) / 90)
 					accel_mod = lerp(1.0, 1.5, min(slope_angle, 90) / 90)
-					
-				print("bleh")
 			
 			speed *= speed_mod
 			accel *= accel_mod
@@ -214,7 +225,7 @@ func apply_friction(delta, direction) -> PlayerState:
 	
 	
 	# Ok this makes the game really slippery when changing direction
-	if direction == 0:
+	if not direction:
 		
 			# IF LEVEL GROUND
 			
@@ -241,7 +252,7 @@ func apply_friction(delta, direction) -> PlayerState:
 	# IF Turning around
 	elif not (direction * parent.velocity.x > 0):
 		parent.turningAround = true
-		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.turn_friction)
+		#parent.velocity.x = move_toward(parent.velocity.x, 0, parent.turn_friction)
 		
 	return null
 	
