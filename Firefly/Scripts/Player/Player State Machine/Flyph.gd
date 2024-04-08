@@ -736,6 +736,9 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	
 	velocity = launch_velocity
 	
+	# Force us outta crouch jump
+	crouchJumping = false
+	
 	if gravity != -1:
 		set_temp_gravity(gravity)
 		

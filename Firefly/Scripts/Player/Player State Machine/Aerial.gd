@@ -186,7 +186,7 @@ func animation_end() -> PlayerState:
 	
 func handle_coyote(_delta):
 	if coyote_time.time_left > 0.0 and not parent.temp_gravity_active:
-		if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
+		if jump_buffer.time_left > 0.0:
 			
 			# Prevent silly interactions between jumping and wall jumping
 			jump_buffer.stop()
@@ -262,6 +262,7 @@ func get_gravity() -> float:
 		
 	if parent.temp_gravity_active:
 		gravity_to_apply = parent.temp_gravtity
+		print(parent.velocity.y)
 		print("Using Temp Grav!")
 		
 		

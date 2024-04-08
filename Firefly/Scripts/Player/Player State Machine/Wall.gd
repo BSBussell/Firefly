@@ -87,7 +87,7 @@ func apply_gravity(delta, _direction):
 	var silly_grav = AERIAL_STATE.get_gravity()
 
 	# If holding into wall and falling, slow our fall
-	if parent.velocity.y > 0 and Input.is_action_pressed(get_which_wall_collided()):  # Ensure we're moving downwards
+	if parent.velocity.y > 0 and Input.is_action_pressed(get_which_wall_collided()) and not parent.temp_gravity_active:  # Ensure we're moving downwards
 		
 		sliding_sfx.play(sliding_sfx.get_playback_position())
 		
@@ -108,7 +108,12 @@ func apply_gravity(delta, _direction):
 
 func handle_walljump(delta, vc_direction, dir = 0):	
 	
-	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0 and not parent.temp_gravity_active:
+	if jump_buffer.time_left > 0.0 and not parent.temp_gravity_active:
+	
+	
+		# Prevent silly interactions between jumping and wall jumping
+		jump_buffer.stop() # Consume Jump Buffer
+		post_jump_buffer.start() # Start post jump buffer
 	
 		# If the player is trying to do an upward wall jump and we're coming from the padding abort
 		# Upward wall jumps get frustrating when the padding starts pushing the player away from the wall
@@ -124,9 +129,7 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		if parent.temp_gravity_active:	
 			parent.temp_gravity_active = false
 		
-		# Prevent silly interactions between jumping and wall jumping
-		jump_buffer.stop()
-		post_jump_buffer.start()
+		
 		
 		#var wall_normal = parent.get_wall_normal()
 		var jump_dir: float = dir

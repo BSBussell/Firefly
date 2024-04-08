@@ -190,7 +190,7 @@ func apply_friction(delta, direction):
 # TODO: Add jump lag in order to show the crouch animation
 func jump_logic(_delta):
 	
-	if Input.is_action_just_pressed("Jump") or GROUNDED_STATE.jump_buffer.time_left > 0.0: 
+	if GROUNDED_STATE.jump_buffer.time_left > 0.0: 
 		
 		# Prevent silly interactions between jumping and wall jumping
 		GROUNDED_STATE.jump_buffer.stop()

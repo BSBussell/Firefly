@@ -59,6 +59,8 @@ func _on_body_entered(body: Flyph):
 	# If this spring is currently being pressed do nothing
 	if primed: return
 	
+	print("Entered")
+	
 	# Prime the spring
 	primed = true
 	
@@ -74,7 +76,11 @@ func _on_body_entered(body: Flyph):
 	# Grab buffers and get current status
 	jump_buffer = flyph.get_node("Timers/JumpBuffer")
 	post_jump_buffer = flyph.get_node("Timers/PostJumpBuffer")
-	buffered_jump = jump_buffer.time_left > 0 or post_jump_buffer.time_left > 0 or Input.is_action_just_pressed("Jump")
+	buffered_jump = jump_buffer.time_left > 0 #or post_jump_buffer.time_left > 0
+	if buffered_jump:
+		print("Eating Buffer")
+		jump_buffer.stop()
+		post_jump_buffer.stop()
 	
 	# The faster the player is going (ie the more likely they are to leave the spring quickly)
 	# The shorter the delay. This lets us have a delay sometimes, and if the players moving too fast for this then we don't 
@@ -82,9 +88,10 @@ func _on_body_entered(body: Flyph):
 	timeout = lerpf(0.1, 0.05, flyph.velocity.length() / 300)
 	
 	# Wait a bit
-	await get_tree().create_timer(timeout).timeout
+	#await get_tree().create_timer(timeout).timeout
 	
 	# Launch the player
+	print("Runing Spring_Jump_Routine")
 	spring_jump(buffered_jump)
 	
 	# Play Spring Up Fx
@@ -124,10 +131,10 @@ func spring_jump(buffered_jump: bool):
 	
 	
 	# Update Buffer Status
-	buffered_jump = buffered_jump or jump_buffer.time_left > 0 or post_jump_buffer.time_left > 0
+	#buffered_jump = buffered_jump or jump_buffer.time_left > 0 #or post_jump_buffer.time_left > 0
 	
 	# Check if player is boosting upward by pressing a on the spring
-	if buffered_jump or Input.is_action_just_pressed("Jump") and not flyph.wallJumping:
+	if buffered_jump and not flyph.wallJumping:
 		
 		# Se tthe launch velocity and gravity to the spring_jb values
 		launch_velocity.y = spring_jb_velocity
@@ -177,7 +184,7 @@ func spring_jump(buffered_jump: bool):
 	
 	
 	print(launch_velocity)
-	
+	print(launch_gravity)
 	
 	
 	flyph.launch(launch_velocity, launch_gravity, SPRING_SQUASH)

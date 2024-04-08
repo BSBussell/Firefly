@@ -94,6 +94,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 	# When we press down we crouch
 	if Input.is_action_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
 		parent.current_animation = parent.ANI_STATES.CROUCH
+		print("crouch exit")
 		return SLIDING_STATE
 		
 		
@@ -110,8 +111,9 @@ func process_physics(delta: float) -> PlayerState:
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	
-	if (apply_friction(delta, parent.horizontal_axis) != null):
-		return SLIDING_STATE
+	if parent.is_on_floor():
+		if (apply_friction(delta, parent.horizontal_axis) != null):
+			return SLIDING_STATE
 	
 	
 	update_state(parent.horizontal_axis)
@@ -132,6 +134,7 @@ func process_physics(delta: float) -> PlayerState:
 	if not AERIAL_STATE.have_stand_room():
 		
 		parent.current_animation = parent.ANI_STATES.CROUCH
+		print("no room exit")
 		return SLIDING_STATE
 	
 		
@@ -149,7 +152,7 @@ func process_frame(delta):
 # Our logic for making the player jumping
 func jump_logic(_delta):
 	
-	if Input.is_action_just_pressed("Jump") or jump_buffer.time_left > 0.0:
+	if jump_buffer.time_left > 0.0:
 		
 		
 		var new_cloud = parent.JUMP_DUST.instantiate()
@@ -257,6 +260,7 @@ func apply_friction(delta, direction) -> PlayerState:
 				
 				parent.velocity.x = move_toward(parent.velocity.x, speed, accel*delta)
 				
+				print("friction exit!")
 				return SLIDING_STATE
 				
 		
