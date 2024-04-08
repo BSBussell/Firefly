@@ -42,7 +42,6 @@ extends CharacterBody2D
 @onready var light: PointLight2D = $Visuals/Spotlight
 @onready var trail: Line2D = $Visuals/Trail
 @onready var deathDust: Marker2D = $Particles/JumpDustSpawner
-
 @onready var glow_aura = $Particles/GlowAura
 @onready var mega_speed_particles = $Particles/MegaSpeedParticles
 @onready var wall_slide_dust = $Particles/WallSlideDust
@@ -738,3 +737,7 @@ func spring_body_exited(body):
 	in_spring = false
 	if velocity.y == 0:
 		spring_gravity_active = false
+
+
+func _on_checkpoint_detector_area_entered(area):
+	starting_position = global_position
