@@ -28,9 +28,6 @@ func _ready():
 	# Let us process input even when game beat
 	set_process_input(true)
 
-
-
-
 func _input(event: InputEvent) -> void:
 	var base_resolution = Vector2i(320, 180)
 	var scale_factors = {
