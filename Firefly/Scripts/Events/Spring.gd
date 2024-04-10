@@ -73,14 +73,9 @@ func _on_body_entered(body: Flyph):
 	# Play the effects that queue on spring down
 	spring_down_fx()
 	
-	# Grab buffers and get current status
-	jump_buffer = flyph.get_node("Timers/JumpBuffer")
-	post_jump_buffer = flyph.get_node("Timers/PostJumpBuffer")
-	buffered_jump = jump_buffer.time_left > 0 #or post_jump_buffer.time_left > 0
-	if buffered_jump:
-		print("Eating Buffer")
-		jump_buffer.stop()
-		post_jump_buffer.stop()
+	## Grab buffers and get current status
+	#buffered_jump = flyph.attempt_jump()
+	
 	
 	# The faster the player is going (ie the more likely they are to leave the spring quickly)
 	# The shorter the delay. This lets us have a delay sometimes, and if the players moving too fast for this then we don't 
@@ -92,7 +87,7 @@ func _on_body_entered(body: Flyph):
 	
 	# Launch the player
 	print("Runing Spring_Jump_Routine")
-	spring_jump(buffered_jump)
+	spring_jump()
 	
 	# Play Spring Up Fx
 	spring_up_fx()
@@ -117,7 +112,7 @@ func spring_up_fx():
 	# Just Sound :3
 	boing_.play(0)
 
-func spring_jump(buffered_jump: bool):
+func spring_jump():
 	
 	# Values for the launch function
 	var launch_velocity: Vector2 = Vector2.ZERO
@@ -131,16 +126,11 @@ func spring_jump(buffered_jump: bool):
 	#buffered_jump = buffered_jump or jump_buffer.time_left > 0 #or post_jump_buffer.time_left > 0
 	
 	# Check if player is boosting upward by pressing a on the spring
-	if buffered_jump and not flyph.wallJumping or flyph.crouchJumping:
+	if flyph.boostJumping or flyph.jumping or flyph.attempt_jump() and not flyph.wallJumping:
 		
 		# Se tthe launch velocity and gravity to the spring_jb values
 		launch_velocity.y = spring_jb_velocity
 		launch_gravity = spring_jb_gravity
-		
-		
-		# Clear the buffer
-		jump_buffer.stop()
-		post_jump_buffer.stop()
 		
 		# Recklessly allow Speed to stack if you are doing jump boosts
 		momentum = _jump_boost_momentum_set()
@@ -199,8 +189,8 @@ func _jump_boost_momentum_set() -> Vector2:
 	if not flyph.wallJumping:
 
 		# Recklessly allow Speed to stack if you are doing jump boosts
-		momentum.x = min(flyph.velocity.x, flyph.speed) * 0.5
-		momentum.x += (flyph.velocity.x - momentum.x) * 0.75
+		momentum.x = min(flyph.velocity.x, flyph.speed) * 0.6
+		momentum.x += (flyph.velocity.x - momentum.x)
 
 	# If we're wall jumping overwrite current speed with base run speed
 	#else:

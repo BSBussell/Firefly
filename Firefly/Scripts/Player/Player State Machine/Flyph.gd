@@ -187,6 +187,7 @@ var fastFalling: bool = false
 var airDriftDisabled: bool = false
 var wallJumping: bool = false
 var turningAround: bool = false
+var jumping: bool = false
 var crouchJumping: bool = false
 var boostJumping: bool = false
 var canCrouchJump: bool = true
@@ -275,6 +276,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			calculate_properties()
 	
 	StateMachine.process_input(event)
+	
+## Attempt to consume a jump buffer
+func attempt_jump() -> bool:
+	if jump_buffer.time_left > 0.0:
+		jump_buffer.stop()
+		return true
+	return false
 	
 func _physics_process(delta: float) -> void:
 	
@@ -743,8 +751,10 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	
 	velocity = launch_velocity
 	
-	# Force us outta crouch jump
+	# Remove all extranous Jump Flags :3
+	jumping = false
 	crouchJumping = false
+	boostJumping = false
 	
 	# Get us outta the grounded state to avoid that states
 	

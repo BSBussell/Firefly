@@ -190,18 +190,10 @@ func apply_friction(delta, direction):
 # TODO: Add jump lag in order to show the crouch animation
 func jump_logic(_delta):
 	
-	if GROUNDED_STATE.jump_buffer.time_left > 0.0: 
-		
-		# Prevent silly interactions between jumping and wall jumping
-		GROUNDED_STATE.jump_buffer.stop()
-		#jump_buffer.wait_time = -1
-		
-		#GROUNDED_STATE.jumping_sfx.play(0)
-		
-		
+	if not parent.temp_gravity_active and parent.attempt_jump(): 
 		
 		# If we aren't crouch jumping just do a normal jump
-		if not crouch_jump():
+		if not boost_jump():
 			
 			# Velocity y
 			parent.velocity.y = (parent.jump_velocity * 0.8)
@@ -253,9 +245,9 @@ func update_state(direction):
 		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
 
 
-# This is a big messy, but essentially crouch jump returns true if we perform
-# A crouch jump and false if we don't
-func crouch_jump() -> bool:
+# This is a big messy, but essentially boost jump returns true if we perform
+# A boost jump and false if we don't
+func boost_jump() -> bool:
 	
 	# throw in this to make it slightly less free
 	if (crouch_jump_window.time_left == 0 ) and abs(parent.velocity.x) > abs(parent.speed) * parent.movement_data.CROUCH_JUMP_THRES: #and parent.canCrouchJump:
@@ -297,6 +289,9 @@ func crouch_jump() -> bool:
 		# Set crouch jump to true if we aren't jumping off a hill
 		if not slidingDown:
 			parent.crouchJumping = true
+			
+		# Set boostJumping Flag
+		parent.boostJumping = true
 		
 		
 		return true

@@ -153,7 +153,7 @@ func process_frame(delta):
 func jump_logic(_delta):
 	
 	# If a jump has been buffered, and we aren't being launched by something else
-	if jump_buffer.time_left > 0.0 and not parent.temp_gravity_active:
+	if not parent.temp_gravity_active and parent.attempt_jump():
 		
 		
 		var new_cloud = parent.JUMP_DUST.instantiate()
@@ -162,9 +162,6 @@ func jump_logic(_delta):
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
 		
-		
-		# Prevent silly interactions between jumping and wall jumping
-		jump_buffer.stop()
 		
 		# If we enter a spring in the next 0.125 seconds then the player can do a jump boosted spring jump
 #		# Might rename this for something else tbh cause 
@@ -179,6 +176,7 @@ func jump_logic(_delta):
 		parent.squish_node.squish(parent.jump_squash)
 		
 		jump_exit = true
+		parent.jumping = true
 		
 		# If we're not currently crouching, then we initiate jumping
 		if (parent.current_animation != parent.ANI_STATES.CRAWL):

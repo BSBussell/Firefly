@@ -108,11 +108,9 @@ func apply_gravity(delta, _direction):
 
 func handle_walljump(delta, vc_direction, dir = 0):	
 	
-	if jump_buffer.time_left > 0.0 and not parent.temp_gravity_active:
+	# Attempt jump pretty much just checks if a jump has been buffered and removes that from the buffer if it has
+	if not parent.temp_gravity_active and parent.attempt_jump():
 	
-	
-		# Prevent silly interactions between jumping and wall jumping
-		jump_buffer.stop() # Consume Jump Buffer
 		post_jump_buffer.start() # Start post jump buffer
 	
 		# If the player is trying to do an upward wall jump and we're coming from the padding abort

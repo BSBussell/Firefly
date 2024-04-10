@@ -140,6 +140,10 @@ func process_physics(delta: float) -> PlayerState:
 		
 		parent.landing_speed = min_fall_speed
 		Input.start_joy_vibration(1, 0.1, 0.08, 0.175)
+		
+		parent.boostJumping = false
+		
+		
 		if Input.is_action_pressed("Down") or not have_stand_room():
 			
 			# IF the player stays crouching the whole time they can't chain it again
@@ -186,17 +190,14 @@ func animation_end() -> PlayerState:
 	
 func handle_coyote(_delta):
 	if coyote_time.time_left > 0.0 and not parent.temp_gravity_active:
-		if jump_buffer.time_left > 0.0:
-			
-			# Prevent silly interactions between jumping and wall jumping
-			jump_buffer.stop()
-			#jump_buffer.wait_time = -1
-			
-			# Apply Velocity
+		if parent.attempt_jump():
 			
 			
 			
-			if not (parent.current_animation == parent.ANI_STATES.CRAWL and SLIDING_STATE.crouch_jump()):
+		
+			
+			# Check Conditions for boost jumping
+			if not (parent.current_animation == parent.ANI_STATES.CRAWL and SLIDING_STATE.boost_jump()):
 				parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
 				
 				parent.velocity.y = parent.jump_velocity
@@ -267,9 +268,14 @@ func get_gravity() -> float:
 		
 		
 	# Reset temporary gravity once the player starts falling
-	if parent.temp_gravity_active and parent.velocity.y > 0 :
-		parent.temp_gravity_active = false
-		print("Disabling Temp Gravity")
+	if parent.velocity.y > 0 :
+		
+		# Resetting certain flags :3
+		if parent.temp_gravity_active:
+			parent.temp_gravity_active = false
+		if parent.jumping:
+			parent.jumping = false
+			
 		
 	return gravity_to_apply
 
