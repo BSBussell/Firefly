@@ -642,6 +642,14 @@ collision_mask = 16
 position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
+[node name="CheckpointDetector" type="Area2D" parent="Physics"]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/CheckpointDetector"]
+position = Vector2(-1, -8.375)
+shape = SubResource("RectangleShape2D_polx2")
+
 [node name="Raycasts" type="Node2D" parent="."]
 visible = false
 position = Vector2(0, -8)
@@ -922,5 +930,6 @@ script = ExtResource("26_0wrd0")
 [connection signal="animation_finished" from="Visuals/SquishCenter/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
 [connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
+[connection signal="area_entered" from="Physics/CheckpointDetector" to="." method="_on_checkpoint_detector_area_entered"]
 [connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
 [connection signal="timeout" from="Timers/CrouchJumpWindow" to="StateMachine/Sliding" method="_on_crouch_jump_window_timeout"]
