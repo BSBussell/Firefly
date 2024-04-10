@@ -152,7 +152,8 @@ func process_frame(delta):
 # Our logic for making the player jumping
 func jump_logic(_delta):
 	
-	if jump_buffer.time_left > 0.0:
+	# If a jump has been buffered, and we aren't being launched by something else
+	if jump_buffer.time_left > 0.0 and not parent.temp_gravity_active:
 		
 		
 		var new_cloud = parent.JUMP_DUST.instantiate()
@@ -190,7 +191,7 @@ func jump_logic(_delta):
 # Accelerate the player based on direction
 func handle_acceleration(delta, direction):
 	
-	# Can't move forward when crouching or landing
+	# If direction is different than velocity (turning around)
 	if direction and parent.velocity.x and sign(direction) != sign(parent.velocity.x):
 		
 		print("Turning Around")
@@ -202,6 +203,7 @@ func handle_acceleration(delta, direction):
 		print(parent.velocity.x)
 	
 	elif direction:  
+		
 		if (abs(parent.velocity.x) > parent.speed and sign(parent.velocity.x) == sign(direction)):
 			# Reducing Speed to the cap 
 			parent.velocity.x = move_toward(parent.velocity.x, parent.speed*direction, parent.movement_data.SPEED_REDUCTION * delta)
@@ -211,8 +213,7 @@ func handle_acceleration(delta, direction):
 			var speed: float = parent.speed
 			
 			var slope_angle = rad_to_deg(parent.get_floor_angle(Vector2.UP))
-			#print(slope_angle)
-			
+
 			var speed_mod: float = 1.0
 			var accel_mod: float = 1.0
 			

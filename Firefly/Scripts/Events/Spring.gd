@@ -19,7 +19,7 @@ extends Area2D
 ## Potentially Unused lol
 @export var SPRING_HORIZ_BOOST: float = 60		# The max speed added on jumping
 
-@export var SPRING_SQUASH: Vector2 = Vector2(0.7, 1.3)
+@export var SPRING_SQUASH: Vector2 = Vector2(1.5, 0.5)
 
 var primed: bool = false
 
@@ -106,10 +106,7 @@ func spring_down_fx():
 	
 	# Play spring bounce animation, jump to "spring pressed" frame
 	sprite_2d.play("bounce")
-	sprite_2d.frame = 1
-	
-	if rotation == 0:
-		flyph.current_animation = flyph.ANI_STATES.JUMP
+	sprite_2d.frame = 2
 	
 	# Vibrate controller
 	Input.start_joy_vibration(1, 0.1, 0.3, 0.11)
@@ -134,7 +131,7 @@ func spring_jump(buffered_jump: bool):
 	#buffered_jump = buffered_jump or jump_buffer.time_left > 0 #or post_jump_buffer.time_left > 0
 	
 	# Check if player is boosting upward by pressing a on the spring
-	if buffered_jump and not flyph.wallJumping:
+	if buffered_jump and not flyph.wallJumping or flyph.crouchJumping:
 		
 		# Se tthe launch velocity and gravity to the spring_jb values
 		launch_velocity.y = spring_jb_velocity
@@ -223,7 +220,7 @@ func _bounce_momentum_set() -> Vector2:
 	
 	# If not rotated allow h velocity to carry over
 	if rotation == 0.0:
-		momentum.x = flyph.velocity.x
+		momentum.x = min(flyph.velocity.x, flyph.speed) * 0.5
 	
 
 	momentum.y = _y_momentum_set()

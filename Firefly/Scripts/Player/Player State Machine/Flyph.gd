@@ -5,6 +5,12 @@ extends CharacterBody2D
 @export_category("Movement Resource")
 @export var movement_states: Array[PlayerMovementData]
 
+@export_subgroup("States")
+@export var GROUNDED_STATE: PlayerState
+@export var AERIAL_STATE: PlayerState
+@export var SLIDING_STATE: PlayerState
+@export var WALL_STATE: PlayerState
+
 @export_subgroup("MISC")
 @export var star: CPUParticles2D
 @export var debug_info: Label
@@ -182,6 +188,7 @@ var airDriftDisabled: bool = false
 var wallJumping: bool = false
 var turningAround: bool = false
 var crouchJumping: bool = false
+var boostJumping: bool = false
 var canCrouchJump: bool = true
 
 # Used for when hitting a wall kills our velocity and we wanna get it back
@@ -738,6 +745,8 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	
 	# Force us outta crouch jump
 	crouchJumping = false
+	
+	# Get us outta the grounded state to avoid that states
 	
 	if gravity != -1:
 		set_temp_gravity(gravity)
