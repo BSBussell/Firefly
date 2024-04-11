@@ -172,6 +172,16 @@ func process_frame(delta):
 		parent.squish_node.squish(squishVal)
 	
 	
+	# Direction Facing, don't update if we're walljumping up
+	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
+		if parent.velocity.x < 0 and not parent.animation.flip_h:
+			parent.animation.flip_h = true
+			parent.squish_node.squish(parent.turn_around_squash)
+		
+		elif parent.velocity.x > 0 and parent.animation.flip_h:
+			parent.animation.flip_h = false
+			parent.squish_node.squish(parent.turn_around_squash)
+	
 	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active:
 		speed_particles.emitting = true
 		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
@@ -227,7 +237,7 @@ func handle_sHop(_delta):
 		return
 	
 	if Input.is_action_just_released("Jump"):
-		if parent.velocity.y < parent.ff_velocity and not parent.wallJumping:
+		if parent.velocity.y < parent.ff_velocity:
 			
 			shopped = true
 			parent.velocity.y = parent.ff_velocity
@@ -278,6 +288,10 @@ func get_gravity() -> float:
 		if parent.jumping:
 			parent.jumping = false
 			
+			
+	# Add a bit of float
+	if abs(parent.velocity.y) < 30:
+		gravity_to_apply *= 0.5	
 		
 	return gravity_to_apply
 

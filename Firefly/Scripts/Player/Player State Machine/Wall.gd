@@ -228,7 +228,7 @@ func handle_walljump(delta, vc_direction, dir = 0):
 			else:
 				parent.airDriftDisabled = false
 		
-			parent.horizontal_axis = jump_dir
+			#parent.horizontal_axis = jump_dir
 			
 			parent.current_wj = parent.WALLJUMPS.NEUTRAL
 	

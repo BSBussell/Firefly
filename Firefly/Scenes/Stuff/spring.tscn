@@ -129,6 +129,8 @@ size = Vector2(10, 8)
 position = Vector2(208, 612)
 collision_layer = 32
 script = ExtResource("1_bfd0d")
+SPRING_RISE_TIME = 0.3
+JUMP_BOOST_RISE_TIME = 0.36
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -1
