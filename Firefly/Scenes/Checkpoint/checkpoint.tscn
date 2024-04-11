@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dtblwt5hi5l4c"]
+[gd_scene load_steps=16 format=3 uid="uid://dtblwt5hi5l4c"]
 
 [ext_resource type="Texture2D" uid="uid://cbwo3ot4bpeu5" path="res://Scenes/Checkpoint/checkpoint.png" id="1_u1gd0"]
 [ext_resource type="Script" path="res://Scenes/Checkpoint/checkpoint.gd" id="1_y2n64"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="5_qok0a"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerSpotlight.gd" id="6_kh6md"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="7_ywx6k"]
+[ext_resource type="AudioStream" uid="uid://dltcpm20f25wk" path="res://Assets/SFX/Player/Glow/fire_lit.mp3" id="8_bqlvb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4rmqn"]
 animations = [{
@@ -121,6 +122,9 @@ scale_amount_min = 0.51
 scale_amount_max = 1.5
 scale_amount_curve = SubResource("Curve_xfwur")
 color = Color(0.890196, 0.921569, 0.34902, 1)
+
+[node name="CheckPointLit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_bqlvb")
 
 [connection signal="area_entered" from="CheckpointArea" to="." method="_on_checkpoint_area_area_entered"]
 [connection signal="body_entered" from="CheckpointArea" to="." method="_on_checkpoint_area_body_entered"]

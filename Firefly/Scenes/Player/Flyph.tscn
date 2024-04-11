@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=95 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -147,6 +147,26 @@ region = Rect2(1984, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_k0j6o"]
 atlas = ExtResource("5_63g2f")
 region = Rect2(2048, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wcnt"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3520, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwi8c"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3584, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8i4cx"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3392, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_if2qc"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3456, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u70jm"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3328, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qixpd"]
 atlas = ExtResource("5_63g2f")
@@ -321,6 +341,36 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_0wcnt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwi8c")
+}],
+"loop": false,
+"name": &"slide_end",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8i4cx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_if2qc")
+}],
+"loop": true,
+"name": &"slide_loop",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u70jm")
+}],
+"loop": false,
+"name": &"slide_prep",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_qixpd")
 }, {
 "duration": 1.0,
@@ -485,10 +535,8 @@ bounce_curve = SubResource("Curve_umqtl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"jump"
+animation = &"slide_prep"
 autoplay = "idle"
-frame = 2
-frame_progress = 1.0
 script = ExtResource("6_vid37")
 
 [node name="Trail" type="Line2D" parent="Visuals"]
@@ -506,6 +554,7 @@ length = 0
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
 color = Color(1, 0.980392, 0.803922, 1)
+energy = 0.4
 range_layer_min = -99
 range_item_cull_mask = 3
 shadow_enabled = true

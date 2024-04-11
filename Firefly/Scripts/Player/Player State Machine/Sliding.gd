@@ -31,6 +31,8 @@ var jumpExit = false
 
 var usingHill = false
 
+var slide_threshold = 50
+
 # Called on state entrance, setup
 func enter() -> void:
 	
@@ -62,10 +64,18 @@ func enter() -> void:
 	# This might be silly b/c i can't control it lol
 	parent.floor_constant_speed = false
 	
+	# If we're sliding :3
 	if abs(parent.velocity.x) > 0:
 		slide_dust.emitting = true
 		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
 		sliding_sfx.play(0)
+		
+		if at_slide_thres():
+			print("Setting slide anim")	
+			parent.current_animation = parent.ANI_STATES.SLIDE_PREP
+	#else:
+		#print("Setting crouch animation")
+		#parent.current_animation = parent.ANI_STATES.CROUCH
 		
 	entryVel = parent.velocity.x
 		
@@ -131,8 +141,14 @@ func process_physics(delta: float) -> PlayerState:
 		return AERIAL_STATE
 		
 	# Stay there til we let go of down
-	if not Input.is_action_pressed("Down") and AERIAL_STATE.have_stand_room():
-		parent.current_animation = parent.ANI_STATES.STANDING_UP
+	if not Input.is_action_pressed("Down") and AERIAL_STATE.have_stand_room() and not on_steep_ground():
+		
+		# Silly enums
+		if parent.current_animation >= parent.ANI_STATES.SLIDE_PREP and parent.current_animation <= parent.ANI_STATES.SLIDE_END:
+			print("Setting slide end")
+			parent.current_animation = parent.ANI_STATES.SLIDE_END
+		else:	
+			parent.current_animation = parent.ANI_STATES.STANDING_UP
 		#parent.squish_node.scale = parent.stand_up_squash
 		return GROUNDED_STATE
 	#parent.move_and_slide()
@@ -142,7 +158,14 @@ func process_physics(delta: float) -> PlayerState:
 	return null
 	
 	
+func on_steep_ground():
 	
+	var slope_angle = rad_to_deg(parent.get_floor_angle(Vector2.UP))
+	if slope_angle >= 60:
+		return true
+	return false
+		
+
 
 func animation_end() -> PlayerState:
 	
@@ -154,6 +177,23 @@ func animation_end() -> PlayerState:
 	# If we are crouching go to crawl
 	if parent.current_animation == parent.ANI_STATES.CROUCH:
 		parent.current_animation = parent.ANI_STATES.CRAWL
+	
+	# If prep has finished
+	if parent.current_animation == parent.ANI_STATES.SLIDE_PREP:
+		if at_slide_thres():
+			print ("Setting Slide loop")
+			parent.current_animation = parent.ANI_STATES.SLIDE_LOOP
+		else:
+			print("Setting slide end")
+			parent.current_animation = parent.ANI_STATES.SLIDE_END
+	
+	
+	print("Animation Ended: ", parent.current_animation)
+	# If we're stopped sliding
+	if parent.current_animation == parent.ANI_STATES.SLIDE_END:
+		print("Exiting Slide to Crouch")
+		
+		parent.current_animation = parent.ANI_STATES.CROUCH
 	
 	return null
 
@@ -238,11 +278,32 @@ func update_state(direction):
 	if parent.velocity.x == 0:
 		sliding_sfx.stop()
 		slide_dust.emitting = false
+		
+		if parent.current_animation == parent.ANI_STATES.SLIDE_LOOP:
+			print("Setting Slide End")
+			parent.current_animation = parent.ANI_STATES.SLIDE_END
+	
 	else:
 		sliding_sfx.play(sliding_sfx.get_playback_position())
 		slide_dust.emitting = true
 		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
+		
+	# If we meet the threshold, and aren't already sliding, start sliding
+	if at_slide_thres() and not in_slide_animation():
+		print("Setting slide animation")
+		parent.current_animation = parent.ANI_STATES.SLIDE_PREP
+	
+	# Otherwise if we're in the sliding animation
+	elif in_slide_animation():
+		
+		parent.current_animation = parent.ANI_STATES.SLIDE_END
 
+
+func at_slide_thres() -> bool:
+	return abs(parent.velocity.x) > slide_threshold
+
+func in_slide_animation() -> bool:
+	return parent.current_animation >= parent.ANI_STATES.SLIDE_PREP and parent.current_animation <= parent.ANI_STATES.SLIDE_END
 
 # This is a big messy, but essentially boost jump returns true if we perform
 # A boost jump and false if we don't

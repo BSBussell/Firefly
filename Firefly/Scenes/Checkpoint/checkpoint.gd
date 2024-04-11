@@ -9,6 +9,8 @@ var active = false
 @onready var spotlight = $Spotlight
 @onready var explode = $explode
 @onready var lightparticles = $lightparticles
+@onready var check_point_lit = $CheckPointLit
+
 
 var manager: CheckPointManager
 
@@ -50,6 +52,7 @@ func activate_checkpoint(player: Flyph):
 	spotlight.set_brightness(0.6)
 	explode.emitting = true
 	lightparticles.emitting = true
+	check_point_lit.play()
 	
 	# If a target is defined use that for respawn
 	if optional_target:

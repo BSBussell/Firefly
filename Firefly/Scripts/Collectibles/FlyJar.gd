@@ -8,6 +8,5 @@ func _ready():
 	animation_player.play("Idle")
 
 func on_enter(body: Flyph):
-	body.add_glow(point_value)
 	animation_player.play("Grab")
 	_ui.new_item_found()

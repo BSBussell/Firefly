@@ -151,7 +151,12 @@ extends CharacterBody2D
 @onready var ff_gravity: float
 
 # Animation Variable
-@onready var run_threshold: float# Jumps helps to do this better
+@onready var run_threshold: float
+
+
+# Speedometer / MISC Info
+@onready var debug = $Debug
+
 
 const TILE_SIZE: int = 16
 
@@ -172,7 +177,10 @@ enum ANI_STATES {
 	LANDING,
 	RUNNING,
 	STANDING_UP,	# From Crawl
-	WALKING
+	WALKING,
+	SLIDE_PREP,
+	SLIDE_LOOP,
+	SLIDE_END
 	
 }
 
@@ -351,6 +359,14 @@ func update_animations():
 			animation.play("crouch")
 		ANI_STATES.STANDING_UP:
 			animation.play("stand up")
+			
+		# Slide Animations
+		ANI_STATES.SLIDE_PREP:
+			animation.play("slide_prep")
+		ANI_STATES.SLIDE_LOOP:
+			animation.play("slide_loop")
+		ANI_STATES.SLIDE_END:
+			animation.play("slide_end")
 		
 		# Air/Jump Animations
 		ANI_STATES.JUMP:
@@ -766,17 +782,13 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	if (squash != Vector2.ZERO):
 		squish_node.squish(squash)
 
-func spring_body_entered(body):
-	set_temp_gravity(spring_gravity)
-	velocity.y = spring_velocity
-	squish_node.squish(Vector2(0.75, 1.25))
-
-
-func spring_body_exited(body):
-	in_spring = false
-	if velocity.y == 0:
-		spring_gravity_active = false
-
 
 func set_respawn_point(point: Vector2):
 	starting_position = point
+
+func show_speedometer():
+	debug.visible = true
+
+func hide_speedometer():
+	debug.visible = false
+	

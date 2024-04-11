@@ -164,13 +164,13 @@ tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/path = NodePath("PointLight2D:energy")
-tracks/3/interp = 1
+tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0, 0.0]
+"values": [0.0]
 }
 
 [sub_resource type="Animation" id="Animation_ejuv7"]
@@ -385,7 +385,7 @@ color_ramp = SubResource("Gradient_a3cyy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1.5, 1.5, 1, 1)
-position = Vector2(0, 0.0317688)
+position = Vector2(0, 2.5)
 texture = ExtResource("1_m3sud")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -394,8 +394,8 @@ libraries = {
 }
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+scale = Vector2(0.5, 0.5)
 color = Color(0.890196, 0.921569, 0.34902, 1)
-energy = 0.8
 texture = ExtResource("3_sikls")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

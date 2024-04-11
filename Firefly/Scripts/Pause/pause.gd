@@ -152,3 +152,14 @@ func _on_glow_mode_toggle_switched_on():
 func _on_glow_mode_toggle_switched_off():
 	if _player.ACTIVE_PLAYER:
 		_player.ACTIVE_PLAYER.disable_auto_glow()
+
+
+func _on_speedometer_toggle_switched_off():
+	
+	if _player.ACTIVE_PLAYER:
+		_player.ACTIVE_PLAYER.hide_speedometer()
+
+
+func _on_speedometer_toggle_switched_on():
+	if _player.ACTIVE_PLAYER:
+		_player.ACTIVE_PLAYER.show_speedometer()
