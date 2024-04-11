@@ -142,6 +142,7 @@ func process_physics(delta: float) -> PlayerState:
 		Input.start_joy_vibration(1, 0.1, 0.08, 0.175)
 		
 		parent.boostJumping = false
+		parent.launched = false
 		
 		
 		if Input.is_action_pressed("Down") or not have_stand_room():
@@ -273,6 +274,7 @@ func get_gravity() -> float:
 		# Resetting certain flags :3
 		if parent.temp_gravity_active:
 			parent.temp_gravity_active = false
+			parent.launched = false # This will occasionally be extranous, but generally these are connected
 		if parent.jumping:
 			parent.jumping = false
 			

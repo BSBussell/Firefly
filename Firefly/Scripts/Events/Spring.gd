@@ -182,20 +182,11 @@ func _jump_boost_momentum_set() -> Vector2:
 	
 	var momentum: Vector2 = Vector2.ZERO
 	
-	
-	# X Momentum
 
-	# Only allow speed to stack if we aren't wall jumping
-	if not flyph.wallJumping:
+	# Recklessly allow Speed to stack if you are doing jump boosts
+	momentum.x = min(flyph.velocity.x, flyph.speed) * 0.6
+	momentum.x += (flyph.velocity.x - momentum.x)
 
-		# Recklessly allow Speed to stack if you are doing jump boosts
-		momentum.x = min(flyph.velocity.x, flyph.speed) * 0.6
-		momentum.x += (flyph.velocity.x - momentum.x)
-
-	# If we're wall jumping overwrite current speed with base run speed
-	#else:
-		#momentum.x = flyph.speed * flyph.horizontal_axis * 0.5
-	
 
 	# Y Momentum
 	momentum.y = _y_momentum_set()
@@ -212,6 +203,7 @@ func _bounce_momentum_set() -> Vector2:
 	if rotation == 0.0:
 		momentum.x = min(flyph.velocity.x, flyph.speed) * 0.5
 	
+	# If the spring is rotated, this would be very difficult to figure out how to do ngl
 
 	momentum.y = _y_momentum_set()
 

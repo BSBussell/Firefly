@@ -50,6 +50,9 @@ func enter() -> void:
 	if parent.temp_gravity_active and parent.velocity.y >= 0:
 		print("disabling temp_gravity")
 		parent.temp_gravity_active = false
+		parent.launched = false
+		
+		
 	
 	
 	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
@@ -153,7 +156,7 @@ func process_frame(delta):
 func jump_logic(_delta):
 	
 	# If a jump has been buffered, and we aren't being launched by something else
-	if not parent.temp_gravity_active and parent.attempt_jump():
+	if not parent.launched and parent.attempt_jump():
 		
 		
 		var new_cloud = parent.JUMP_DUST.instantiate()
@@ -193,7 +196,7 @@ func handle_acceleration(delta, direction):
 	if direction and parent.velocity.x and sign(direction) != sign(parent.velocity.x):
 		
 		print("Turning Around")
-		var accel: float = parent.accel * 3.5
+		var accel: float = parent.accel * 4
 		var speed: float = parent.speed
 		# Increasing speed
 		print(parent.velocity.x)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dtblwt5hi5l4c"]
+[gd_scene load_steps=15 format=3 uid="uid://dtblwt5hi5l4c"]
 
 [ext_resource type="Texture2D" uid="uid://cbwo3ot4bpeu5" path="res://Scenes/Checkpoint/checkpoint.png" id="1_u1gd0"]
 [ext_resource type="Script" path="res://Scenes/Checkpoint/checkpoint.gd" id="1_y2n64"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c5l21kwicny6l" path="res://Scenes/Checkpoint/checkpoint_area.tscn" id="3_dfki5"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="5_qok0a"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerSpotlight.gd" id="6_kh6md"]
+[ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="7_ywx6k"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4rmqn"]
 animations = [{
@@ -16,7 +17,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("2_ahown")
 }],
-"loop": true,
+"loop": false,
 "name": &"default",
 "speed": 5.0
 }]
@@ -33,29 +34,37 @@ _data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_0dgg6"]
-_data = [Vector2(0.0337079, 1), 0.0, 0.0, 0, 0, Vector2(0.786517, 0.098901), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.651897), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.0963558, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="Gradient" id="Gradient_o7rym"]
+offsets = PackedFloat32Array(0.9, 0.995763)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+metadata/_snap_enabled = true
+
 [sub_resource type="Curve" id="Curve_xfwur"]
-_data = [Vector2(0.0505618, 1), 0.0, 0.0, 0, 0, Vector2(0.348315, 0.0659341), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.6, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
+metadata/_snap_enabled = true
 
 [node name="Checkpoint" type="Node2D"]
 script = ExtResource("1_y2n64")
 
 [node name="CheckpointSprite" type="AnimatedSprite2D" parent="."]
-position = Vector2(7, -8)
+position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_4rmqn")
-frame_progress = 0.276288
 
 [node name="CheckpointArea" parent="." instance=ExtResource("3_dfki5")]
+visible = false
+collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CheckpointArea"]
 position = Vector2(7, -7)
 shape = SubResource("RectangleShape2D_500oe")
 
 [node name="Spotlight" type="PointLight2D" parent="."]
-color = Color(1, 0.980392, 0.803922, 1)
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.6
 range_layer_min = -99
 range_item_cull_mask = 3
 shadow_enabled = true
@@ -70,30 +79,48 @@ curve_out = SubResource("Curve_0g3ch")
 metadata/_edit_lock_ = true
 
 [node name="explode" type="CPUParticles2D" parent="."]
-position = Vector2(7, -11)
+position = Vector2(0, -11)
 emitting = false
 amount = 14
 one_shot = true
-explosiveness = 1.0
-spread = 170.45
+explosiveness = 0.95
+texture = ExtResource("7_ywx6k")
+direction = Vector2(0, -1)
+spread = 90.0
 gravity = Vector2(0, 0)
 initial_velocity_min = 10.0
 initial_velocity_max = 50.0
-scale_amount_min = 0.5
-scale_amount_max = 1.5
+angular_velocity_min = -10.0
+angular_velocity_max = 10.0
+orbit_velocity_min = -1.0
+orbit_velocity_max = 1.0
+damping_min = 1.0
+damping_max = 1.0
+angle_max = 90.0
+scale_amount_min = 0.2
+scale_amount_max = 0.9
 scale_amount_curve = SubResource("Curve_0dgg6")
-color = Color(1, 1, 0.65098, 1)
+color = Color(0.890196, 0.921569, 0.34902, 1)
+color_ramp = SubResource("Gradient_o7rym")
 
 [node name="lightparticles" type="CPUParticles2D" parent="."]
-visible = false
-position = Vector2(7, -12)
+z_index = -1
+position = Vector2(0, -9)
 emitting = false
+lifetime = 0.6
+speed_scale = 0.75
+texture = ExtResource("7_ywx6k")
 emission_shape = 3
 emission_rect_extents = Vector2(6, 1)
 gravity = Vector2(0, -100)
+angular_velocity_min = -61.06
+angular_velocity_max = 152.98
+angle_min = -45.0
+angle_max = 45.0
 scale_amount_min = 0.51
 scale_amount_max = 1.5
 scale_amount_curve = SubResource("Curve_xfwur")
-color = Color(1, 0.941176, 0.847059, 1)
+color = Color(0.890196, 0.921569, 0.34902, 1)
 
 [connection signal="area_entered" from="CheckpointArea" to="." method="_on_checkpoint_area_area_entered"]
+[connection signal="body_entered" from="CheckpointArea" to="." method="_on_checkpoint_area_body_entered"]

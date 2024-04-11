@@ -22,7 +22,6 @@ layer_4/tile_data = PackedInt32Array(655391, 65537, 2, 655392, 131073, 2, 655393
 position = Vector2(145, 641)
 
 [node name="Spring" parent="." instance=ExtResource("3_m0piy")]
-SPRING_SQUASH = Vector2(1.5, 0.5)
 
 [node name="Spring2" type="Area2D" parent="."]
 position = Vector2(444, 692)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=88 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=90 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -389,6 +389,11 @@ point_count = 2
 _data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="Curve" id="Curve_e8pkx"]
+_data = [Vector2(0.00943396, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
 [sub_resource type="Gradient" id="Gradient_r3nhe"]
 offsets = PackedFloat32Array(0.879781, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
@@ -396,6 +401,11 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 [sub_resource type="Gradient" id="Gradient_xmxui"]
 offsets = PackedFloat32Array(0.555256, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_iosa0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.7), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_diik4"]
 interpolation_mode = 2
@@ -534,6 +544,7 @@ angle_min = -45.0
 angle_max = 45.0
 scale_amount_min = 0.1
 scale_amount_max = 0.2
+scale_amount_curve = SubResource("Curve_e8pkx")
 color = Color(3, 3, 0, 1)
 color_ramp = SubResource("Gradient_r3nhe")
 
@@ -629,6 +640,7 @@ angle_min = -45.0
 angle_max = 45.0
 scale_amount_min = 0.2
 scale_amount_max = 0.3
+scale_amount_curve = SubResource("Curve_iosa0")
 color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_diik4")
 
@@ -639,14 +651,6 @@ visible = false
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
-position = Vector2(-1, -8.375)
-shape = SubResource("RectangleShape2D_polx2")
-
-[node name="CheckpointDetector" type="Area2D" parent="Physics"]
-collision_layer = 4
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/CheckpointDetector"]
 position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
@@ -930,6 +934,5 @@ script = ExtResource("26_0wrd0")
 [connection signal="animation_finished" from="Visuals/SquishCenter/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
 [connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
-[connection signal="area_entered" from="Physics/CheckpointDetector" to="." method="_on_checkpoint_detector_area_entered"]
 [connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
 [connection signal="timeout" from="Timers/CrouchJumpWindow" to="StateMachine/Sliding" method="_on_crouch_jump_window_timeout"]

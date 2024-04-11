@@ -109,7 +109,7 @@ func apply_gravity(delta, _direction):
 func handle_walljump(delta, vc_direction, dir = 0):	
 	
 	# Attempt jump pretty much just checks if a jump has been buffered and removes that from the buffer if it has
-	if not parent.temp_gravity_active and parent.attempt_jump():
+	if not parent.launched and parent.attempt_jump():
 	
 		post_jump_buffer.start() # Start post jump buffer
 	

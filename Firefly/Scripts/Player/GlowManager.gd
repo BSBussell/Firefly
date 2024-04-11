@@ -53,7 +53,7 @@ func _process(delta):
 		return
 	
 	# Update Scoring information based on movement speed, etc.
-	var score: float = calc_score()
+	score = calc_score()
 	var new_points = score * glow_grow_rate
 	
 	# Add score to points, score only goes up if we're at max level

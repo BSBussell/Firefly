@@ -23,7 +23,6 @@ extends PlayerState
 @onready var crouch_jumping_sfx = $"../../Audio/CrouchJumpingSFX"
 
 @onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
-@onready var crouch_jump_disable = $"../../Timers/CrouchJumpDisable"
 
 var entryVel: float
 

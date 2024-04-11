@@ -187,6 +187,7 @@ var airDriftDisabled: bool = false
 var wallJumping: bool = false
 var turningAround: bool = false
 var jumping: bool = false
+var launched: bool = false
 var crouchJumping: bool = false
 var boostJumping: bool = false
 var canCrouchJump: bool = true
@@ -750,6 +751,8 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	
 	velocity = launch_velocity
 	
+	launched = true
+	
 	# Remove all extranous Jump Flags :3
 	jumping = false
 	crouchJumping = false
@@ -775,5 +778,5 @@ func spring_body_exited(body):
 		spring_gravity_active = false
 
 
-func _on_checkpoint_detector_area_entered(area):
-	starting_position = global_position
+func set_respawn_point(point: Vector2):
+	starting_position = point
