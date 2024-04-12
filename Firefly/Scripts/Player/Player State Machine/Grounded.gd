@@ -33,15 +33,13 @@ var jump_exit = false
 
 # Called on state entrance, setup
 func enter() -> void:
+	
 	print("Grounded State")
 	
-	#else:
+	# Reset Flags
 	jump_exit = false
-	
 	parent.crouchJumping = false
-	
-	# If we go to grounded we regain the ability to crouch jump
-	parent.canCrouchJump = true
+	parent.wallJumping = false
 	
 	# Setup the proper colliders for this state :3
 	parent.set_standing_collider()
@@ -54,19 +52,21 @@ func enter() -> void:
 		
 		
 	
-	
+	# If are landing
 	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
 		
+		# SFX
 		landing_sfx.play(0)
 	
 		# Squish
 		if jump_buffer.time_left == 0:
 			parent.squish_node.squish(calc_landing_squish())
 	
-		# Land into a sprint!
+		# Land into run animations
 		if abs(parent.velocity.x) >= parent.run_threshold:
 			parent.current_animation = parent.ANI_STATES.RUNNING
 			dash_dust.emitting = true
+		
 		else:
 			parent.current_animation = parent.ANI_STATES.LANDING
 
@@ -76,19 +76,14 @@ func enter() -> void:
 		landing_dust.add_child(new_cloud)
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
-		
-		
-			
-		parent.wallJumping = false
+
 
 # Called before exiting the state, cleanup
 func exit() -> void:
 	
-	
+	# Reset Effects
 	run_sfx.stop()
 	dash_dust.emitting = false
-	
-	pass
 
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
@@ -97,11 +92,8 @@ func process_input(_event: InputEvent) -> PlayerState:
 	# When we press down we crouch
 	if Input.is_action_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
 		parent.current_animation = parent.ANI_STATES.CROUCH
-		print("crouch exit")
 		return SLIDING_STATE
 		
-		
-	
 	return null
 
 
@@ -114,6 +106,8 @@ func process_physics(delta: float) -> PlayerState:
 	
 	handle_acceleration(delta, parent.horizontal_axis)
 	
+	# Make sure we're on the floor
+	# Then apply friction (helps to avoid launch being weird)
 	if parent.is_on_floor():
 		if (apply_friction(delta, parent.horizontal_axis) != null):
 			return SLIDING_STATE

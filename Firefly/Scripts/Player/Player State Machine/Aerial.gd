@@ -10,7 +10,7 @@ extends PlayerState
 @export var coyote_time: Timer
 @export var jump_buffer: Timer
 
-@onready var jump_dust = $"../../Particles/JumpDustSpawner"
+
 
 # WallJump Checkers
 @onready var right_wj_grace = $"../../Raycasts/Right_WJ_Grace"
@@ -24,23 +24,19 @@ extends PlayerState
 @onready var stand_room_left = $"../../Raycasts/Colliders/Stand_Room_Left"
 @onready var stand_room_right = $"../../Raycasts/Colliders/Stand_Room_Right"
 
-# Speed FX
+# Effects
 @onready var speed_particles = $"../../Particles/MegaSpeedParticles"
-
-# Jump SFX
+@onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 
-# For Coyote CJ
-@onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
-
+# Measuring the players fall speed for squish-matics
 var min_fall_speed = 0.0
-# Timer to wait before slowing down the player
-#@onready var crouch_jump_window = $"../../Timers/CrouchJumpReleaseWindow"
 
+
+# Count of how much time has passed
 var ticks: float = 0
 
-var stored_velocity_x: float
-
+# Keep track of if we have short hopped.
 var shopped: bool = false
 
 
@@ -49,6 +45,7 @@ func enter() -> void:
 	
 	print("Aerial State")
 	
+	# Enabling the appropriate Raycasts
 	right_wj_grace.enabled = true
 	left_wj_grace.enabled = true
 	
@@ -56,22 +53,20 @@ func enter() -> void:
 	top_right.enabled = true
 	top_left.enabled = true
 	
-	parent.canCrouchJump = true
-	
+	# Reset our flags/counters
 	shopped = false
-	
-	
-	if (parent.current_animation != parent.ANI_STATES.JUMP and not parent.crouchJumping):
-		parent.current_animation = parent.ANI_STATES.FALLING
-	
 	ticks = 0
-	
 	min_fall_speed = 0.0
+	
+	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
+	if (not parent.jumping and not parent.crouchJumping) or parent.launched:
+		parent.current_animation = parent.ANI_STATES.FALLING
 	
 
 # Called before exiting the state, cleanup
 func exit() -> void:
 	
+	# Disable appropriate raycasts
 	right_wj_grace.enabled = false
 	left_wj_grace.enabled = false
 	
@@ -79,10 +74,11 @@ func exit() -> void:
 	top_right.enabled = false
 	top_left.enabled = false
 	
+	# And any potentially on particles
 	speed_particles.emitting = false
 	
 	
-	
+	# If we're fast falling set the speed scale back and reset the flags
 	if (parent.fastFalling):
 		
 		parent.fastFalling = false
@@ -92,6 +88,7 @@ func exit() -> void:
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
 	
+	# If Fast Falling Input
 	if Input.is_action_just_pressed("Down"):
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
@@ -99,11 +96,13 @@ func process_input(_event: InputEvent) -> PlayerState:
 			parent.temp_gravity_active = false
 			parent.velocity.y = max(parent.jump_velocity * 0.5, parent.velocity.y)
 		
+	
+	# If we are crouch jumping, let go of down, and have standing room.
 	if parent.crouchJumping and not Input.is_action_pressed("Down") and have_stand_room():
-	#Input.is_action_released("Down") and have_stand_room():
+	
 		parent.crouchJumping = false
 		parent.current_animation = parent.ANI_STATES.FALLING
-		#parent.squish_node.scale = parent.stand_up_squash
+		
 		parent.set_standing_collider()
 		
 	
@@ -113,53 +112,58 @@ func process_input(_event: InputEvent) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 	
-	
 	apply_gravity(delta)
 	
-	# Short hops
+	# Grace Jumps
 	handle_coyote(delta)
+	handle_grace_walljump(delta)
+	
+	# For Short Hops
 	handle_sHop(delta)
 	
-	# Grace Wall Jumps
-	if not parent.temp_gravity_active:
-		if right_wj_grace.is_colliding() and round(right_wj_grace.get_collision_normal(0).x) == right_wj_grace.get_collision_normal(0).x :
-			WALL_STATE.handle_walljump(delta, parent.vertical_axis, -1)
-		elif left_wj_grace.is_colliding() and round(left_wj_grace.get_collision_normal(0).x) == left_wj_grace.get_collision_normal(0).x:
-			WALL_STATE.handle_walljump(delta, parent.vertical_axis, 1)
-	
-	
+	# Horizontal Motion
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
 	
+	# Increment the Time count
 	ticks += delta
 	
+	# Check if we've found a new min fall speed
 	min_fall_speed = min(min_fall_speed, parent.velocity.y)
+	
+	# Get Potential exit state from state status
+	return state_status()
+
+
+func state_status():
 	
 	# Make Sure we're still grounded after this
 	if parent.is_on_floor():
 		
+		# If we've gone from aerial to on the floor
 		parent.landing_speed = min_fall_speed
 		Input.start_joy_vibration(1, 0.1, 0.08, 0.175)
 		
+		# Reset Flags
 		parent.boostJumping = false
 		parent.launched = false
 		
 		
+		# If we're pressing down and have standing room go into a slide
 		if Input.is_action_pressed("Down") or not have_stand_room():
-			
-			# IF the player stays crouching the whole time they can't chain it again
-			# The point is to discourage just abusing the "crouched" variant other than
-			# For slight adjustments/etc.
-			if (parent.crouchJumping):
-				parent.canCrouchJump = false
-			
 			return SLIDING_STATE
+		
+		# We just land otherwise
 		else:
 			return GROUNDED_STATE
+	
+	# If we're on the wall
 	elif parent.is_on_wall_only():
+		
 		return WALL_STATE
 	
 	return null
+	
 
 func process_frame(delta):
 	
@@ -182,79 +186,135 @@ func process_frame(delta):
 			parent.animation.flip_h = false
 			parent.squish_node.squish(parent.turn_around_squash)
 	
+	# Speed Particle Emission
 	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active:
 		speed_particles.emitting = true
 		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
 	else:
 		speed_particles.emitting = false
+		
 	pass
 
 func animation_end() -> PlayerState:
 
+	# If Jump Anim ends go to Falling
 	if (parent.current_animation == parent.ANI_STATES.JUMP):
 		parent.current_animation = parent.ANI_STATES.FALLING
 	
+	# If falling ends pause the animation
 	if parent.current_animation == parent.ANI_STATES.FALLING:
 		parent.animation.pause()
 	
 	return null
 	
 func handle_coyote(_delta):
-	if coyote_time.time_left > 0.0 and not parent.temp_gravity_active:
+	
+	# If we are able to do a coyote jump
+	if coyote_time.time_left > 0.0 and not parent.launched:
+		
+		# If the player has buffered a jump
 		if parent.attempt_jump():
 			
-			
-			
-		
-			
-			# Check Conditions for boost jumping
-			if not (parent.current_animation == parent.ANI_STATES.CRAWL and SLIDING_STATE.boost_jump()):
-				parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
-				
-				parent.velocity.y = parent.jump_velocity
-				
-				# Play Jump Cloud
-				var new_cloud = parent.JUMP_DUST.instantiate()
-				new_cloud.set_name("jump_dust_temp")
-				jump_dust.add_child(new_cloud)
-				var animation = new_cloud.get_node("AnimationPlayer")
-				animation.play("free")
-				
-				jumping_sfx.play(0)
-			
-			else:
-				ticks = 0
-			
-			
-				
+			# Update Animation State if we aren't holding crawl still
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):
 				parent.current_animation = parent.ANI_STATES.FALLING
+		
+			
+			# See if we're able to boost Jump
+			if (parent.current_animation == parent.ANI_STATES.CRAWL and SLIDING_STATE.can_boost_jump()):
+				SLIDING_STATE.boost_jump()
+				ticks = 0
+				return
+			
+			coyote_jump()
+			
+
+#perform coyote jump
+func coyote_jump():
 	
+	# Add a Horizontal Jump Boost to our players X velocity
+	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
+	
+	# Jump Velocity
+	parent.velocity.y = parent.jump_velocity
+	
+	# Play Jump Cloud
+	var new_cloud = parent.JUMP_DUST.instantiate()
+	new_cloud.set_name("jump_dust_temp")
+	jump_dust.add_child(new_cloud)
+	var animation = new_cloud.get_node("AnimationPlayer")
+	animation.play("free")
+	
+	# Jump SFX
+	jumping_sfx.play(0)
+	
+func handle_grace_walljump(delta: float) -> void:
+	
+	# If we aren't being launched and aren't crouch jumping
+	if not parent.launched and not parent.crouchJumping:
+		
+		# Check the shapecasts and call the walljump if we're in it
+		if right_wj_grace.is_colliding() and round(right_wj_grace.get_collision_normal(0).x) == right_wj_grace.get_collision_normal(0).x :
+			WALL_STATE.handle_walljump(delta, parent.vertical_axis, -1)
+		elif left_wj_grace.is_colliding() and round(left_wj_grace.get_collision_normal(0).x) == left_wj_grace.get_collision_normal(0).x:
+			WALL_STATE.handle_walljump(delta, parent.vertical_axis, 1)
+	
+
+
+# Whenever the player releases Jump the velocity is set to ff_velocity.
+# This is intended to be less than jump velocity. So that they can kinda get closer to their descent faster
 func handle_sHop(_delta):
 	
-	if parent.temp_gravity_active:
+	# If we were launched disable shopp
+	if parent.launched:
 		shopped = false
-		return
-	
-	if Input.is_action_just_released("Jump"):
+		
+	# Otherwise if we let go of jump, decrease their velocity
+	elif Input.is_action_just_released("Jump"):
+		
+		# If we aren't already below ff_velocity
 		if parent.velocity.y < parent.ff_velocity:
 			
 			shopped = true
+			
+			# Begin descent at this velocity
 			parent.velocity.y = parent.ff_velocity
 				
+				
+				
+# Pretty much set all jump bools to false when falling
+func update_jump_flags():
+	
+	# Disabling Wall Jumping flags if we're falling
+	if parent.velocity.y > 0:
+		
+		# Wall Jump Flags
+		if parent.wallJumping:
+			# Player has started falling, reset wall jump state
+			parent.wallJumping = false
+			parent.current_wj = parent.WALLJUMPS.NEUTRAL
+
+		# Launched and temp grav
+		if parent.temp_gravity_active:
+			parent.temp_gravity_active = false
+			parent.launched = false # This will occasionally be extranous, but generally these are connected
+		
+		# Jumping flag
+		if parent.jumping:
+			parent.jumping = false
+
+# Gets the gravity to apply
 func get_gravity() -> float:
+
+	update_jump_flags()
 
 	# Default gravity is fall gravity
 	var gravity_to_apply = parent.fall_gravity
 	
-	# Disabling Wall Jumping
-	if parent.wallJumping and parent.velocity.y > 0:
-		# Player has started falling, reset wall jump state
-		parent.wallJumping = false
-		parent.current_wj = parent.WALLJUMPS.NEUTRAL
+	
 	
 	# If we're wall jumping
-	elif parent.wallJumping:
+	if parent.wallJumping:
 		# Apply the correct wall jump gravity
 		match parent.current_wj:
 			parent.WALLJUMPS.NEUTRAL:
@@ -263,7 +323,7 @@ func get_gravity() -> float:
 				gravity_to_apply = parent.up_walljump_gravity
 	
 	# If we're rising
-	elif parent.velocity.y <= 0 and not shopped:
+	elif parent.jumping and not shopped:
 		# Apply rising gravity
 		gravity_to_apply = parent.jump_gravity
 	
@@ -272,25 +332,13 @@ func get_gravity() -> float:
 		# Apply fast falling gravity
 		gravity_to_apply = parent.ff_gravity
 		
+	# Temp Gravity Overrides All
 	if parent.temp_gravity_active:
 		gravity_to_apply = parent.temp_gravtity
-		print(parent.velocity.y)
-		print("Using Temp Grav!")
 		
 		
-	# Reset temporary gravity once the player starts falling
-	if parent.velocity.y > 0 :
-		
-		# Resetting certain flags :3
-		if parent.temp_gravity_active:
-			parent.temp_gravity_active = false
-			parent.launched = false # This will occasionally be extranous, but generally these are connected
-		if parent.jumping:
-			parent.jumping = false
-			
-			
-	# Add a bit of float
-	if abs(parent.velocity.y) < 30:
+	# Add a bit of float if we haven't shopped
+	if abs(parent.velocity.y) < 40 and Input.is_action_pressed("Jump"):
 		gravity_to_apply *= 0.5	
 		
 	return gravity_to_apply
@@ -298,64 +346,79 @@ func get_gravity() -> float:
 func apply_gravity(delta):
 	
 	parent.velocity.y -= get_gravity() * delta
+	
+	# Cap out velocity.y
 	parent.velocity.y = min(parent.velocity.y, parent.movement_data.MAX_FALL_SPEED)
 
 func handle_acceleration(delta, direction):
 	
-	var airDrift = 0
-	var airReduction = parent.movement_data.AIR_SPEED_RECUTION
+	# If we're moving in a direction
+	if direction:
+		
+		var airAccel: float
+		
+		
+		# Slowing ourselves down in the air
+		if (abs(parent.velocity.x) > parent.air_speed and sign(parent.velocity.x) == sign(direction)):
+			airAccel = parent.movement_data.AIR_SPEED_RECUTION
+			
+		# Speed ourselves up
+		else:
+			airAccel = get_airdrift(direction)
+			
+		parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airAccel * delta)
+		
+	cj_clamp()
+	
+
+# Clamp the airspeed if crouch jumping
+func cj_clamp():
+	
+	# The time window for releasing the down button
+	var crouch_release_window = 0/60
+	
+	if parent.crouchJumping:
+		
+		# The time window for releasing the down button
+		crouch_release_window = 30/60
+		
+		# So they have that much time to release down before velocity is capped
+		# I have this because I don't like the idea of players flying around in crouch
+		# And also I found that the motion of releasing crouch felt inline with 
+		if ticks >= crouch_release_window:
+			
+			# Hard clamp the velocity if they don't release 'down' in time
+			parent.velocity.x = clamp(parent.velocity.x, -abs(parent.air_speed), parent.air_speed)
+
+# Returns the airdrift
+func get_airdrift(direction: float) -> float:
+	
+	var airDrift = parent.air_accel
+	
 	
 	# If air drift has been disabled then set it to 0
 	if parent.airDriftDisabled:
 		airDrift = 0
 	
-	# If player is jumping while crouching
-	elif parent.crouchJumping:
-		
-		var crouch_release_window = 30/60 # So this should be roughly one frame
-		
-		# So they have that much time to release down before velocity is capped
-		# I have this because I don't like the idea of players flying around in crouch
-		# And also I found that the motion of releasing crouch felt inline with 
-		if ticks > crouch_release_window:
-			parent.velocity.x = clamp(parent.velocity.x, -abs(parent.air_speed), parent.air_speed)
-			
-		# If we're in a tunnel we increase accel
-		if not have_stand_room():
-			airDrift = parent.tunnel_jump_accel
-		else:
-			airDrift = parent.air_accel
-			
 	# If we are wall jumping up and holding into a wall we give a boost in air accel in order to help
 	# with climbing / make it possible
 	elif parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD and sign(direction) != parent.current_wj_dir:
 		
 		# Give us the drift we need to go back to wall
-		airDrift = parent.air_accel * parent.movement_data.UP_AIR_DRIFT_MULTI
-		
-		# Sneakily remove analog inputs to help the gampad players
-		# with this weird input
-		direction = round(direction)
+		airDrift *= parent.movement_data.UP_AIR_DRIFT_MULTI
 	
-	# Otherwise use the default airDrift
-	else:
-		airDrift = parent.air_accel
+		# Sneakily remove analog inputs to help the gampad players
+		# with this 'weird' input (skill issue tbh)
+		direction = round(direction)
 	
 	# If we are in wall jump then we have no air drift, this restores this when we start falling
 	if parent.airDriftDisabled and parent.velocity.y > 0:
-			parent.airDriftDisabled = false
+		parent.airDriftDisabled = false
 	
-	if direction:
-		# AIR ACCEL
-		# Slow ourselves down in the air
-		if (abs(parent.velocity.x) > parent.air_speed and sign(parent.velocity.x) == sign(direction)):
-			parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airReduction * delta)
-		
-		# Speed ourselves up
-		else:
-			parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airDrift * delta)
+	return airDrift
 	
 
+# Stop the playing moving mid air
 func apply_airResistance(delta, direction):
 	
 	# Ok this makes the game really slippery when changing direction
@@ -363,6 +426,7 @@ func apply_airResistance(delta, direction):
 		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
 	
 
+# Checks the above raycasts
 func have_stand_room():
 	return not (stand_room_left.is_colliding() or stand_room_right.is_colliding())
 			

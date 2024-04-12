@@ -19,91 +19,88 @@ extends PlayerState
 # Sound Effects
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
 @onready var landing_sfx = $"../../Audio/LandingSFX"
-
 @onready var crouch_jumping_sfx = $"../../Audio/CrouchJumpingSFX"
 
+# The window for preforming a boost jump
 @onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
 
-var entryVel: float
+# Flags
+var slidingDown = false		# If we at any point have gone down a hill
+var jumpExit = false		# If we are exiting this state by a jump
 
-var slidingDown = false
-var jumpExit = false
-
-var usingHill = false
-
+# The threshold 
 var slide_threshold = 50
 
 # Called on state entrance, setup
 func enter() -> void:
 	
-	print("Sliding State")
+	if OS.is_debug_build():
+		print("Sliding State")
 	
+	# Reset the sliding flags
 	slidingDown = false
+	jumpExit = false
 	
-	# Give dust on landing
+	# Change to the sliding collider
+	parent.set_crouch_collider()
+	
+	# If we're coming from the air, we 
 	if (parent.current_animation == parent.ANI_STATES.FALLING):
 		
 		
+		# Dust Cloud
 		var new_cloud = parent.LANDING_DUST.instantiate()
 		new_cloud.set_name("landing_dust_temp_sliding")
 		landing_dust.add_child(new_cloud)
 		var animation = new_cloud.get_node("AnimationPlayer")
 		animation.play("free")
 		
+		# Sound Effect
 		landing_sfx.play(0)
 	
+		# Squish if we aren't about to jump
 		if jump_buffer.time_left == 0:
 			parent.squish_node.squish(GROUNDED_STATE.calc_landing_squish())
 	
-		# Crouch Animation
+		# Put us in the landing animation
 		parent.current_animation = parent.ANI_STATES.LANDING
 
 	else:
+		
+		# Otherwise just do the normal crouch squash
 		parent.squish_node.squish(parent.crouch_squash)
 	
 	# This might be silly b/c i can't control it lol
 	parent.floor_constant_speed = false
 	
-	# If we're sliding :3
+	# If we're moving :3
 	if abs(parent.velocity.x) > 0:
 		slide_dust.emitting = true
 		slide_dust.direction.x *= 1 if (parent.velocity.x > 0) else -1
 		sliding_sfx.play(0)
 		
-		if at_slide_thres():
-			print("Setting slide anim")	
-			parent.current_animation = parent.ANI_STATES.SLIDE_PREP
-	#else:
-		#print("Setting crouch animation")
-		#parent.current_animation = parent.ANI_STATES.CROUCH
-		
-	entryVel = parent.velocity.x
-		
-	jumpExit = false
-	parent.set_crouch_collider()
+	# If we're at sliding speed
+	if at_slide_thres() and AERIAL_STATE.have_stand_room():
+
+		parent.current_animation = parent.ANI_STATES.SLIDE_PREP
 	
+	# Start our timer
 	crouch_jump_window.start()
-	
-	pass
 
 # Called before exiting the state, cleanup
 func exit() -> void:
 	
+	# Stop any slide-specific fx
 	sliding_sfx.stop()
-	
 	slide_dust.emitting = false
 	
-	
-	
-	# This might be silly b/c i can't control it lol
+	# Go back to using a constant speed
 	parent.floor_constant_speed = true
-	
-	pass
 
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
 	
-	
+	# Can't get this working here, cause what we're looking for is the release of "down"
 	return null
 
 # Processing Frames in this state, returns nil or new state
@@ -217,6 +214,7 @@ func apply_friction(delta, direction):
 		var speed = sign * parent.hill_speed
 		var accel = parent.hill_accel
 		
+		# This is not reset in order to be kind about boost jumps
 		slidingDown = true
 		
 		# Push player down the hill
@@ -295,7 +293,7 @@ func update_effects() -> void:
 func update_slide():
 	
 	# If we meet the threshold, and aren't already sliding, start sliding
-	if at_slide_thres() and not in_slide_animation():
+	if at_slide_thres() and not in_slide_animation() and AERIAL_STATE.have_stand_room():
 		parent.current_animation = parent.ANI_STATES.SLIDE_PREP
 	
 	# If we fall out of threshold while sliding, update
@@ -392,5 +390,8 @@ func boost_jump() -> bool:
 	return true
 	
 func can_boost_jump():
+	
+	# Ok so first we make sure the we've jumped within the window.
+	# Then make sure the player is moving faster than some multiple of their default speed
 	
 	return (crouch_jump_window.time_left == 0 ) and abs(parent.velocity.x) > abs(parent.speed) * parent.movement_data.CROUCH_JUMP_THRES
