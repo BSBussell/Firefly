@@ -34,7 +34,8 @@ var jump_exit = false
 # Called on state entrance, setup
 func enter() -> void:
 	
-	print("Grounded State")
+	if OS.is_debug_build():
+		print("Grounded State")
 	
 	# Reset Flags
 	jump_exit = false
@@ -52,8 +53,11 @@ func enter() -> void:
 		
 		
 	
-	# If are landing
-	if not parent.current_animation == parent.ANI_STATES.STANDING_UP:
+	# If we're landing
+	if parent.aerial:
+		
+		# Reset the flag
+		parent.aerial = false
 		
 		# SFX
 		landing_sfx.play(0)
@@ -62,7 +66,7 @@ func enter() -> void:
 		if jump_buffer.time_left == 0:
 			parent.squish_node.squish(calc_landing_squish())
 	
-		# Land into run animations
+		# Check if we running :3
 		if abs(parent.velocity.x) >= parent.run_threshold:
 			parent.current_animation = parent.ANI_STATES.RUNNING
 			dash_dust.emitting = true
@@ -91,7 +95,6 @@ func process_input(_event: InputEvent) -> PlayerState:
 	# Crawling Shit
 	# When we press down we crouch
 	if Input.is_action_pressed("Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
-		parent.current_animation = parent.ANI_STATES.CROUCH
 		return SLIDING_STATE
 		
 	return null
@@ -101,7 +104,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 func process_physics(delta: float) -> PlayerState:
 	
 	
-	
+	# Check for jumping
 	jump_logic(delta)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
@@ -112,8 +115,8 @@ func process_physics(delta: float) -> PlayerState:
 		if (apply_friction(delta, parent.horizontal_axis) != null):
 			return SLIDING_STATE
 	
+	#update_state(parent.horizontal_axis)
 	
-	update_state(parent.horizontal_axis)
 	
 	# Make Sure we're still grounded after this
 	if not parent.is_on_floor():
@@ -129,9 +132,6 @@ func process_physics(delta: float) -> PlayerState:
 	# If for whatever reason we end up not having room above us then force the
 	# Player into crouch, might be used with Auto entering tunnel
 	if not AERIAL_STATE.have_stand_room():
-		
-		parent.current_animation = parent.ANI_STATES.CROUCH
-		print("no room exit")
 		return SLIDING_STATE
 	
 		
@@ -139,6 +139,7 @@ func process_physics(delta: float) -> PlayerState:
 	
 func process_frame(delta):
 	
+	update_state(parent.horizontal_axis)
 	
 	if abs(parent.velocity.x) > parent.speed:
 		speed_particles.emitting = true
@@ -146,42 +147,98 @@ func process_frame(delta):
 	else:
 		speed_particles.emitting = false
 	
+## Updates animation states based on changes in physics
+func update_state(direction):
+	
+	update_facing(direction)
+	update_run_effects(direction)
+	
+	
+		
+func update_facing(direction: float) -> void:
+	
+	# Change direction
+	if direction > 0 and parent.animation.flip_h:
+		parent.animation.flip_h = false
+		parent.squish_node.squish(parent.turn_around_squash)
+		
+	elif direction < 0 and not parent.animation.flip_h:
+		parent.animation.flip_h = true
+		parent.squish_node.squish(parent.turn_around_squash)
+
+func update_run_effects(direction: float) -> void:
+	# If set to running/walking from grounded state
+	if direction:
+		if parent.current_animation == parent.ANI_STATES.IDLE or parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING or parent.current_animation == parent.ANI_STATES.STANDING_UP:
+			
+			
+			# Making this a variable so its not computed twice (theres a good change the interpreter would've already done this :3)
+			var at_run_threshold: bool = abs(parent.velocity.x) >= parent.run_threshold
+			
+			# If we're running and not already in running
+			if at_run_threshold and parent.current_animation != parent.ANI_STATES.RUNNING:
+				
+				# Set animation and sfx
+				parent.current_animation = parent.ANI_STATES.RUNNING
+				run_sfx.play()
+				
+				# Start our Dust!
+				dash_dust.emitting = true
+				
+			elif not at_run_threshold:
+				parent.current_animation = parent.ANI_STATES.WALKING
+			
+	# Set to idle from walking
+	if not direction:
+		if (parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING) :
+			parent.current_animation = parent.ANI_STATES.IDLE
+			run_sfx.stop()
+		
+	# If we're not walking go to runnings
+	if parent.current_animation != parent.ANI_STATES.RUNNING:
+		dash_dust.emitting = false
+	
 # Our logic for making the player jumping
 func jump_logic(_delta):
 	
 	# If a jump has been buffered, and we aren't being launched by something else
 	if not parent.launched and parent.attempt_jump():
 		
-		
-		var new_cloud = parent.JUMP_DUST.instantiate()
-		new_cloud.set_name("jump_dust_temp")
-		jump_dust.add_child(new_cloud)
-		var animation = new_cloud.get_node("AnimationPlayer")
-		animation.play("free")
-		
-		
-		# If we enter a spring in the next 0.125 seconds then the player can do a jump boosted spring jump
-#		# Might rename this for something else tbh cause 
-		post_jump_buffer.start()
-		
-		jumping_sfx.play(0)
-		
-		# TODO: One day explore the potential of a horizontal boost to the jump
-		parent.velocity.y = parent.jump_velocity
-		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
-		
-		parent.squish_node.squish(parent.jump_squash)
-		
-		jump_exit = true
-		parent.jumping = true
-		
-		# If we're not currently crouching, then we initiate jumping
-		if (parent.current_animation != parent.ANI_STATES.CRAWL):
-			parent.current_animation = parent.ANI_STATES.FALLING
+		grounded_jump()
 			
 	
 
+## Make the player jump
+func grounded_jump():
 	
+	# Set our flags
+	jump_exit = true
+	parent.jumping = true
+	
+	
+	# Actual Jump Forces
+	parent.velocity.y = parent.jump_velocity
+	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
+	
+	
+	# Dust Effect
+	var new_cloud = parent.JUMP_DUST.instantiate()
+	new_cloud.set_name("jump_dust_temp")
+	jump_dust.add_child(new_cloud)
+	var animation = new_cloud.get_node("AnimationPlayer")
+	animation.play("free")
+	
+	# Jump SFX
+	jumping_sfx.play(0)
+	
+	# Squishy
+	parent.squish_node.squish(parent.jump_squash)
+	
+	# If we're not currently crouching, then we initiate jumping
+	if (parent.current_animation != parent.ANI_STATES.CRAWL):
+		parent.current_animation = parent.ANI_STATES.FALLING
+	
+	post_jump_buffer.start()
 	
 # Accelerate the player based on direction
 func handle_acceleration(delta, direction):
@@ -256,7 +313,6 @@ func apply_friction(delta, direction) -> PlayerState:
 				
 				parent.velocity.x = move_toward(parent.velocity.x, speed, accel*delta)
 				
-				print("friction exit!")
 				return SLIDING_STATE
 				
 		
@@ -268,41 +324,8 @@ func apply_friction(delta, direction) -> PlayerState:
 	return null
 	
 		
-# Updates animation states based on changes in physics
-func update_state(direction):
-	
-	# Change direction
-	if direction > 0 and parent.animation.flip_h:
-		parent.animation.flip_h = false
-		parent.squish_node.squish(parent.turn_around_squash)
-		
-	elif direction < 0 and not parent.animation.flip_h:
-		parent.animation.flip_h = true
-		parent.squish_node.squish(parent.turn_around_squash)
-	
-	# If set to running/walking from grounded state
-	if direction:
-		if parent.current_animation == parent.ANI_STATES.IDLE or parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING or parent.current_animation == parent.ANI_STATES.STANDING_UP:
-			
-			
-			if abs(parent.velocity.x) >= parent.run_threshold:
-				
-				parent.current_animation = parent.ANI_STATES.RUNNING
-				run_sfx.play(run_sfx.get_playback_position())
-				
-				dash_dust.emitting = true
-			else:
-				parent.current_animation = parent.ANI_STATES.WALKING
-			
-	# Set to idle from walking
-	if not direction:
-		if (parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING) :
-			parent.current_animation = parent.ANI_STATES.IDLE
-			run_sfx.stop()
-		
-	if parent.current_animation != parent.ANI_STATES.RUNNING:
-		dash_dust.emitting = false
-		
+
+
 
 func animation_end() -> PlayerState:
 	
@@ -313,6 +336,10 @@ func animation_end() -> PlayerState:
 		
 	# If we've stopped getting up then we go to our idle
 	if parent.current_animation == parent.ANI_STATES.STANDING_UP:
+		parent.current_animation = parent.ANI_STATES.IDLE
+	
+	# Sometimes we exit with slide end, in this case we goto idle :3
+	if parent.current_animation == parent.ANI_STATES.SLIDE_END:
 		parent.current_animation = parent.ANI_STATES.IDLE
 	
 	return null

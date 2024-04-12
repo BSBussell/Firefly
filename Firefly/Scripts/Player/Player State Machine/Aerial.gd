@@ -43,7 +43,8 @@ var shopped: bool = false
 # Called on state entrance, setup
 func enter() -> void:
 	
-	print("Aerial State")
+	if OS.is_debug_build():
+		print("Aerial State")
 	
 	# Enabling the appropriate Raycasts
 	right_wj_grace.enabled = true
@@ -57,6 +58,7 @@ func enter() -> void:
 	shopped = false
 	ticks = 0
 	min_fall_speed = 0.0
+	parent.aerial = true
 	
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
 	if (not parent.jumping and not parent.crouchJumping) or parent.launched:
@@ -195,6 +197,7 @@ func process_frame(delta):
 		
 	pass
 
+## Called when an animation ends. How we handle transitioning to different animations
 func animation_end() -> PlayerState:
 
 	# If Jump Anim ends go to Falling

@@ -190,15 +190,17 @@ var current_wj: WALLJUMPS = WALLJUMPS.NEUTRAL
 var current_wj_dir: float = 0
 
 # Various Player States Shared Across Bleh :3
-var fastFalling: bool = false
-var airDriftDisabled: bool = false
-var wallJumping: bool = false
-var turningAround: bool = false
-var jumping: bool = false
-var launched: bool = false
-var crouchJumping: bool = false
-var boostJumping: bool = false
-var canCrouchJump: bool = true
+var aerial: bool = false 				# Set every time the player leaves the ground, and reset every time they come back down
+var fastFalling: bool = false			# Set when the player begins fast falling, reset on any state change
+var airDriftDisabled: bool = false		# If air drift is disabled by an action this is set to true. Will be reset when falling
+var turningAround: bool = false			# If the player is experiencing a change in direction
+
+# Jump Flags
+var jumping: bool = false				# If the player is rising in a jump
+var wallJumping: bool = false			# If the player is rising in a walljump
+var crouchJumping: bool = false			# If the player is rising from a crouch jump
+var boostJumping: bool = false			# If the player is boost jumping (active whole way through)
+var launched: bool = false				# If the player is rising from being launched
 
 # Used for when hitting a wall kills our velocity and we wanna get it back
 var prev_velocity_x: float = 0.0
@@ -222,29 +224,6 @@ var dying: bool = false
 # Players Movement Score
 
 @onready var glow_manager: Glow_Manager = $GlowManager
-
-
-
-var movement_level: int = 0
-var score: float = 0
-
-const MAX_ENTRIES: int = 180
-const SPEEDOMETER_ENTRIES: int = 120
-const FF_ENTRIES: int = 10
-const SLIDE_ENTRIES: int = 10
-
-var air_speed_buffer: Array = []
-var ground_speed_buffer: Array = []
-var slide_buffer: Array = []
-var speedometer_buffer: Array = []
-var landings_buffer: Array = [] # I think this one might be stupid ngl
-
-var average_speed: float = 0
-var air_normalized_average_speed: float = 0
-var ground_normalized_average_speed: float = 0
-var average_ff_landings: float = 0
-var average_slides: float = 0
-var tmp_modifier: float = 0
 
 
 var GLOW_ENABLED: bool = true
