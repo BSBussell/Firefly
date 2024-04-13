@@ -2,8 +2,49 @@
 class_name Flyph
 extends CharacterBody2D
 
+## Exports
+const TILE_SIZE: int = 16
+
+const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
+const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
+const CROUCH_JUMP_DUST = preload("res://Scenes/Player/particles/crouchJumpDust.tscn")
+const WJ_DUST = preload("res://Scenes/Player/particles/wallJumpDust.tscn")
+const DEATH_DUST = preload("res://Scenes/Player/particles/DeathParticle.tscn")
+const RESPAWN_DUST = preload("res://Scenes/Player/particles/RespawnParticle.tscn")
+
+# ENUMS
+# Animation States
+enum ANI_STATES {
+
+	IDLE,
+	WALKING,
+	RUNNING,
+
+	JUMP,
+	FALLING,
+	LANDING,
+
+	CROUCH,
+	CRAWL,
+	STANDING_UP,
+
+	SLIDE_PREP,
+	SLIDE_LOOP,
+	SLIDE_END
+
+}
+
+# Our types of wall jumps
+enum WALLJUMPS {
+	NEUTRAL,
+	UPWARD,
+	DOWNWARD
+}
+
+## Editor Variables
 @export_category("Movement Resource")
 @export var movement_states: Array[PlayerMovementData]
+
 
 @export_subgroup("States")
 @export var GROUNDED_STATE: PlayerState
@@ -19,18 +60,23 @@ extends CharacterBody2D
 
 @export_category("Visual Tweaks")
 @export_subgroup("Squash Constants")
-@export var jump_squash = Vector2(0.6, 1.4)
-@export var lJump_squash = Vector2(0.6, 1.4)
-@export var wJump_squash = Vector2(0.6, 1.4)
-@export var falling_squash = Vector2(0.5, 1.5)
-@export var landing_squash = Vector2( 1.5, 0.5)
-@export var crouch_squash = Vector2(1.4,0.6)
-@export var stand_up_squash = Vector2(1.4, 0.6)
-@export var turn_around_squash = Vector2(0.6, 1.0)
-@export var death_squash = Vector2(1.5, 0.5)
+@export var jump_squash: Vector2 = Vector2(0.6, 1.4)
+@export var lJump_squash: Vector2 = Vector2(0.6, 1.4)
+@export var wJump_squash: Vector2 = Vector2(0.6, 1.4)
+@export var falling_squash: Vector2 = Vector2(0.5, 1.5)
+@export var landing_squash: Vector2 = Vector2( 1.5, 0.5)
+@export var crouch_squash: Vector2 = Vector2(1.4,0.6)
+@export var stand_up_squash: Vector2 = Vector2(1.4, 0.6)
+@export var turn_around_squash: Vector2 = Vector2(0.6, 1.0)
+@export var death_squash: Vector2 = Vector2(1.5, 0.5)
 
 # Our State Machine
+# This is where most of the players movement logic is stored
 @onready var StateMachine = $StateMachine
+
+# Glow Mechanic
+@onready var glow_manager: Glow_Manager = $GlowManager
+
 
 # Colliders
 @onready var collider = $Collider
@@ -62,123 +108,102 @@ extends CharacterBody2D
 @onready var top_left: RayCast2D = $Raycasts/VerticalSmoothing/TopLeft
 @onready var top_right: RayCast2D = $Raycasts/VerticalSmoothing/TopRight
 
-# Horizontal Corner Correction Raycasts
-@onready var bottom_right = $Raycasts/HorizontalSmoothing/BottomRight
-@onready var step_max_right = $Raycasts/HorizontalSmoothing/StepMaxRight
-@onready var right_accuracy = $Raycasts/HorizontalSmoothing/RightAccuracy
+# Horizontal Corner Correction Raycasts Right
+@onready var bottom_right: RayCast2D = $Raycasts/HorizontalSmoothing/BottomRight
+@onready var step_max_right: RayCast2D = $Raycasts/HorizontalSmoothing/StepMaxRight
+@onready var right_accuracy: ShapeCast2D = $Raycasts/HorizontalSmoothing/RightAccuracy
 
-@onready var bottom_left = $Raycasts/HorizontalSmoothing/BottomLeft
-@onready var step_max_left = $Raycasts/HorizontalSmoothing/StepMaxLeft
-@onready var left_accuracy = $Raycasts/HorizontalSmoothing/LeftAccuracy
+# Horizontal Corner Correction Raycasts Left
+@onready var bottom_left: RayCast2D = $Raycasts/HorizontalSmoothing/BottomLeft
+@onready var step_max_left: RayCast2D = $Raycasts/HorizontalSmoothing/StepMaxLeft
+@onready var left_accuracy: ShapeCast2D = $Raycasts/HorizontalSmoothing/LeftAccuracy
 
-# Auto Enter Tunnel
-@onready var crouch_left = $Raycasts/AutoTunnel/CrouchLeft
-@onready var crouch_right = $Raycasts/AutoTunnel/CrouchRight
+# Auto Enter Tunnel Raycasts
+@onready var crouch_left: RayCast2D = $Raycasts/AutoTunnel/CrouchLeft
+@onready var crouch_right: RayCast2D = $Raycasts/AutoTunnel/CrouchRight
 
+# Speedometer / MISC Info
+@onready var debug: Node2D = $Debug
 
 # Respawn / Death Variables
 @onready var starting_position = global_position
 
 # Movement State Shit
-@onready var movement_data = movement_states[0]
-@onready var max_level = len(movement_states) - 1
+@onready var movement_data: PlayerMovementData = movement_states[0]
+@onready var max_level: int = len(movement_states) - 1
 
-# Velocity Units
-@onready var speed: float # Adjust for tile size
-@onready var accel: float
+## Movement Values
+# Base Movement
+var speed: float
+var accel: float
 
 # Stop distance
-@onready var stop_distance: float
-@onready var friction: float
+var stop_distance: float
+var friction: float
 
-@onready var turn_distance: float
-@onready var turn_friction: float
+var turn_distance: float
+var turn_friction: float
 
 # Adjust Slide Values
-@onready var slide_distance: float
-@onready var slide_friction: float
+var slide_distance: float
+var slide_friction: float
 
-@onready var hill_speed: float
-@onready var hill_accel: float
+var hill_speed: float
+var hill_accel: float
 
 # Crouch Values
-@onready var longjump_velocity: float
+var longjump_velocity: float
 
 # Air Speed
-@onready var air_speed: float
-@onready var air_accel: float
-@onready var air_stop_distance: float
-@onready var air_frict: float
-@onready var tunnel_jump_accel: float
+var air_speed: float
+var air_accel: float
+var air_stop_distance: float
+var air_frict: float
+var tunnel_jump_accel: float
 
 # Projectile Motion / Jump Math
-@onready var jump_actual_height: float
-@onready var jump_velocity: float
-@onready var jump_gravity: float
-@onready var fall_gravity: float
+var jump_actual_height: float
+var jump_velocity: float
+var jump_gravity: float
+var fall_gravity: float
 
-# Wall Jump
-@onready var walljump_height: float
-@onready var walljump_distance: float
+# Wall Jump Unit Vector
+var walljump_height: float
+var walljump_distance: float
 
-@onready var up_walljump_height: float
-@onready var up_walljump_distance: float
+# Up Wall Jump Unit Vector
+var up_walljump_height: float
+var up_walljump_distance: float
 
-@onready var down_walljump_height: float
-@onready var down_walljump_distance: float
+# Down Wall Jump Unit Vector
+var down_walljump_height: float
+var down_walljump_distance: float
 
-@onready var walljump_gravity: float
-@onready var up_walljump_gravity: float
+# Waal Jumps Gravity
+var walljump_gravity: float
+var up_walljump_gravity: float
 
-@onready var walljump_velocity_y: float
-@onready var walljump_velocity_x: float
+# Wall Jump Velocities
+var walljump_velocity_y: float
+var walljump_velocity_x: float
 
-@onready var up_walljump_velocity_y: float
-@onready var up_walljump_velocity_x: float
+# Up Wall Jump Velocities
+var up_walljump_velocity_y: float
+var up_walljump_velocity_x: float
 
-@onready var down_walljump_velocity_y: float
-@onready var down_walljump_velocity_x: float
+# Down Wall Jump Velocities
+var down_walljump_velocity_y: float
+var down_walljump_velocity_x: float
 
 # The velocity of our fast fall
-@onready var ff_velocity: float
-@onready var ff_gravity: float
+var ff_velocity: float
+var ff_gravity: float
 
 # Animation Variable
-@onready var run_threshold: float
+var run_threshold: float
 
 
-# Speedometer / MISC Info
-@onready var debug = $Debug
-
-
-const TILE_SIZE: int = 16
-
-const JUMP_DUST = preload("res://Scenes/Player/particles/jump_dust.tscn")
-const LANDING_DUST = preload("res://Scenes/Player/particles/landing_dust.tscn")
-const CROUCH_JUMP_DUST = preload("res://Scenes/Player/particles/crouchJumpDust.tscn")
-const WJ_DUST = preload("res://Scenes/Player/particles/wallJumpDust.tscn")
-const DEATH_DUST = preload("res://Scenes/Player/particles/DeathParticle.tscn")
-const RESPAWN_DUST = preload("res://Scenes/Player/particles/RespawnParticle.tscn")
-
-enum ANI_STATES { 
-	
-	CRAWL,
-	CROUCH,
-	FALLING,
-	IDLE,
-	JUMP,
-	LANDING,
-	RUNNING,
-	STANDING_UP,	# From Crawl
-	WALKING,
-	SLIDE_PREP,
-	SLIDE_LOOP,
-	SLIDE_END
-	
-}
-
-# lol
-enum WALLJUMPS { NEUTRAL, UPWARD, DOWNWARD }
+# Wall Jump States
 var current_wj: WALLJUMPS = WALLJUMPS.NEUTRAL
 var current_wj_dir: float = 0
 
@@ -214,38 +239,34 @@ var horizontal_axis: float = 0
 # DEATH
 var dying: bool = false
 
-# Players Movement Score
 
-@onready var glow_manager: Glow_Manager = $GlowManager
-
-
-var GLOW_ENABLED: bool = true
 
 # I'm Being really annoying about this btw
 func _ready() -> void:
+
 	
 	# I hate myself
 	calculate_properties()
-	
+
 	# idk why this happens sometimes but on reset occasionally game gets confused
 	set_standing_collider()
-	
+
 	glow_manager.startup()
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)
-	
+
 func _unhandled_input(event: InputEvent) -> void:
-	
+
 	# Log if a jump is pressed
 	if Input.is_action_just_pressed("Jump"):
 		jump_buffer.start()
-	
+
 	# Ok for some reason my joystick is giving like 0.9998 which when holding left, which apparently
 	# is enough for my player to move considerably slower than like i want them to... so im just gonna
-	horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 ) 
+	horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
 	vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
-	
+
 	# For quickly chaning states
 	if OS.is_debug_build():
 		if Input.is_action_just_pressed("debug_up"):
@@ -254,66 +275,70 @@ func _unhandled_input(event: InputEvent) -> void:
 			glow_manager.demote()
 		if Input.is_action_just_pressed("reset"):
 			calculate_properties()
-	
+
+	# Pass The Input to the State Machine
 	StateMachine.process_input(event)
-	
+
 ## Attempt to consume a jump buffer
+# This will be called by the state machine when it wants to consume a jump buffer
+# Returns True if the jump buffer was consumed
 func attempt_jump() -> bool:
 	if jump_buffer.time_left > 0.0:
 		jump_buffer.stop()
 		return true
 	return false
-	
+
 func _physics_process(delta: float) -> void:
-	
+
+	# Stop the players 'world' on death :3
 	if not dying:
+
 		# Calls the physics proceess
 		StateMachine.process_physics(delta)
-		
-		# Actual movement operations
+
+		# Apply Velocities
 		move_and_slide()
-		
 
 		# "Assists" in movement
 		movement_assist(delta)
-		
-		
-	
+
 		# Store the velocity for next frame
 		prev_velocity_x = velocity.x
 		prev_velocity_y = velocity.y
-	
+
 func _process(delta: float) -> void:
-	
+
 	# If restarting the animation
 	if restart_animation:
 		animation.set_frame_and_progress(0,0)
-		
+
 	# Only update animations if we've changed animations
 	if prev_animation != current_animation or restart_animation:
 		update_animations()
 		restart_animation = false
-		
+
+	# Store the current animation to be next frames previous animation
 	prev_animation = current_animation
-	
-	# Let each component do their frame stuff
+
+	# Let each component do their visual stuff
 	StateMachine.process_frame(delta)
 
 
-	
+
 # Update the current animation based on the current_Animatino variable
+# Just lets us keep animation changes in one place/in the draw function
 func update_animations():
-	
+
 	match current_animation:
-		
+
 		# Basic Animations
 		ANI_STATES.IDLE:
-			animation.play("idle")	
+			animation.play("idle")
 		ANI_STATES.WALKING:
 			animation.play("walking")
 		ANI_STATES.RUNNING:
 			animation.play("running")
-		
+
 		# Crouch Animations
 		ANI_STATES.CRAWL:
 			animation.play("crawl")
@@ -321,7 +346,7 @@ func update_animations():
 			animation.play("crouch")
 		ANI_STATES.STANDING_UP:
 			animation.play("stand up")
-			
+
 		# Slide Animations
 		ANI_STATES.SLIDE_PREP:
 			animation.play("slide_prep")
@@ -329,7 +354,7 @@ func update_animations():
 			animation.play("slide_loop")
 		ANI_STATES.SLIDE_END:
 			animation.play("slide_end")
-		
+
 		# Air/Jump Animations
 		ANI_STATES.JUMP:
 			animation.play("jump")
@@ -337,24 +362,24 @@ func update_animations():
 			animation.play("falling")
 		ANI_STATES.LANDING:
 			animation.play("landing")
-		
-		
+
+
 
 # When an animation ends
 func _on_animated_sprite_2d_animation_finished():
-	
+
+	# Pass to the state machine
 	StateMachine.animation_end()
 
-# Alternate Collider
-# This sucks but idk man
+## Alternate Collider
+# This method was the best way I could get the collider size to change
+# Without having any weird clipping issues or anything being weird
 func set_crouch_collider():
-	#pass
 	collider.position = crouching_collider.position
 	collider.shape.size = crouching_collider.shape.size
-	
+
 
 func set_standing_collider():
-	#pass
 	collider.position = standing_collider.position
 	collider.shape.size = standing_collider.shape.size
 
@@ -366,79 +391,82 @@ func set_standing_collider():
 func movement_assist(delta):
 
 	# Corner Smoothing on jump
-	if velocity.y < 0 and not is_on_wall(): jump_corner_correction(delta)
-		
-	# Help the player get up small ledges
+	if jumping and not is_on_wall(): jump_corner_correction(delta)
+
+	# Help the player get up small ledges, if we're moving or holding a direction
 	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta)
-	
+
 	# Auto Enter Tunnel
 	if is_on_wall(): auto_enter_tunnel()
 
 
 
-# When jumping if theres a corner above us we will attempt to guide the player
-# Away from the ceiling in order to help smooth out the collisions
-# Easy to see visually if you make raycast and collisions visible and jump near a ceiling
+const JUMP_CORRECTION_FACTOR = 0.9
+
+# Corrects the player's jump when near a ceiling to smooth out collisions.
+# The strength of the correction is proportional to the rising velocity.
 func jump_corner_correction(delta):
-	
-	# Make the strength of adjustments depented on rising velocity cause
-	# That makes it feel more natural for some reason
-	var strength = abs(velocity.y) * 0.9
-	
-	if top_left.is_colliding() and not top_right.is_colliding():
-		
-		if not test_move(global_transform, Vector2(strength * delta, 0)):
-			position.x += strength * delta
-			squish_node.squish(jump_squash)
-	elif not top_left.is_colliding() and top_right.is_colliding():
-		if not test_move(global_transform, Vector2(-strength * delta, 0)):
-			position.x -= strength * delta
-			squish_node.squish(jump_squash)
-		#position.x -= strength * delta
+	var strength = abs(velocity.y) * JUMP_CORRECTION_FACTOR
+
+	# Check for collisions on the top left and top right
+	var is_colliding_left = top_left.is_colliding()
+	var is_colliding_right = top_right.is_colliding()
+
+	# Determine the direction of the correction based on where the collision is
+	var correction_direction = 0
+	if is_colliding_left and not is_colliding_right:
+		correction_direction = 1
+	elif not is_colliding_left and is_colliding_right:
+		correction_direction = -1
+
+	# Apply the correction if there's no collision in the direction we're moving
+	if correction_direction != 0 and not test_move(global_transform, Vector2(strength * delta * correction_direction, 0)):
+		position.x += strength * delta * correction_direction
+		squish_node.squish(jump_squash)
 
 
 
 # What allows the player to "smoothly"(lol) step up from small gaps
 func horizontal_corner_correction(delta):
-	
-	# Ignore this if player is standing on a slant
+
+	# Ignore this if player is standing on a slant, not touching that with a 10 foot pole
 	if get_floor_normal().x != 0:
-		return 
-	
-	# Adjust the Raycast Length based on usecase (if grounded step we need longer 
+		return
+
+	# Adjust the Raycast Length based on usecase (if grounded step we need longer)
 	if not is_on_floor():
 		set_corner_snapping_length(1)
 	else:
 		# Make it a bit bigger when doing floor corrections in order to give us a little xtra time to get up lol
 		set_corner_snapping_length(3)
-	
+
 	var offset = ( bottom_right.position.y - step_max_right.position.y ) + 1
-	
+
 	# Right side ledge detected
 	if bottom_right.is_colliding() and not step_max_right.is_colliding():
-		
+
 		# If we are moviging in that direction or pressing that dir
 		if (velocity.x > 0 or horizontal_axis > 0) and round(bottom_right.get_collision_normal().x) == bottom_right.get_collision_normal().x:
-			
+
 			# Scan using the shapecast
 			right_accuracy.force_shapecast_update()
-			
+
 			var collision_y = right_accuracy.get_collision_point(0).y
-			
+
 			if collision_y == 0:
 				#return
 				collision_y = position.y
-				
+
 			offset = (position.y - collision_y)
 			var correction_speed = 1
-			
+
 			if is_on_floor():
 				offset += 6
 				correction_speed = 250
 			else:
 				#offset += 2
 				correction_speed = 100
-			
+
 			# Calculate the desired new position
 			var test_y = move_toward(position.y, position.y-offset, delta * correction_speed)
 
@@ -451,23 +479,23 @@ func horizontal_corner_correction(delta):
 				position.y = test_y
 				squish_node.squish( Vector2(1.2, 0.8))
 
-				
+
 	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
-		
+
 		# If we are moviging in that direction or pressing that dir
 		if (velocity.x < 0 or horizontal_axis < 0)  and round(bottom_left.get_collision_normal().x) == bottom_left.get_collision_normal().x:
-			
+
 			# Scan using the shape cast
 			left_accuracy.force_shapecast_update()
-			
+
 			var collision_y = left_accuracy.get_collision_point(0).y
-			
+
 			# If we're tall enough se
 			if collision_y == 0:
 				collision_y = position.y
-				
+
 			offset = (position.y - collision_y)
-			
+
 			var correction_speed = 1
 			if is_on_floor():
 				offset += 6
@@ -475,7 +503,7 @@ func horizontal_corner_correction(delta):
 			else:
 				offset += 2
 				correction_speed = 100
-				
+
 			# Attempt to smoothly
 			# Calculate the desired new position
 			var test_y = move_toward(position.y, position.y-offset, delta * correction_speed)
@@ -489,32 +517,49 @@ func horizontal_corner_correction(delta):
 				position.y = test_y
 				squish_node.squish( Vector2(1.2, 0.8))
 
+# func horizontal_smooth():
+
 # Auto enter hole
 func auto_enter_tunnel():
 
-	
-	if (not crouch_left.is_colliding() and not bottom_left.is_colliding()) and get_wall_normal().x > 0: 
+	var left_open: bool = not crouch_left.is_colliding() and not bottom_left.is_colliding()
+	var right_open: bool = not crouch_right.is_colliding() and not bottom_right.is_colliding()
+
+	var wall_on_left: bool = get_wall_normal().x > 0
+	var wall_on_right: bool = get_wall_normal().x < 0
+
+	if left_open and wall_on_left:
+		enter_tunnel()
+
+	elif right_open and wall_on_right:
 		enter_tunnel()
 	
-	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x < 0:
-		enter_tunnel()
 
 func enter_tunnel():
 		set_crouch_collider()
+		
+		# Push player forward
 		velocity.x = prev_velocity_x
+		
+		# Squish the player
 		squish_node.squish(crouch_squash)
-		crouchJumping = true		
+
+		# Start sliding animation
+		current_animation = ANI_STATES.SLIDE_PREP
+
+		# Set the flag
+		crouchJumping = true
 
 # Gadgets
 
 # Allows us to resize our raycasts for forward corner corrections
 func set_corner_snapping_length(offset: float):
-	
+
 	bottom_right.target_position.x = offset
 	step_max_right.target_position.x = offset
 	bottom_left.target_position.x = -offset
 	step_max_left.target_position.x = -offset
-	
+
 	 #this might be real chat
 	bottom_right.force_raycast_update()
 	bottom_left.force_raycast_update()
@@ -526,71 +571,77 @@ func set_corner_snapping_length(offset: float):
 ##  Glow State Functions
 #######################################
 #######################################
+
+## Enables the glow mechanic
 func enable_glow():
-	#glow_manager.reset_score()
+
 	glow_manager.GLOW_ENABLED = true
-	
+
+## Disables and resets the glow mechanic
 func disable_glow():
-	
+
 	# Reset our level and bleh :3
 	glow_manager.change_state(0)
 	#glow_manager.reset_score()
 	glow_manager.GLOW_ENABLED = false
-	
-# Just an external setter
+
+## Adds points to the players glow score
 func add_glow(amount: float) -> void:
 	glow_manager.add_score(amount)
 
+## Force the glow to update score
 func force_glow_update():
 	glow_manager.calc_score()
 
+## Get the players current glow score
 func get_glow_score():
 	return glow_manager.glow_points
 
+## Get the players current glow level
 func get_glow_level():
 	return glow_manager.movement_level
-	
-## Automatically use glow as soon as obtained
+
+## Enable Automatically using glow as soon as obtained
 func enable_auto_glow():
 	glow_manager.auto_glow = true
 
-## Requires pressing a button to glow
+## Force the player to manually use glow
 func disable_auto_glow():
 	glow_manager.auto_glow = false
-	
+
 # Recalculated all the players movement properties
-#     Necessary because the player parameters are described in ways that are easier to measure,and quantify
-#        but also require some math in order to convert these parameters to the actual forces and changes in velocity
+# Necessary because the player parameters are described in ways that are easier to measure, and quantify
+# but also require some math in order to convert these parameters to the actual forces and changes in velocity
 func calculate_properties():
-	
+
 	# Recalc Speed:
 	speed = movement_data.MAX_SPEED * TILE_SIZE
 	accel = speed / movement_data.TIME_TO_ACCEL
-	
+
 	# Friction math
 	stop_distance = movement_data.FRICTION * TILE_SIZE
 	friction = (speed * speed) / (2 * stop_distance)
-	
+
 	# This ones broken but ill fix it l8r :3
 	turn_distance = movement_data.TURN_FRICTION * TILE_SIZE
 	turn_friction = (speed * speed) / (2 * turn_distance)
-	
+
 	# Slide Values ReCalculated
 	slide_distance = movement_data.SLIDE_DISTANCE * TILE_SIZE
 	slide_friction = (speed * speed) / (2 * slide_distance)
 
 	hill_speed = movement_data.HILL_SPEED * TILE_SIZE
 	hill_accel = hill_speed / movement_data.HILL_TIME_TO_ACCEL
-	
+
 	# Recalc Air values
 	air_speed = movement_data.AIR_SPEED * TILE_SIZE
 	air_accel = air_speed / movement_data.AIR_TIME_TO_ACCEL
 	air_stop_distance = movement_data.AIR_FRICT * TILE_SIZE
 	air_frict = (air_speed * air_speed) / (2 * stop_distance)
-	
+
 	# How fast we can move when hopping through a "tunnel"
 	tunnel_jump_accel = air_speed / movement_data.TUNNEL_JUMP_ACCEL
-	
+
 	# Projectile Motion
 	jump_actual_height = movement_data.MAX_JUMP_HEIGHT * TILE_SIZE
 	jump_velocity = ((-2.0 * jump_actual_height) / movement_data.JUMP_RISE_TIME)
@@ -600,7 +651,7 @@ func calculate_properties():
 	# Translate Walljump Dimensions
 	walljump_height = movement_data.WALL_JUMP_VECTOR.y * TILE_SIZE
 	walljump_distance = movement_data.WALL_JUMP_VECTOR.x * TILE_SIZE
-	
+
 	# Translate Upward Wall Dimensions
 	up_walljump_height = movement_data.UP_WALL_JUMP_VECTOR.y * TILE_SIZE
 	up_walljump_distance = movement_data.UP_WALL_JUMP_VECTOR.x * TILE_SIZE
@@ -608,11 +659,11 @@ func calculate_properties():
 	# Translate Downward Wall Dimensions
 	down_walljump_height = movement_data.DOWN_WALL_JUMP_VECTOR.y * TILE_SIZE
 	down_walljump_distance = movement_data.DOWN_WALL_JUMP_VECTOR.x * TILE_SIZE
-	
+
 	# Walljump Gravity's
 	walljump_gravity = (-2.0 * walljump_height) / (movement_data.WJ_RISE_TIME * movement_data.WJ_RISE_TIME)
 	up_walljump_gravity = (-2.0 * up_walljump_height) / (movement_data.UP_WJ_RISE_TIME * movement_data.UP_WJ_RISE_TIME)
-	
+
 	# Wall Jump Velocities
 	walljump_velocity_y = ((-2.0 * walljump_height) / (movement_data.WJ_RISE_TIME))
 	walljump_velocity_x = (( walljump_distance) / (movement_data.WJ_RISE_TIME + movement_data.JUMP_FALL_TIME))
@@ -624,7 +675,6 @@ func calculate_properties():
 	# Downward Wall Jump Velocities
 	down_walljump_velocity_y = ((-2.0 * down_walljump_height) / (movement_data.JUMP_RISE_TIME)) # ya know, this ones a bit wild
 	down_walljump_velocity_x = (( down_walljump_distance) / (movement_data.JUMP_RISE_TIME + movement_data.JUMP_FALL_TIME))
-
 
 	# The velocity of our ff
 	ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
@@ -638,29 +688,64 @@ func calculate_properties():
 	# Visual
 	trail.length = movement_data.TRAIL_LENGTH
 	run_threshold = movement_data.RUN_THRESHOLD * TILE_SIZE
-	
+
 	# Visual: Setting Glow and such
 	light.set_brightness(movement_data.BRIGHTNESS)
 	trail.set_glow(movement_data.GLOW)
 	animation.set_glow(movement_data.GLOW)
-	
-	
-		
+
+
+
+## Player Movement Manipulation
+#######################################
+#######################################
+# Pushes the player in the direction of the boost
 func give_boost(boost_speed: float) -> void:
-	
-	velocity.x += boost_speed * horizontal_axis 
+
+	velocity.x += boost_speed * horizontal_axis
 	var facing = (-1 if animation.flip_h else 1)
-		
-		
-	
+
+
+var temp_gravity_active: bool = false
+var temp_gravtity: float = 0.0
+
+# Set a temporary gravity for launches/whatever else wants them
+func set_temp_gravity(grav: float):
+
+	temp_gravity_active = true
+	temp_gravtity = grav
+
+## Launches the player with the given velocity, and a specified gravity
+func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vector2.ZERO):
+
+	# Launch Force
+	velocity = launch_velocity
+
+	# Set our flags
+	launched = true
+
+	# Remove all extranous Jump Flags :3
+	jumping = false
+	crouchJumping = false
+	boostJumping = false
+
+	# If a custom gravity is given, set it
+	if gravity != -1:
+		set_temp_gravity(gravity)
+
+	# If a squash is given, squash the player
+	if (squash != Vector2.ZERO):
+		squish_node.squish(squash)
+
 	#velocity += boost  * horizontal_axis
 
 ## DEATH RELATED METHODS!
 # Whatever we need to do when the player dies can be called here
 func kill():
-	
+
+	# Reset the trail
 	trail.clear_points()
-	
+
 	# DEATH EXPLOSION
 	Input.start_joy_vibration(1, 0.1, 0.2, 0.2)
 	var new_cloud = DEATH_DUST.instantiate()
@@ -668,88 +753,76 @@ func kill():
 	deathDust.add_child(new_cloud)
 	var death_animation = new_cloud.get_node("AnimationPlayer")
 	death_animation.play("Start")
-	
+
+	# Squish the player
 	squish_node.squish(Vector2(0.5, 0.5))
-	
+
 	animation.visible = false
 	glow_aura.emitting = false
 	wall_slide_dust.emitting = false
 	mega_speed_particles.emitting = false
-	
-	
+
+
 	dying = true
-	
+
+	# FIXME: WTF WERE YOU THINKING!!! THIS IS AWFUL
+	# Surely i will fix this... later :3
 	$Particles/GlowAura.emitting = false
-	
-	
+
+	# Restart and disable the glow mechanic
 	glow_manager.reset_glow()
 	glow_manager.GLOW_ENABLED = false
-	
+
+	# Wait 1.5 seconds
 	await get_tree().create_timer(1.5).timeout
+
+	# Move the player / camera to the starting position
 	global_position = starting_position
 	
-	# LIFE EXPLOSION
+	# Zero out the velocity
+	velocity = Vector2.ZERO
+
+
+	# Respawn Animation
 	var respawn_cloud = RESPAWN_DUST.instantiate()
 	respawn_cloud.set_name("Respawn_dust_temp")
 	deathDust.add_child(respawn_cloud)
 	var respawn_animation = respawn_cloud.get_node("AnimationPlayer")
 	respawn_animation.play("Start")
-	
-	await get_tree().create_timer(0.7).timeout
-	glow_manager.GLOW_ENABLED = true
-	
-	_stats.DEATHS += 1
-	global_position = starting_position
-	velocity = Vector2.ZERO
-	
-	squish_node.squish(death_squash)
-	animation.visible = true
-	dying = false
-	
 
+	# Wait 0.7 seconds
+	await get_tree().create_timer(0.7).timeout
+	
+	# Renable the player
+	glow_manager.GLOW_ENABLED = true
+
+	# Make Flyph Visible, then immediately squash them
+	animation.visible = true
+	squish_node.squish(death_squash)
+
+	# Update, the stats
+	_stats.DEATHS += 1
+
+	# Give control back to the player
+	dying = false
+
+
+# Ways of death:
 func _on_hazard_detector_area_entered(area):
 	kill()
 
 func _on_hazard_detector_body_entered(body):
 	kill()
 
-
-var temp_gravity_active: bool = false
-var temp_gravtity: float = 0.0
-
-# Set a temporary gravity for launches
-func set_temp_gravity(grav: float):
-	
-	temp_gravity_active = true
-	temp_gravtity = grav
-
-## Launches the player with the given velocity, and a specified gravity
-func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vector2.ZERO):
-	
-	velocity = launch_velocity
-	
-	launched = true
-	
-	# Remove all extranous Jump Flags :3
-	jumping = false
-	crouchJumping = false
-	boostJumping = false
-	
-	# Get us outta the grounded state to avoid that states
-	
-	if gravity != -1:
-		set_temp_gravity(gravity)
-		
-	if (squash != Vector2.ZERO):
-		squish_node.squish(squash)
-
-
+# Sets the given points as the players respawn point
 func set_respawn_point(point: Vector2):
 	starting_position = point
 
+
+## Debug Methods:
+# These are just some methods that are used for debugging purposes
 func show_speedometer():
 	debug.visible = true
 
 func hide_speedometer():
 	debug.visible = false
-	

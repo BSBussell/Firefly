@@ -50,8 +50,6 @@ func _ready():
 
 
 
-var spring_active: bool = false
-
 var flyph: Flyph
 
 func _on_body_entered(body: Flyph):
@@ -75,16 +73,7 @@ func _on_body_entered(body: Flyph):
 	
 	## Grab buffers and get current status
 	#buffered_jump = flyph.attempt_jump()
-	
-	
-	# The faster the player is going (ie the more likely they are to leave the spring quickly)
-	# The shorter the delay. This lets us have a delay sometimes, and if the players moving too fast for this then we don't 
-	var timeout: float = 0.1
-	timeout = lerpf(0.1, 0.05, flyph.velocity.length() / 300)
-	
-	# Wait a bit
-	#await get_tree().create_timer(timeout).timeout
-	
+		
 	# Launch the player
 	print("Runing Spring_Jump_Routine")
 	spring_jump()
@@ -92,7 +81,7 @@ func _on_body_entered(body: Flyph):
 	# Play Spring Up Fx
 	spring_up_fx()
 	
-	# Re-enable the spring after a short delay to prevent immediate re-triggering
+	# Re-enable the spring after a short delay to prevent potential re-triggering
 	await get_tree().create_timer(0.2).timeout
 	primed = false
 	
@@ -121,12 +110,9 @@ func spring_jump():
 	# The horizontal momentum; this value will be based on the players current movement speed
 	var momentum: Vector2 = Vector2.ZERO
 	
-	
-	# Update Buffer Status
-	#buffered_jump = buffered_jump or jump_buffer.time_left > 0 #or post_jump_buffer.time_left > 0
-	
 	# Check if player is boosting upward by pressing a on the spring
-	if flyph.boostJumping or flyph.jumping or flyph.attempt_jump() and not flyph.wallJumping:
+	# This is ordered intentionally to not consume a jump if the player is already jumping
+	if flyph.boostJumping or flyph.jumping or flyph.crouchJumping or flyph.attempt_jump() and not flyph.wallJumping:
 		
 		# Se tthe launch velocity and gravity to the spring_jb values
 		launch_velocity.y = spring_jb_velocity
@@ -152,8 +138,7 @@ func spring_jump():
 		boing_.pitch_scale = 1.0
 		
 	
-	# At this point the launch velocity is primed as if its an upright spring
-	# So we Rotate the Launch Velocity so that its aligned with the springs rotation
+	# Rotate the launch velocity to match the springs rotation
 	launch_velocity = launch_velocity.rotated(rotation)
 	
 	
@@ -161,18 +146,8 @@ func spring_jump():
 	# (Momentum is set in the direction of the rotation)
 	momentum = _set_momentum_sign(momentum)
 	
-	
-	print("hBoost: ", momentum)
-	
-	
 	# Add our "adjusted" momentum to the launch
 	launch_velocity += momentum
-	
-	
-	
-	print(launch_velocity)
-	print(launch_gravity)
-	
 	
 	flyph.launch(launch_velocity, launch_gravity, SPRING_SQUASH)
 
@@ -187,10 +162,8 @@ func _jump_boost_momentum_set() -> Vector2:
 	momentum.x = min(flyph.velocity.x, flyph.speed) * 0.6
 	momentum.x += (flyph.velocity.x - momentum.x)
 
-
 	# Y Momentum
 	momentum.y = _y_momentum_set()
-
 
 	return momentum
 	
@@ -216,7 +189,7 @@ func _y_momentum_set() -> float:
 	var momentum: float = 0
 	
 	# Only carried over between launchers
-	if flyph.temp_gravity_active:
+	if flyph.launched:
 		momentum = flyph.velocity.y * 0.5
 	
 	return momentum
@@ -227,7 +200,8 @@ func _set_momentum_sign(momentum: Vector2) -> Vector2:
 	if rotation != 0:
 		return Vector2(abs(momentum.x) * sign(rotation), momentum.y)
 	
-	# Otherwise have it be in the direction the player is holding?
+	# Otherwise have it be in the direction the player is holding.
+	# Enables the player to reverse direction on a spring
 	else:
 		return Vector2(abs(momentum.x) * sign(flyph.horizontal_axis), momentum.y)
 		
