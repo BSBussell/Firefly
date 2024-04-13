@@ -52,13 +52,6 @@ extends CharacterBody2D
 @onready var mega_speed_particles = $Particles/MegaSpeedParticles
 @onready var wall_slide_dust = $Particles/WallSlideDust
 
-# Spring (hope ur ok with this spot)
-@onready var spring_gravity_active: bool
-@onready var spring_gravity: float
-@onready var spring_velocity: float
-@onready var spring_jump_height: float
-@onready var spring_actual_height: float
-@onready var in_spring: bool
 
 # Timers
 @onready var jump_buffer: Timer = $Timers/JumpBuffer
@@ -280,25 +273,19 @@ func _physics_process(delta: float) -> void:
 		# Actual movement operations
 		move_and_slide()
 		
-		# Corner Smoothing when jumping up
-		if velocity.y < 0 and not is_on_wall(): jump_corner_correction(delta)
-			
-		# If they are moving horizontally or trying to move horizontally :3
-		if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta) # Kinda a misleading name but pretty much we will gravitate the player towards small dips that it feels like the character should be able to step up
+
+		# "Assists" in movement
+		movement_assist(delta)
 		
-		# Auto Enter Tunnel
-		if is_on_wall(): auto_enter_tunnel(delta)
 		
-		## Update Scoring information based on movement speed, etc.
-		#update_speed()
-		#score = calc_score()
-		
+	
 		# Store the velocity for next frame
 		prev_velocity_x = velocity.x
 		prev_velocity_y = velocity.y
 	
 func _process(delta: float) -> void:
 	
+	# If restarting the animation
 	if restart_animation:
 		animation.set_frame_and_progress(0,0)
 		
@@ -312,10 +299,6 @@ func _process(delta: float) -> void:
 	# Let each component do their frame stuff
 	StateMachine.process_frame(delta)
 
-	# Display current score for dev purposes.
-	# TODO: Use a meter of some kinda for this.
-	#debug_info.text = "%.02f" % score
-	#meter.set_score(score * 100)
 
 	
 # Update the current animation based on the current_Animatino variable
@@ -369,40 +352,29 @@ func set_crouch_collider():
 	collider.position = crouching_collider.position
 	collider.shape.size = crouching_collider.shape.size
 	
-	# Enable the crouching one
-	#crouching_collider.disabled = false
-	# Then disable the standing one
-	#standing_collider.disabled = true
-	
 
 func set_standing_collider():
 	#pass
 	collider.position = standing_collider.position
 	collider.shape.size = standing_collider.shape.size
-	
-	# Enable it first
-	#standing_collider.disabled = false
-	# Then disable the other one
-	#crouching_collider.disabled = true
+
 
 #  Player Assist Methods
 #######################################
 #######################################
 
-# Auto enter hole
-func auto_enter_tunnel(delta):
+func movement_assist(delta):
+
+	# Corner Smoothing on jump
+	if velocity.y < 0 and not is_on_wall(): jump_corner_correction(delta)
+		
+	# Help the player get up small ledges
+	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta)
 	
-	if (not crouch_left.is_colliding() and not bottom_left.is_colliding()) and get_wall_normal().x > 0: 
-		set_crouch_collider()
-		velocity.x = prev_velocity_x
-		squish_node.squish(crouch_squash)
-		crouchJumping = true
-	
-	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x < 0:
-		set_crouch_collider()
-		velocity.x = prev_velocity_x
-		squish_node.squish(crouch_squash)
-		crouchJumping = true
+	# Auto Enter Tunnel
+	if is_on_wall(): auto_enter_tunnel()
+
+
 
 # When jumping if theres a corner above us we will attempt to guide the player
 # Away from the ceiling in order to help smooth out the collisions
@@ -517,7 +489,23 @@ func horizontal_corner_correction(delta):
 				position.y = test_y
 				squish_node.squish( Vector2(1.2, 0.8))
 
-			
+# Auto enter hole
+func auto_enter_tunnel():
+
+	
+	if (not crouch_left.is_colliding() and not bottom_left.is_colliding()) and get_wall_normal().x > 0: 
+		enter_tunnel()
+	
+	elif (not crouch_right.is_colliding() and not bottom_right.is_colliding()) and get_wall_normal().x < 0:
+		enter_tunnel()
+
+func enter_tunnel():
+		set_crouch_collider()
+		velocity.x = prev_velocity_x
+		squish_node.squish(crouch_squash)
+		crouchJumping = true		
+
+# Gadgets
 
 # Allows us to resize our raycasts for forward corner corrections
 func set_corner_snapping_length(offset: float):
@@ -641,12 +629,6 @@ func calculate_properties():
 	# The velocity of our ff
 	ff_velocity = jump_velocity / movement_data.FASTFALL_MULTIPLIER
 	ff_gravity = fall_gravity * movement_data.FASTFALL_MULTIPLIER
-
-	# Spring Motion
-	spring_actual_height = movement_data.MAX_SPRING_HEIGHT * TILE_SIZE
-	spring_velocity = ((-2.0 * spring_actual_height) / movement_data.SPRING_RISE_TIME)
-	spring_gravity = (-2.0 * spring_actual_height) / (movement_data.SPRING_RISE_TIME * movement_data.SPRING_RISE_TIME)
-	#spring_gravity = (-2.0 * spring_actual_height) / (movement_data.SPRING_FALL_TIME * movement_data.JUMP_FALL_TIME)
 
 	# Set timers
 	coyote_time.wait_time = movement_data.COYOTE_TIME

@@ -62,9 +62,12 @@ func enter() -> void:
 
 		# Check if we running :3
 		if abs(parent.velocity.x) >= parent.run_threshold:
+
+			# Then if we are set our animation to running
 			parent.current_animation = parent.ANI_STATES.RUNNING
 			dash_dust.emitting = true
 
+		# Otherwise just player the landing animation
 		else:
 			parent.current_animation = parent.ANI_STATES.LANDING
 
@@ -96,7 +99,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 func process_frame(delta):
 
 	# Do all our Visual Updates
-	update_facing(parent.horizontal_axis)
+	update_facing(parent.velocity.x)
 	update_run_effects(parent.horizontal_axis)
 	update_speed_particles()
 
@@ -135,8 +138,7 @@ func state_status(direction: float) -> PlayerState:
 
 
 
-
-
+## Called when the animation ends
 func animation_end() -> PlayerState:
 
 	# If we've stopped landing then we go to idle animations
@@ -155,6 +157,7 @@ func animation_end() -> PlayerState:
 	return null
 
 
+# Updates the Sprite's facing direction
 func update_facing(direction: float) -> void:
 
 	# Change direction
