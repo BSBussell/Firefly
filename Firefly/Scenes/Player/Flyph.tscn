@@ -1,4 +1,4 @@
-[gd_scene load_steps=95 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=96 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -448,6 +448,11 @@ metadata/_snap_enabled = true
 offsets = PackedFloat32Array(0.879781, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
+[sub_resource type="Curve" id="Curve_e1b3a"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
 [sub_resource type="Gradient" id="Gradient_xmxui"]
 offsets = PackedFloat32Array(0.555256, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -538,6 +543,7 @@ sprite_frames = SubResource("SpriteFrames_7w45f")
 animation = &"slide_loop"
 autoplay = "idle"
 frame_progress = 0.510031
+flip_h = true
 script = ExtResource("6_vid37")
 
 [node name="Trail" type="Line2D" parent="Visuals"]
@@ -626,12 +632,6 @@ scale_amount_max = 0.2
 color = Color(3, 3, 0, 1)
 color_ramp = SubResource("Gradient_r3nhe")
 
-[node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
-z_index = 1
-position = Vector2(0, -1)
-emitting = false
-emission_rect_extents = Vector2(2, 3)
-
 [node name="WallSlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
 z_index = 1
 position = Vector2(0, -8)
@@ -649,6 +649,17 @@ metadata/_edit_lock_ = true
 [node name="LandingDustSpawner" type="Marker2D" parent="Particles"]
 z_index = 1
 metadata/_edit_lock_ = true
+
+[node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
+z_index = -1
+position = Vector2(0, -4)
+emitting = false
+amount = 24
+texture = ExtResource("8_shld8")
+emission_rect_extents = Vector2(2, 3.5)
+initial_velocity_min = 0.0
+initial_velocity_max = 0.0
+scale_amount_curve = SubResource("Curve_e1b3a")
 
 [node name="DashDust" type="CPUParticles2D" parent="Particles"]
 z_index = -1

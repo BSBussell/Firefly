@@ -70,7 +70,7 @@ func enter() -> void:
 		print("Current Animation: ", parent.current_animation)
 
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
-	if (not parent.jumping and not parent.crouchJumping and not slide_fall) or parent.launched:
+	if (not slide_fall) or (not parent.crouchJumping and parent.boostJumping) or parent.launched:
 		parent.current_animation = parent.ANI_STATES.FALLING
 
 	
@@ -301,7 +301,7 @@ func handle_sHop(_delta):
 
 
 # Pretty much set all jump bools to false when falling
-func update_jump_flags():
+func update_jump_flags() -> void:
 
 	# Disabling Wall Jumping flags if we're falling
 	if parent.velocity.y > 0:
@@ -329,7 +329,7 @@ func get_gravity() -> float:
 	# Default gravity is fall gravity
 	var gravity_to_apply = parent.fall_gravity
 
-
+	var rising = parent.jumping or parent.boostJumping
 
 	# If we're wall jumping
 	if parent.wallJumping:
@@ -341,7 +341,8 @@ func get_gravity() -> float:
 				gravity_to_apply = parent.up_walljump_gravity
 
 	# If we're rising
-	elif parent.jumping and not shopped:
+	
+	elif rising and not shopped:
 		# Apply rising gravity
 		gravity_to_apply = parent.jump_gravity
 
@@ -356,19 +357,20 @@ func get_gravity() -> float:
 
 
 	# Add a bit of float if we haven't shopped
-	if abs(parent.velocity.y) < 40 and Input.is_action_pressed("Jump"):
+	if abs(parent.velocity.y) < 40 and Input.is_action_pressed("Jump") and not parent.crouchJumping and not parent.boostJumping:
 		gravity_to_apply *= 0.5
 
 	return gravity_to_apply
 
-func apply_gravity(delta):
+func apply_gravity(delta) -> void:
 
 	parent.velocity.y -= get_gravity() * delta
 
 	# Cap out velocity.y
 	parent.velocity.y = min(parent.velocity.y, parent.movement_data.MAX_FALL_SPEED)
 
-func handle_acceleration(delta, direction):
+## Addes Acceleration when the player holds a direction
+func handle_acceleration(delta, direction) -> void:
 
 	# If we're moving in a direction
 	if direction:
@@ -389,7 +391,7 @@ func handle_acceleration(delta, direction):
 	cj_clamp()
 
 
-# Clamp the airspeed if crouch jumping
+# Clamp the airspeed if the player is crouch jumping after a specific time
 func cj_clamp():
 
 	# The time window for releasing the down button
@@ -408,7 +410,7 @@ func cj_clamp():
 			# Hard clamp the velocity if they don't release 'down' in time
 			parent.velocity.x = clamp(parent.velocity.x, -abs(parent.air_speed), parent.air_speed)
 
-# Returns the airdrift
+# Returns the airdrift/airacceleration
 func get_airdrift(direction: float) -> float:
 
 	var airDrift = parent.air_accel
@@ -436,7 +438,7 @@ func get_airdrift(direction: float) -> float:
 	return airDrift
 
 
-# Stop the playing moving mid air
+# How quickly we stop the playing moving if they drop the stick
 func apply_airResistance(delta, direction):
 
 	# Ok this makes the game really slippery when changing direction

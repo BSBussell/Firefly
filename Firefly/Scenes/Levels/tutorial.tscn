@@ -1,5 +1,6 @@
-[gd_scene load_steps=37 format=3 uid="uid://d2aiiqy7j5ovi"]
+[gd_scene load_steps=39 format=3 uid="uid://d2aiiqy7j5ovi"]
 
+[ext_resource type="Script" path="res://Scenes/Levels/Level.gd" id="1_dar63"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="2_o33e3"]
 [ext_resource type="Texture2D" uid="uid://f4xhpem7fo4b" path="res://Assets/Graphics/Deep_Forest_Resource/bg_mountains_3.png" id="3_orrej"]
 [ext_resource type="Texture2D" uid="uid://8nctejfx4eoj" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_2.png" id="4_531it"]
@@ -15,35 +16,13 @@
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="13_64rfa"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="14_3rk53"]
 [ext_resource type="Script" path="res://Scripts/misc/CollectibleCounter.gd" id="14_3yfpb"]
+[ext_resource type="Script" path="res://Scripts/Events/text_enable_glow.gd" id="14_5b0ou"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="14_njwdr"]
 [ext_resource type="PackedScene" uid="uid://dtblwt5hi5l4c" path="res://Scenes/Checkpoint/checkpoint.tscn" id="15_5ndsg"]
 [ext_resource type="PackedScene" uid="uid://bbu3cpk68nbpp" path="res://Scenes/Hazards/hazard_area.tscn" id="17_jlxlk"]
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/spring.tscn" id="18_xedpq"]
 [ext_resource type="PackedScene" uid="uid://mhckwfmi6yo1" path="res://Scenes/Collectibles/gem.tscn" id="20_jjh3d"]
-
-[sub_resource type="GDScript" id="GDScript_0jk77"]
-script/source = "extends Node2D
-
-@export var PLAYER: Flyph
-
-@onready var music = $LevelAudio/Music
-@onready var ambience = $LevelAudio/Ambience
-@onready var moonlight = $\"PP + FX/Moonlight\"
-@onready var shadow_filter = $\"PP + FX/ShadowFilter\"
-
-
-func _ready():
-
-	# Setup our active player
-	_player.ACTIVE_PLAYER = PLAYER
-
-	music.play(0)
-	ambience.play(0)
-	PLAYER.disable_glow()
-	moonlight.visible = true
-	shadow_filter.visible = true
-	pass
-"
+[ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="21_2ktdq"]
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
 min_value = -0.5
@@ -170,7 +149,7 @@ size = Vector2(119.25, 77)
 size = Vector2(1140, 20)
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER")]
-script = SubResource("GDScript_0jk77")
+script = ExtResource("1_dar63")
 PLAYER = NodePath("Flyph")
 
 [node name="PP + FX" type="Node" parent="."]
@@ -471,10 +450,8 @@ position = Vector2(-160, -152)
 scale = Vector2(0.8, 0.8)
 collision_layer = 4
 collision_mask = 4
-script = ExtResource("12_51ejy")
+script = ExtResource("14_5b0ou")
 Text = NodePath("Label")
-score_amount = 0.0
-score_duration = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Glow_Tut_1"]
 position = Vector2(111.437, 35)
@@ -502,9 +479,8 @@ position = Vector2(-702, -149)
 scale = Vector2(0.5, 0.5)
 collision_layer = 4
 collision_mask = 4
-script = ExtResource("12_51ejy")
-Text = NodePath("Label")
-score_thres = 3.0
+script = ExtResource("12_yuqqh")
+Text = NodePath("../Glow_Tut_1/Label")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Glow_Tut_2"]
 position = Vector2(110.5, 26)
@@ -829,31 +805,32 @@ position = Vector2(1385, 95)
 [node name="Spring24" parent="Stuff" instance=ExtResource("18_xedpq")]
 position = Vector2(1799, -225)
 
-[node name="Gems" type="Node2D" parent="."]
+[node name="GemManager" type="Node2D" parent="."]
 position = Vector2(359, 93)
+script = ExtResource("21_2ktdq")
 
-[node name="Gem" parent="Gems" instance=ExtResource("20_jjh3d")]
+[node name="Gem" parent="GemManager" instance=ExtResource("20_jjh3d")]
 position = Vector2(-571, -211)
 
-[node name="Gem2" parent="Gems" instance=ExtResource("20_jjh3d")]
+[node name="Gem2" parent="GemManager" instance=ExtResource("20_jjh3d")]
 position = Vector2(-955, -444)
 
-[node name="Gem3" parent="Gems" instance=ExtResource("20_jjh3d")]
+[node name="Gem3" parent="GemManager" instance=ExtResource("20_jjh3d")]
 position = Vector2(-1464, -353)
 
-[node name="Gem4" parent="Gems" instance=ExtResource("20_jjh3d")]
+[node name="Gem4" parent="GemManager" instance=ExtResource("20_jjh3d")]
 position = Vector2(-1651, -107)
 
-[node name="Gem5" parent="Gems" instance=ExtResource("20_jjh3d")]
+[node name="Gem5" parent="GemManager" instance=ExtResource("20_jjh3d")]
 position = Vector2(-1923, -148)
 
-[node name="Gem6" parent="Gems" instance=ExtResource("20_jjh3d")]
+[node name="Gem6" parent="GemManager" instance=ExtResource("20_jjh3d")]
 position = Vector2(-2053, -331)
 
-[node name="Gem7" parent="Gems" instance=ExtResource("20_jjh3d")]
+[node name="Gem7" parent="GemManager" instance=ExtResource("20_jjh3d")]
 position = Vector2(-2897, -533)
 
-[node name="Gem8" parent="Gems" instance=ExtResource("20_jjh3d")]
+[node name="Gem8" parent="GemManager" instance=ExtResource("20_jjh3d")]
 position = Vector2(-2968, -1037)
 
 [connection signal="body_entered" from="Events/Crouch_Tut" to="Events/Crouch_Tut" method="_on_body_entered"]
@@ -867,7 +844,6 @@ position = Vector2(-2968, -1037)
 [connection signal="body_entered" from="Events/Guide_Tut" to="Events/Guide_Tut" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/Guide_Tut" to="Events/Guide_Tut" method="_on_body_exited"]
 [connection signal="body_entered" from="Events/Glow_Tut_1" to="Events/Glow_Tut_1" method="_on_body_entered"]
-[connection signal="body_exited" from="Events/Glow_Tut_1" to="Events/Glow_Tut_1" method="_on_body_exited"]
 [connection signal="body_entered" from="Events/Glow_Tut_2" to="Events/Glow_Tut_2" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/Glow_Tut_2" to="Events/Glow_Tut_2" method="_on_body_exited"]
 [connection signal="body_entered" from="Events/Glow_Tut_3_ENABLEGLOW" to="Events/Glow_Tut_3_ENABLEGLOW" method="_on_body_entered"]

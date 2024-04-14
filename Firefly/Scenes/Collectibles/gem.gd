@@ -1,7 +1,8 @@
 extends Node2D
 class_name Gem
 
-var consumed = false
+var active: bool = true
+var consumed: bool  = false
 
 # Collider
 @onready var area_2d = $Area2D
@@ -20,21 +21,20 @@ var consumed = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	animated_sprite_2d.play("Spin")
+	# animated_sprite_2d.play("Spin")
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 
 func _on_area_2d_body_entered(body):
 	
+	if consumed or not active:
+		return
+
 	var player = body as Flyph
 	if player:
-		if not consumed:
-			consume_item(player)
+		consume_item(player)
 	pass # Replace with function body.
 
 
@@ -51,10 +51,27 @@ func consume_item(player: Flyph):
 	
 	
 
-
-
 func _on_respawn_timer_timeout():
 	consumed = false
 	fx.play("PopIn")
 	pop.play()
 	area_2d.monitoring = true
+
+
+## Makes the gem visible and active
+func activate():
+	active = true
+	area_2d.monitoring = true
+	animated_sprite_2d.visible = true
+	animated_sprite_2d.play("Spin")
+
+	# Play the pop in animation
+	fx.play("PopIn")
+	pop.play()
+
+## Makes the gem invisible and inactive
+func deactivate():
+	active = false
+	area_2d.monitoring = false
+	animated_sprite_2d.visible = false
+	visible = false

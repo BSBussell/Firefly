@@ -27,7 +27,7 @@ _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
 _shake="*res://Scripts/Globals/_shake.gd"
 _ui="*res://Scripts/Globals/_UI.gd"
 _stats="*res://Scripts/Globals/_stats.gd"
-_player="*res://Scripts/Globals/_player.gd"
+_globals="*res://Scripts/Globals/_globals.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 
 [display]

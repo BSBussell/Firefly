@@ -2,11 +2,6 @@ extends "res://Scripts/Events/base_event.gd"
 
 @export var Text: Control
 
-@export var score_thres: float = 0.6
-@export var score_amount: float = 0.6
-@export var score_duration: float = 30
-@export var update: bool = false
-
 @onready var animator = $"Nice!"
 
 var inside = false
@@ -21,7 +16,7 @@ func _physics_process(_delta):
 	if not inside and animationEnded:
 		animator.play("fall_out")
 		animationEnded = false
-		set_physics_process(false)
+		# set_physics_process(false)
 	elif inside and enter_body and enter_body.is_on_floor() and animationEnded:
 		animator.play("drop_in")
 		
@@ -29,21 +24,19 @@ func _physics_process(_delta):
 		if not player:
 			print("ah shit")
 			
+		# Enable the player glowing
 		player.enable_glow()
 		_globals.GEM_MANAGER.show_gems()
-		if player.get_glow_score() < score_thres:
-			player.add_glow(score_amount)
-			if update:
-				player.force_glow_update()
 			
 		animationEnded = false
 		set_physics_process(false)
 
 func on_enter(_body):
 	
+	# Only activate when its the player entering
 	var player: Flyph = _body as Flyph
 	if not player:
-		print("ah shit")
+		return
 		
 	
 	inside = true

@@ -224,7 +224,7 @@ func update_effects() -> void:
 
 
 	# Stop fx when we stop moving
-	if parent.velocity.x == 0 and slide_dust.emitting:
+	if parent.velocity.x == 0:
 
 		# Stop the sound
 		sliding_sfx.stop()
@@ -240,7 +240,7 @@ func update_effects() -> void:
 		slide_dust.emitting = true
 
 		# Update Particle Direction (im so dumb)
-		slide_dust.direction.x *= 1 if (parent.animation.flip_h) else -1
+		slide_dust.direction.x = 1 if (parent.animation.flip_h) else -1
 
 ## Updates our sliding animation
 func update_slide_animation() -> void:
@@ -346,21 +346,21 @@ func boost_jump() -> void:
 
 	## Jump Physics
 	# Jump Force
-	parent.velocity.y = parent.jump_velocity * parent.movement_data.CROUCH_JUMP_HEIGHT_MULTI
+	parent.velocity.y = parent.jump_velocity * parent.movement_data.BOOST_JUMP_HEIGHT_MULTI
 
 	# If velocity is moving in the same direction as our direction
 	# Add onto speed
 	if parent.velocity.x * parent.horizontal_axis > 0:
 
-		parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+		parent.velocity.x += parent.movement_data.BOOST_JUMP_HBOOST * parent.horizontal_axis
 
 	# Otherwise instant reset :3
 	else:
 
 		# Flip velocity (or zero it)
-		parent.velocity.x *= -parent.movement_data.CJ_REVERSE_MULTIPLIER
+		parent.velocity.x *= -parent.movement_data.BJ_REVERSE_MULTIPLIER
 		# Then add to it
-		parent.velocity.x += parent.movement_data.CROUCH_JUMP_BOOST * parent.horizontal_axis
+		parent.velocity.x += parent.movement_data.BOOST_JUMP_HBOOST * parent.horizontal_axis
 
 
 	## FX
@@ -391,7 +391,7 @@ func can_boost_jump() -> bool:
 	# Ok so first we make sure the we've jumped within the window.
 	# Then make sure the player is moving faster than some multiple of their default speed
 
-	return (crouch_jump_window.time_left == 0 ) and abs(parent.velocity.x) > abs(parent.speed) * parent.movement_data.CROUCH_JUMP_THRES
+	return (crouch_jump_window.time_left == 0 ) and abs(parent.velocity.x) > abs(parent.speed) * parent.movement_data.BOOST_JUMP_THRES
 
 ## Returns if speed is fast enough for sliding
 func at_slide_thres() -> bool:
