@@ -39,6 +39,8 @@ var ticks: float = 0
 # Keep track of if we have short hopped.
 var shopped: bool = false
 
+# Set if we are falling after a slide
+var slide_fall: bool = false
 
 # Called on state entrance, setup
 func enter() -> void:
@@ -46,6 +48,11 @@ func enter() -> void:
 	if OS.is_debug_build():
 		print("Aerial State")
 
+	# Reset our flags/counters
+	shopped = false
+	ticks = 0
+	min_fall_speed = 0.0
+	parent.aerial = true
 
 	# Enabling the appropriate Raycasts
 	right_wj_grace.enabled = true
@@ -55,15 +62,18 @@ func enter() -> void:
 	top_right.enabled = true
 	top_left.enabled = true
 
-	# Reset our flags/counters
-	shopped = false
-	ticks = 0
-	min_fall_speed = 0.0
-	parent.aerial = true
+	
+
+	slide_fall = parent.current_animation == parent.ANI_STATES.CRAWL
+
+	if not slide_fall:
+		print("Current Animation: ", parent.current_animation)
 
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
-	if (not parent.jumping and not parent.crouchJumping) or parent.launched:
+	if (not parent.jumping and not parent.crouchJumping and not slide_fall) or parent.launched:
 		parent.current_animation = parent.ANI_STATES.FALLING
+
+	
 
 
 # Called before exiting the state, cleanup
@@ -101,7 +111,8 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 
 	# If we are crouch jumping, let go of down, and have standing room.
-	if parent.crouchJumping and not Input.is_action_pressed("Down") and have_stand_room():
+	var in_crouch = parent.current_animation == parent.ANI_STATES.CRAWL
+	if in_crouch and not Input.is_action_pressed("Down") and have_stand_room():
 
 		parent.crouchJumping = false
 		parent.current_animation = parent.ANI_STATES.FALLING
@@ -225,7 +236,7 @@ func handle_coyote(_delta):
 
 
 			# See if we're able to boost Jump
-			if (parent.current_animation == parent.ANI_STATES.CRAWL and SLIDING_STATE.can_boost_jump()):
+			if (SLIDING_STATE.can_boost_jump() and slide_fall):
 				SLIDING_STATE.boost_jump()
 				ticks = 0
 				return
@@ -235,6 +246,9 @@ func handle_coyote(_delta):
 
 #perform coyote jump
 func coyote_jump():
+
+	# Set Flags
+	parent.jumping = true
 
 	# Add a Horizontal Jump Boost to our players X velocity
 	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis

@@ -110,7 +110,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 # Processing Frames in this state, returns nil or new state
 func process_frame(_delta: float) -> PlayerState:
 
-	update_facing(parent.horizontal_axis)
+	update_facing(parent.velocity.x)
 	update_effects()
 	update_slide_animation()
 
@@ -133,7 +133,7 @@ func state_status() -> PlayerState:
 	# If we have entered the air
 	if not parent.is_on_floor():
 
-		# Reset Animation State in case of change
+		# Set us to be in the crawling animation
 		parent.current_animation = parent.ANI_STATES.CRAWL
 
 		# Check if we're just falling or if we've been launched / jumping
@@ -253,10 +253,9 @@ func update_slide_animation() -> void:
 	if in_slide_animation() and not at_slide_thres():
 		parent.current_animation = parent.ANI_STATES.SLIDE_END
 
-func apply_friction(delta, direction):
+func apply_friction(delta, _direction):
 
 	parent.turningAround = false
-
 
 	# if we're on level ground
 	if parent.get_floor_normal() == Vector2.UP:
@@ -271,11 +270,11 @@ func apply_friction(delta, direction):
 	else:
 
 		# Get the hill direction
-		var sign = sign(parent.get_floor_normal().x)
-		parent.animation.flip_h = sign <= 0 # Flip the sprite based on slide dir
+		var dir = sign(parent.get_floor_normal().x)
+		parent.animation.flip_h = dir <= 0 # Flip the sprite based on slide dir
 
 		# Calculate speed based on hill direction
-		var speed = sign * parent.hill_speed
+		var speed = dir * parent.hill_speed
 		var accel = parent.hill_accel
 
 		# This is not reset in order to be kind about boost jumps

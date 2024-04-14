@@ -426,6 +426,7 @@ func jump_corner_correction(delta):
 
 
 
+# TODO: Clean this up
 # What allows the player to "smoothly"(lol) step up from small gaps
 func horizontal_corner_correction(delta):
 
@@ -447,6 +448,7 @@ func horizontal_corner_correction(delta):
 
 		# If we are moviging in that direction or pressing that dir
 		if (velocity.x > 0 or horizontal_axis > 0) and round(bottom_right.get_collision_normal().x) == bottom_right.get_collision_normal().x:
+
 
 			# Scan using the shapecast
 			right_accuracy.force_shapecast_update()
@@ -543,9 +545,6 @@ func enter_tunnel():
 		
 		# Squish the player
 		squish_node.squish(crouch_squash)
-
-		# Start sliding animation
-		current_animation = ANI_STATES.SLIDE_PREP
 
 		# Set the flag
 		crouchJumping = true

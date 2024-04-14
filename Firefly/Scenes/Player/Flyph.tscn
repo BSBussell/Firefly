@@ -359,7 +359,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"slide_loop",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -535,8 +535,9 @@ bounce_curve = SubResource("Curve_umqtl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"slide_prep"
+animation = &"slide_loop"
 autoplay = "idle"
+frame_progress = 0.510031
 script = ExtResource("6_vid37")
 
 [node name="Trail" type="Line2D" parent="Visuals"]
