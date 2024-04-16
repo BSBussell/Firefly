@@ -63,6 +63,9 @@ func enter() -> void:
 		if jump_buffer.time_left == 0:
 			parent.squish_node.squish(GROUNDED_STATE.calc_landing_squish())
 
+		parent.boostJumping = false
+		parent.crouchJumping = false
+
 		# Put us in the landing animation
 		parent.current_animation = parent.ANI_STATES.LANDING
 

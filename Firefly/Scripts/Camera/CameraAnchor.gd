@@ -44,6 +44,12 @@ var goalHeight: float = 10
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	# Disable whichever process we aren't using
+	if processor == process.Physics:
+		set_process(false)
+	else:
+		set_physics_process(false)
+	
 	state_machine.init(self)
 	pass # Replace with function body.
 
@@ -57,21 +63,19 @@ func _unhandled_input(event):
 	state_machine.process_input(event)
 
 func _physics_process(delta):
-	if processor == process.Physics:
-		
-		# Calculating a smoothed velocity value constantly
-		smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
-		state_machine.process_physics(delta)
-		adjust_offset(delta)
+	
+	# Calculating a smoothed velocity value constantly
+	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
+	state_machine.process_physics(delta)
+	adjust_offset(delta)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if processor != process.Physics:
-		
-		# Calculating a smoothed velocity value constantly
-		smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
-		state_machine.process(delta)
-		adjust_offset(delta)
+	
+	# Calculating a smoothed velocity value constantly
+	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
+	state_machine.process(delta)
+	adjust_offset(delta)
 
 
 func adjust_offset(delta):

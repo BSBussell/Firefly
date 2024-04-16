@@ -10,7 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="8_u0i4u"]
 [ext_resource type="AudioStream" uid="uid://cu2e2bu6ld7xt" path="res://Assets/SFX/ambience/forest_ambience_b.mp3" id="8_yye87"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="9_qi6cd"]
-[ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="10_apmf0"]
+[ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="11_3y1fe"]
 [ext_resource type="Script" path="res://Scripts/Events/text_add_score.gd" id="12_51ejy"]
 [ext_resource type="Script" path="res://Scripts/Events/reveal_text_event.gd" id="12_yuqqh"]
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="13_64rfa"]
@@ -291,9 +291,7 @@ bus = &"Ambience"
 position = Vector2(152, 90)
 MusicPlayer = NodePath("../LevelAudio/Music")
 
-[node name="PlayerCam" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("10_apmf0")]
-visible = false
-position = Vector2(96, 150)
+[node name="CameraTarget" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("11_3y1fe")]
 Player = NodePath("../Flyph")
 
 [node name="Events" type="Node2D" parent="."]

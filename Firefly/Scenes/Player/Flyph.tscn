@@ -966,7 +966,7 @@ wait_time = 0.125
 one_shot = true
 
 [node name="PostJumpBuffer" type="Timer" parent="Timers"]
-wait_time = 0.01
+wait_time = 0.125
 
 [node name="CoyoteTime" type="Timer" parent="Timers"]
 wait_time = 0.1

@@ -145,21 +145,21 @@ func _on_ambience_slider_focus_entered():
 
 func _on_glow_mode_toggle_switched_on():
 	
-	if _globals.ACTIVE_globals:
-		_globals.ACTIVE_globals.enable_auto_glow()
+	if _globals.ACTIVE_PLAYER:
+		_globals.ACTIVE_PLAYER.enable_auto_glow()
 
 
 func _on_glow_mode_toggle_switched_off():
-	if _globals.ACTIVE_globals:
-		_globals.ACTIVE_globals.disable_auto_glow()
+	if _globals.ACTIVE_PLAYER:
+		_globals.ACTIVE_PLAYER.disable_auto_glow()
 
 
 func _on_speedometer_toggle_switched_off():
 	
-	if _globals.ACTIVE_globals:
-		_globals.ACTIVE_globals.hide_speedometer()
+	if _globals.ACTIVE_PLAYER:
+		_globals.ACTIVE_PLAYER.hide_speedometer()
 
 
 func _on_speedometer_toggle_switched_on():
-	if _globals.ACTIVE_globals:
-		_globals.ACTIVE_globals.show_speedometer()
+	if _globals.ACTIVE_PLAYER:
+		_globals.ACTIVE_PLAYER.show_speedometer()
