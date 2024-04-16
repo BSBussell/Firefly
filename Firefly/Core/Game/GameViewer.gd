@@ -31,10 +31,9 @@ func _ready():
 	# Let us process input even when game beat
 	set_process_input(true)
 
-func _input(event: InputEvent) -> void:
-	var base_resolution = Vector2i(320, 180)
+func _input(_event: InputEvent) -> void:
 	var scale_factors = {
-		KEY_1: 0.25,
+		KEY_1: 0.16,
 		KEY_2: 0.5,
 		KEY_3: 0.75,
 		KEY_4: 1,
@@ -61,9 +60,7 @@ func _input(event: InputEvent) -> void:
 		pause_menu.toggle_pause()
 		
 	if Input.is_action_just_pressed("reset"):
-		# Get the current scene's root node
-		var current_scene = get_tree().current_scene
-
+		
 
 		_stats.DEATHS = 0
 		_stats.TIME = 0

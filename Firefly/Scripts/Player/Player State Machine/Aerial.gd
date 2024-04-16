@@ -130,7 +130,7 @@ func process_physics(delta: float) -> PlayerState:
 
 	# Grace Jumps
 	handle_coyote(delta)
-	handle_grace_walljump(delta)
+	handle_grace_walljump()
 
 	# For Short Hops
 	handle_sHop(delta)
@@ -179,7 +179,7 @@ func state_status():
 	return null
 
 
-func process_frame(delta):
+func process_frame(_delta):
 
 	# Fall squishing :3
 	if parent.velocity.y > 0:
@@ -266,16 +266,16 @@ func coyote_jump():
 	# Jump SFX
 	jumping_sfx.play(0)
 
-func handle_grace_walljump(delta: float) -> void:
+func handle_grace_walljump() -> void:
 
 	# If we aren't being launched and aren't crouch jumping
 	if not parent.launched and not parent.crouchJumping:
 
 		# Check the shapecasts and call the walljump if we're in it
 		if right_wj_grace.is_colliding() and round(right_wj_grace.get_collision_normal(0).x) == right_wj_grace.get_collision_normal(0).x :
-			WALL_STATE.handle_walljump(delta, parent.vertical_axis, -1)
+			WALL_STATE.handle_walljump(parent.vertical_axis, -1)
 		elif left_wj_grace.is_colliding() and round(left_wj_grace.get_collision_normal(0).x) == left_wj_grace.get_collision_normal(0).x:
-			WALL_STATE.handle_walljump(delta, parent.vertical_axis, 1)
+			WALL_STATE.handle_walljump(parent.vertical_axis, 1)
 
 
 
@@ -395,12 +395,12 @@ func handle_acceleration(delta, direction) -> void:
 func cj_clamp():
 
 	# The time window for releasing the down button
-	var crouch_release_window = 0/60
+	var crouch_release_window: float = 0.0/60.0
 
 	if parent.crouchJumping:
 
 		# The time window for releasing the down button
-		crouch_release_window = 30/60
+		crouch_release_window = 1.0/60.0
 
 		# So they have that much time to release down before velocity is capped
 		# I have this because I don't like the idea of players flying around in crouch

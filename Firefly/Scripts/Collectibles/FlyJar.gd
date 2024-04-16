@@ -7,6 +7,6 @@ extends "res://Scripts/Events/base_event.gd"
 func _ready():
 	animation_player.play("Idle")
 
-func on_enter(body: Flyph):
+func on_enter(_body: Flyph):
 	animation_player.play("Grab")
 	_ui.new_item_found()

@@ -11,7 +11,6 @@ class_name Level
 
 
 
-
 func _ready():
 
 	# Register Global Components

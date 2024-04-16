@@ -96,7 +96,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 	return null
 
-func process_frame(delta):
+func process_frame(_delta):
 
 	# Do all our Visual Updates
 	update_facing(parent.velocity.x)

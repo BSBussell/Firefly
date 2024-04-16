@@ -47,15 +47,15 @@ func set_score(score):
 	actual_score = min(score, 100)
 
 # Adjust the ranges and fits the score inside it to score from jumping around weirdly
-func update_range(min, max):
+func update_range(new_min, new_max):
 	var normalized_range = max_value - min_value
 	var normalized_actual = (actual_score - min_value) / normalized_range
 	var normalized_interp = (interpolated_score - min_value) / normalized_range
 	
-	var new_range = max - min
-	actual_score = (normalized_actual * new_range) + min
-	interpolated_score = (normalized_interp * new_range) + min
+	var new_range = new_max - new_min
+	actual_score = (normalized_actual * new_range) + new_min
+	interpolated_score = (normalized_interp * new_range) + new_min
 	
-	min_value = min
-	max_value = max
+	min_value = new_min
+	max_value = new_max
 	

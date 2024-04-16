@@ -66,12 +66,12 @@ func move_camera(delta):
 
 func calculate_target_position(delta: float) -> Vector2:
 	var base_target: Vector2 = player.global_position - control.startingPos
-	var offset: Vector2 = calc_target_offset()
+	var offset: Vector2 = calc_target_offset(delta)
 	var position: Vector2 = base_target + offset
 	 
 	return position
 
-func calc_target_offset() -> Vector2:
+func calc_target_offset(_delta: float) -> Vector2:
 	
 	# The default offset
 	var offset = Vector2.ZERO
@@ -89,7 +89,7 @@ func calc_target_offset() -> Vector2:
 		
 			# Use Lerp to make it so that as velocity.y approaches max_fall_speed
 			var max_fall_speed = player.movement_data.MAX_FALL_SPEED
-			var fall_offset = 48
+			var fall_offset = 32
 			
 			# Using lerp to have us approach fall offset as speed approaches max
 			offset.y += lerp(0, fall_offset, min(1.0, player_speed.y / max_fall_speed))
@@ -101,7 +101,7 @@ func calc_target_offset() -> Vector2:
 		if player.launched:
 			
 			var base_rise_speed = player.jump_velocity * 2
-			var up_offset = -48
+			var up_offset = -32
 			
 			# Using lerp to have us approach fall offset as speed approaches max
 			offset.y += lerp(0, up_offset, min(1.0, player_speed.y / base_rise_speed))
@@ -113,7 +113,7 @@ func calc_target_offset() -> Vector2:
 	if player_speed.x >= player.speed and not player.wallJumping:
 		
 		var max_horiz_speed: float = 152 * 1.5
-		var horiz_offset: float = 32 * sign(player.velocity.x)
+		var horiz_offset: float = 16 * sign(player.velocity.x)
 		
 		# Normalize our blending
 		var normed_blend = (player_speed.x - player.speed) / (max_horiz_speed - player.speed)

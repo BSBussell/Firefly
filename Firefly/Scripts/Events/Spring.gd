@@ -65,15 +65,9 @@ func _on_body_entered(body: Flyph):
 	# Set Flyph Up
 	flyph = body
 	
-	# If jump button has been pressed within X window
-	var buffered_jump: bool = false
-	
 	# Play the effects that queue on spring down
 	spring_down_fx()
 	
-	## Grab buffers and get current status
-	#buffered_jump = flyph.attempt_jump()
-		
 	# Launch the player
 	print("Runing Spring_Jump_Routine")
 	spring_jump()
@@ -112,7 +106,10 @@ func spring_jump():
 	
 	# Check if player is boosting upward by pressing a on the spring
 	# This is ordered intentionally to not consume a jump if the player is already jumping
-	if flyph.boostJumping or flyph.jumping or flyph.crouchJumping or flyph.attempt_jump() and not flyph.wallJumping:
+	if flyph.attempt_post_jump() or flyph.attempt_jump() and not flyph.wallJumping:
+		
+		# Needed in order to prevent double jump inputs
+		flyph.consume_jump()
 		
 		# Se tthe launch velocity and gravity to the spring_jb values
 		launch_velocity.y = spring_jb_velocity

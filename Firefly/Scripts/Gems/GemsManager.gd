@@ -17,13 +17,17 @@ func _ready():
 			gem_array.append(gem)
 
 
+## Respawns every gem
+func respawn_all():
+	for gem in gem_array:
+		gem.respawn()
 
-# Makes our gems visible
+## Makes our gems visible
 func show_gems():
 	for gem in gem_array:
 		gem.activate()
 
-# Makes our gems invisible
+## Makes our gems invisible
 func hide_gems():
 	for gem in gem_array:
 		gem.deactivate()

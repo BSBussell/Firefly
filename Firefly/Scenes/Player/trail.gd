@@ -24,7 +24,7 @@ var fps_adjusted_length: int = 10
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	fps_adjusted_length = length * (Engine.get_frames_per_second() / 60)
+	fps_adjusted_length = length * (int(Engine.get_frames_per_second()) / 60)
 	
 	global_position = Vector2(0, 0)
 	global_rotation = 0

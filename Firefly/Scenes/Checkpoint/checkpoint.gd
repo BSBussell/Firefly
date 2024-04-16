@@ -19,18 +19,6 @@ func _ready():
 	spotlight.set_brightness(0)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
-func _on_checkpoint_area_area_entered(area):
-	pass
-	#checkpoint_sprite.set_frame(1)
-	#spotlight.energy = 1
-	#explode.emitting = true
-	#lightparticles.emitting = true
-	#area.checkpoint_entered()
 
 
 func _on_checkpoint_area_body_entered(body):
@@ -43,8 +31,8 @@ func _on_checkpoint_area_body_entered(body):
 		print("Potential Enemy or something else :3")
 
 
-func set_manager(manager: CheckPointManager):
-	self.manager = manager
+func set_manager(checkpoint_manager: CheckPointManager):
+	manager = checkpoint_manager
 
 ## Activates the Checkpoint
 func activate_checkpoint(player: Flyph):

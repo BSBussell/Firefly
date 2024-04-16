@@ -16,7 +16,7 @@ func _ready():
 	update_sensor()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	update_sensor()
 
 func update_sensor():

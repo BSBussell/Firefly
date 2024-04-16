@@ -30,6 +30,10 @@ _stats="*res://Scripts/Globals/_stats.gd"
 _globals="*res://Scripts/Globals/_globals.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 
+[debug]
+
+gdscript/warnings/integer_division=0
+
 [display]
 
 window/size/viewport_width=1920

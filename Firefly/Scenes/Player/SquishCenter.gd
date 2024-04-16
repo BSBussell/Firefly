@@ -24,9 +24,18 @@ func _process(delta):
 
 # Set the scale for squash/stretch and start interpolating back to original scale
 func squish(new_scale: Vector2, new_speed: float = rebound_speed) -> void:
+	
+	# Set Scale
 	scale = new_scale
+	
+	# Tweening variables
 	squish_from = new_scale
 	initial_difference = new_scale - original_scale
 	interpolating = true
-	interpolation_time = 0.0  # Reset interpolation time
+	
+	# Reset Tween Time
+	interpolation_time = 0.0
+	
+	# Set new_speed
+	rebound_speed = new_speed 
  

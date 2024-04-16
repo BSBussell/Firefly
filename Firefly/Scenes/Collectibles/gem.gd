@@ -44,34 +44,44 @@ func consume_item(player: Flyph):
 	fx.play("Eat")
 	crash.play()
 	respawn_timer.start()
-	area_2d.monitoring = false
+	area_2d.set_deferred("monitoring", false)
 	
 	# Add 50 glow points
 	player.add_glow(50)
 	
 	
 
-func _on_respawn_timer_timeout():
+func respawn() -> void:
 	consumed = false
 	fx.play("PopIn")
 	pop.play()
-	area_2d.monitoring = true
+	area_2d.set_deferred("monitoring", true)
+
+func _on_respawn_timer_timeout():
+	respawn()
 
 
 ## Makes the gem visible and active
 func activate():
 	active = true
-	area_2d.monitoring = true
-	animated_sprite_2d.visible = true
+	
 	animated_sprite_2d.play("Spin")
+	
+	# If it hasn't been consumed display it. otherwise just wait
+	if not consumed: 
+		animated_sprite_2d.visible = true
+		# Play the pop in animation
+		fx.play("PopIn")
+		pop.play()
+		area_2d.set_deferred("monitoring", true)
+	
+	
 
-	# Play the pop in animation
-	fx.play("PopIn")
-	pop.play()
+	
 
 ## Makes the gem invisible and inactive
 func deactivate():
 	active = false
-	area_2d.monitoring = false
+	area_2d.set_deferred("monitoring", false)
 	animated_sprite_2d.visible = false
 	visible = false

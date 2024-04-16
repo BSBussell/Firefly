@@ -107,6 +107,8 @@ enum WALLJUMPS {
 @onready var jump_buffer: Timer = $Timers/JumpBuffer
 @onready var coyote_time: Timer = $Timers/CoyoteTime
 @onready var momentum_time: Timer = $Timers/MomentumTime
+@onready var post_jump_buffer = $Timers/PostJumpBuffer
+
 
 # Vertical Corner Correction Raycasts
 @onready var top_left: RayCast2D = $Raycasts/VerticalSmoothing/TopLeft
@@ -287,8 +289,24 @@ func _unhandled_input(event: InputEvent) -> void:
 # This will be called by the state machine when it wants to consume a jump buffer
 # Returns True if the jump buffer was consumed
 func attempt_jump() -> bool:
+	
+	
+
 	if jump_buffer.time_left > 0.0:
-		jump_buffer.stop()
+		consume_jump()
+		return true
+	return false
+
+# Uses up anything potentially in the jump buffer
+func consume_jump() -> void:
+	
+	jump_buffer.stop()
+	
+## This is used by the spring routine
+func attempt_post_jump() -> bool:
+	
+	if post_jump_buffer.time_left > 0.0:
+		post_jump_buffer.stop()
 		return true
 	return false
 
@@ -299,6 +317,10 @@ func _physics_process(delta: float) -> void:
 
 		# Calls the physics proceess
 		StateMachine.process_physics(delta)
+		
+		# Store the velocity for next frame
+		prev_velocity_x = velocity.x
+		prev_velocity_y = velocity.y
 
 		# Apply Velocities
 		move_and_slide()
@@ -306,9 +328,7 @@ func _physics_process(delta: float) -> void:
 		# "Assists" in movement
 		movement_assist(delta)
 
-		# Store the velocity for next frame
-		prev_velocity_x = velocity.x
-		prev_velocity_y = velocity.y
+		
 
 func _process(delta: float) -> void:
 
@@ -449,6 +469,7 @@ func horizontal_corner_correction(delta):
 	# Adjust the Raycast Length based on usecase (if grounded step we need longer)
 	if not is_on_floor():
 		set_corner_snapping_length(1)
+		return
 	else:
 		# Make it a bit bigger when doing floor corrections in order to give us a little xtra time to get up lol
 		set_corner_snapping_length(3)
@@ -714,7 +735,6 @@ func calculate_properties():
 func give_boost(boost_speed: float) -> void:
 
 	velocity.x += boost_speed * horizontal_axis
-	var facing = (-1 if animation.flip_h else 1)
 
 
 var temp_gravity_active: bool = false
@@ -776,10 +796,6 @@ func kill():
 
 	dying = true
 
-	# FIXME: WTF WERE YOU THINKING!!! THIS IS AWFUL
-	# Surely i will fix this... later :3
-	$Particles/GlowAura.emitting = false
-
 	# Restart and disable the glow mechanic
 	glow_manager.reset_glow()
 	glow_manager.GLOW_ENABLED = false
@@ -792,6 +808,8 @@ func kill():
 	
 	# Zero out the velocity
 	velocity = Vector2.ZERO
+	
+	_globals.GEM_MANAGER.respawn_all()
 
 
 	# Respawn Animation
@@ -819,10 +837,10 @@ func kill():
 
 
 # Ways of death:
-func _on_hazard_detector_area_entered(area):
+func _on_hazard_detector_area_entered(_area):
 	kill()
 
-func _on_hazard_detector_body_entered(body):
+func _on_hazard_detector_body_entered(_body):
 	kill()
 
 # Sets the given points as the players respawn point

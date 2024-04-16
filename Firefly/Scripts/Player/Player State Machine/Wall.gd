@@ -33,8 +33,8 @@ func enter() -> void:
 	# TODO: Make this work, prev velocity is zero'd for some reason
 	# I want flyph to be squashed like a bug if they slam into this wall
 	var squash_value: float
-	squash_value = lerpf(0.1, 0.5, abs(parent.prev_velocity_x) / (parent.air_speed * 2))
-	
+	squash_value = lerpf(0.1, 0.75, abs(parent.prev_velocity_x) / (parent.air_speed * 5))
+	print(squash_value)
 	parent.squish_node.squish(Vector2(1.0 - squash_value, 1.0 + squash_value))
 	
 	# Spawn some wall hug dust
@@ -63,7 +63,7 @@ func process_physics(delta: float) -> PlayerState:
 	
 	
 	apply_gravity(delta, parent.horizontal_axis)
-	handle_walljump(delta, parent.vertical_axis)
+	handle_walljump(parent.vertical_axis)
 	AERIAL_STATE.handle_sHop(delta)
 	
 	handle_acceleration(delta, parent.horizontal_axis)
@@ -152,10 +152,10 @@ func apply_airResistance(delta, direction):
 # Performs a wall jump if we can
 # Takes delta and the direction of the wall.
 # If not given we asasume we're on a wall and try to get the wall normal
-func handle_walljump(delta, vc_direction, dir = 0):	
+func handle_walljump(vc_direction, dir = 0):	
 	
 	# Attempt jump pretty much just checks if a jump has been buffered and removes that from the buffer if it has
-	if not parent.launched and parent.attempt_jump():
+	if parent.attempt_jump():
 	
 		# Set Global Flags
 		parent.wallJumping = true

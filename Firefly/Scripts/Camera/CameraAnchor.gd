@@ -78,37 +78,14 @@ func _process(delta):
 	# Calculating a smoothed velocity value constantly
 	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
 	state_machine.process(delta)
-	#adjust_offset(delta)
 
 
-func adjust_offset(delta):
-	var target_height = get_target_camera_height()
-	var blend = 1 - pow(0.5, 0.5 * delta)
-	startingPos.y = _gerblesh.lerpi(startingPos.y, target_height, blend)
-
-func get_target_camera_height() -> float:
 	
-	return goalHeight
-	var neutral_height = goalHeight # Use the adjusted neutral height
-	var max_height = 10  # The maximum height the camera can go
-	var min_height = -45  # The minimum height the camera can go
-
-	var player_height_diff = Player.global_position.y - neutral_height
-	var target_height = clamp(neutral_height - player_height_diff, min_height, max_height)
-	return target_height
-
-func set_camera_height(height):
-	
-	goalHeight = height
-	
-
-
-
 # When we found a thing we shouldn't
-func _on_area_2d_area_entered(area):
+func _on_area_2d_area_entered(_area: Area2D):
 	
 	collider = true
 
 
-func _on_area_2d_area_exited(area):
+func _on_area_2d_area_exited(_area: Area2D):
 	collider = false

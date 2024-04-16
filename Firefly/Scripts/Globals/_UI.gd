@@ -45,8 +45,8 @@ func show_counter():
 	else: # Restart the time if its already out
 		ANIMATION_TIMER.start(DISPLAY_TIME)
 
-func set_max_collectibles(max: int):
-	MAX = max
+func set_max_collectibles(max_collectibles: int):
+	MAX = max_collectibles
 
 func on_timeout():
 	print("y")
