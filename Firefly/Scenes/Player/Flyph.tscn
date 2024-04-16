@@ -653,12 +653,15 @@ metadata/_edit_lock_ = true
 [node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
 z_index = -1
 position = Vector2(0, -4)
-emitting = false
 amount = 24
 texture = ExtResource("8_shld8")
 emission_rect_extents = Vector2(2, 3.5)
-initial_velocity_min = 0.0
-initial_velocity_max = 0.0
+direction = Vector2(0, -1)
+gravity = Vector2(0, 250)
+initial_velocity_min = 25.0
+initial_velocity_max = 75.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
 scale_amount_curve = SubResource("Curve_e1b3a")
 
 [node name="DashDust" type="CPUParticles2D" parent="Particles"]
