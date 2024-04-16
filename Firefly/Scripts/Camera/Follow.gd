@@ -10,6 +10,7 @@ extends State
 @export var follow_timer: Timer
 
 @export_group("Parameters")
+@export var Cursor_Color: Color
 @export var Maximum_Speed: float = 5
 @export var Minimum_Speed: float = 5
 @export var acceleration: float = 0.1
@@ -31,14 +32,13 @@ func enter() -> void:
 	control = parent as PlayerCam
 	
 	if cursor.visible:
-		cursor.material.set_shader_parameter("greenVal", 0.0)
+		cursor.modulate = Cursor_Color
 	pass
 
 # Called before exiting the state, cleanup
 func exit() -> void:
 	
-	if cursor.visible:
-		cursor.material.set_shader_parameter("greenVal", 1.0)
+	
 	pass
 
 # Processing Frames in this state, returns nil or new state

@@ -292,6 +292,7 @@ position = Vector2(152, 90)
 MusicPlayer = NodePath("../LevelAudio/Music")
 
 [node name="CameraTarget" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("11_3y1fe")]
+visible = false
 Player = NodePath("../Flyph")
 
 [node name="Events" type="Node2D" parent="."]
@@ -718,6 +719,7 @@ position = Vector2(-2794, -510)
 
 [node name="HazardArea" parent="DeathZones" instance=ExtResource("17_jlxlk")]
 position = Vector2(-2988, 38)
+collision_layer = 25
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/HazardArea"]
 position = Vector2(-294, 34)

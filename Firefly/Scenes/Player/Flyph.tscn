@@ -1,4 +1,4 @@
-[gd_scene load_steps=96 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=103 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -224,6 +224,34 @@ region = Rect2(640, 0, 64, 64)
 atlas = ExtResource("5_63g2f")
 region = Rect2(704, 0, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_rj1b7"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3712, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dsnmb"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3776, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lubft"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3840, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w63t6"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3968, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y60m3"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4032, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rka0p"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4096, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hw3hl"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4160, 0, 64, 64)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_7w45f"]
 animations = [{
 "frames": [{
@@ -420,6 +448,42 @@ animations = [{
 "loop": true,
 "name": &"walking",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rj1b7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dsnmb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lubft")
+}],
+"loop": false,
+"name": &"wall_hug",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w63t6")
+}],
+"loop": false,
+"name": &"wall_jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y60m3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rka0p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hw3hl")
+}],
+"loop": true,
+"name": &"wall_slide",
+"speed": 8.0
 }]
 
 [sub_resource type="Curve" id="Curve_w5yy1"]
@@ -540,9 +604,9 @@ bounce_curve = SubResource("Curve_umqtl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"slide_loop"
+animation = &"wall_slide"
 autoplay = "idle"
-frame_progress = 0.510031
+frame_progress = 0.767189
 flip_h = true
 script = ExtResource("6_vid37")
 
@@ -638,6 +702,8 @@ position = Vector2(0, -8)
 emitting = false
 emission_rect_extents = Vector2(2, 3)
 direction = Vector2(2, -10)
+initial_velocity_min = 0.0
+initial_velocity_max = 0.0
 
 [node name="WJDustSpawner" type="Marker2D" parent="Particles"]
 position = Vector2(-6, -7)
@@ -653,6 +719,7 @@ metadata/_edit_lock_ = true
 [node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
 z_index = -1
 position = Vector2(0, -4)
+emitting = false
 amount = 24
 texture = ExtResource("8_shld8")
 emission_rect_extents = Vector2(2, 3.5)

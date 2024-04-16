@@ -45,7 +45,7 @@ movie_writer/movie_file="/home/bee/Documents/GitHub/Firefly/Mov/output.avi"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
+enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg")
 
 [input]
 

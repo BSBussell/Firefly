@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://Scripts/Camera/Follow.gd" id="6_y5nkv"]
 [ext_resource type="Script" path="res://Scripts/Camera/LookAhead.gd" id="7_pjrc4"]
 [ext_resource type="Script" path="res://Scenes/Camera/Falling.gd" id="8_71vy3"]
-[ext_resource type="Script" path="res://Scenes/Camera/Celeste-Cam.gd" id="9_jnfhh"]
+[ext_resource type="Script" path="res://Scenes/Camera/Dynamic-Cam.gd" id="8_r82q3"]
 [ext_resource type="Script" path="res://Scenes/Camera/SensorResizing.gd" id="9_ku080"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mqckl"]
@@ -33,7 +33,7 @@ editor_draw_drag_margin = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("5_67mh8")
-starting_state = NodePath("Celeste-Cam")
+starting_state = NodePath("Dynamic-Cam")
 
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW", "FALLING")]
 script = ExtResource("5_mfikc")
@@ -48,6 +48,7 @@ IDLE = NodePath("../Idle")
 LOOKAHEAD = NodePath("../LookAhead")
 FALLING = NodePath("../Falling")
 follow_timer = NodePath("../../FollowTimer")
+Cursor_Color = Color(0, 1, 1, 1)
 Maximum_Speed = 30.0
 Minimum_Speed = 0.01
 acceleration = 0.75
@@ -66,12 +67,13 @@ script = ExtResource("8_71vy3")
 IDLE = NodePath("../Idle")
 FOLLOW = NodePath("../Follow")
 LOOKAHEAD = NodePath("../LookAhead")
+Cursor_Color = Color(1, 0, 0, 1)
 Maximum_Speed = 45.0
 Minimum_Speed = 10.0
 acceleration = 0.75
 
-[node name="Celeste-Cam" type="Node" parent="StateMachine"]
-script = ExtResource("9_jnfhh")
+[node name="Dynamic-Cam" type="Node" parent="StateMachine"]
+script = ExtResource("8_r82q3")
 Cursor_Color = Color(0.678431, 0.247059, 0.266667, 1)
 
 [node name="FollowTimer" type="Timer" parent="."]
@@ -89,3 +91,6 @@ collision_mask = 8
 [node name="SensorShape" type="CollisionShape2D" parent="Sensor/Area2D"]
 shape = SubResource("RectangleShape2D_mqckl")
 debug_color = Color(0.341176, 0.972549, 0, 0.419608)
+
+[connection signal="area_entered" from="Sensor/Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Sensor/Area2D" to="." method="_on_area_2d_area_exited"]

@@ -26,6 +26,19 @@ func enter() -> void:
 	if OS.is_debug_build():
 		print("Wall State")
 
+	parent.animation.flip_h = 1 if parent.get_wall_normal().x > 0 else 0
+
+	parent.current_animation = parent.ANI_STATES.WALL_HUG
+	
+	# TODO: Make this work, prev velocity is zero'd for some reason
+	# I want flyph to be squashed like a bug if they slam into this wall
+	var squash_value: float
+	squash_value = lerpf(0.1, 0.5, abs(parent.prev_velocity_x) / (parent.air_speed * 2))
+	
+	parent.squish_node.squish(Vector2(1.0 - squash_value, 1.0 + squash_value))
+	
+	# Spawn some wall hug dust
+
 
 # Called before exiting the state, cleanup
 func exit() -> void:
@@ -82,6 +95,9 @@ func animation_end() -> PlayerState:
 	
 	if parent.current_animation == parent.ANI_STATES.FALLING:
 		parent.animation.pause()
+		
+	if parent.current_animation == parent.ANI_STATES.WALL_HUG:
+		parent.current_animation = parent.ANI_STATES.WALL_SLIDE
 
 	return null
 
@@ -162,6 +178,9 @@ func handle_walljump(delta, vc_direction, dir = 0):
 		wall_jump_sfx.play(0)
 		var pitch = 0.2 * jump_dir
 		wall_jump_sfx.pitch_scale = 1 + pitch 
+		
+		# Wall Jump Animation
+		parent.current_animation = parent.ANI_STATES.WALL_JUMP
 		
 		# Vibration
 		# TODO: Create a vibration manager and use those functions

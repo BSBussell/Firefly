@@ -27,6 +27,9 @@ enum process {Physics, Draw}
 @onready var startingPos: Vector2 = Vector2(0, 10)
 @onready var actual_cam_pos := global_position
 
+@onready var sensor: Area2D = $Sensor/Area2D
+# If something is on screen that shouldn't be
+var collider: bool = false
 
 var camera_speed: float = 0
 var camera_velocity: Vector2 = Vector2.ZERO
@@ -34,11 +37,11 @@ var camera_velocity: Vector2 = Vector2.ZERO
 # Cause this players bouncin all over the place
 var smoothed_velocity: Vector2 = Vector2.ZERO
 
+
 var prevOffset: Vector2 = Vector2(0,0)
 var prevBase: Vector2 = Vector2(0,0)
 
 var cameraHeight: float = 10
-
 var goalHeight: float = 10
 
 # Called when the node enters the scene tree for the first time.
@@ -67,7 +70,7 @@ func _physics_process(delta):
 	# Calculating a smoothed velocity value constantly
 	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
 	state_machine.process_physics(delta)
-	adjust_offset(delta)
+	#adjust_offset(delta)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -75,7 +78,7 @@ func _process(delta):
 	# Calculating a smoothed velocity value constantly
 	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
 	state_machine.process(delta)
-	adjust_offset(delta)
+	#adjust_offset(delta)
 
 
 func adjust_offset(delta):
@@ -99,3 +102,13 @@ func set_camera_height(height):
 	goalHeight = height
 	
 
+
+
+# When we found a thing we shouldn't
+func _on_area_2d_area_entered(area):
+	
+	collider = true
+
+
+func _on_area_2d_area_exited(area):
+	collider = false
