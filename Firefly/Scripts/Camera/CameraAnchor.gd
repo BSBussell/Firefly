@@ -81,11 +81,16 @@ func _process(delta):
 
 
 	
-# When we found a thing we shouldn't
-func _on_area_2d_area_entered(_area: Area2D):
-	
-	collider = true
+# Dictionary to hold target positions with area instance IDs as keys
+var targets: Dictionary = {}
 
+# When an area is entered, add its position to the dictionary
+func _on_area_2d_area_entered(area: Area2D):
+	targets[area.get_instance_id()] = area.global_position
+	print("Camera Target On Screen")
 
-func _on_area_2d_area_exited(_area: Area2D):
-	collider = false
+# When an area is exited, remove it from the dictionary
+func _on_area_2d_area_exited(area):
+	var area_id = area.get_instance_id()
+	if targets.has(area_id):
+		targets.erase(area_id)

@@ -792,8 +792,7 @@ func kill():
 	glow_aura.emitting = false
 	wall_slide_dust.emitting = false
 	mega_speed_particles.emitting = false
-
-
+	
 	dying = true
 
 	# Restart and disable the glow mechanic

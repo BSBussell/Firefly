@@ -29,7 +29,7 @@ var slidingDown = false		# If we at any point have gone down a hill
 var jumpExit = false		# If we are exiting this state by a jump
 
 # The threshold
-var slide_threshold = 50
+var slide_threshold = 100
 
 # Called on state entrance, setup
 func enter() -> void:
@@ -42,10 +42,14 @@ func enter() -> void:
 	jumpExit = false
 
 	# Change to the sliding collider
+	
+	print("Slide Bug Maybe you?")
 	parent.set_crouch_collider()
+	print("Slide Bug just in case")
 
 	# If we're coming from the air, we
 	if parent.aerial:
+		
 
 		parent.aerial = false
 
@@ -62,7 +66,8 @@ func enter() -> void:
 		# Squish if we aren't about to jump
 		if jump_buffer.time_left == 0:
 			parent.squish_node.squish(GROUNDED_STATE.calc_landing_squish())
-
+			print("Slide Bug: Is it the squish")
+			
 		parent.boostJumping = false
 		parent.crouchJumping = false
 
@@ -75,7 +80,10 @@ func enter() -> void:
 		parent.current_animation = parent.ANI_STATES.CROUCH
 
 		# Otherwise just do the normal crouch squash
+		
+		print("Slide Bug maybe this")
 		parent.squish_node.squish(parent.crouch_squash)
+		print("Slide Bug idk")
 
 	# This might be silly b/c i can't control it lol
 	parent.floor_constant_speed = false
@@ -87,9 +95,11 @@ func enter() -> void:
 		sliding_sfx.play(0)
 
 	# If we're at sliding speed
-	if at_slide_thres() and AERIAL_STATE.have_stand_room():
+	if at_slide_thres(): #and AERIAL_STATE.have_stand_room():
 
 		parent.current_animation = parent.ANI_STATES.SLIDE_PREP
+
+	print("Slide Bug: Do we make it out")
 
 	# Start our timer
 	crouch_jump_window.start()
@@ -113,20 +123,84 @@ func process_input(_event: InputEvent) -> PlayerState:
 # Processing Frames in this state, returns nil or new state
 func process_frame(_delta: float) -> PlayerState:
 
+	print("Do we ever process input")
 	update_facing(parent.velocity.x)
 	update_effects()
 	update_slide_animation()
 
 	return null
+	
+## Updates which direction the player is facing based on direction
+func update_facing(direction: float) -> void:
+
+	# Change direction
+	if direction > 0 and parent.animation.flip_h:
+		parent.animation.flip_h = false
+
+		# don't interfere with cj squish :3
+		if not parent.crouchJumping:
+			parent.squish_node.squish(parent.turn_around_squash)
+
+	elif direction < 0 and not parent.animation.flip_h:
+		parent.animation.flip_h = true
+
+		# don't interfere with cj squish :3
+		if not parent.crouchJumping:
+			parent.squish_node.squish(parent.turn_around_squash)
+
+## Updates the visual effects and audio
+func update_effects() -> void:
+
+	# "Speed Particles"
+	if abs(parent.velocity.x) > parent.speed:
+		speed_particles.emitting = true
+		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
+	else:
+		speed_particles.emitting = false
+
+
+	# Stop fx when we stop moving
+	if abs(parent.velocity.x) <= 50:
+
+		# Stop the sound
+		sliding_sfx.stop()
+
+		# Turn off dust when we stop
+		slide_dust.emitting = false
+
+	elif not slide_dust.emitting:
+		# Sliding sfx
+		sliding_sfx.play(sliding_sfx.get_playback_position())
+
+		# Slide Particle Effects
+		slide_dust.emitting = true
+
+		# Update Particle Direction (im so dumb)
+		slide_dust.direction.x = 1 if (parent.animation.flip_h) else -1
+
+## Updates our sliding animation
+func update_slide_animation() -> void:
+
+	# If we meet the threshold, and aren't already sliding, start sliding
+	if at_slide_thres() and not in_slide_animation() and AERIAL_STATE.have_stand_room():
+		parent.current_animation = parent.ANI_STATES.SLIDE_PREP
+
+	# If we fall out of threshold while sliding, update
+	if in_slide_animation() and not at_slide_thres():
+		parent.current_animation = parent.ANI_STATES.SLIDE_END
+
 
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 
+	
+	print("Slide Bug do we process physics")
 
 	# When sliding, the only actions are jumping and friction
 	jump_logic(delta)
 	apply_friction(delta, parent.horizontal_axis)
 
+	print("Do we make it to the bottom?")
 
 	return state_status()
 
@@ -197,64 +271,6 @@ func animation_end() -> PlayerState:
 	return null
 
 
-## Updates which direction the player is facing based on direction
-func update_facing(direction: float) -> void:
-
-	# Change direction
-	if direction > 0 and parent.animation.flip_h:
-		parent.animation.flip_h = false
-
-		# don't interfere with cj squish :3
-		if not parent.crouchJumping:
-			parent.squish_node.squish(parent.turn_around_squash)
-
-	elif direction < 0 and not parent.animation.flip_h:
-		parent.animation.flip_h = true
-
-		# don't interfere with cj squish :3
-		if not parent.crouchJumping:
-			parent.squish_node.squish(parent.turn_around_squash)
-
-## Updates the visual effects and audio
-func update_effects() -> void:
-
-	# "Speed Particles"
-	if abs(parent.velocity.x) > parent.speed:
-		speed_particles.emitting = true
-		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
-	else:
-		speed_particles.emitting = false
-
-
-	# Stop fx when we stop moving
-	if parent.velocity.x == 0:
-
-		# Stop the sound
-		sliding_sfx.stop()
-
-		# Turn off dust when we stop
-		slide_dust.emitting = false
-
-	elif not slide_dust.emitting:
-		# Sliding sfx
-		sliding_sfx.play(sliding_sfx.get_playback_position())
-
-		# Slide Particle Effects
-		slide_dust.emitting = true
-
-		# Update Particle Direction (im so dumb)
-		slide_dust.direction.x = 1 if (parent.animation.flip_h) else -1
-
-## Updates our sliding animation
-func update_slide_animation() -> void:
-
-	# If we meet the threshold, and aren't already sliding, start sliding
-	if at_slide_thres() and not in_slide_animation() and AERIAL_STATE.have_stand_room():
-		parent.current_animation = parent.ANI_STATES.SLIDE_PREP
-
-	# If we fall out of threshold while sliding, update
-	if in_slide_animation() and not at_slide_thres():
-		parent.current_animation = parent.ANI_STATES.SLIDE_END
 
 func apply_friction(delta, _direction):
 

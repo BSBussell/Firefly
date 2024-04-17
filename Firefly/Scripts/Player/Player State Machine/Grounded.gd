@@ -334,7 +334,7 @@ func on_steep_slope() -> bool:
 ## Funny Method for calculating the landing squish using lerps
 func calc_landing_squish() -> Vector2:
 
-	var squish_blend = abs(parent.landing_speed) / parent.movement_data.MAX_FALL_SPEED
-	var x_squish = lerp(1.0, parent.landing_squash.x, squish_blend)
-	var y_squish = lerp(1.0, parent.landing_squash.y, squish_blend)
-	return Vector2(x_squish, y_squish)
+	var squish_blend = abs(parent.prev_velocity_y) / parent.movement_data.MAX_FALL_SPEED
+	var squish_factor = lerpf(0.0, 0.5, squish_blend)
+	print(squish_factor)
+	return Vector2(1.0 + squish_factor, 1.0 - squish_factor)

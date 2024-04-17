@@ -7,9 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_sikls"]
 [ext_resource type="AudioStream" uid="uid://n1jp21srkgrf" path="res://Scenes/glass_hit_2.mp3" id="4_6sys7"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rubtm"]
-radius = 7.0
-height = 20.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5d1v6"]
 
 [sub_resource type="Animation" id="Animation_807ua"]
 resource_name = "Start"
@@ -202,7 +200,8 @@ collision_mask = 17
 script = ExtResource("1_thq2o")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_rubtm")
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_5d1v6")
 
 [node name="Explosion" type="Node2D" parent="."]
 modulate = Color(2, 2, 1, 1)

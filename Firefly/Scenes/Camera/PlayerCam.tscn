@@ -20,6 +20,9 @@ script = ExtResource("1_hjjau")
 z_index = 100
 texture = ExtResource("3_2gg2l")
 
+[node name="GroundSearcher" type="RayCast2D" parent="."]
+collision_mask = 34
+
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(0, -25)
 process_callback = 0
@@ -86,7 +89,7 @@ script = ExtResource("9_ku080")
 
 [node name="Area2D" type="Area2D" parent="Sensor"]
 collision_layer = 8
-collision_mask = 8
+collision_mask = 64
 
 [node name="SensorShape" type="CollisionShape2D" parent="Sensor/Area2D"]
 shape = SubResource("RectangleShape2D_mqckl")

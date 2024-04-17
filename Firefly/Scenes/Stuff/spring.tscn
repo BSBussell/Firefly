@@ -127,10 +127,11 @@ size = Vector2(10, 8)
 
 [node name="Spring" type="Area2D"]
 position = Vector2(208, 612)
-collision_layer = 32
+collision_layer = 96
 script = ExtResource("1_bfd0d")
 SPRING_RISE_TIME = 0.3
 JUMP_BOOST_RISE_TIME = 0.36
+SPRING_SQUASH = Vector2(0.75, 1.25)
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -1
