@@ -1,4 +1,4 @@
-extends Area2D
+extends "res://Scenes/Camera/CameraTriggers/CameraTarget.gd"
 
 @onready var sprite_2d = $Sprite2D
 @onready var boing_ = $"Boing!"

@@ -45,7 +45,7 @@ func consume_item(player: Flyph):
 	crash.play()
 	respawn_timer.start()
 	area_2d.set_deferred("monitoring", false)
-	
+	area_2d.disable_target()
 	
 	# Add 50 glow points
 	player.add_glow(50)
@@ -57,6 +57,7 @@ func respawn() -> void:
 	fx.play("PopIn")
 	pop.play()
 	area_2d.set_deferred("monitoring", true)
+	area_2d.enable_target()
 	
 
 func _on_respawn_timer_timeout():

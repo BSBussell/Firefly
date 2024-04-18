@@ -195,9 +195,11 @@ _data = {
 }
 
 [node name="FlyJar" type="Area2D"]
-collision_layer = 4
+collision_layer = 68
 collision_mask = 17
 script = ExtResource("1_thq2o")
+blend_priority = 0
+blend_override = 0.35
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
@@ -397,4 +399,4 @@ scale = Vector2(0.5, 0.5)
 color = Color(0.890196, 0.921569, 0.34902, 1)
 texture = ExtResource("3_sikls")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

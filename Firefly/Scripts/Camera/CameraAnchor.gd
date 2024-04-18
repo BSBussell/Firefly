@@ -85,12 +85,12 @@ func _process(delta):
 var targets: Dictionary = {}
 
 # When an area is entered, add its position to the dictionary
-func _on_area_2d_area_entered(area: Area2D):
-	targets[area.get_instance_id()] = area.global_position
+func _on_area_2d_area_entered(target: CameraTarget):
+	targets[target.get_instance_id()] = target
 	print("Camera Target On Screen")
 
 # When an area is exited, remove it from the dictionary
-func _on_area_2d_area_exited(area):
-	var area_id = area.get_instance_id()
+func _on_area_2d_area_exited(target: CameraTarget):
+	var area_id = target.get_instance_id()
 	if targets.has(area_id):
 		targets.erase(area_id)

@@ -82,10 +82,16 @@ func calculate_target_position(delta: float) -> Vector2:
 	var targets_center = get_targets_center()
 	if targets_center != Vector2.ZERO:
 		
-		multi_target_smoothing = move_toward(multi_target_smoothing, 0.3, 0.01)
-		position = position.lerp(targets_center, multi_target_smoothing)
-	else:
-		multi_target_smoothing = 0.0
+		var blend_max = get_targets_blend()
+		multi_target_smoothing = move_toward(multi_target_smoothing, blend_max, 0.01)
+		position.x = _gerblesh.lerpi(position.x, targets_center.x, multi_target_smoothing)
+		position.y = _gerblesh.lerpi(position.y, targets_center.y, multi_target_smoothing)
+		
+		position.lerp(targets_center, multi_target_smoothing)
+	elif multi_target_smoothing != 0.0:
+		
+		multi_target_smoothing = move_toward(multi_target_smoothing, 0.0, 0.01)
+		#multi_target_smoothing = 0.0
 
 	return position
 
@@ -149,20 +155,31 @@ func calc_target_offset(_delta: float) -> Vector2:
 	return current_target_offset
 	
 
-# Get all on screen targets and find the center point between them all
+# Get all on-screen targets and find the weighted center point between them all
 func get_targets_center() -> Vector2:
-	var sum = Vector2.ZERO
-	var count = 0
+	var weighted_sum = Vector2.ZERO
+	var total_pull_strength = 0.0
 
-	for position in control.targets.values():
-		sum += position
-		count += 1
+	for target in control.targets.values():
+		weighted_sum += target.global_position * target.pull_strength
+		total_pull_strength += target.pull_strength
 
-	if count > 0:
-		return sum / count
+	if total_pull_strength > 0:
+		return weighted_sum / total_pull_strength  # Weighted average position
 	else:
 		return Vector2.ZERO  # Return a default position if no targets exist
 
+func get_targets_blend() -> float:
+	
+	var blend: float = 0.3
+	var current_priority: int = -1
+	
+	for target in control.targets.values():
+		if current_priority < target.blend_priority:
+			current_priority = target.blend_priority
+			blend = target.blend_override
+		
+	return blend
 
 func check_state() -> State:
 	

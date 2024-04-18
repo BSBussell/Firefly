@@ -1,4 +1,4 @@
-extends "res://Scripts/Events/base_event.gd"
+extends "res://Scenes/Camera/CameraTriggers/CameraTarget.gd"
 
 @onready var Sprite = $Sprite2D
 @onready var animation_player = $AnimationPlayer
@@ -7,7 +7,9 @@ extends "res://Scripts/Events/base_event.gd"
 func _ready():
 	animation_player.play("Idle")
 
-func on_enter(_body: Flyph):
+
+
+func _on_area_entered(area):
 	animation_player.play("Grab")
 	_ui.new_item_found()
 	set_deferred("monitoring", false)
