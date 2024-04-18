@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cc0ak8c1sq0nq"]
+
+[ext_resource type="Script" path="res://Scenes/Camera/CameraTriggers/CameraTarget.gd" id="1_3i6rq"]
+
+[node name="CameraTarget" type="Area2D"]
+collision_layer = 64
+collision_mask = 0
+script = ExtResource("1_3i6rq")
