@@ -20,9 +20,6 @@ script = ExtResource("1_hjjau")
 z_index = 100
 texture = ExtResource("3_2gg2l")
 
-[node name="GroundSearcher" type="RayCast2D" parent="."]
-collision_mask = 34
-
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(0, -25)
 process_callback = 0
@@ -78,7 +75,6 @@ acceleration = 0.75
 [node name="Dynamic-Cam" type="Node" parent="StateMachine"]
 script = ExtResource("8_r82q3")
 Cursor_Color = Color(0.678431, 0.247059, 0.266667, 1)
-Maximum_Speed = Vector2(10, 15)
 
 [node name="FollowTimer" type="Timer" parent="."]
 wait_time = 0.5

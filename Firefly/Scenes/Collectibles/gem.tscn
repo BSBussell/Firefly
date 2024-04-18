@@ -153,7 +153,6 @@ animation = &"Spin"
 frame_progress = 0.135639
 
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 collision_layer = 65
 script = ExtResource("3_hmkr1")
 pull_strength = 0.3

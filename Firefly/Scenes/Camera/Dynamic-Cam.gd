@@ -1,15 +1,20 @@
 extends State
 
 # Camera movement parameters
+## The color of the camera target when we are in this
 @export var Cursor_Color: Color
+
+## The maximum speed the camera will move
 @export var Maximum_Speed: Vector2 = Vector2(25, 25)
 @export var Minimum_Speed: Vector2 = Vector2(5, 5)
+
+## The default acceleration
 @export var BaseAcceleration: Vector2 = Vector2(0.75, 0.75)
 
 @onready var cursor = $"../../Cursor"
 @onready var control: PlayerCam 
 @onready var player: Flyph
-@onready var ground_searcher: RayCast2D = $"../../GroundSearcher"
+
 
 
 # The acceleratino that's actually used
@@ -51,8 +56,10 @@ func move_camera(delta):
 	var target_position = calculate_target_position(delta)
 	
 	# Smoothly move the camera towards the target position
-	follow_speed.x = min(Maximum_Speed.x, follow_speed.x + accel.x)
-	follow_speed.y = min(Maximum_Speed.y, follow_speed.y + accel.y)
+	follow_speed.x = move_toward(follow_speed.x, Maximum_Speed.x, accel.x)
+	#min(Maximum_Speed.x, follow_speed.x + accel.x)
+	follow_speed.y = move_toward(follow_speed.y, Maximum_Speed.y, accel.y)
+	#min(Maximum_Speed.y, follow_speed.y + accel.y)
 	
 	# Calculate Blend
 	var blend: Vector2 = Vector2.ZERO
@@ -68,6 +75,8 @@ func move_camera(delta):
 
 
 var multi_target_smoothing: float = 0.0
+var dict_hash: int = 0.0
+var settled: bool = true
 func calculate_target_position(delta: float) -> Vector2:
 	var base_target: Vector2 = player.global_position - control.startingPos
 	var offset: Vector2
@@ -78,20 +87,51 @@ func calculate_target_position(delta: float) -> Vector2:
 	var position: Vector2 = base_target + offset
 	
 	
+	
 	# Check if there are any targets to look at
 	var targets_center = get_targets_center()
 	if targets_center != Vector2.ZERO:
 		
+		# Get our blend max
 		var blend_max = get_targets_blend()
+		var hash: int = control.targets.hash()
+		
+		# If the dict has changed
+		if hash != dict_hash:
+			dict_hash = hash
+			settled = false
+		
+		# Slow down the camera when moving for a new target	
+		if not settled:
+			follow_speed = Minimum_Speed
+			accel = Vector2(0.4, 0.4)
+		else:
+			accel = BaseAcceleration
+			
+		# Push the multi_target_smoothing up
 		multi_target_smoothing = move_toward(multi_target_smoothing, blend_max, 0.01)
+		
 		position.x = _gerblesh.lerpi(position.x, targets_center.x, multi_target_smoothing)
 		position.y = _gerblesh.lerpi(position.y, targets_center.y, multi_target_smoothing)
 		
+		
+		# Lerp the position x amount towards the center of the targets
 		position.lerp(targets_center, multi_target_smoothing)
+	
+		# If we've reached the blend max we've settled
+		if multi_target_smoothing == blend_max and not settled:
+			settled = true
+			print("Settled Camera")
+	
+	# Otherwise if we're turning off target tracking
 	elif multi_target_smoothing != 0.0:
 		
-		multi_target_smoothing = move_toward(multi_target_smoothing, 0.0, 0.01)
-		#multi_target_smoothing = 0.0
+		accel = Vector2(0.5, 0.5)
+		
+		# Reset the hash
+		dict_hash = 0
+		# Reset the smoothing
+		multi_target_smoothing = 0.0
 
 	return position
 
