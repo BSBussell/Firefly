@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=18 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
 [ext_resource type="Shader" path="res://Core/Game/SubPixelSmoothing.gdshader" id="1_jculp"]
-[ext_resource type="PackedScene" uid="uid://d2aiiqy7j5ovi" path="res://Scenes/Levels/tutorial.tscn" id="3_u1u8g"]
+[ext_resource type="Script" path="res://Core/Game/LevelLoader.gd" id="3_oejcr"]
+[ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="4_cvk6m"]
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="5_ocg2k"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="6_nwbni"]
@@ -93,6 +94,7 @@ offset_top = -6.0
 offset_right = 316.0
 offset_bottom = 176.0
 scale = Vector2(6, 6)
+script = ExtResource("3_oejcr")
 
 [node name="GameViewPort" type="SubViewport" parent="GameContainer"]
 process_mode = 1
@@ -106,11 +108,10 @@ audio_listener_enable_2d = true
 size = Vector2i(322, 182)
 render_target_update_mode = 4
 
-[node name="World" parent="GameContainer/GameViewPort" instance=ExtResource("3_u1u8g")]
-
 [node name="UI" type="SubViewportContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("4_4g62g")
 
 [node name="UIViewPort" type="SubViewport" parent="UI"]
 transparent_bg = true

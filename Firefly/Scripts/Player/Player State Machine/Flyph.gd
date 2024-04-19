@@ -817,7 +817,8 @@ func kill():
 	# Zero out the velocity
 	velocity = Vector2.ZERO
 	
-	_globals.GEM_MANAGER.respawn_all()
+	if _globals.GEM_MANAGER:
+		_globals.GEM_MANAGER.respawn_all()
 
 
 	# Respawn Animation

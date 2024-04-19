@@ -28,6 +28,8 @@ func enter() -> void:
 
 	parent.animation.flip_h = 1 if parent.get_wall_normal().x > 0 else 0
 
+	
+	#if not parent.jumping:
 	parent.current_animation = parent.ANI_STATES.WALL_HUG
 	
 	# TODO: Make this work, prev velocity is zero'd for some reason

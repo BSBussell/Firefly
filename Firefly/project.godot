@@ -22,6 +22,7 @@ driver/output_latency.web=90
 
 [autoload]
 
+_debug="*res://Scripts/Globals/_debug.gd"
 _viewports="*res://Scripts/Globals/_viewports.gd"
 _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
 _shake="*res://Scripts/Globals/_shake.gd"
