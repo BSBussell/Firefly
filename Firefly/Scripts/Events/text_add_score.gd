@@ -30,7 +30,7 @@ func _physics_process(_delta):
 			print("ah shit")
 			
 		player.enable_glow()
-		_globals.GEM_MANAGER.show_gems()
+		#_globals.GEM_MANAGER.show_gems()
 		if player.get_glow_score() < score_thres:
 			player.add_glow(score_amount)
 			if update:

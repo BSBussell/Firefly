@@ -1,4 +1,4 @@
-extends Node2D
+extends "res://Scenes/Camera/CameraTriggers/CameraTarget.gd"
 class_name CheckPoint
 
 var active = false
@@ -19,16 +19,6 @@ func _ready():
 	spotlight.set_brightness(0)
 
 
-
-
-func _on_checkpoint_area_body_entered(body):
-	
-	var player = body as Flyph
-	if player and not active:
-		activate_checkpoint(player)
-		
-	else:
-		print("Potential Enemy or something else :3")
 
 
 func set_manager(checkpoint_manager: CheckPointManager):
@@ -59,3 +49,14 @@ func deactivate_checkpoint():
 	spotlight.set_brightness(0.0)
 	lightparticles.emitting = false
 	active = false
+
+
+
+
+func _on_body_entered(body):
+	var player = body as Flyph
+	if player and not active:
+		activate_checkpoint(player)
+		
+	else:
+		print("Potential Enemy or something else :3")

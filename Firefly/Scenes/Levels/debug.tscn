@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=16 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="3_41qlf"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="3_263tg"]
@@ -10,7 +10,6 @@
 [ext_resource type="Script" path="res://Scripts/misc/CollectibleCounter.gd" id="11_a5y5u"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="11_dm2r0"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="11_tymp7"]
-[ext_resource type="PackedScene" uid="uid://dtblwt5hi5l4c" path="res://Scenes/Checkpoint/checkpoint.tscn" id="12_3uuuc"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="12_mdqvq"]
 [ext_resource type="PackedScene" uid="uid://uvrcgp18j7vv" path="res://Core/Game/spikes.tscn" id="13_8nmqx"]
 
@@ -195,9 +194,6 @@ Player = NodePath("../Flyph")
 [node name="Events" type="Node2D" parent="."]
 visible = false
 
-[node name="CheckPoints" type="Node2D" parent="."]
-visible = false
-
 [node name="Collectibles" type="Node2D" parent="."]
 position = Vector2(3, -4)
 script = ExtResource("11_a5y5u")
@@ -205,11 +201,5 @@ script = ExtResource("11_a5y5u")
 [node name="DeathZones" type="Node2D" parent="."]
 visible = false
 
-[node name="Checkpoint" parent="." instance=ExtResource("12_3uuuc")]
-position = Vector2(257, 176)
-
 [node name="Spikes" parent="." instance=ExtResource("13_8nmqx")]
 position = Vector2(177, 160)
-
-[node name="Checkpoint2" parent="." instance=ExtResource("12_3uuuc")]
-position = Vector2(17, 16)

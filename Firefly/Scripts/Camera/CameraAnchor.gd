@@ -38,11 +38,6 @@ var camera_velocity: Vector2 = Vector2.ZERO
 var smoothed_velocity: Vector2 = Vector2.ZERO
 
 
-var prevOffset: Vector2 = Vector2(0,0)
-var prevBase: Vector2 = Vector2(0,0)
-
-var cameraHeight: float = 10
-var goalHeight: float = 10
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -58,11 +53,6 @@ func _ready():
 
 func _unhandled_input(event):
 	
-	if Input.is_action_just_pressed("Down"):
-		cameraHeight = -45
-	elif Input.is_action_just_pressed("Up"):
-		cameraHeight = 10
-	
 	state_machine.process_input(event)
 
 func _physics_process(delta):
@@ -70,7 +60,6 @@ func _physics_process(delta):
 	# Calculating a smoothed velocity value constantly
 	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
 	state_machine.process_physics(delta)
-	#adjust_offset(delta)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -85,12 +74,20 @@ func _process(delta):
 var targets: Dictionary = {}
 
 # When an area is entered, add its position to the dictionary
-func _on_area_2d_area_entered(target: CameraTarget):
-	targets[target.get_instance_id()] = target
-	print("Camera Target On Screen")
+func _on_area_2d_area_entered(area: Area2D):
+	
+	# Cast and do stuff if working
+	var target: CameraTarget = area as CameraTarget
+	if target:
+		targets[target.get_instance_id()] = target
+		print("Camera Target On Screen")
 
 # When an area is exited, remove it from the dictionary
-func _on_area_2d_area_exited(target: CameraTarget):
-	var area_id = target.get_instance_id()
-	if targets.has(area_id):
-		targets.erase(area_id)
+func _on_area_2d_area_exited(area: Area2D):
+	
+	# Cast
+	var target: CameraTarget = area as CameraTarget
+	if target:
+		var area_id = target.get_instance_id()
+		if targets.has(area_id):
+			targets.erase(area_id)

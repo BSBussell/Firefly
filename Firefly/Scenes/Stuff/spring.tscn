@@ -132,9 +132,6 @@ script = ExtResource("1_bfd0d")
 SPRING_RISE_TIME = 0.3
 JUMP_BOOST_RISE_TIME = 0.36
 SPRING_SQUASH = Vector2(0.75, 1.25)
-pull_strength = 0.2
-blend_priority = 0
-blend_override = 0.1
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -1

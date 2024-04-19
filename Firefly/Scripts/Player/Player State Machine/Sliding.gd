@@ -42,10 +42,7 @@ func enter() -> void:
 	jumpExit = false
 
 	# Change to the sliding collider
-	
-	print("Slide Bug Maybe you?")
 	parent.set_crouch_collider()
-	print("Slide Bug just in case")
 
 	# If we're coming from the air, we
 	if parent.aerial:
@@ -66,7 +63,6 @@ func enter() -> void:
 		# Squish if we aren't about to jump
 		if jump_buffer.time_left == 0:
 			parent.squish_node.squish(GROUNDED_STATE.calc_landing_squish())
-			print("Slide Bug: Is it the squish")
 			
 		parent.boostJumping = false
 		parent.crouchJumping = false
@@ -80,10 +76,7 @@ func enter() -> void:
 		parent.current_animation = parent.ANI_STATES.CROUCH
 
 		# Otherwise just do the normal crouch squash
-		
-		print("Slide Bug maybe this")
 		parent.squish_node.squish(parent.crouch_squash)
-		print("Slide Bug idk")
 
 	# This might be silly b/c i can't control it lol
 	parent.floor_constant_speed = false
@@ -99,7 +92,6 @@ func enter() -> void:
 
 		parent.current_animation = parent.ANI_STATES.SLIDE_PREP
 
-	print("Slide Bug: Do we make it out")
 
 	# Start our timer
 	crouch_jump_window.start()
@@ -123,11 +115,14 @@ func process_input(_event: InputEvent) -> PlayerState:
 # Processing Frames in this state, returns nil or new state
 func process_frame(_delta: float) -> PlayerState:
 
-	print("Do we ever process input")
+	print("Do we ever draw?")
 	update_facing(parent.velocity.x)
+	print("Do we finish facing?")
 	update_effects()
+	print("IS it the effects that crash us?")
 	update_slide_animation()
 
+	print("Do we escape draw?")
 	return null
 	
 ## Updates which direction the player is facing based on direction

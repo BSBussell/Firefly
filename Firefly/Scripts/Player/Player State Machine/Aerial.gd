@@ -158,9 +158,11 @@ func state_status():
 		parent.landing_speed = min_fall_speed
 		Input.start_joy_vibration(1, 0.1, 0.08, 0.175)
 
-		# Reset Flags
-		parent.boostJumping = false
-		parent.launched = false
+		# If we're falling (not mid launch) then swap to this
+		# That way 
+		if parent.velocity.y >= 0:
+			parent.boostJumping = false
+			parent.launched = false
 
 
 		# If we're pressing down and have standing room go into a slide
@@ -290,6 +292,8 @@ func handle_sHop(_delta):
 	# Otherwise if we let go of jump, decrease their velocity
 	elif Input.is_action_just_released("Jump"):
 
+		print("Released")
+
 		# If we aren't already below ff_velocity
 		if parent.velocity.y < parent.ff_velocity:
 
@@ -312,10 +316,13 @@ func update_jump_flags() -> void:
 			parent.wallJumping = false
 			parent.current_wj = parent.WALLJUMPS.NEUTRAL
 
-		# Launched and temp grav
+		# temp grav
 		if parent.temp_gravity_active:
 			parent.temp_gravity_active = false
-			parent.launched = false # This will occasionally be extranous, but generally these are connected
+		
+		# launched
+		if parent.launched:	
+			parent.launched = false
 
 		# Jumping flag
 		if parent.jumping:
@@ -363,11 +370,14 @@ func get_gravity() -> float:
 	return gravity_to_apply
 
 func apply_gravity(delta) -> void:
+	
+	var max_fall_speed: float = parent.movement_data.MAX_FALL_SPEED
+	
+	if parent.fastFalling:
+		max_fall_speed = parent.movement_data.MAX_FF_SPEED
 
-	parent.velocity.y -= get_gravity() * delta
+	parent.velocity.y = move_toward(parent.velocity.y, max_fall_speed, -get_gravity() * delta)
 
-	# Cap out velocity.y
-	parent.velocity.y = min(parent.velocity.y, parent.movement_data.MAX_FALL_SPEED)
 
 ## Addes Acceleration when the player holds a direction
 func handle_acceleration(delta, direction) -> void:

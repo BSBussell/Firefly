@@ -157,15 +157,15 @@ func handle_walljump(vc_direction, dir = 0):
 	# Attempt jump pretty much just checks if a jump has been buffered and removes that from the buffer if it has
 	if parent.attempt_jump():
 	
-		# Set Global Flags
-		parent.wallJumping = true
-		
-		# Have Walljumps interrupt temp gravity(this won't interrupt launches)
-		if parent.temp_gravity_active:	
-			parent.temp_gravity_active = false
-
-		# Start post jump timer
-		post_jump_buffer.start() 
+		## Set Global Flags
+		#parent.wallJumping = true
+		#
+		## Have Walljumps interrupt temp gravity(this won't interrupt launches)
+		#if parent.temp_gravity_active:	
+			#parent.temp_gravity_active = false
+#
+		## Start post jump timer
+		#post_jump_buffer.start() 
 	
 		# Which direction is away from the wall
 		var jump_dir: float = dir
@@ -175,50 +175,102 @@ func handle_walljump(vc_direction, dir = 0):
 			jump_dir = parent.get_wall_normal().x
 			
 		# SFX
-		wall_jump_sfx.play(0)
-		var pitch = 0.2 * jump_dir
-		wall_jump_sfx.pitch_scale = 1 + pitch 
-		
-		# Wall Jump Animation
-		parent.current_animation = parent.ANI_STATES.WALL_JUMP
-		
-		# Vibration
-		# TODO: Create a vibration manager and use those functions
-		Input.start_joy_vibration(1, 0.1, 0.1, 0.175)
-		
-		# Spawn Wall Jump Dust
-		var new_cloud = parent.WJ_DUST.instantiate()
-		new_cloud.set_name("WJ_dust_temp")
-		wj_dust_spawner.add_child(new_cloud)
-		new_cloud.direction.x *= jump_dir
-		var animation = new_cloud.get_node("AnimationPlayer")
-		animation.play("free")
-		
-		# Sprite squashing
-		parent.squish_node.squish(parent.wJump_squash)
-		
-		# TODO: Walljump Animation or something
-		if (parent.current_animation != parent.ANI_STATES.CRAWL):
-			parent.current_animation = parent.ANI_STATES.FALLING
-			parent.restart_animation = true
-			
-		
-		parent.current_wj_dir = jump_dir
+		#wall_jump_sfx.play(0)
+		#var pitch = 0.2 * jump_dir
+		#wall_jump_sfx.pitch_scale = 1 + pitch 
+		#
+		## Wall Jump Animation
+		#parent.current_animation = parent.ANI_STATES.WALL_JUMP
+		#
+		## Vibration
+		## TODO: Create a vibration manager and use those functions
+		#Input.start_joy_vibration(1, 0.1, 0.1, 0.175)
+		#
+		## Spawn Wall Jump Dust
+		#var new_cloud = parent.WJ_DUST.instantiate()
+		#new_cloud.set_name("WJ_dust_temp")
+		#wj_dust_spawner.add_child(new_cloud)
+		#new_cloud.direction.x *= jump_dir
+		#var animation = new_cloud.get_node("AnimationPlayer")
+		#animation.play("free")
+		#
+		## Sprite squashing
+		#parent.squish_node.squish(parent.wJump_squash)
+		#
+		## TODO: Walljump Animation or something
+		#if (parent.current_animation != parent.ANI_STATES.CRAWL):
+			#parent.current_animation = parent.ANI_STATES.FALLING
+			#parent.restart_animation = true
+			#
+		#
+		#parent.current_wj_dir = jump_dir
 			
 		# Ok so if you are up on a walljump it'll launch you up
 		if vc_direction > 0:
 			
+			set_walljump_flags(jump_dir)
+			walljump_fx(jump_dir)
+			
 			upward_walljump(jump_dir)
+			post_jump_buffer.start() 
 			
 		# Secret Downward WallJump :3
 		elif vc_direction < 0 and not parent.crouchJumping:
 			
-			downward_walljump(jump_dir)
+			set_walljump_flags(jump_dir)
+			walljump_fx(jump_dir)
 			
-		# else itll launch you away
-		else:
+			downward_walljump(jump_dir)
+			post_jump_buffer.start() 
+			
+		# Otherwise do a wall jump
+		# Some caveats, if we are launched, then we have to be holding into the wall
+		elif not parent.launched or (parent.launched and (sign(parent.horizontal_axis) == -jump_dir)):
+
+			set_walljump_flags(jump_dir)
+			walljump_fx(jump_dir)
 
 			away_walljump(jump_dir)
+			post_jump_buffer.start() 
+
+func set_walljump_flags(jump_dir: float) -> void:
+	# Set Global Flags
+	parent.wallJumping = true
+	parent.current_wj_dir = jump_dir
+	
+	# Have Walljumps interrupt temp gravity(this won't interrupt launches)
+	if parent.temp_gravity_active:	
+		parent.temp_gravity_active = false
+		
+	
+
+func walljump_fx(jump_dir: float) -> void:
+	# SFX
+	wall_jump_sfx.play(0)
+	var pitch = 0.2 * jump_dir
+	wall_jump_sfx.pitch_scale = 1 + pitch 
+	
+	# Set Wall Jump Animation
+	parent.current_animation = parent.ANI_STATES.WALL_JUMP
+	
+	# Vibration
+	# TODO: Create a vibration manager and use those functions
+	Input.start_joy_vibration(1, 0.1, 0.1, 0.175)
+	
+	# Spawn Wall Jump Dust
+	var new_cloud = parent.WJ_DUST.instantiate()
+	new_cloud.set_name("WJ_dust_temp")
+	wj_dust_spawner.add_child(new_cloud)
+	new_cloud.direction.x *= jump_dir
+	var animation = new_cloud.get_node("AnimationPlayer")
+	animation.play("free")
+	
+	# Sprite squashing
+	parent.squish_node.squish(parent.wJump_squash)
+	
+	if (parent.current_animation != parent.ANI_STATES.CRAWL):
+			parent.current_animation = parent.ANI_STATES.FALLING
+			parent.restart_animation = true
 
 func upward_walljump(jump_dir: float) -> void:
 

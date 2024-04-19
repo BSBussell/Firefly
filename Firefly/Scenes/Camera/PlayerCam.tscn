@@ -75,6 +75,8 @@ acceleration = 0.75
 [node name="Dynamic-Cam" type="Node" parent="StateMachine"]
 script = ExtResource("8_r82q3")
 Cursor_Color = Color(0.678431, 0.247059, 0.266667, 1)
+Maximum_Speed = Vector2(20, 20)
+BaseAcceleration = Vector2(0.6, 0.6)
 
 [node name="FollowTimer" type="Timer" parent="."]
 wait_time = 0.5

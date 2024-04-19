@@ -318,6 +318,11 @@ func _physics_process(delta: float) -> void:
 		# Calls the physics proceess
 		StateMachine.process_physics(delta)
 		
+		
+
+		# "Assists" in movement
+		movement_assist(delta)
+
 		# Store the velocity for next frame
 		prev_velocity_x = velocity.x
 		prev_velocity_y = velocity.y
@@ -325,8 +330,7 @@ func _physics_process(delta: float) -> void:
 		# Apply Velocities
 		move_and_slide()
 
-		# "Assists" in movement
-		movement_assist(delta)
+		
 
 		
 
@@ -571,6 +575,7 @@ func auto_enter_tunnel():
 	
 
 func enter_tunnel():
+		
 		set_crouch_collider()
 		
 		# Push player forward
@@ -581,6 +586,8 @@ func enter_tunnel():
 
 		# Set the flag
 		crouchJumping = true
+		
+		print("Entering Tunnel")
 
 # Gadgets
 
@@ -767,6 +774,8 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	# If a squash is given, squash the player
 	if (squash != Vector2.ZERO):
 		squish_node.squish(squash)
+		
+	consume_jump()
 
 	#velocity += boost  * horizontal_axis
 

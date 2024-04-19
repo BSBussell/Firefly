@@ -34,7 +34,9 @@ extends Resource
 ## The time it takes to slow down
 @export var AIR_FRICT: float = 30
 ## The max speed the player can fall
-@export var MAX_FALL_SPEED: float = 1300
+@export var MAX_FALL_SPEED: float = 600
+## The max speed we reach in fast falling
+@export var MAX_FF_SPEED: float = 650
 ## The rate of deceleration when above max speed
 @export var AIR_SPEED_RECUTION: float = 120.0		
 ## How far you fall after fastfalling

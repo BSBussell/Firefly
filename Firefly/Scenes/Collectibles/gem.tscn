@@ -1,9 +1,8 @@
-[gd_scene load_steps=22 format=3 uid="uid://mhckwfmi6yo1"]
+[gd_scene load_steps=21 format=3 uid="uid://mhckwfmi6yo1"]
 
 [ext_resource type="Script" path="res://Scenes/Collectibles/gem.gd" id="1_c61ke"]
 [ext_resource type="Texture2D" uid="uid://kfaixciq44ug" path="res://Assets/Graphics/Collectible/gem.png" id="2_wh124"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="3_a4fmp"]
-[ext_resource type="Script" path="res://Scenes/Camera/CameraTriggers/CameraTarget.gd" id="3_hmkr1"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_ib1j4"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerSpotlight.gd" id="4_dq5jo"]
 [ext_resource type="AudioStream" uid="uid://binoki6dtc4uu" path="res://Assets/SFX/Player/respawn.mp3" id="5_5e2oq"]
@@ -154,10 +153,6 @@ frame_progress = 0.135639
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 65
-script = ExtResource("3_hmkr1")
-pull_strength = 0.3
-blend_priority = 0
-blend_override = 0.1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -8)

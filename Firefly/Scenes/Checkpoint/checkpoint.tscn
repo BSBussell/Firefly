@@ -1,13 +1,15 @@
-[gd_scene load_steps=16 format=3 uid="uid://dtblwt5hi5l4c"]
+[gd_scene load_steps=15 format=3 uid="uid://dtblwt5hi5l4c"]
 
 [ext_resource type="Texture2D" uid="uid://cbwo3ot4bpeu5" path="res://Scenes/Checkpoint/checkpoint.png" id="1_u1gd0"]
 [ext_resource type="Script" path="res://Scenes/Checkpoint/checkpoint.gd" id="1_y2n64"]
 [ext_resource type="Texture2D" uid="uid://dsyq2nuyfu5bb" path="res://Scenes/Checkpoint/checkpointlit.png" id="2_ahown"]
-[ext_resource type="PackedScene" uid="uid://c5l21kwicny6l" path="res://Scenes/Checkpoint/checkpoint_area.tscn" id="3_dfki5"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="5_qok0a"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerSpotlight.gd" id="6_kh6md"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="7_ywx6k"]
 [ext_resource type="AudioStream" uid="uid://dltcpm20f25wk" path="res://Assets/SFX/Player/Glow/fire_lit.mp3" id="8_bqlvb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_500oe"]
+size = Vector2(15, 18)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_4rmqn"]
 animations = [{
@@ -22,9 +24,6 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_500oe"]
-size = Vector2(8, 13)
 
 [sub_resource type="Curve" id="Curve_ujyhx"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
@@ -48,21 +47,19 @@ _data = [Vector2(0.6, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 metadata/_snap_enabled = true
 
-[node name="Checkpoint" type="Node2D"]
+[node name="CheckpointArea" type="Area2D"]
+collision_layer = 68
 script = ExtResource("1_y2n64")
+blend_priority = 0
+blend_override = 0.15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -9)
+shape = SubResource("RectangleShape2D_500oe")
 
 [node name="CheckpointSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_4rmqn")
-
-[node name="CheckpointArea" parent="." instance=ExtResource("3_dfki5")]
-visible = false
-collision_layer = 68
-collision_mask = 1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CheckpointArea"]
-position = Vector2(7, -7)
-shape = SubResource("RectangleShape2D_500oe")
 
 [node name="Spotlight" type="PointLight2D" parent="."]
 color = Color(0.890196, 0.921569, 0.34902, 1)
@@ -127,5 +124,5 @@ color = Color(0.890196, 0.921569, 0.34902, 1)
 [node name="CheckPointLit" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_bqlvb")
 
-[connection signal="area_entered" from="CheckpointArea" to="." method="_on_checkpoint_area_area_entered"]
-[connection signal="body_entered" from="CheckpointArea" to="." method="_on_checkpoint_area_body_entered"]
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

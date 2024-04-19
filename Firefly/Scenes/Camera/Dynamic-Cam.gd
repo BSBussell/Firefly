@@ -75,67 +75,68 @@ func move_camera(delta):
 
 
 var multi_target_smoothing: float = 0.0
+var smoothing_factor_2: float = 0.0
 var dict_hash: int = 0.0
 var settled: bool = true
+var current_grouping_offset: Vector2 = Vector2.ZERO
 func calculate_target_position(delta: float) -> Vector2:
 	var base_target: Vector2 = player.global_position - control.startingPos
-	var offset: Vector2
+	
+	var position: Vector2 = base_target
+	var offset: Vector2 = Vector2.ZERO
 	
 	if not player.dying:
-		offset = calc_target_offset(delta)
-		
-	var position: Vector2 = base_target + offset
-	
+		offset = calc_horiz_offset(delta)
+		position += offset
 	
 	
 	# Check if there are any targets to look at
 	var targets_center = get_targets_center()
+	
+	# Check if the list of targets has changed
+	var hash = control.targets.hash()
+	if hash != dict_hash:
+		dict_hash = hash
+		smoothing_factor_2 = 0.0
+	
+	
 	if targets_center != Vector2.ZERO:
 		
-		# Get our blend max
-		var blend_max = get_targets_blend()
-		var hash: int = control.targets.hash()
+		#var targets_offset: Vector2
+		var grouping_offset: Vector2
+		grouping_offset = get_targets_offset(position, targets_center)
 		
-		# If the dict has changed
-		if hash != dict_hash:
-			dict_hash = hash
-			settled = false
+		smoothing_factor_2 = move_toward(smoothing_factor_2, 1.0, 0.01)
 		
-		# Slow down the camera when moving for a new target	
-		if not settled:
-			follow_speed = Minimum_Speed
-			accel = Vector2(0.4, 0.4)
-		else:
-			accel = BaseAcceleration
-			
-		# Push the multi_target_smoothing up
-		multi_target_smoothing = move_toward(multi_target_smoothing, blend_max, 0.01)
-		
-		position.x = _gerblesh.lerpi(position.x, targets_center.x, multi_target_smoothing)
-		position.y = _gerblesh.lerpi(position.y, targets_center.y, multi_target_smoothing)
+		# Lerp towards this new offset
+		current_grouping_offset = _gerblesh.lerpiVec(current_grouping_offset, grouping_offset, smoothing_factor_2)
 		
 		
-		# Lerp the position x amount towards the center of the targets
-		position.lerp(targets_center, multi_target_smoothing)
 	
-		# If we've reached the blend max we've settled
-		if multi_target_smoothing == blend_max and not settled:
-			settled = true
-			print("Settled Camera")
+		
 	
 	# Otherwise if we're turning off target tracking
-	elif multi_target_smoothing != 0.0:
-		
-		accel = Vector2(0.5, 0.5)
+	else:
 		
 		# Reset the hash
 		dict_hash = 0
+		
 		# Reset the smoothing
-		multi_target_smoothing = 0.0
-
+		smoothing_factor_2 = move_toward(smoothing_factor_2, 1.0, 0.01)
+		
+		# Lerp towards our origin
+		current_grouping_offset = _gerblesh.lerpiVec(current_grouping_offset, Vector2.ZERO, smoothing_factor_2)
+		
+		
+		
+		
+		
+	if not player.dying:
+		position += current_grouping_offset
+	
 	return position
 
-func calc_target_offset(_delta: float) -> Vector2:
+func calc_horiz_offset(_delta: float) -> Vector2:
 	
 	# The default offset
 	var offset = Vector2.ZERO
@@ -146,31 +147,15 @@ func calc_target_offset(_delta: float) -> Vector2:
 	# Abs the players velocity only once
 	var player_speed: Vector2 = abs(player.velocity)
 	
-	## If Aerial
-	if not player.is_on_floor():
-		
-		
-			
-		# If rising
-		if player.velocity.y < 0:
-			
-			var base_rise_speed = player.jump_velocity * 2
-			var up_offset = -128
-			
-			# Using lerp to have us approach fall offset as speed approaches max
-			offset.y += lerp(0, up_offset, min(1.0, player_speed.y / base_rise_speed))
-			print(offset.y)
-			# Set slowly move the offset back to this
-			blend.y = 0.05
-		
 	# If moving quickly horizontally (and not when wall jumping)
 	if player_speed.x >= player.speed and not player.wallJumping:
 		
+		# This is player lowest form max speed * 1.5
 		var max_horiz_speed: float = 152 * 1.5
-		var horiz_offset: float = 20 * sign(player.velocity.x)
+		var horiz_offset: float = 30 * sign(player.velocity.x)
 		
 		# Normalize our blending
-		var normed_blend = (player_speed.x - player.speed) / (max_horiz_speed - player.speed)
+		var normed_blend = (player_speed.x - 152) / (max_horiz_speed - 152)
 		
 		
 		# Using lerp to have us approach horiz offset as speed approaches max
@@ -221,8 +206,24 @@ func get_targets_blend() -> float:
 		
 	return blend
 
+
+
+
+func get_targets_offset(base_target: Vector2, targets_center: Vector2) -> Vector2:
+	var blend_max = get_targets_blend()
+	var hash: int = control.targets.hash()
+	
+	
+	# Update the smoothing factor
+	multi_target_smoothing = move_toward(multi_target_smoothing, blend_max, 0.01)
+	
+	# Smoothly transition the offset towards the new center
+	var current_grouping_position: Vector2
+	current_grouping_position.x = _gerblesh.lerpi(base_target.x, targets_center.x, multi_target_smoothing)
+	current_grouping_position.y = _gerblesh.lerpi(base_target.y, targets_center.y, multi_target_smoothing)
+
+	return current_grouping_position - base_target
+
 func check_state() -> State:
 	
 	return null
-
-
