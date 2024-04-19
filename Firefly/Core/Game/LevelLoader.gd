@@ -11,6 +11,8 @@ var current_level_path: String
 var current_level_instance: Level = null
 
 var pause_menu: PauseMenu
+var victory_screen: VictoryScreen
+var counter: JarCounter
 
 func load_level(level_path: String):
 	clear_current_level()
@@ -43,10 +45,13 @@ func setup_ui():
 		_viewports.ui_viewport.add_child(pause_menu)
 		pause_menu.visible = false
 	
-	#if current_level_instance.jar_manager:
+	# If there are jars to collect
+	if current_level_instance.jar_manager:
 		
 	
 		# Setup Victory Screen
+		victory_screen = RESULTS.instantiate()
+		_viewports.ui_viewport.add_child(pause_menu)
 		# Setup Results Screen
 		#pass
 		
