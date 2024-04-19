@@ -15,11 +15,11 @@
 [ext_resource type="Script" path="res://Scripts/Events/reveal_text_event.gd" id="12_yuqqh"]
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="13_64rfa"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="14_3rk53"]
-[ext_resource type="Script" path="res://Scripts/misc/CollectibleCounter.gd" id="14_3yfpb"]
 [ext_resource type="Script" path="res://Scripts/Events/text_enable_glow.gd" id="14_5b0ou"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="14_njwdr"]
 [ext_resource type="PackedScene" uid="uid://dtblwt5hi5l4c" path="res://Scenes/Checkpoint/checkpoint.tscn" id="15_5ndsg"]
 [ext_resource type="PackedScene" uid="uid://bbu3cpk68nbpp" path="res://Scenes/Hazards/hazard_area.tscn" id="17_jlxlk"]
+[ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="18_3ff0n"]
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/spring.tscn" id="18_xedpq"]
 [ext_resource type="PackedScene" uid="uid://mhckwfmi6yo1" path="res://Scenes/Collectibles/gem.tscn" id="20_jjh3d"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="21_2ktdq"]
@@ -655,69 +655,69 @@ optional_target = NodePath("Marker2D")
 [node name="Marker2D" type="Marker2D" parent="CheckpointManager/Checkpoint3"]
 position = Vector2(-27, -31)
 
-[node name="Collectibles" type="Node2D" parent="."]
+[node name="Jars" type="Node2D" parent="."]
 position = Vector2(3, -4)
-script = ExtResource("14_3yfpb")
+script = ExtResource("18_3ff0n")
 
-[node name="FlyJar4" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar4" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(1209, 66)
 
-[node name="FlyJar3" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar3" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(1209, 66)
 
-[node name="FlyJar2" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar2" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(728, 81)
 
-[node name="FlyJar" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(528, 39)
 
-[node name="FlyJar5" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar5" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-1015, -284)
 
-[node name="FlyJar6" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar6" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-1727, -357)
 
-[node name="FlyJar7" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar7" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-1435, -326)
 
-[node name="FlyJar8" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar8" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-1396, -42)
 
-[node name="FlyJar9" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar9" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-571, -36)
 
-[node name="FlyJar10" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar10" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(1874, -308)
 
-[node name="FlyJar11" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar11" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(2006, -49)
 
-[node name="FlyJar12" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar12" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(909, -307)
 
-[node name="FlyJar13" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar13" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(214, -253)
 
-[node name="FlyJar14" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar14" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-43, -114)
 
-[node name="FlyJar15" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar15" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-2215, -327)
 point_value = 75.0
 
-[node name="FlyJar16" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar16" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-357, -496)
 
-[node name="FlyJar18" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar18" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-2898, -301)
 
-[node name="FlyJar19" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar19" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-2203, -926)
 
-[node name="FlyJar20" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar20" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-2370, -960)
 
-[node name="FlyJar17" parent="Collectibles" instance=ExtResource("14_3rk53")]
+[node name="FlyJar17" parent="Jars" instance=ExtResource("14_3rk53")]
 position = Vector2(-2794, -510)
 
 [node name="DeathZones" type="Node2D" parent="."]

@@ -1,11 +1,10 @@
 extends Node2D
 
 @onready var game_container = $GameContainer
-@onready var label = $UI/UIViewPort/Results/ColorRect/VBoxContainer/CenterContainer2/Label
-@onready var color_rect = $UI/UIViewPort/Results/ColorRect
-
-
 @onready var pause_menu = $UI/UIViewPort/Pause
+@onready var collectible_counter: JarCounter = $UI/UIViewPort/CollectibleCounter
+@onready var results: VictoryScreen = $UI/UIViewPort/Results
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,14 +20,17 @@ func _ready():
 	# Load our level
 	_viewports.game_viewport_container.load_level("res://Scenes/Levels/tutorial.tscn")
 	
+	# Setup our counter and tie it to the victory screen
+	collectible_counter.setup(results)
+	
 	# Let us process input even when game beat
 	set_process_input(true)
 
 func _input(_event: InputEvent) -> void:
 	
 	# Handle Pausing
-	if Input.is_action_just_pressed("Pause") and not color_rect.visible:
-		_ui.show_counter()
+	if Input.is_action_just_pressed("Pause") and not results.color_rect.visible:
+		collectible_counter.show_counter()
 		pause_menu.toggle_pause()
 		
 	# Handle Resets
@@ -37,13 +39,14 @@ func _input(_event: InputEvent) -> void:
 		_stats.DEATHS = 0
 		_stats.TIME = 0
 
-		_ui.COLLECTED = 0
+		
 
 		# Reload the scene
 		get_tree().paused = false
 		
 		_viewports.game_viewport_container.reload_level()
-		color_rect.hide()
+		collectible_counter.setup(results)
+		results.hide_Victory_Screen()
 		
 
 

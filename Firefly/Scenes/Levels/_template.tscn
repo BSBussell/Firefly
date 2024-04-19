@@ -10,7 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://cu2e2bu6ld7xt" path="res://Assets/SFX/ambience/forest_ambience_b.mp3" id="8_dwepj"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="9_lsgjs"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="10_t54rf"]
-[ext_resource type="Script" path="res://Scripts/misc/CollectibleCounter.gd" id="15_b5211"]
+[ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="15_b5211"]
 
 [sub_resource type="GDScript" id="GDScript_0jk77"]
 script/source = "extends Node2D

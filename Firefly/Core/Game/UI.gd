@@ -8,12 +8,6 @@ extends Node
 
 func _ready():
 	
-	# Global UI Elements
-	_ui.COUNTER = $UIViewPort/Results/Label
-	_ui.COUNTER_ANIMATOR = $UIViewPort/Results/AnimationPlayer
-	_ui.ANIMATION_TIMER = $UIViewPort/Results/HideTimer
-	_ui.connect_timer()
-
 	_ui.Victory = $UIViewPort/Results/ColorRect
 	
 func _process(delta):

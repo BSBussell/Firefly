@@ -8,6 +8,7 @@ class_name Level
 @onready var moonlight = $"PP + FX/Moonlight"
 @onready var shadow_filter = $"PP + FX/ShadowFilter"
 @onready var gem_manager = $GemManager
+@onready var jars = $Jars
 
 
 
@@ -16,6 +17,7 @@ func _ready():
 	# Register Global Components
 	_globals.ACTIVE_PLAYER = PLAYER
 	_globals.GEM_MANAGER = gem_manager
+	_globals.JAR_MANAGER = jars
 
 	# Enable Specific Visuals that are left off in the editor for visibility
 	gem_manager.hide_gems()
