@@ -1,10 +1,10 @@
 extends Node2D
 
 @onready var game_container = $GameContainer
-@onready var pause_menu = $UI/UIViewPort/Pause
 @onready var collectible_counter: JarCounter = $UI/UIViewPort/CollectibleCounter
 @onready var results: VictoryScreen = $UI/UIViewPort/Results
 
+@onready var level_loader: LevelLoader = $GameContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,7 +18,7 @@ func _ready():
 	
 	
 	# Load our level
-	_viewports.game_viewport_container.load_level("res://Scenes/Levels/tutorial.tscn")
+	level_loader.load_level("res://Scenes/Levels/tutorial.tscn")
 	
 	# Setup our counter and tie it to the victory screen
 	if _globals.GEM_MANAGER:
@@ -31,9 +31,9 @@ func _input(_event: InputEvent) -> void:
 	
 	# Handle Pausing
 	if Input.is_action_just_pressed("Pause") and not results.color_rect.visible:
-		pause_menu.toggle_pause()
+		level_loader.pause_menu.toggle_pause()
 		
-		if pause_menu.paused:
+		if level_loader.pause_menu.paused:
 			collectible_counter.show_counter()
 		else:
 			collectible_counter.hide_counter(0.01)

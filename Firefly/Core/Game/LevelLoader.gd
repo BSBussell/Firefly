@@ -1,9 +1,16 @@
 extends Node
+class_name LevelLoader
+
+const PAUSE_MENU: PackedScene = preload("res://Core/Game/pause.tscn")
+const COLLECTIBLE_COUNTER: PackedScene = preload("res://Scenes/UI_Elements/collectible_counter.tscn")
+const RESULTS: PackedScene = preload("res://Scenes/UI_Elements/results.tscn")
 
 @onready var game_view_port = $GameViewPort
 
 var current_level_path: String
 var current_level_instance: Level = null
+
+var pause_menu: PauseMenu
 
 func load_level(level_path: String):
 	clear_current_level()
@@ -14,6 +21,7 @@ func load_level(level_path: String):
 	if level_scene:
 		current_level_instance = level_scene.instantiate()
 		game_view_port.add_child(current_level_instance)
+		setup_ui()
 	else:
 		print("Failed to load level as a PackedScene at path:", level_path)
 
@@ -27,11 +35,19 @@ func clear_current_level():
 		current_level_instance = null
 
 
-func setup_needed_ui():
+func setup_ui():
 	
-	if current_level_instance.jar_manager:
+	if current_level_instance.Can_Pause:
+		print("Setting Up Pause Instance")
+		pause_menu = PAUSE_MENU.instantiate()
+		_viewports.ui_viewport.add_child(pause_menu)
+		pause_menu.visible = false
+	
+	#if current_level_instance.jar_manager:
+		
+	
 		# Setup Victory Screen
 		# Setup Results Screen
-		pass
+		#pass
 		
 	pass

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=9 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
 [ext_resource type="Shader" path="res://Core/Game/SubPixelSmoothing.gdshader" id="1_jculp"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
 [ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/collectible_counter.tscn" id="5_57fev"]
 [ext_resource type="PackedScene" uid="uid://bkeka0x5vwxx7" path="res://Scenes/UI_Elements/results.tscn" id="6_gnyd6"]
-[ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Core/Game/pause.tscn" id="7_2imms"]
 
 [sub_resource type="Environment" id="Environment_xxxtd"]
 background_mode = 3
@@ -68,7 +67,3 @@ render_target_update_mode = 4
 [node name="CollectibleCounter" parent="UI/UIViewPort" instance=ExtResource("5_57fev")]
 
 [node name="Results" parent="UI/UIViewPort" instance=ExtResource("6_gnyd6")]
-
-[node name="Pause" parent="UI/UIViewPort" instance=ExtResource("7_2imms")]
-process_mode = 2
-visible = false

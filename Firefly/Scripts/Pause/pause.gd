@@ -1,5 +1,5 @@
 extends Node
-
+class_name PauseMenu
 
 @onready var resume_button = $VBoxContainer/Items/Top/ResumeButton
 
