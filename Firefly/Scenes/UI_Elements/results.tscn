@@ -15,7 +15,6 @@ font_size = 32
 script = ExtResource("1_cunm8")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -38,7 +37,7 @@ alignment = 1
 modulate = Color(1, 1, 0, 1)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/CenterContainer"]
+[node name="Header" type="Label" parent="ColorRect/VBoxContainer/CenterContainer"]
 layout_mode = 2
 text = "You Did It!"
 label_settings = SubResource("LabelSettings_fors3")
@@ -50,7 +49,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("2_wux1v")
 
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/CenterContainer2"]
+[node name="Stats" type="Label" parent="ColorRect/VBoxContainer/CenterContainer2"]
 layout_mode = 2
 text = "Time:
 Total Deaths:"
@@ -60,7 +59,7 @@ horizontal_alignment = 2
 [node name="CenterContainer3" type="CenterContainer" parent="ColorRect/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ColorRect/VBoxContainer/CenterContainer3"]
+[node name="Direction" type="Label" parent="ColorRect/VBoxContainer/CenterContainer3"]
 layout_mode = 2
 text = "Press BackSpace To Try Again!"
 label_settings = SubResource("LabelSettings_55r0k")

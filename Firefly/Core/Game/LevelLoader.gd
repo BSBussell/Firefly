@@ -52,7 +52,12 @@ func setup_ui():
 		# Setup Victory Screen
 		victory_screen = RESULTS.instantiate()
 		_viewports.ui_viewport.add_child(pause_menu)
-		# Setup Results Screen
-		#pass
+		
+		# Setup the colelctible counter
+		counter = COLLECTIBLE_COUNTER.instantiate()
+		_viewports.ui_viewport.add_child(counter)
+		
+		# Connect it to the victory screen
+		counter.setup(victory_screen)
 		
 	pass

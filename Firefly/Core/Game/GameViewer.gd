@@ -1,8 +1,8 @@
 extends Node2D
 
 @onready var game_container = $GameContainer
-@onready var collectible_counter: JarCounter = $UI/UIViewPort/CollectibleCounter
-@onready var results: VictoryScreen = $UI/UIViewPort/Results
+@onready var collectible_counter: JarCounter
+@onready var results: VictoryScreen
 
 @onready var level_loader: LevelLoader = $GameContainer
 
@@ -20,9 +20,11 @@ func _ready():
 	# Load our level
 	level_loader.load_level("res://Scenes/Levels/tutorial.tscn")
 	
-	# Setup our counter and tie it to the victory screen
-	if _globals.GEM_MANAGER:
-		collectible_counter.setup(results)
+	if level_loader.victory_screen:
+		results = level_loader.victory_screen
+	
+	if level_loader.counter:
+		collectible_counter = level_loader.counter
 	
 	# Let us process input even when game beat
 	set_process_input(true)
@@ -30,7 +32,7 @@ func _ready():
 func _input(_event: InputEvent) -> void:
 	
 	# Handle Pausing
-	if Input.is_action_just_pressed("Pause") and not results.color_rect.visible:
+	if Input.is_action_just_pressed("Pause") and not results.displayed:
 		level_loader.pause_menu.toggle_pause()
 		
 		if level_loader.pause_menu.paused:

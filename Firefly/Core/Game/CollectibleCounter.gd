@@ -27,6 +27,7 @@ func setup(result: VictoryScreen):
 	
 	var collectibles = get_tree().get_nodes_in_group("Collectible")
 	for jar in collectibles:
+		print("Setting up")
 		var error = jar.connect("collected", Callable(self, "jar_collected"))
 		if error:
 			print(error)
