@@ -21,7 +21,8 @@ func _ready():
 	_viewports.game_viewport_container.load_level("res://Scenes/Levels/tutorial.tscn")
 	
 	# Setup our counter and tie it to the victory screen
-	collectible_counter.setup(results)
+	if _globals.GEM_MANAGER:
+		collectible_counter.setup(results)
 	
 	# Let us process input even when game beat
 	set_process_input(true)

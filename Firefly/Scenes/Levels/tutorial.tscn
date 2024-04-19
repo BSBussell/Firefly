@@ -1,6 +1,6 @@
 [gd_scene load_steps=41 format=3 uid="uid://d2aiiqy7j5ovi"]
 
-[ext_resource type="Script" path="res://Scenes/Levels/Level.gd" id="1_dar63"]
+[ext_resource type="Script" path="res://Scenes/Levels/Tutorial.gd" id="1_dar63"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="2_o33e3"]
 [ext_resource type="Texture2D" uid="uid://f4xhpem7fo4b" path="res://Assets/Graphics/Deep_Forest_Resource/bg_mountains_3.png" id="3_orrej"]
 [ext_resource type="Texture2D" uid="uid://8nctejfx4eoj" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_2.png" id="4_531it"]
@@ -151,13 +151,16 @@ size = Vector2(1140, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rfep0"]
 
-[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER")]
+[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = ExtResource("1_dar63")
 PLAYER = NodePath("Flyph")
+jar_manager = NodePath("Jars")
+gem_manager = NodePath("GemManager")
 
-[node name="PP + FX" type="Node" parent="."]
+[node name="Lighting" type="Node2D" parent="."]
+visible = false
 
-[node name="Moonlight" type="DirectionalLight2D" parent="PP + FX"]
+[node name="Moonlight" type="DirectionalLight2D" parent="Lighting"]
 rotation = -0.698132
 color = Color(0.780392, 0.87451, 0.921569, 1)
 energy = 0.1
@@ -167,8 +170,7 @@ shadow_filter_smooth = 10.0
 height = 1.0
 metadata/_edit_lock_ = true
 
-[node name="ShadowFilter" type="CanvasModulate" parent="PP + FX"]
-visible = false
+[node name="ShadowFilter" type="CanvasModulate" parent="Lighting"]
 color = Color(0.235294, 0.2, 0.501961, 1)
 metadata/_edit_lock_ = true
 

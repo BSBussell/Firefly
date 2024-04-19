@@ -90,7 +90,8 @@ func _on_resume_button_pressed():
 # Reveal Settings Hierarchy
 func _on_settings_button_pressed():
 	if not settings_container.visible:
-		expand_container(settings_container)
+		settings_container.visible = true
+		#expand_container(settings_container)
 	else:
 		settings_container.visible = false
 	#settings_container.visible = not settings_container.visible

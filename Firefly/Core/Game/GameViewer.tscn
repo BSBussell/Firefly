@@ -1,14 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=10 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
 [ext_resource type="Shader" path="res://Core/Game/SubPixelSmoothing.gdshader" id="1_jculp"]
 [ext_resource type="Script" path="res://Core/Game/LevelLoader.gd" id="3_oejcr"]
 [ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
 [ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/collectible_counter.tscn" id="5_57fev"]
-[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="5_ocg2k"]
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="6_nwbni"]
+[ext_resource type="PackedScene" uid="uid://bkeka0x5vwxx7" path="res://Scenes/UI_Elements/results.tscn" id="6_gnyd6"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Core/Game/pause.tscn" id="7_2imms"]
-[ext_resource type="Script" path="res://Core/Game/Results.gd" id="7_pfi27"]
 
 [sub_resource type="Environment" id="Environment_xxxtd"]
 background_mode = 3
@@ -27,13 +25,6 @@ adjustment_enabled = true
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gjm2h"]
 shader = ExtResource("1_jculp")
 shader_parameter/sub_pixel_offset = Vector2(0, 0)
-
-[sub_resource type="LabelSettings" id="LabelSettings_fors3"]
-font = ExtResource("5_ocg2k")
-font_size = 128
-
-[sub_resource type="LabelSettings" id="LabelSettings_55r0k"]
-font_size = 32
 
 [node name="GameViewer" type="Node2D"]
 process_mode = 3
@@ -76,65 +67,7 @@ render_target_update_mode = 4
 
 [node name="CollectibleCounter" parent="UI/UIViewPort" instance=ExtResource("5_57fev")]
 
-[node name="Results" type="Node" parent="UI/UIViewPort"]
-script = ExtResource("7_pfi27")
-
-[node name="ColorRect" type="ColorRect" parent="UI/UIViewPort/Results"]
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.235294, 0.2, 0.501961, 0.886275)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/UIViewPort/Results/ColorRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("6_nwbni")
-theme_override_constants/separation = 90
-alignment = 1
-
-[node name="CenterContainer" type="CenterContainer" parent="UI/UIViewPort/Results/ColorRect/VBoxContainer"]
-modulate = Color(1, 1, 0, 1)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/UIViewPort/Results/ColorRect/VBoxContainer/CenterContainer"]
-layout_mode = 2
-text = "You Did It!"
-label_settings = SubResource("LabelSettings_fors3")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CenterContainer2" type="CenterContainer" parent="UI/UIViewPort/Results/ColorRect/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("6_nwbni")
-
-[node name="Label" type="Label" parent="UI/UIViewPort/Results/ColorRect/VBoxContainer/CenterContainer2"]
-layout_mode = 2
-text = "Time:
-Total Deaths:"
-label_settings = SubResource("LabelSettings_55r0k")
-horizontal_alignment = 2
-
-[node name="CenterContainer3" type="CenterContainer" parent="UI/UIViewPort/Results/ColorRect/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/UIViewPort/Results/ColorRect/VBoxContainer/CenterContainer3"]
-layout_mode = 2
-text = "Press BackSpace To Try Again!"
-label_settings = SubResource("LabelSettings_55r0k")
-horizontal_alignment = 2
-
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="UI/UIViewPort/Results/ColorRect"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Results" parent="UI/UIViewPort" instance=ExtResource("6_gnyd6")]
 
 [node name="Pause" parent="UI/UIViewPort" instance=ExtResource("7_2imms")]
 process_mode = 2

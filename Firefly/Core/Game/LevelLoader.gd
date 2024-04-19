@@ -3,7 +3,7 @@ extends Node
 @onready var game_view_port = $GameViewPort
 
 var current_level_path: String
-var current_level_instance: Node = null
+var current_level_instance: Level = null
 
 func load_level(level_path: String):
 	clear_current_level()
@@ -25,3 +25,13 @@ func clear_current_level():
 	if current_level_instance:
 		current_level_instance.queue_free()
 		current_level_instance = null
+
+
+func setup_needed_ui():
+	
+	if current_level_instance.jar_manager:
+		# Setup Victory Screen
+		# Setup Results Screen
+		pass
+		
+	pass

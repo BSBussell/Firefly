@@ -23,14 +23,17 @@ func _ready():
 
 func setup(result: VictoryScreen):
 	
+	max = 0
+	
 	var collectibles = get_tree().get_nodes_in_group("Collectible")
 	for jar in collectibles:
 		var error = jar.connect("collected", Callable(self, "jar_collected"))
 		if error:
 			print(error)
+		else:
+			max += 1
 	
 	COLLECTED = 0
-	max = collectibles.size()
 	
 	COUNTER.text = "%d/%d" % [COLLECTED, max]
 	
