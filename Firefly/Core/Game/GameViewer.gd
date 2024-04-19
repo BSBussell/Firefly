@@ -30,8 +30,12 @@ func _input(_event: InputEvent) -> void:
 	
 	# Handle Pausing
 	if Input.is_action_just_pressed("Pause") and not results.color_rect.visible:
-		collectible_counter.show_counter()
 		pause_menu.toggle_pause()
+		
+		if pause_menu.paused:
+			collectible_counter.show_counter()
+		else:
+			collectible_counter.hide_counter(0.01)
 		
 	# Handle Resets
 	if Input.is_action_just_pressed("reset"):

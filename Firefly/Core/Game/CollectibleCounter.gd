@@ -32,6 +32,8 @@ func setup(result: VictoryScreen):
 	COLLECTED = 0
 	max = collectibles.size()
 	
+	COUNTER.text = "%d/%d" % [COLLECTED, max]
+	
 	victory_screen = result
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -45,20 +47,22 @@ func jar_collected(jar: FlyJar):
 	COLLECTED += 1
 	COUNTER.text = "%d/%d" % [COLLECTED, max]
 	
-	show_counter()
+	peak_counter()
 	
 	if COLLECTED == max:
 		victory_screen.show_Victory_Screen()
 		
+func peak_counter():
+	show_counter()
+	hide_counter()
+
 func show_counter():
 	if not out:
 		COUNTER_ANIMATOR.play("Show")
 		out = true
-		ANIMATION_TIMER.start()
-	else: # Restart the time if its already out
-		ANIMATION_TIMER.start()
 
-
+func hide_counter(time: float = 3.0):
+	ANIMATION_TIMER.start(time)
 
 func _on_hide_timer_timeout():
 	out = false

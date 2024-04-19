@@ -54,6 +54,34 @@ func unpause():
 	# Set flag
 	paused = false
 
+#Expands a VBoxContainer vertically from a minimal height to its full height
+func expand_container(container: VBoxContainer, final_height: float = 0, duration: float = 1.0, easing = Tween.EASE_OUT):
+	# Ensure the container is visible
+	container.visible = true
+
+	# Set the initial minimal height (you can adjust this according to your needs)
+	container.size.y = 0
+
+	# Calculate the final height based on the container's content or an explicitly given value
+	final_height = final_height if final_height != 0 else container.get_combined_minimum_size().y
+
+	# Create a new tween
+	var tween = get_tree().create_tween()
+
+	# Tween the 'margin_bottom' to animate the height change
+	var initial_margin_bottom = container.margin_bottom
+	var target_margin_bottom = initial_margin_bottom - final_height
+
+	# Setup the tween animation
+	tween.tween_property(container, "margin_bottom", target_margin_bottom, duration).set_ease(easing)
+
+	# Start the tween
+	tween.play()
+
+
+
+
+
 
 func _on_resume_button_pressed():
 	
@@ -61,7 +89,11 @@ func _on_resume_button_pressed():
 
 # Reveal Settings Hierarchy
 func _on_settings_button_pressed():
-	settings_container.visible = not settings_container.visible
+	if not settings_container.visible:
+		expand_container(settings_container)
+	else:
+		settings_container.visible = false
+	#settings_container.visible = not settings_container.visible
 
 
 
