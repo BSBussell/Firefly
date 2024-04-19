@@ -41,7 +41,8 @@ func _input(_event: InputEvent) -> void:
 
 		# Reload the scene
 		get_tree().paused = false
-		get_tree().reload_current_scene()
+		
+		_viewports.game_viewport_container.reload_level()
 		color_rect.hide()
 		
 

@@ -2,11 +2,12 @@ extends Node
 
 @onready var game_view_port = $GameViewPort
 
-
+var current_level_path: String
 var current_level_instance: Node = null
 
 func load_level(level_path: String):
 	clear_current_level()
+	current_level_path = level_path
 	
 	# Load the PackedScene from the specified path
 	var level_scene = load(level_path) as PackedScene
@@ -15,6 +16,10 @@ func load_level(level_path: String):
 		game_view_port.add_child(current_level_instance)
 	else:
 		print("Failed to load level as a PackedScene at path:", level_path)
+
+func reload_level() -> void:
+	load_level(current_level_path)
+	
 
 func clear_current_level():
 	if current_level_instance:

@@ -29,9 +29,6 @@ func _process(delta):
 
 	label.text = "Time: %s\n Total Deaths: %d" % [display_time, _stats.DEATHS]
 
-# Update display with time and deaths
-func update_time_display(minutes, seconds, milliseconds, deaths):
-	label.text = "Time: %02d:%02d:%03d\nTotal Deaths: %d" % [minutes, seconds, milliseconds, deaths]
 
 func toggle_pause_menu():
 	if not color_rect.visible:

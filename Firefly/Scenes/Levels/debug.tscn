@@ -20,12 +20,18 @@ script/source = "extends Node2D
 
 @onready var music = $LevelAudio/Music
 @onready var ambience = $LevelAudio/Ambience
+@onready var moonlight = $\"PP + FX/Moonlight\"
+@onready var shadow_filter = $\"PP + FX/ShadowFilter\"
 
 
 func _ready():
 
 	music.play(0)
 	ambience.play(0)
+	
+	moonlight.visible = true
+	shadow_filter.visible = true
+	
 	#PLAYER.disable_glow()
 	pass
 "
@@ -64,7 +70,7 @@ metadata/_edit_lock_ = true
 
 [node name="ShadowFilter" type="CanvasModulate" parent="PP + FX"]
 visible = false
-color = Color(0.0528417, 0.0389777, 0.153542, 1)
+color = Color(0.235294, 0.2, 0.501961, 1)
 metadata/_edit_lock_ = true
 
 [node name="Parallax" type="ParallaxBackground" parent="."]
@@ -159,7 +165,7 @@ texture = ExtResource("7_im6pt")
 metadata/_edit_lock_ = true
 
 [node name="Light Filter2" type="CanvasModulate" parent="Parallax"]
-color = Color(0.141176, 0.117647, 0.32549, 1)
+color = Color(0.235294, 0.2, 0.501961, 1)
 metadata/_edit_lock_ = true
 
 [node name="Particles" type="Node" parent="."]
