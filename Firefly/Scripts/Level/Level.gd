@@ -70,8 +70,7 @@ func setup_components() -> void:
 
 ## Calls the level loader to load a new level
 func load_level(path: String):
-	var new_level = level_loader.load_level(path)
-	ui_loader.setup(new_level)
+	await _loader.load_level(path)
 	
 	
 

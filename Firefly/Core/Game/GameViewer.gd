@@ -15,9 +15,9 @@ func _ready():
 	_viewports.ui_viewport_container = $UI
 	_viewports.ui_viewport = $UI/UIViewPort
 	
+	_loader.connect_loaders(level_loader, ui_loader)
 	# Load our level
-	var level = level_loader.load_level("res://Scenes/Levels/tutorial.tscn")
-	ui_loader.setup(level)
+	_loader.load_level("res://Scenes/Levels/tutorial.tscn")
 	
 	# Let us process input even when game beat
 	set_process_input(true)
@@ -33,8 +33,7 @@ func _input(_event: InputEvent) -> void:
 		# Reload the scene
 		get_tree().paused = false
 		
-		var level = level_loader.reload_level()
-		ui_loader.setup(level)
+		_loader.reload_level()
 		
 
 # Stuff Game View Handles

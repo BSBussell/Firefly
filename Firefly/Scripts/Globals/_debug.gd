@@ -21,11 +21,9 @@ func _input(_event: InputEvent) -> void:
 
 	# Load Tutorial
 	if Input.is_key_pressed(KEY_9):
-		var level = _viewports.game_viewport_container.load_level("res://Scenes/Levels/tutorial.tscn")
-		_viewports.ui_viewport_container.setup(level)
+		_loader.load_level("res://Scenes/Levels/tutorial.tscn")
 		
 	# Load Debug Environment
 	if Input.is_key_pressed(KEY_0):
-		var level = _viewports.game_viewport_container.load_level("res://Scenes/Levels/debug.tscn")
-		_viewports.ui_viewport_container.setup(level)
+		_loader.load_level("res://Scenes/Levels/debug.tscn")
 		
