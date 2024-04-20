@@ -22,13 +22,19 @@ driver/output_latency.web=90
 
 [autoload]
 
+_loader="*res://Scripts/Globals/_loader.gd"
+_debug="*res://Scripts/Globals/_debug.gd"
 _viewports="*res://Scripts/Globals/_viewports.gd"
 _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
 _shake="*res://Scripts/Globals/_shake.gd"
 _ui="*res://Scripts/Globals/_UI.gd"
 _stats="*res://Scripts/Globals/_stats.gd"
-_player="*res://Scripts/Globals/_player.gd"
+_globals="*res://Scripts/Globals/_globals.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
+
+[debug]
+
+gdscript/warnings/integer_division=0
 
 [display]
 
@@ -170,6 +176,7 @@ Glow_Up={
 2d_physics/layer_4="Camera"
 2d_physics/layer_5="Hazards"
 2d_physics/layer_6="Platforms"
+2d_physics/layer_7="CameraTargets"
 
 [physics]
 

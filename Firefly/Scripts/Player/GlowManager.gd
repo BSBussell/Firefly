@@ -53,7 +53,7 @@ func _process(delta):
 		return
 	
 	# Update Scoring information based on movement speed, etc.
-	var score: float = calc_score()
+	score = calc_score()
 	var new_points = score * glow_grow_rate
 	
 	# Add score to points, score only goes up if we're at max level
@@ -74,7 +74,7 @@ func _process(delta):
 				exponential_decay = 0.0
 		
 		# Otherwise we only decay when velocity is 0 for a set time
-		elif (PLAYER.velocity.x == 0) and MOMENTUM_TIMER.is_stopped():
+		elif (PLAYER.velocity.x <= PLAYER.air_speed) and MOMENTUM_TIMER.is_stopped():
 			
 			# Start timer
 			MOMENTUM_TIMER.start()

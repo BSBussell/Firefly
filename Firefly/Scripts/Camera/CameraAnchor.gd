@@ -27,6 +27,9 @@ enum process {Physics, Draw}
 @onready var startingPos: Vector2 = Vector2(0, 10)
 @onready var actual_cam_pos := global_position
 
+@onready var sensor: Area2D = $Sensor/Area2D
+# If something is on screen that shouldn't be
+var collider: bool = false
 
 var camera_speed: float = 0
 var camera_velocity: Vector2 = Vector2.ZERO
@@ -34,64 +37,57 @@ var camera_velocity: Vector2 = Vector2.ZERO
 # Cause this players bouncin all over the place
 var smoothed_velocity: Vector2 = Vector2.ZERO
 
-var prevOffset: Vector2 = Vector2(0,0)
-var prevBase: Vector2 = Vector2(0,0)
 
-var cameraHeight: float = 10
-
-var goalHeight: float = 10
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	# Disable whichever process we aren't using
+	if processor == process.Physics:
+		set_process(false)
+	else:
+		set_physics_process(false)
 	
 	state_machine.init(self)
 	pass # Replace with function body.
 
 func _unhandled_input(event):
 	
-	if Input.is_action_just_pressed("Down"):
-		cameraHeight = -45
-	elif Input.is_action_just_pressed("Up"):
-		cameraHeight = 10
-	
 	state_machine.process_input(event)
 
 func _physics_process(delta):
-	if processor == process.Physics:
-		
-		# Calculating a smoothed velocity value constantly
-		smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
-		state_machine.process_physics(delta)
-		adjust_offset(delta)
+	
+	# Calculating a smoothed velocity value constantly
+	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
+	state_machine.process_physics(delta)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if processor != process.Physics:
-		
-		# Calculating a smoothed velocity value constantly
-		smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
-		state_machine.process(delta)
-		adjust_offset(delta)
-
-
-func adjust_offset(delta):
-	var target_height = get_target_camera_height()
-	var blend = 1 - pow(0.5, 0.5 * delta)
-	startingPos.y = _gerblesh.lerpi(startingPos.y, target_height, blend)
-
-func get_target_camera_height() -> float:
 	
-	return goalHeight
-	var neutral_height = goalHeight # Use the adjusted neutral height
-	var max_height = 10  # The maximum height the camera can go
-	var min_height = -45  # The minimum height the camera can go
+	# Calculating a smoothed velocity value constantly
+	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
+	state_machine.process(delta)
 
-	var player_height_diff = Player.global_position.y - neutral_height
-	var target_height = clamp(neutral_height - player_height_diff, min_height, max_height)
-	return target_height
 
-func set_camera_height(height):
 	
-	goalHeight = height
-	
+# Dictionary to hold target positions with area instance IDs as keys
+var targets: Dictionary = {}
 
+# When an area is entered, add its position to the dictionary
+func _on_area_2d_area_entered(area: Area2D):
+	
+	# Cast and do stuff if working
+	var target: CameraTarget = area as CameraTarget
+	if target:
+		targets[target.get_instance_id()] = target
+		print("Camera Target On Screen")
+
+# When an area is exited, remove it from the dictionary
+func _on_area_2d_area_exited(area: Area2D):
+	
+	# Cast
+	var target: CameraTarget = area as CameraTarget
+	if target:
+		var area_id = target.get_instance_id()
+		if targets.has(area_id):
+			targets.erase(area_id)

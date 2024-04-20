@@ -224,6 +224,24 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_neighbor_left = NodePath("../../../SettingsButton")
 focus_neighbor_top = NodePath("../../FullScreenContainer/FullScreenToggle")
+focus_neighbor_bottom = NodePath("../../Speedometer/speedometerToggle")
+
+[node name="Speedometer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+theme_override_constants/separation = 92
+
+[node name="Label" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer"]
+layout_mode = 2
+text = "Show Speedometer"
+label_settings = ExtResource("2_1enlb")
+
+[node name="speedometerToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer" instance=ExtResource("5_6x1tv")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../GlowModeContainer/GlowModeToggle")
 focus_neighbor_bottom = NodePath("../../AudioSettingContainer/Audio")
 
 [node name="UnFolder" type="AnimationPlayer" parent="VBoxContainer/Items/Top/Settings"]
@@ -249,4 +267,6 @@ text = "Quit"
 [connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer/FullScreenToggle" to="." method="_on_full_screen_toggle_switched_on"]
 [connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle" to="." method="_on_glow_mode_toggle_switched_off"]
 [connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle" to="." method="_on_glow_mode_toggle_switched_on"]
+[connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer/speedometerToggle" to="." method="_on_speedometer_toggle_switched_off"]
+[connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer/speedometerToggle" to="." method="_on_speedometer_toggle_switched_on"]
 [connection signal="pressed" from="VBoxContainer/Items/Top/QuitButton" to="." method="_on_quit_button_pressed"]

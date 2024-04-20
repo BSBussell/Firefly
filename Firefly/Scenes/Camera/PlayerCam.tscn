@@ -1,20 +1,23 @@
-[gd_scene load_steps=9 format=3 uid="uid://chji8mvt4o3jg"]
+[gd_scene load_steps=11 format=3 uid="uid://chji8mvt4o3jg"]
 
 [ext_resource type="Script" path="res://Scripts/Camera/CameraAnchor.gd" id="1_hjjau"]
-[ext_resource type="Material" uid="uid://djcmwlg0oqu02" path="res://Assets/Shaders/color_manip.tres" id="2_f7duo"]
 [ext_resource type="Texture2D" uid="uid://bury6i0qclg2g" path="res://Assets/Graphics/Camera/cursor.png" id="3_2gg2l"]
 [ext_resource type="Script" path="res://Scripts/State_Machine/StateMachine.gd" id="5_67mh8"]
 [ext_resource type="Script" path="res://Scripts/Camera/Idle.gd" id="5_mfikc"]
 [ext_resource type="Script" path="res://Scripts/Camera/Follow.gd" id="6_y5nkv"]
 [ext_resource type="Script" path="res://Scripts/Camera/LookAhead.gd" id="7_pjrc4"]
 [ext_resource type="Script" path="res://Scenes/Camera/Falling.gd" id="8_71vy3"]
+[ext_resource type="Script" path="res://Scenes/Camera/Dynamic-Cam.gd" id="8_r82q3"]
+[ext_resource type="Script" path="res://Scenes/Camera/SensorResizing.gd" id="9_ku080"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mqckl"]
+size = Vector2(320, 160)
 
 [node name="CameraTarget" type="Marker2D"]
 script = ExtResource("1_hjjau")
 
 [node name="Cursor" type="Sprite2D" parent="."]
 z_index = 100
-material = ExtResource("2_f7duo")
 texture = ExtResource("3_2gg2l")
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -30,7 +33,7 @@ editor_draw_drag_margin = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("5_67mh8")
-starting_state = NodePath("Follow")
+starting_state = NodePath("Dynamic-Cam")
 
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("FOLLOW", "FALLING")]
 script = ExtResource("5_mfikc")
@@ -45,6 +48,7 @@ IDLE = NodePath("../Idle")
 LOOKAHEAD = NodePath("../LookAhead")
 FALLING = NodePath("../Falling")
 follow_timer = NodePath("../../FollowTimer")
+Cursor_Color = Color(0, 1, 1, 1)
 Maximum_Speed = 30.0
 Minimum_Speed = 0.01
 acceleration = 0.75
@@ -63,10 +67,32 @@ script = ExtResource("8_71vy3")
 IDLE = NodePath("../Idle")
 FOLLOW = NodePath("../Follow")
 LOOKAHEAD = NodePath("../LookAhead")
+Cursor_Color = Color(1, 0, 0, 1)
 Maximum_Speed = 45.0
 Minimum_Speed = 10.0
 acceleration = 0.75
 
+[node name="Dynamic-Cam" type="Node" parent="StateMachine"]
+script = ExtResource("8_r82q3")
+Cursor_Color = Color(0.678431, 0.247059, 0.266667, 1)
+Maximum_Speed = Vector2(20, 20)
+BaseAcceleration = Vector2(0.6, 0.6)
+
 [node name="FollowTimer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="Sensor" type="Node2D" parent="."]
+visible = false
+script = ExtResource("9_ku080")
+
+[node name="Area2D" type="Area2D" parent="Sensor"]
+collision_layer = 8
+collision_mask = 64
+
+[node name="SensorShape" type="CollisionShape2D" parent="Sensor/Area2D"]
+shape = SubResource("RectangleShape2D_mqckl")
+debug_color = Color(0.341176, 0.972549, 0, 0.419608)
+
+[connection signal="area_entered" from="Sensor/Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Sensor/Area2D" to="." method="_on_area_2d_area_exited"]

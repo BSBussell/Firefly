@@ -7,7 +7,7 @@ var inside = false
 var animationEnded = true
 
 func _ready():
-	Text.visible = false
+	#Text.visible = false
 	animator.connect("animation_finished", Callable(self, "on_animator_end"))
 	set_physics_process(false)
 

@@ -1,8 +1,7 @@
-[gd_scene load_steps=88 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=102 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
-[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="3_endwo"]
 [ext_resource type="Resource" uid="uid://csjt8cboxggev" path="res://Scenes/Player/Movement_Presets/Stage1Movement.tres" id="3_w3b7s"]
 [ext_resource type="Resource" uid="uid://dsjjsd36v17p1" path="res://Scenes/Player/Movement_Presets/Stage2Movement.tres" id="4_66rk6"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="5_63g2f"]
@@ -148,6 +147,26 @@ region = Rect2(1984, 0, 64, 64)
 atlas = ExtResource("5_63g2f")
 region = Rect2(2048, 0, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_0wcnt"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3520, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uwi8c"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3584, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8i4cx"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3392, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_if2qc"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3456, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u70jm"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3328, 0, 64, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_qixpd"]
 atlas = ExtResource("5_63g2f")
 region = Rect2(2304, 0, 64, 64)
@@ -203,6 +222,34 @@ region = Rect2(640, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_r6mpi"]
 atlas = ExtResource("5_63g2f")
 region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rj1b7"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3712, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dsnmb"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3776, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lubft"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3840, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w63t6"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(3968, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y60m3"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4032, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rka0p"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4096, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hw3hl"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4160, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7w45f"]
 animations = [{
@@ -321,6 +368,36 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_0wcnt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uwi8c")
+}],
+"loop": false,
+"name": &"slide_end",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8i4cx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_if2qc")
+}],
+"loop": true,
+"name": &"slide_loop",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u70jm")
+}],
+"loop": false,
+"name": &"slide_prep",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_qixpd")
 }, {
 "duration": 1.0,
@@ -370,6 +447,42 @@ animations = [{
 "loop": true,
 "name": &"walking",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rj1b7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dsnmb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lubft")
+}],
+"loop": false,
+"name": &"wall_hug",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w63t6")
+}],
+"loop": false,
+"name": &"wall_jump",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y60m3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rka0p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hw3hl")
+}],
+"loop": true,
+"name": &"wall_slide",
+"speed": 8.0
 }]
 
 [sub_resource type="Curve" id="Curve_w5yy1"]
@@ -389,13 +502,28 @@ point_count = 2
 _data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="Curve" id="Curve_e8pkx"]
+_data = [Vector2(0.00943396, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
 [sub_resource type="Gradient" id="Gradient_r3nhe"]
 offsets = PackedFloat32Array(0.879781, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
+[sub_resource type="Curve" id="Curve_e1b3a"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
 [sub_resource type="Gradient" id="Gradient_xmxui"]
 offsets = PackedFloat32Array(0.555256, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_iosa0"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.7), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_diik4"]
 interpolation_mode = 2
@@ -439,7 +567,7 @@ debug_info = NodePath("UI_FX/debug info")
 meter = NodePath("UI_FX/Control/Meter")
 lJump_squash = Vector2(0.4, 1.6)
 wJump_squash = Vector2(0.7, 1.3)
-falling_squash = Vector2(0.8, 1.2)
+falling_squash = Vector2(0.9, 1.1)
 landing_squash = Vector2(1.6, 0.4)
 crouch_squash = Vector2(1.3, 0.7)
 stand_up_squash = Vector2(1.3, 0.7)
@@ -475,8 +603,11 @@ bounce_curve = SubResource("Curve_umqtl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"falling"
+animation = &"wall_hug"
 autoplay = "idle"
+frame = 2
+frame_progress = 1.0
+flip_h = true
 script = ExtResource("6_vid37")
 
 [node name="Trail" type="Line2D" parent="Visuals"]
@@ -494,6 +625,7 @@ length = 0
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
 color = Color(1, 0.980392, 0.803922, 1)
+energy = 0.4
 range_layer_min = -99
 range_item_cull_mask = 3
 shadow_enabled = true
@@ -532,6 +664,7 @@ angle_min = -45.0
 angle_max = 45.0
 scale_amount_min = 0.1
 scale_amount_max = 0.2
+scale_amount_curve = SubResource("Curve_e8pkx")
 color = Color(3, 3, 0, 1)
 color_ramp = SubResource("Gradient_r3nhe")
 
@@ -563,18 +696,14 @@ scale_amount_max = 0.2
 color = Color(3, 3, 0, 1)
 color_ramp = SubResource("Gradient_r3nhe")
 
-[node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
-z_index = 1
-position = Vector2(0, -1)
-emitting = false
-emission_rect_extents = Vector2(2, 3)
-
 [node name="WallSlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
 z_index = 1
 position = Vector2(0, -8)
 emitting = false
 emission_rect_extents = Vector2(2, 3)
 direction = Vector2(2, -10)
+initial_velocity_min = 0.0
+initial_velocity_max = 0.0
 
 [node name="WJDustSpawner" type="Marker2D" parent="Particles"]
 position = Vector2(-6, -7)
@@ -587,15 +716,32 @@ metadata/_edit_lock_ = true
 z_index = 1
 metadata/_edit_lock_ = true
 
+[node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
+z_index = -1
+position = Vector2(0, -2)
+emitting = false
+amount = 24
+texture = ExtResource("8_shld8")
+emission_rect_extents = Vector2(2, 3.5)
+direction = Vector2(0, -1)
+gravity = Vector2(0, 250)
+initial_velocity_min = 25.0
+initial_velocity_max = 75.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+scale_amount_curve = SubResource("Curve_e1b3a")
+
 [node name="DashDust" type="CPUParticles2D" parent="Particles"]
 z_index = -1
 emitting = false
 amount = 15
 lifetime = 0.5
-texture = ExtResource("3_endwo")
+texture = ExtResource("8_shld8")
 emission_shape = 3
 emission_rect_extents = Vector2(1, 2.5)
 gravity = Vector2(0, 0)
+angle_min = -90.0
+angle_max = 90.0
 scale_amount_min = 0.15
 scale_amount_max = 0.3
 color_ramp = SubResource("Gradient_xmxui")
@@ -627,6 +773,7 @@ angle_min = -45.0
 angle_max = 45.0
 scale_amount_min = 0.2
 scale_amount_max = 0.3
+scale_amount_curve = SubResource("Curve_iosa0")
 color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_diik4")
 
@@ -637,14 +784,6 @@ visible = false
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
-position = Vector2(-1, -8.375)
-shape = SubResource("RectangleShape2D_polx2")
-
-[node name="CheckpointDetector" type="Area2D" parent="Physics"]
-collision_layer = 4
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/CheckpointDetector"]
 position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
@@ -856,12 +995,13 @@ label_settings = SubResource("LabelSettings_iomiv")
 script = ExtResource("10_amheu")
 starting_state = NodePath("Grounded")
 
-[node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "coyote_time")]
+[node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "coyote_time", "post_jump_buffer")]
 script = ExtResource("7_x3sml")
 AERIAL_STATE = NodePath("../Aerial")
 SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
+post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 
 [node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "coyote_time", "jump_buffer")]
 script = ExtResource("9_vj5hi")
@@ -871,18 +1011,20 @@ SLIDING_STATE = NodePath("../Sliding")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
-[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "jump_buffer")]
+[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "post_jump_buffer")]
 script = ExtResource("10_eck16")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
 SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
+post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 
-[node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "coyote_time")]
+[node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "post_jump_buffer", "coyote_time")]
 script = ExtResource("23_0bu6o")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
+post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
@@ -892,6 +1034,10 @@ MOMENTUM_TIMER = NodePath("../Timers/MomentumTime")
 [node name="Timers" type="Node" parent="."]
 
 [node name="JumpBuffer" type="Timer" parent="Timers"]
+wait_time = 0.125
+one_shot = true
+
+[node name="PostJumpBuffer" type="Timer" parent="Timers"]
 wait_time = 0.125
 one_shot = true
 
@@ -923,6 +1069,4 @@ script = ExtResource("26_0wrd0")
 [connection signal="animation_finished" from="Visuals/SquishCenter/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
 [connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
-[connection signal="area_entered" from="Physics/CheckpointDetector" to="." method="_on_checkpoint_detector_area_entered"]
 [connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
-[connection signal="timeout" from="Timers/CrouchJumpWindow" to="StateMachine/Sliding" method="_on_crouch_jump_window_timeout"]

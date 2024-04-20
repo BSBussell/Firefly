@@ -1,13 +1,37 @@
-extends "res://Scripts/Events/base_event.gd"
+extends "res://Scenes/Camera/CameraTriggers/CameraTarget.gd"
+class_name FlyJar
 
 @onready var Sprite = $Sprite2D
 @onready var animation_player = $AnimationPlayer
 @export var point_value = 0.0
 
+signal collected(jar: FlyJar)
+
 func _ready():
 	animation_player.play("Idle")
 
-func on_enter(body: Flyph):
-	body.add_glow(point_value)
+func _on_area_entered(area):
+
+	# And prevent the player from going into the thing again
+	set_deferred("monitoring", false)
+	set_deferred("monitorable", false)
+
+	# Call Collection Logic
+	collect()
+
+func collect():
+	
 	animation_player.play("Grab")
-	_ui.new_item_found()
+	
+
+	# Emit to any listeners
+	# Listeners:
+	#   Jar Manager
+	#   Potentially UI
+	emit_signal("collected", self)
+
+	
+# I am going to kms	
+func _exit_tree():
+	remove_from_group("Collectible")
+

@@ -10,6 +10,7 @@ extends State
 @export var follow_timer: Timer
 
 @export_group("Parameters")
+@export var Cursor_Color: Color
 @export var Maximum_Speed: float = 5
 @export var Minimum_Speed: float = 5
 @export var acceleration: float = 0.1
@@ -31,14 +32,13 @@ func enter() -> void:
 	control = parent as PlayerCam
 	
 	if cursor.visible:
-		cursor.material.set_shader_parameter("greenVal", 0.0)
+		cursor.modulate = Cursor_Color
 	pass
 
 # Called before exiting the state, cleanup
 func exit() -> void:
 	
-	if cursor.visible:
-		cursor.material.set_shader_parameter("greenVal", 1.0)
+	
 	pass
 
 # Processing Frames in this state, returns nil or new state
@@ -46,8 +46,6 @@ func process_frame(delta: float) -> State:
 	
 	# Only one of these will be called
 	move_cursor(delta)
-	
-
 	return check_state(control.Player)
 
 # Processing Physics in this state, returns nil or new state
@@ -55,7 +53,6 @@ func process_physics(delta: float) -> State:
 	
 	# Only one of these will be called
 	move_cursor(delta)
-	
 	return check_state(control.Player)
 	
 
@@ -88,15 +85,6 @@ func check_state(player):
 	# If player is falling lets show the ground below
 	if player.velocity.y > control.fallingThres:
 		return FALLING
-	
-	# Have to be in follow for X amount of time before can exit
-	#if follow_timer.time_left == 0:
-		#if player.velocity.length() >= 100 and not player.current_wj == player.WALLJUMPS.UPWARD:
-			#return LOOKAHEAD
-			
-	
-	#if control.Player.velocity.length() == 0:
-		#return IDLE
 	
 	return null
 	
