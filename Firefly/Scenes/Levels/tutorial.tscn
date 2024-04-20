@@ -154,7 +154,7 @@ size = Vector2(1140, 20)
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = ExtResource("1_dar63")
 PLAYER = NodePath("Flyph")
-jar_manager = NodePath("Jars")
+jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
 
 [node name="Lighting" type="Node2D" parent="."]
@@ -166,6 +166,8 @@ color = Color(0.780392, 0.87451, 0.921569, 1)
 energy = 0.1
 range_layer_min = -101
 shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 1
 shadow_filter_smooth = 10.0
 height = 1.0
 metadata/_edit_lock_ = true
@@ -210,7 +212,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("4_531it")
 
 [node name="Godrays" type="ParallaxLayer" parent="Parallax"]
-motion_scale = Vector2(0.7, 0.5)
+motion_scale = Vector2(0.7, 0)
 motion_mirroring = Vector2(1024, 0)
 metadata/_edit_lock_ = true
 
@@ -300,6 +302,83 @@ MusicPlayer = NodePath("../LevelAudio/Music")
 visible = false
 position = Vector2(153, 86)
 Player = NodePath("../Flyph")
+
+[node name="Springs" type="Node2D" parent="."]
+
+[node name="Spring4" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2791, -601)
+
+[node name="Spring5" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2775, -657)
+
+[node name="Spring6" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2743, -737)
+
+[node name="Spring7" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2231, -202)
+rotation = -0.785398
+
+[node name="Spring8" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2333, -251)
+rotation = 0.863938
+
+[node name="Spring9" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2219, -265)
+rotation = -0.785398
+
+[node name="Spring10" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2345, -273)
+
+[node name="Spring11" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2309, -186)
+rotation = 0.785398
+
+[node name="Spring12" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2259, -157)
+rotation = -0.785398
+
+[node name="Spring13" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2089, -306)
+
+[node name="Spring25" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2057, -177)
+
+[node name="Spring14" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2489, -353)
+
+[node name="Spring15" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2431, -233)
+
+[node name="Spring16" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2412, -312)
+rotation = -0.785398
+
+[node name="Spring17" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2570, -348)
+rotation = -0.785398
+
+[node name="Spring18" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2696, -429)
+rotation = -0.436332
+
+[node name="Spring19" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-2456, -849)
+
+[node name="Spring20" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-1223, -241)
+
+[node name="Spring21" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(-16, -536)
+rotation = 1.5708
+
+[node name="Spring22" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(628, -173)
+
+[node name="Spring23" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(1385, 95)
+
+[node name="Spring24" parent="Springs" instance=ExtResource("18_xedpq")]
+position = Vector2(1799, -225)
 
 [node name="Events" type="Node2D" parent="."]
 
@@ -657,158 +736,6 @@ optional_target = NodePath("Marker2D")
 [node name="Marker2D" type="Marker2D" parent="CheckpointManager/Checkpoint3"]
 position = Vector2(-27, -31)
 
-[node name="Jars" type="Node2D" parent="."]
-position = Vector2(3, -4)
-script = ExtResource("18_3ff0n")
-
-[node name="FlyJar4" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(1209, 66)
-
-[node name="FlyJar3" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(1209, 66)
-
-[node name="FlyJar2" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(728, 81)
-
-[node name="FlyJar" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(528, 39)
-
-[node name="FlyJar5" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-1015, -284)
-
-[node name="FlyJar6" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-1727, -357)
-
-[node name="FlyJar7" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-1435, -326)
-
-[node name="FlyJar8" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-1396, -42)
-
-[node name="FlyJar9" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-571, -36)
-
-[node name="FlyJar10" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(1874, -308)
-
-[node name="FlyJar11" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(2006, -49)
-
-[node name="FlyJar12" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(909, -307)
-
-[node name="FlyJar13" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(214, -253)
-
-[node name="FlyJar14" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-43, -114)
-
-[node name="FlyJar15" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-2215, -327)
-point_value = 75.0
-
-[node name="FlyJar16" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-357, -496)
-
-[node name="FlyJar18" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-2898, -301)
-
-[node name="FlyJar19" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-2203, -926)
-
-[node name="FlyJar20" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-2370, -960)
-
-[node name="FlyJar17" parent="Jars" instance=ExtResource("14_3rk53")]
-position = Vector2(-2794, -510)
-
-[node name="DeathZones" type="Node2D" parent="."]
-
-[node name="HazardArea" parent="DeathZones" instance=ExtResource("17_jlxlk")]
-position = Vector2(-2988, 38)
-collision_layer = 25
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/HazardArea"]
-position = Vector2(-294, 34)
-shape = SubResource("RectangleShape2D_knwjx")
-
-[node name="Stuff" type="Node2D" parent="."]
-
-[node name="Spring4" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2791, -601)
-
-[node name="Spring5" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2775, -657)
-
-[node name="Spring6" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2743, -737)
-
-[node name="Spring7" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2231, -202)
-rotation = -0.785398
-
-[node name="Spring8" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2333, -251)
-rotation = 0.863938
-
-[node name="Spring9" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2219, -265)
-rotation = -0.785398
-
-[node name="Spring10" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2345, -273)
-
-[node name="Spring11" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2309, -186)
-rotation = 0.785398
-
-[node name="Spring12" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2259, -157)
-rotation = -0.785398
-
-[node name="Spring13" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2089, -306)
-
-[node name="Spring25" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2057, -177)
-
-[node name="Spring14" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2489, -353)
-
-[node name="Spring15" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2431, -233)
-
-[node name="Spring16" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2412, -312)
-rotation = -0.785398
-
-[node name="Spring17" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2570, -348)
-rotation = -0.785398
-
-[node name="Spring18" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2696, -429)
-rotation = -0.436332
-
-[node name="Spring19" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-2456, -849)
-
-[node name="Spring20" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-1223, -241)
-
-[node name="Spring21" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(-16, -536)
-rotation = 1.5708
-
-[node name="Spring22" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(628, -173)
-
-[node name="Spring23" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(1385, 95)
-
-[node name="Spring24" parent="Stuff" instance=ExtResource("18_xedpq")]
-position = Vector2(1799, -225)
-
 [node name="GemManager" type="Node2D" parent="."]
 position = Vector2(359, 93)
 script = ExtResource("21_2ktdq")
@@ -851,6 +778,81 @@ position = Vector2(-2897, -533)
 
 [node name="Gem8" parent="GemManager" instance=ExtResource("20_jjh3d")]
 position = Vector2(-2968, -1037)
+
+[node name="JarsManager" type="Node2D" parent="."]
+position = Vector2(3, -4)
+script = ExtResource("18_3ff0n")
+
+[node name="FlyJar4" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(1209, 66)
+
+[node name="FlyJar3" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-1032, -55)
+
+[node name="FlyJar2" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(728, 81)
+
+[node name="FlyJar" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(528, 39)
+
+[node name="FlyJar5" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-1015, -284)
+
+[node name="FlyJar6" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-1727, -357)
+
+[node name="FlyJar7" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-1435, -326)
+
+[node name="FlyJar8" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-1396, -42)
+
+[node name="FlyJar9" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-571, -36)
+
+[node name="FlyJar10" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(1874, -308)
+
+[node name="FlyJar11" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(2006, -49)
+
+[node name="FlyJar12" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(909, -307)
+
+[node name="FlyJar13" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(214, -253)
+
+[node name="FlyJar14" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-43, -114)
+
+[node name="FlyJar15" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-2215, -327)
+point_value = 75.0
+
+[node name="FlyJar16" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-357, -496)
+
+[node name="FlyJar18" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-2898, -301)
+
+[node name="FlyJar19" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-2203, -926)
+
+[node name="FlyJar20" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-2370, -960)
+
+[node name="FlyJar17" parent="JarsManager" instance=ExtResource("14_3rk53")]
+position = Vector2(-2794, -510)
+
+[node name="DeathZones" type="Node2D" parent="."]
+
+[node name="HazardArea" parent="DeathZones" instance=ExtResource("17_jlxlk")]
+position = Vector2(-2988, 38)
+collision_layer = 25
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZones/HazardArea"]
+position = Vector2(-294, 34)
+shape = SubResource("RectangleShape2D_knwjx")
 
 [node name="CameraTargets" type="Node2D" parent="."]
 

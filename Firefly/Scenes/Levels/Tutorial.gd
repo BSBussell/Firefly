@@ -30,3 +30,5 @@ func local_ready():
 	
 	# Enable Specific Visuals that are left off in the editor for visibility
 	lighting.visible = true
+
+

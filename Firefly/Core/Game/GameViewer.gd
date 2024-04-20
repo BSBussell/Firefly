@@ -1,10 +1,9 @@
 extends Node2D
+class_name GameViewer
 
-@onready var game_container = $GameContainer
-@onready var collectible_counter: JarCounter
-@onready var results: VictoryScreen
-
+# Our loaders
 @onready var level_loader: LevelLoader = $GameContainer
+@onready var ui_loader: UiLoader = $UI
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,47 +15,29 @@ func _ready():
 	_viewports.ui_viewport_container = $UI
 	_viewports.ui_viewport = $UI/UIViewPort
 	
-	
 	# Load our level
-	level_loader.load_level("res://Scenes/Levels/tutorial.tscn")
-	
-	if level_loader.victory_screen:
-		results = level_loader.victory_screen
-	
-	if level_loader.counter:
-		collectible_counter = level_loader.counter
+	var level = level_loader.load_level("res://Scenes/Levels/tutorial.tscn")
+	ui_loader.setup(level)
 	
 	# Let us process input even when game beat
 	set_process_input(true)
 
 func _input(_event: InputEvent) -> void:
 	
-	# Handle Pausing
-	if Input.is_action_just_pressed("Pause") and not results.displayed:
-		level_loader.pause_menu.toggle_pause()
-		
-		if level_loader.pause_menu.paused:
-			collectible_counter.show_counter()
-		else:
-			collectible_counter.hide_counter(0.01)
-		
 	# Handle Resets
 	if Input.is_action_just_pressed("reset"):
 		
 		_stats.DEATHS = 0
 		_stats.TIME = 0
 
-		
-
 		# Reload the scene
 		get_tree().paused = false
 		
-		_viewports.game_viewport_container.reload_level()
-		collectible_counter.setup(results)
-		results.hide_Victory_Screen()
+		var level = level_loader.reload_level()
+		ui_loader.setup(level)
 		
 
-
+# Stuff Game View Handles
 func swap_fullscreen_mode():
 	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)

@@ -10,17 +10,28 @@ signal collected(jar: FlyJar)
 func _ready():
 	animation_player.play("Idle")
 
-
-
 func _on_area_entered(area):
-	animation_player.play("Grab")
-	
-	# TODO: Use Signals for this
-	# So instead of falling a global method
-	# Emit a signal. That way you can have multiple
-	# Methods respond to that signal
-	emit_signal("collected", self)
-	#_ui.new_item_found()
+
+	# And prevent the player from going into the thing again
 	set_deferred("monitoring", false)
 	set_deferred("monitorable", false)
-	set_collision_layer_value(7, false)
+
+	# Call Collection Logic
+	collect()
+
+func collect():
+	
+	animation_player.play("Grab")
+	
+
+	# Emit to any listeners
+	# Listeners:
+	#   Jar Manager
+	#   Potentially UI
+	emit_signal("collected", self)
+
+	
+# I am going to kms	
+func _exit_tree():
+	remove_from_group("Collectible")
+

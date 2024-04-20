@@ -25,19 +25,20 @@ func setup(result: VictoryScreen):
 	
 	max = 0
 	
-	var collectibles = get_tree().get_nodes_in_group("Collectible")
+	var collectibles = []
+	collectibles = get_tree().get_nodes_in_group("Collectible")
 	for jar in collectibles:
-		print("Setting up")
+		
+		# Connecting our jar collected signals
 		var error = jar.connect("collected", Callable(self, "jar_collected"))
 		if error:
 			print(error)
-		else:
-			max += 1
 	
+	max = collectibles.size()
+	print("Max:", max)
 	COLLECTED = 0
 	
 	COUNTER.text = "%d/%d" % [COLLECTED, max]
-	
 	victory_screen = result
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -53,8 +54,6 @@ func jar_collected(jar: FlyJar):
 	
 	peak_counter()
 	
-	if COLLECTED == max:
-		victory_screen.show_Victory_Screen()
 		
 func peak_counter():
 	show_counter()

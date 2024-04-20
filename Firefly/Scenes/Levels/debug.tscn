@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=18 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="3_41qlf"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="3_263tg"]
@@ -7,16 +7,17 @@
 [ext_resource type="Texture2D" uid="uid://pux5vi5jthqm" path="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png" id="6_aqrhp"]
 [ext_resource type="Texture2D" uid="uid://b1yvkgf4mxi26" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_1.png" id="7_im6pt"]
 [ext_resource type="AudioStream" uid="uid://cu2e2bu6ld7xt" path="res://Assets/SFX/ambience/forest_ambience_b.mp3" id="8_0y8n3"]
-[ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="11_a5y5u"]
+[ext_resource type="Script" path="res://Scenes/Levels/ChangeLevel.gd" id="11_0mgfm"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="11_dm2r0"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="11_tymp7"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="12_mdqvq"]
+[ext_resource type="PackedScene" uid="uid://d2aiiqy7j5ovi" path="res://Scenes/Levels/tutorial.tscn" id="12_veeod"]
 [ext_resource type="PackedScene" uid="uid://uvrcgp18j7vv" path="res://Core/Game/spikes.tscn" id="13_8nmqx"]
 
 [sub_resource type="GDScript" id="GDScript_0jk77"]
-script/source = "extends Node2D
+script/source = "extends \"res://Scripts/Level/Level.gd\"
 
-@export var PLAYER: Flyph
+
 
 @onready var music = $LevelAudio/Music
 @onready var ambience = $LevelAudio/Ambience
@@ -24,7 +25,7 @@ script/source = "extends Node2D
 @onready var shadow_filter = $\"PP + FX/ShadowFilter\"
 
 
-func _ready():
+func local_ready():
 
 	music.play(0)
 	ambience.play(0)
@@ -32,8 +33,6 @@ func _ready():
 	moonlight.visible = true
 	shadow_filter.visible = true
 	
-	#PLAYER.disable_glow()
-	pass
 "
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
@@ -49,6 +48,9 @@ colors = PackedColorArray(0, 0, 0, 1, 0.977813, 0.977813, 0.977813, 0.0221871, 0
 metadata/_snap_enabled = true
 metadata/_snap_count = 9
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m7kih"]
+size = Vector2(103.5, 138)
+
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER")]
 script = SubResource("GDScript_0jk77")
 PLAYER = NodePath("Flyph")
@@ -59,12 +61,11 @@ PLAYER = NodePath("Flyph")
 visible = false
 rotation = -0.698132
 color = Color(0.780392, 0.87451, 0.921569, 1)
-energy = 0.1
 range_layer_min = -101
 shadow_enabled = true
-shadow_color = Color(0, 0, 0, 0.858824)
-shadow_filter = 1
-shadow_filter_smooth = 10.0
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 2
+shadow_filter_smooth = 1.0
 height = 1.0
 metadata/_edit_lock_ = true
 
@@ -198,14 +199,19 @@ position = Vector2(96, 150)
 Player = NodePath("../Flyph")
 
 [node name="Events" type="Node2D" parent="."]
-visible = false
 
-[node name="Collectibles" type="Node2D" parent="."]
-position = Vector2(3, -4)
-script = ExtResource("11_a5y5u")
+[node name="ChangeLevek" type="Area2D" parent="Events"]
+script = ExtResource("11_0mgfm")
+new_level = ExtResource("12_veeod")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/ChangeLevek"]
+position = Vector2(-24.25, 38)
+shape = SubResource("RectangleShape2D_m7kih")
 
 [node name="DeathZones" type="Node2D" parent="."]
 visible = false
 
 [node name="Spikes" parent="." instance=ExtResource("13_8nmqx")]
 position = Vector2(177, 160)
+
+[connection signal="area_entered" from="Events/ChangeLevek" to="Events/ChangeLevek" method="_on_area_entered"]

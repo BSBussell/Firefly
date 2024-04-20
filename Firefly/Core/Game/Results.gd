@@ -1,15 +1,15 @@
-extends Node
+extends Control
 class_name VictoryScreen
 
 signal Show_Victory()
-@onready var color_rect = $ColorRect
-@onready var stats_label = $ColorRect/VBoxContainer/CenterContainer2/Stats
+@onready var stats_label = $VBoxContainer/CenterContainer2/Stats
+
 
 var displayed: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	visible = false
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -27,10 +27,16 @@ func _process(delta):
 	stats_label.text = "Time: %s\n Total Deaths: %d" % [display_time, _stats.DEATHS]
 
 func show_Victory_Screen():
-	color_rect.visible = true
+	visible = true
 	get_tree().paused = true
 	displayed = true
 
 func hide_Victory_Screen():
-	color_rect.visible = false
+	visible = false
 	displayed = false
+	
+func connect_signal(sig: String):
+	
+	var error = connect(sig, Callable(self, "show_Victory_Screen"))
+	if error != OK:
+		print("Error Connecting Signal: ", error)

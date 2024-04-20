@@ -17,10 +17,29 @@ class_name PauseMenu
 
 var paused: bool = false
 
-func _ready():
-	$VBoxContainer/Items/Top/ResumeButton.grab_focus()
+var counter: JarCounter = null
+var result_screen: VictoryScreen = null
+
+func connect_counter(new_counter: JarCounter):
+	
+	counter = new_counter
+	
+func connect_results(results: VictoryScreen):
+	
+	result_screen = results
+
+func _input(event):
+	
+	# Handle Pausing
+	if Input.is_action_just_pressed("Pause"):
+		toggle_pause()
 
 func toggle_pause():
+	
+	# If there is another ui element up
+	if conflict():
+		return
+	
 	if paused:
 		unpause()
 	else:
@@ -40,6 +59,10 @@ func pause():
 	# Set flag
 	paused = true
 	
+	# If there is a counter to display, display it:
+	if counter:
+		counter.show_counter()
+	
 	
 	
 func unpause():
@@ -53,6 +76,18 @@ func unpause():
 	
 	# Set flag
 	paused = false
+	
+	# If there is a counter to display, hide it:
+	if counter:
+		counter.hide_counter()
+
+# Returns true if another ui element is up
+func conflict() -> bool:
+	
+	if result_screen and result_screen.displayed:
+		return true
+	
+	return false
 
 #Expands a VBoxContainer vertically from a minimal height to its full height
 func expand_container(container: VBoxContainer, final_height: float = 0, duration: float = 1.0, easing = Tween.EASE_OUT):
@@ -77,8 +112,6 @@ func expand_container(container: VBoxContainer, final_height: float = 0, duratio
 
 	# Start the tween
 	tween.play()
-
-
 
 
 
