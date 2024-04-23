@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://d2aiiqy7j5ovi"]
+[gd_scene load_steps=42 format=3 uid="uid://d2aiiqy7j5ovi"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/Tutorial.gd" id="1_dar63"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="2_o33e3"]
@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://mhckwfmi6yo1" path="res://Scenes/Collectibles/gem.tscn" id="20_jjh3d"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="21_2ktdq"]
 [ext_resource type="Script" path="res://Scenes/Camera/CameraTriggers/CameraTarget.gd" id="24_wbl71"]
+[ext_resource type="PackedScene" uid="uid://bn0ibiwauibvx" path="res://Scenes/Enemies/walking_enemy.tscn" id="25_4j273"]
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
 min_value = -0.5
@@ -556,14 +557,13 @@ libraries = {
 "": SubResource("AnimationLibrary_7vltr")
 }
 
-[node name="Glow_Tut_2" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
+[node name="Glow_Tut_2" type="Area2D" parent="Events"]
 z_index = -1
 position = Vector2(-702, -149)
 scale = Vector2(0.5, 0.5)
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("12_yuqqh")
-Text = NodePath("")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Glow_Tut_2"]
 position = Vector2(110.5, 26)
@@ -859,6 +859,12 @@ blend_override = 0.1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CameraTargets/CameraTarget3"]
 position = Vector2(0, -10)
 shape = SubResource("RectangleShape2D_rfep0")
+
+[node name="WalkingEnemy" parent="." instance=ExtResource("25_4j273")]
+position = Vector2(63, 159)
+
+[node name="WalkingEnemy2" parent="." instance=ExtResource("25_4j273")]
+position = Vector2(278, 127)
 
 [connection signal="body_entered" from="Events/Crouch_Tut" to="Events/Crouch_Tut" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/Crouch_Tut" to="Events/Crouch_Tut" method="_on_body_exited"]
