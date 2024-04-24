@@ -67,6 +67,9 @@ func enter() -> void:
 			parent.current_animation = parent.ANI_STATES.RUNNING
 			dash_dust.emitting = true
 
+			# Also play the run sfx
+			run_sfx.play()
+
 		# Otherwise just player the landing animation
 		else:
 			parent.current_animation = parent.ANI_STATES.LANDING

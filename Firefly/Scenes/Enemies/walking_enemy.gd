@@ -1,4 +1,7 @@
 extends CharacterBody2D
+class_name goober
+
+@onready var standing_zone = $Standing_Zone
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -19,6 +22,9 @@ func _physics_process(delta):
 		flip()
 
 	velocity.x = speed
+	
+	# Have the standing zones applied velocity be the current vel
+	standing_zone.constant_linear_velocity = velocity
 	move_and_slide()
 	
 func flip():

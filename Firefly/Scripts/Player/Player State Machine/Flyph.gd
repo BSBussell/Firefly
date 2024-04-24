@@ -847,10 +847,12 @@ func kill():
 
 # Ways of death:
 func _on_hazard_detector_area_entered(_area):
-	kill()
+	if not dying:
+		kill()
 
 func _on_hazard_detector_body_entered(_body):
-	kill()
+	if not dying:
+		kill()
 
 # Sets the given points as the players respawn point
 func set_respawn_point(point: Vector2):
