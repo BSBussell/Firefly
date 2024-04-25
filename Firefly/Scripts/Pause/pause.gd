@@ -135,13 +135,15 @@ func _on_settings_button_pressed():
 
 ## Fullscreen Enabled
 func _on_full_screen_toggle_switched_on():
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	_viewports.viewer.swap_fullscreen_mode()
+	#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	
 	
 
 ## Fullscreen disabled
 func _on_full_screen_toggle_switched_off():
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	_viewports.viewer.swap_fullscreen_mode()
+	#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	
 	
 	
