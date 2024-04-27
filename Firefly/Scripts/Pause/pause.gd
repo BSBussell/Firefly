@@ -79,7 +79,7 @@ func unpause():
 	
 	# If there is a counter to display, hide it:
 	if counter:
-		counter.hide_counter()
+		counter.hide_counter(0.1)
 
 # Returns true if another ui element is up
 func conflict() -> bool:

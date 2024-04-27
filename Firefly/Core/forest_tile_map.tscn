@@ -2424,6 +2424,36 @@ texture = ExtResource("3_omlka")
 9:7/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 9:7/0/physics_layer_2/angular_velocity = 0.0
 9:7/0/physics_layer_2/polygon_0/points = PackedVector2Array(-8, 1, 1, 1, 1, 8, -8, 8)
+9:3/0 = 0
+9:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+9:3/0/physics_layer_0/angular_velocity = 0.0
+9:3/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+9:3/0/physics_layer_1/angular_velocity = 0.0
+9:3/0/physics_layer_2/linear_velocity = Vector2(0, 0)
+9:3/0/physics_layer_2/angular_velocity = 0.0
+9:3/0/metadata/_better_terrain = {
+0: [0],
+3: [0],
+4: [0],
+7: [0],
+12: [2],
+"type": 1
+}
+8:3/0 = 0
+8:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+8:3/0/physics_layer_0/angular_velocity = 0.0
+8:3/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+8:3/0/physics_layer_1/angular_velocity = 0.0
+8:3/0/physics_layer_2/linear_velocity = Vector2(0, 0)
+8:3/0/physics_layer_2/angular_velocity = 0.0
+8:3/0/metadata/_better_terrain = {
+3: [0],
+4: [0],
+7: [0],
+8: [0],
+12: [2],
+"type": 1
+}
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jm8kr"]
 resource_name = "BKG_Grass"

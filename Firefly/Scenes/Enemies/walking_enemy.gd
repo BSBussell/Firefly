@@ -8,6 +8,11 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var facing_right = true
 var speed = 60.0
 
+func process(delta):
+	
+	if scale != Vector2(1.0, 1.0):
+		scale = scale.move_toward(Vector2(1.0,1.0), delta)
+
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
@@ -36,3 +41,5 @@ func flip():
 		speed = abs(speed)
 	else:
 		speed = abs(speed) * -1
+		
+	#scale = Vector2(1.1,0.9)
