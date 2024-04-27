@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=15 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
 [ext_resource type="Shader" path="res://Core/Game/SubPixelSmoothing.gdshader" id="1_jculp"]
 [ext_resource type="Script" path="res://Core/Game/LevelLoader.gd" id="3_oejcr"]
 [ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
+[ext_resource type="Script" path="res://Core/Game/CollectibleCounter.gd" id="5_8lb5w"]
+[ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="6_ln5gy"]
 
 [sub_resource type="Environment" id="Environment_xxxtd"]
 background_mode = 3
@@ -22,6 +24,68 @@ adjustment_enabled = true
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gjm2h"]
 shader = ExtResource("1_jculp")
 shader_parameter/sub_pixel_offset = Vector2(0, 0)
+
+[sub_resource type="Animation" id="Animation_1bgpc"]
+resource_name = "Display"
+length = 10.0
+
+[sub_resource type="Animation" id="Animation_d4d62"]
+resource_name = "Hide"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("@SubViewportContainer@9287/@SubViewport@9288/CollectibleCounter/Label:offset_right")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-200, 480]
+}
+
+[sub_resource type="Animation" id="Animation_bf6ti"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("@SubViewportContainer@9287/@SubViewport@9288/CollectibleCounter/Label:offset_right")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [480.006]
+}
+
+[sub_resource type="Animation" id="Animation_jhb4m"]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("@SubViewportContainer@9287/@SubViewport@9288/CollectibleCounter/Label:offset_right")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [480, -200]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_s4xwf"]
+_data = {
+"Display": SubResource("Animation_1bgpc"),
+"Hide": SubResource("Animation_d4d62"),
+"RESET": SubResource("Animation_bf6ti"),
+"Show": SubResource("Animation_jhb4m")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_u4aag"]
+font = ExtResource("6_ln5gy")
+font_size = 64
+shadow_size = 0
 
 [node name="GameViewer" type="Node2D"]
 process_mode = 3
@@ -62,6 +126,49 @@ handle_input_locally = false
 size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
+[node name="CollectibleCounter" type="Control" parent="UI/UIViewPort"]
+z_index = 1
+layout_mode = 3
+anchor_left = 1.0
+anchor_top = 0.2
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -1920.0
+offset_top = -216.0
+offset_right = -1920.0
+offset_bottom = -216.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("5_8lb5w")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/UIViewPort/CollectibleCounter"]
+root_node = NodePath("../../../../../..")
+libraries = {
+"": SubResource("AnimationLibrary_s4xwf")
+}
+
+[node name="Label" type="Label" parent="UI/UIViewPort/CollectibleCounter"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -60.0
+offset_right = 480.006
+offset_bottom = 60.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "16/16"
+label_settings = SubResource("LabelSettings_u4aag")
+
+[node name="HideTimer" type="Timer" parent="UI/UIViewPort/CollectibleCounter"]
+wait_time = 3.0
+one_shot = true
+
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 offset_left = -40.0
 offset_top = -40.0
+
+[connection signal="timeout" from="UI/UIViewPort/CollectibleCounter/HideTimer" to="UI/UIViewPort/CollectibleCounter" method="_on_hide_timer_timeout"]

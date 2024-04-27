@@ -71,10 +71,12 @@ func swap_fullscreen_mode():
 	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		
-		## Update Render Scaling
-		var window_size = DisplayServer.window_get_size()
-		current_scale = int(window_size.x / target_rendering.x)
+		# Update Render Scaling
+		#var window_size = DisplayServer.window_get_size()
+		#print(window_size)
+		#current_scale = int(window_size.x / target_rendering.x)
 		set_render_scale(current_scale)
+		
 		
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
@@ -82,8 +84,8 @@ func swap_fullscreen_mode():
 		## Update Render Scaling
 		#OS.get_screen_size().
 		var window_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
-		current_scale = int(window_size.x / target_rendering.x)
-		set_render_scale(current_scale)
+		resize_game_viewport(int(window_size.x / target_rendering.x))
+		ui_view_port.size = window_size
 
 
 func set_render_scale(scale_factor: int):
@@ -91,14 +93,13 @@ func set_render_scale(scale_factor: int):
 	
 	
 	# Resize the Ui Renderer
-	resize_ui_viewport(scale_factor)
+	resize_ui_viewport(scale_factor * target_rendering)
 	
 	# Resizes the Game renderer
 	resize_game_viewport(scale_factor)
 
-func resize_ui_viewport(scale_factor):
-	
-	ui_view_port.size = DisplayServer.window_get_size()
+func resize_ui_viewport(screen_size):
+	ui_view_port.size = screen_size
 	
 	
 

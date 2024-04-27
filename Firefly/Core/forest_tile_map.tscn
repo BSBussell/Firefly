@@ -1506,6 +1506,7 @@ texture = ExtResource("3_omlka")
 4: [2, 3],
 12: [2, 3],
 15: [0],
+"symmetry": 1,
 "type": 2
 }
 3:3/0 = 0
@@ -1530,6 +1531,7 @@ texture = ExtResource("3_omlka")
 8: [0],
 11: [0],
 12: [2, 3],
+"symmetry": 1,
 "type": 2
 }
 4:3/0 = 0
@@ -1660,11 +1662,9 @@ texture = ExtResource("3_omlka")
 4:4/0/terrains_peering_bit/bottom_left_corner = 0
 4:4/0/terrains_peering_bit/left_side = 4
 4:4/0/metadata/_better_terrain = {
-0: [2, 3],
-3: [0],
-4: [0],
+4: [2],
 7: [0],
-8: [2, 3],
+8: [2],
 "type": 2
 }
 5:4/0 = 0
@@ -1681,12 +1681,6 @@ texture = ExtResource("3_omlka")
 5:4/0/terrains_peering_bit/bottom_side = 4
 5:4/0/terrains_peering_bit/bottom_left_corner = 0
 5:4/0/terrains_peering_bit/left_side = 4
-5:4/0/metadata/_better_terrain = {
-4: [2],
-7: [0],
-8: [2],
-"type": 2
-}
 0:5/0 = 0
 0:5/0/terrain_set = 0
 0:5/0/terrain = 4
@@ -1804,11 +1798,9 @@ texture = ExtResource("3_omlka")
 4:5/0/terrains_peering_bit/top_side = 0
 4:5/0/terrains_peering_bit/top_right_corner = 0
 4:5/0/metadata/_better_terrain = {
-0: [2],
 8: [2],
 11: [0],
-12: [0],
-15: [0],
+12: [2],
 "type": 2
 }
 5:5/0 = 0
@@ -1825,12 +1817,6 @@ texture = ExtResource("3_omlka")
 5:5/0/terrains_peering_bit/left_side = 4
 5:5/0/terrains_peering_bit/top_left_corner = 0
 5:5/0/terrains_peering_bit/top_side = 4
-5:5/0/metadata/_better_terrain = {
-8: [2],
-11: [0],
-12: [2],
-"type": 2
-}
 1:6/0 = 0
 1:6/0/terrain_set = 0
 1:6/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -1860,9 +1846,7 @@ texture = ExtResource("3_omlka")
 2:6/0/terrains_peering_bit/top_side = 4
 2:6/0/terrains_peering_bit/top_right_corner = 0
 2:6/0/metadata/_better_terrain = {
-0: [0],
-3: [0],
-4: [2],
+0: [2],
 12: [2],
 15: [0],
 "type": 2
@@ -1884,9 +1868,7 @@ texture = ExtResource("3_omlka")
 3:6/0/terrains_peering_bit/top_left_corner = 0
 3:6/0/terrains_peering_bit/top_side = 4
 3:6/0/metadata/_better_terrain = {
-4: [2],
-7: [0],
-8: [0],
+8: [2],
 11: [0],
 12: [2],
 "type": 2
@@ -1917,12 +1899,6 @@ texture = ExtResource("3_omlka")
 2:7/0/terrains_peering_bit/right_side = 4
 2:7/0/terrains_peering_bit/top_side = 4
 2:7/0/terrains_peering_bit/top_right_corner = 0
-2:7/0/metadata/_better_terrain = {
-0: [2],
-12: [2],
-15: [0],
-"type": 2
-}
 3:7/0 = 0
 3:7/0/terrain_set = 0
 3:7/0/terrain = 4
@@ -1937,12 +1913,6 @@ texture = ExtResource("3_omlka")
 3:7/0/terrains_peering_bit/left_side = 4
 3:7/0/terrains_peering_bit/top_left_corner = 0
 3:7/0/terrains_peering_bit/top_side = 4
-3:7/0/metadata/_better_terrain = {
-8: [2],
-11: [0],
-12: [2],
-"type": 2
-}
 3:1/0 = 0
 3:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_cvr1c")
 3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
