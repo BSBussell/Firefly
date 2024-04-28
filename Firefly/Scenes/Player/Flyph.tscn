@@ -1,4 +1,4 @@
-[gd_scene load_steps=106 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=111 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -23,7 +23,11 @@
 [ext_resource type="AudioStream" uid="uid://drn56tacwbwh1" path="res://Assets/SFX/Player/Landing.wav" id="15_o0d2x"]
 [ext_resource type="AudioStream" uid="uid://dhvsjt5lta3gk" path="res://Assets/SFX/Player/Sliding.wav" id="17_r3q20"]
 [ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="18_mioiu"]
+[ext_resource type="AudioStream" uid="uid://bpm4t54vvm5l4" path="res://Assets/SFX/Water/lightSplash.mp3" id="19_5b1pc"]
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
+[ext_resource type="AudioStream" uid="uid://bahbkt2kqpg2w" path="res://Assets/SFX/Water/underWater.mp3" id="20_j21pw"]
+[ext_resource type="AudioStream" uid="uid://c86u0dij278a" path="res://Assets/SFX/Water/getting_out_of_water.mp3" id="21_g6yjb"]
+[ext_resource type="AudioStream" uid="uid://caexb2m0j71la" path="res://Assets/SFX/Mechanics/swinging.mp3" id="22_q5uq7"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Sliding.gd" id="23_0bu6o"]
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
 [ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
@@ -541,6 +545,9 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.588921, 1, 1, 1, 0)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_polx2"]
 size = Vector2(6.5, 13.25)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k824u"]
+size = Vector2(10, 7)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dj0fv"]
 size = Vector2(0, 10)
 
@@ -617,7 +624,7 @@ bounce_curve = SubResource("Curve_umqtl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"idle"
+animation = &"falling"
 autoplay = "idle"
 flip_h = true
 script = ExtResource("6_vid37")
@@ -820,8 +827,8 @@ position = Vector2(2, -2)
 collision_mask = 128
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/WaterDetector"]
-position = Vector2(-1, -8.375)
-shape = SubResource("RectangleShape2D_polx2")
+position = Vector2(-1, -10.5)
+shape = SubResource("RectangleShape2D_k824u")
 
 [node name="RopeDetector" type="Area2D" parent="Physics"]
 position = Vector2(2, -2)
@@ -978,6 +985,24 @@ stream = ExtResource("19_pmf6f")
 volume_db = -5.0
 bus = &"SFX"
 
+[node name="LightSplashSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("19_5b1pc")
+bus = &"SFX"
+
+[node name="SwimmingSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("20_j21pw")
+bus = &"Ambience"
+
+[node name="OutOfWaterSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("21_g6yjb")
+volume_db = -3.0
+bus = &"SFX"
+
+[node name="SwingingSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("22_q5uq7")
+volume_db = -5.0
+pitch_scale = 2.5
+
 [node name="UI_FX" type="CanvasLayer" parent="."]
 
 [node name="Star" type="CPUParticles2D" parent="UI_FX"]
@@ -1076,17 +1101,12 @@ coyote_time = NodePath("../../Timers/CoyoteTime")
 script = ExtResource("25_jbi8o")
 WALL_STATE = NodePath("../Wall")
 AERIAL_STATE = NodePath("../Aerial")
-WATER_ENTRY_COST = 0.3
 WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
-WATER_SPEED_MULTI = 0.7
-WATER_ACCEL_MULTI = 0.8
-WATER_JUMP_MULTI = 0.8
-WATER_GRAV_MULTI = 0.15
-MAX_FALL_MULTI = -0.3
 
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
 script = ExtResource("27_47nb5")
 AERIAL_STATE = NodePath("../Aerial")
+swing_up_decel = 400.0
 
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
 script = ExtResource("25_5it1v")

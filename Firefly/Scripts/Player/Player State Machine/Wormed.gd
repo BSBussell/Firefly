@@ -4,6 +4,16 @@ extends PlayerState
 @export var AERIAL_STATE: PlayerState = null
 
 
+@export var swing_force: float = 400
+@export var max_swing_force: float = 2000
+@export var min_swing_force: float = 600
+@export var swing_down_accel: float = 1200
+@export var swing_up_decel: float = 800
+@export var player_weight: float = 980
+
+@export var grab_force_multi: float = 1.75
+@export var jump_force_multi: float = -1.75
+
 
 # Effects
 @onready var speed_particles = $"../../Particles/MegaSpeedParticles"
@@ -13,10 +23,8 @@ extends PlayerState
 # Rope Detector
 @onready var rope_detector = $"../../Physics/RopeDetector"
 
-var swing_force: float = 400
-var max_swing_force: float = 2000
-var swing_down_accel: float = 1200
-var swing_up_decel: float = 800
+@onready var swinging_sfx = $"../../Audio/SwingingSFX"
+
 
 # Called on state entrance, setup
 func enter() -> void:
@@ -31,15 +39,16 @@ func enter() -> void:
 
 	
 	rope_detector.set_collision_mask_value(9, false)	
-	print("AirSpeed: ", parent.air_speed * 1.5)
+	
 	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 1.5), 1.0)
-	swing_force = lerpf(600, max_swing_force, speed_ratio)
-	print("Speed, Ratio: ", speed_ratio)
-	print("Entry Swing Force: ", swing_force)
+	swing_force = lerpf(min_swing_force, max_swing_force, speed_ratio)
+	
 
-	var grab_force: Vector2 = Vector2(600,0)
-	grab_force *= sign(parent.velocity.x)
-	apply_rope_impulse(parent.velocity * 1.75)
+	apply_rope_impulse(parent.velocity * grab_force_multi)
+
+
+	#swinging_sfx.pitch_scale = 1.75 if swinging_sfx.pitch_scale != 1.75 else 2
+	swinging_sfx.play()
 
 	
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
@@ -86,7 +95,9 @@ func process_physics(delta: float) -> PlayerState:
 	# Swing
 	swinging(delta, parent.horizontal_axis)
 	
-	# Jump off thing
+	apply_weight(delta)
+	
+	velocity_decay(delta)
 	
 
 	# Water State Change Handled by the Water Detection
@@ -104,11 +115,19 @@ func process_frame(_delta):
 
 	# Direction Facing, don't update if we're walljumping up
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
-		if parent.velocity.x < 0 and not parent.animation.flip_h:
+		if parent.horizontal_axis < 0 and not parent.animation.flip_h:
+			
+			#swinging_sfx.pitch_scale = 1.75
+			swinging_sfx.play()
+			
 			parent.animation.flip_h = true
 			parent.squish_node.squish(parent.turn_around_squash)
 
-		elif parent.velocity.x > 0 and parent.animation.flip_h:
+		elif parent.horizontal_axis > 0 and parent.animation.flip_h:
+			
+			#swinging_sfx.pitch_scale = 2.0
+			swinging_sfx.play()
+			
 			parent.animation.flip_h = false
 			parent.squish_node.squish(parent.turn_around_squash)
 
@@ -170,13 +189,30 @@ func jump():
 	if jump_dir == 0:
 		jump_dir = -1 if parent.animation.flip_h else 1
 	
+	# The player should be able to do a lot regardless
+	# with swinging
+	var swing_multi = 3.5
 	
-	var swing_multi = lerpf(1, 3, swing_force/max_swing_force)
-	print("Swing_Mult: ", swing_multi)
-	parent.velocity.x = parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
+	# But if they time the jump right :3
+	# This isn't generally base game stuff
+	# More like silly fun zoom stuff
+	if speeding_up:
+		swing_multi = lerpf(swing_multi, 10, swing_force/max_swing_force)
+		print("Swing Boost!")
+
+	if sign(parent.velocity.x) != sign(jump_dir):
+		parent.velocity.x *= -1
+	
+	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
+
+
+	var vertical_control = 1.0
+	if parent.vertical_axis < 0:
+		vertical_control = -0.4
+		
 
 	# Jump Velocity
-	parent.velocity.y = parent.jump_velocity
+	parent.velocity.y = parent.jump_velocity * vertical_control
 
 	
 	# TODO: Water Jump :3
@@ -185,7 +221,7 @@ func jump():
 	
 	# Apply Impulse to the rope using func apply_rope_impulse(force)
 	# Based on velocity
-	apply_rope_impulse(parent.velocity * -1.75)
+	apply_rope_impulse(parent.velocity * jump_force_multi)
 	
 	parent.squish_node.squish(Vector2(0.8, 1.2))
 	
@@ -195,39 +231,52 @@ func jump():
 
 
 var last_position: Vector2 = Vector2.ZERO
+var current_dir = 0.0
+
+var speeding_up: bool = false
 func swinging(delta, dir):
 	
 	var offset = Vector2(0, -16)
 	parent.global_position = parent.stuck_segment.global_position - offset
 	
-	if parent.global_position.y > last_position.y:
+	if parent.global_position.y > last_position.y and current_dir != parent.horizontal_axis:
 		swing_force = move_toward(swing_force, max_swing_force, swing_down_accel * delta)
-		print("Moving Down")
+		print("Swing Speed Up")
+		speeding_up = true
 	else:
 		swing_force = move_toward(swing_force, 600, swing_up_decel * delta)
 	
-		print("Stalling or moving up")
+		current_dir = parent.horizontal_axis
+		
+		speeding_up = false
+	
+		print("Swing Slow Down")
 	
 	last_position = parent.global_position
+	
+	
 	
 	if parent.horizontal_axis:
 		
 		var grab_force: Vector2 = Vector2(swing_force,0)
-		grab_force *= parent.horizontal_axis
+		grab_force *= dir
 		apply_rope_force(grab_force)
 	
+func apply_weight(delta):
 
+	apply_rope_force(Vector2(0, player_weight))
+
+
+# Slowly move a players velocity towards zero the longer they're on rope
+func velocity_decay(delta):
+	parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
 
 func apply_rope_impulse(force: Vector2):
 	
 	var offset: Vector2 = Vector2.ZERO
-	print(force)
-	#parent.stuck_segment.apply_central_impulse(force)
 	parent.stuck_segment.apply_impulse(force, offset)
 
 func apply_rope_force(force: Vector2):
 	
 	var offset: Vector2 = Vector2.ZERO
-	print(force)
-	#parent.stuck_segment.apply_central_impulse(force)
 	parent.stuck_segment.apply_force(force, offset)

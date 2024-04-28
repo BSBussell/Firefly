@@ -325,7 +325,7 @@ func _physics_process(delta: float) -> void:
 		
 
 		# "Assists" in movement
-		#movement_assist(delta)
+		movement_assist(delta)
 
 		# Store the velocity for next frame
 		prev_velocity_x = velocity.x

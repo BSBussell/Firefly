@@ -802,6 +802,11 @@ texture = ExtResource("1_evea0")
 2:10/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -4, 8, -4, 8, 8, -8, 8)
 2:10/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 2:10/0/physics_layer_2/angular_velocity = 0.0
+2:10/0/metadata/_better_terrain = {
+4: [1],
+"symmetry": 8,
+"type": 7
+}
 14:10/animation_columns = 4
 14:10/animation_speed = 0.3
 14:10/animation_mode = 1
@@ -1213,6 +1218,9 @@ metadata/_better_terrain = {
 }], ["WaterBKG", Color(0.04959, 0.813192, 0.335705, 1), 0, [], {
 "coord": Vector2i(16, 12),
 "source_id": 2
+}], ["Hazards", Color(0.648871, 0.952081, 0.958221, 1), 0, [], {
+"coord": Vector2i(2, 10),
+"source_id": 2
 }]],
 "version": "0.2"
 }
@@ -1223,12 +1231,13 @@ format = 2
 layer_0/name = "FGDetail"
 layer_0/z_index = 3
 layer_1/name = "Hazards"
+layer_1/z_index = 1
 layer_1/tile_data = PackedInt32Array()
 layer_2/name = "Foreground"
 layer_2/z_index = 1
 layer_2/tile_data = PackedInt32Array()
 layer_3/name = "Water"
-layer_3/z_index = -2
+layer_3/z_index = 1
 layer_3/tile_data = PackedInt32Array()
 layer_4/name = "WaterBKG"
 layer_4/z_index = -3

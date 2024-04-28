@@ -47,6 +47,7 @@ func load_ui(context: Level):
 	# If there are jars to collect
 	if context.jar_manager:
 		
+		
 	
 		# Setup Victory Screen
 		results_instance = RESULTS.instantiate()
@@ -56,6 +57,7 @@ func load_ui(context: Level):
 		context.connect_to_win(victory_function)
 		
 		# Setup the colelctible counter
+		print("Setting up Counter")
 		counter_instance = COLLECTIBLE_COUNTER.instantiate()
 		_viewports.ui_viewport.add_child(counter_instance)
 		

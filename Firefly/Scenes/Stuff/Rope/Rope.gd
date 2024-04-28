@@ -8,14 +8,19 @@ const ANCHOR = preload("res://Scenes/Stuff/Rope/anchor.tscn")
 ## Length of the rope
 @export var Segments: int = 5
 @export var Swingable: bool = true
+@export var GlowWorm: bool = false
 
 
 # Da base
 @onready var base = $Base
+@onready var lure = $PointLight2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	create_joints()
+	if GlowWorm:
+		setup_Worm()
+
 
 
 func create_joints() -> void:
@@ -76,7 +81,8 @@ func create_joints() -> void:
 		
 
 
-
+func setup_Worm():
+	lure.visible = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

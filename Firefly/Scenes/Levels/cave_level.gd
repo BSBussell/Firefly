@@ -29,8 +29,7 @@ func local_ready():
 	ambience.play(0)
 	
 	# Enable Reverb Audio Filer
-	#var bus_idx = AudioServer.get_bus_index("Master")
-	#AudioServer.set_bus_effect_enabled(bus_idx, 0, true)
+	_audio.set_level_effects([0])
 
 
 	

@@ -8,15 +8,16 @@ extends PlayerState
 
 # Water Properties
 @export_category("Water Properties")
-@export var WATER_ENTRY_COST: float
+@export var WATER_ENTRY_COST: float = 0.3
 @export var WATER_MODULATION: Color
-@export var WATER_SPEED_MULTI: float
-@export var WATER_ACCEL_MULTI: float
-@export var WATER_JUMP_MULTI: float
+@export var WATER_SPEED_MULTI: float = 0.7
+@export var WATER_ACCEL_MULTI: float = 0.8
+@export var WATER_JUMP_MULTI: float = 0.8
+@export var WATER_DIVE_MULTI: float = -0.7
 
 
-@export var WATER_GRAV_MULTI: float
-@export var MAX_FALL_MULTI: float
+@export var WATER_GRAV_MULTI: float = 0.15
+@export var MAX_FALL_MULTI: float = -0.3
 
 # Splash Spawner
 @onready var splash_spawner = $"../../Particles/LandingDustSpawner"
@@ -38,6 +39,12 @@ extends PlayerState
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 @onready var wet = $"../../Particles/Wet"
+
+
+# SFX
+@onready var light_splash_sfx = $"../../Audio/LightSplashSFX"
+@onready var swimming_sfx = $"../../Audio/SwimmingSFX"
+@onready var out_of_water_sfx = $"../../Audio/OutOfWaterSFX"
 
 
 var is_wet = false
@@ -108,12 +115,12 @@ func enter() -> void:
 	var animation = new_cloud.get_node("AnimationPlayer")
 	animation.play("free")
 
-	# This is gonna be sick
-	# Enable Water Audio Filers
-	var bus_idx = AudioServer.get_bus_index("Master")
-	AudioServer.set_bus_effect_enabled(bus_idx, 1, true)
-	AudioServer.set_bus_effect_enabled(bus_idx, 2, true)
+	# SFX
+	light_splash_sfx.play()
+	swimming_sfx.play()
 
+	# Enable Water Audio Filers
+	_audio.enable_underwater_fx()
 	
 
 
@@ -147,16 +154,19 @@ func exit() -> void:
 	var animation = new_cloud.get_node("AnimationPlayer")
 	animation.play("free")
 
+	# SFX
+	out_of_water_sfx.play()
+	swimming_sfx.stop()
+
 	# Set the modulation to the default
 	parent.animation.set_glow(parent.movement_data.GLOW, 2)
 
-	# Enable Water Audio Filers
-	var bus_idx = AudioServer.get_bus_index("Master")
-	AudioServer.set_bus_effect_enabled(bus_idx, 1, false)
-	AudioServer.set_bus_effect_enabled(bus_idx, 2, false)
-
+	# disable Water Audio Filers
+	_audio.disable_underwater_fx()
+	
 	wet.emitting = true
-	await get_tree().create_timer(1.3).timeout
+	if get_tree():
+		await get_tree().create_timer(1.3).timeout
 	wet.emitting = false
 	
 	
@@ -167,23 +177,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 	# If Fast Falling Input
 	if Input.is_action_just_pressed("Down"):
-		parent.fastFalling = true
-		parent.animation.speed_scale = 2.0
-		if parent.temp_gravity_active:
-			parent.temp_gravity_active = false
-			parent.velocity.y = max(parent.jump_velocity * 0.5, parent.velocity.y)
-
-
-	# If we are crouch jumping, let go of down, and have standing room.
-	var in_crouch = parent.current_animation == parent.ANI_STATES.CRAWL
-	if in_crouch and not Input.is_action_pressed("Down") and have_stand_room():
-
-		parent.crouchJumping = false
-		parent.current_animation = parent.ANI_STATES.FALLING
-
-		parent.set_standing_collider()
-
-
+		water_dive()
 
 	return null
 
@@ -219,24 +213,19 @@ func process_physics(delta: float) -> PlayerState:
 
 func process_frame(_delta):
 
-	# Fall squishing :3
-	if parent.velocity.y > 0:
-		var spriteBlend = min(parent.velocity.y / parent.movement_data.MAX_FALL_SPEED, 1)
-		var squishVal = Vector2()
-		squishVal.x = lerp(1.0, parent.falling_squash.x, spriteBlend)
-		squishVal.y =  lerp(1.0, parent.falling_squash.y, spriteBlend)
-		parent.squish_node.squish(squishVal)
+	swimming_sfx.play(swimming_sfx.get_playback_position())
+
+	
 
 
 	# Direction Facing, don't update if we're walljumping up
-	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
-		if parent.velocity.x < 0 and not parent.animation.flip_h:
-			parent.animation.flip_h = true
-			parent.squish_node.squish(parent.turn_around_squash)
+	if parent.velocity.x < 0 and not parent.animation.flip_h:
+		parent.animation.flip_h = true
+		parent.squish_node.squish(parent.turn_around_squash)
 
-		elif parent.velocity.x > 0 and parent.animation.flip_h:
-			parent.animation.flip_h = false
-			parent.squish_node.squish(parent.turn_around_squash)
+	elif parent.velocity.x > 0 and parent.animation.flip_h:
+		parent.animation.flip_h = false
+		parent.squish_node.squish(parent.turn_around_squash)
 
 	# Speed Particle Emission
 	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active:
@@ -244,6 +233,8 @@ func process_frame(_delta):
 		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
 	else:
 		speed_particles.emitting = false
+
+	
 
 	pass
 
@@ -257,6 +248,7 @@ func animation_end() -> PlayerState:
 	# If falling ends pause the animation
 	if parent.current_animation == parent.ANI_STATES.FALLING:
 		parent.restart_animation = true
+		parent.animation.speed_scale = 1
 		#parent.animation.pause()
 
 	return null
@@ -288,13 +280,7 @@ func water_jump():
 	# Jump Velocity
 	parent.velocity.y = parent.jump_velocity * WATER_JUMP_MULTI
 
-	# Splash :3
-	#var new_cloud = parent.SPLASH.instantiate()
-	#new_cloud.set_name("splash_temp")
-	#splash_spawner.add_child(new_cloud)
-	#var animation = new_cloud.get_node("AnimationPlayer")
-	#animation.play("free")
-
+	
 	# TODO: Water Jump :3
 	# Jump SFX
 	jumping_sfx.play(0)
@@ -305,6 +291,35 @@ func water_jump():
 	# Animation
 	parent.current_animation = parent.ANI_STATES.FALLING
 	parent.restart_animation = true
+
+func water_dive():
+	
+	# Set Flags
+	parent.jumping = true
+
+	# Add a Horizontal Jump Boost to our players X velocity
+	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
+
+	# Jump Velocity
+	parent.velocity.y = parent.jump_velocity * WATER_DIVE_MULTI
+
+	
+	# TODO: Water Jump :3
+	# Jump SFX
+	jumping_sfx.play(0)
+	
+	
+	parent.squish_node.squish(Vector2(0.8, 1.2))
+	
+	# Animation
+	parent.current_animation = parent.ANI_STATES.FALLING
+	
+	# Reverse the animation :3
+	parent.animation.speed_scale = -1
+	parent.animation.frame = 3
+	
+	parent.restart_animation = true
+	
 
 func handle_grace_walljump() -> void:
 
@@ -346,71 +361,6 @@ func handle_sHop(_delta):
 			parent.velocity.y = parent.ff_velocity
 
 
-
-# Pretty much set all jump bools to false when falling
-func update_jump_flags() -> void:
-
-	# Disabling Wall Jumping flags if we're falling
-	if parent.velocity.y > 0:
-
-		# Wall Jump Flags
-		if parent.wallJumping:
-			# Player has started falling, reset wall jump state
-			parent.wallJumping = false
-			parent.current_wj = parent.WALLJUMPS.NEUTRAL
-
-		# temp grav
-		if parent.temp_gravity_active:
-			parent.temp_gravity_active = false
-		
-		# launched
-		if parent.launched:	
-			parent.launched = false
-
-		# Jumping flag
-		if parent.jumping:
-			parent.jumping = false
-
-# Gets the gravity to apply
-func get_gravity() -> float:
-
-	update_jump_flags()
-
-	# Default gravity is fall gravity
-	var gravity_to_apply = parent.fall_gravity
-
-	var rising = parent.jumping or parent.boostJumping
-
-	# If we're wall jumping
-	if parent.wallJumping:
-		# Apply the correct wall jump gravity
-		match parent.current_wj:
-			parent.WALLJUMPS.NEUTRAL:
-				gravity_to_apply = parent.walljump_gravity
-			parent.WALLJUMPS.UPWARD:
-				gravity_to_apply = parent.up_walljump_gravity
-
-	# If we're rising
-	
-	elif rising and not shopped:
-		# Apply rising gravity
-		gravity_to_apply = parent.jump_gravity
-
-	# If we're fast falling
-	elif parent.fastFalling:
-		# Apply fast falling gravity
-		gravity_to_apply = parent.ff_gravity
-
-	# Temp Gravity Overrides All
-	if parent.temp_gravity_active:
-		gravity_to_apply = parent.temp_gravtity
-
-
-	# Add a bit of float if we haven't shopped
-	if abs(parent.velocity.y) < 40 and Input.is_action_pressed("Jump") and not parent.crouchJumping and not parent.boostJumping:
-		gravity_to_apply *= 0.5
-
-	return gravity_to_apply
 
 func apply_gravity(delta) -> void:
 	

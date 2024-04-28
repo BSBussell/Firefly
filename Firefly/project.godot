@@ -13,6 +13,7 @@ config_version=5
 config/name="Firefly"
 run/main_scene="res://Core/Game/GameViewer.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
+run/max_fps=30
 boot_splash/image="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png"
 config/icon="res://Assets/BOOT/icon_green_bkgt.png"
 
@@ -26,9 +27,8 @@ _loader="*res://Scripts/Globals/_loader.gd"
 _debug="*res://Scripts/Globals/_debug.gd"
 _viewports="*res://Scripts/Globals/_viewports.gd"
 _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
-_shake="*res://Scripts/Globals/_shake.gd"
-_ui="*res://Scripts/Globals/_UI.gd"
 _stats="*res://Scripts/Globals/_stats.gd"
+_audio="*res://Scripts/Globals/_audio.gd"
 _globals="*res://Scripts/Globals/_globals.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 

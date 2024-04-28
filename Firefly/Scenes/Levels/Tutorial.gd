@@ -28,6 +28,9 @@ func local_ready():
 	music.play(0)
 	ambience.play(0)
 	
+	_audio.set_level_effects([])
+
+	
 	# Enable Specific Visuals that are left off in the editor for visibility
 	lighting.visible = true
 
