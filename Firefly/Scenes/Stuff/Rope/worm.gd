@@ -9,6 +9,7 @@ var target_segment: SpitSegment
 var target: Vector2
 var active: bool = false
 var reversed: bool = false
+var climb_speed: float = 0.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,10 +35,11 @@ func _physics_process(delta):
 
 
 
-func start_hunt(initial: SpitSegment):
+func start_hunt(initial: SpitSegment, speed: float):
 	
 	first_segment = initial
 	
+	climb_speed = speed
 	active = true
 	target_segment = initial
 	target = initial.get_node("Marker2D").global_position
@@ -49,7 +51,7 @@ func crawl(delta):
 	target = target_segment.get_node("Marker2D").global_position
 	#global_position = target
 	global_position.x = move_toward(global_position.x, target.x, delta * 500)
-	global_position.y = move_toward(global_position.y, target.y, delta * 25)
+	global_position.y = move_toward(global_position.y, target.y, delta * climb_speed)
 	rotation = (target_segment.rotation)
 	
 	

@@ -9,7 +9,12 @@ const WORM = preload("res://Scenes/Stuff/Rope/worm.tscn")
 ## Length of the rope
 @export var Segments: int = 5
 @export var Swingable: bool = true
+
+@export_category("GlowWorm Properties")
 @export var GlowWorm: bool = false
+@export var worm_delay: float = 0.75
+@export var worm_speed: float = 25
+
 
 # Da base
 @onready var base = $Base
@@ -109,7 +114,9 @@ func activate(segment: SpitSegment):
 			
 			var worm = WORM.instantiate()
 			add_child(worm)
-			worm.start_hunt(first_segment)
+			# Wait 0.3 seconds before we can grab a rope again
+			await get_tree().create_timer(worm_delay).timeout
+			worm.start_hunt(first_segment, worm_speed)
 			worm_active = true
 	
 	

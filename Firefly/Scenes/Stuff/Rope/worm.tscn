@@ -43,7 +43,7 @@ script = ExtResource("1_mtwpq")
 position = Vector2(0, -6)
 sprite_frames = SubResource("SpriteFrames_3dw1i")
 animation = &"Crawl"
-frame_progress = 0.0336919
+frame_progress = 0.712478
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 0

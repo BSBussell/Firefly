@@ -171,19 +171,18 @@ func animation_end() -> PlayerState:
 
 func handle_jump(_delta) -> bool:
 
-	# If we are able to do a coyote jump
-	if not parent.launched:
+	
 
-		# If the player has buffered a jump
-		if parent.attempt_jump():
+	# If the player has buffered a jump
+	if parent.attempt_jump():
 
-			# Update Animation State if we aren't holding crawl still
-			if (parent.current_animation != parent.ANI_STATES.CRAWL):
-				parent.current_animation = parent.ANI_STATES.FALLING
+		# Update Animation State if we aren't holding crawl still
+		if (parent.current_animation != parent.ANI_STATES.CRAWL):
+			parent.current_animation = parent.ANI_STATES.FALLING
 
-			jump()
-			
-			return true
+		jump()
+		
+		return true
 			
 	return false
 

@@ -126,7 +126,6 @@ animations = [{
 size = Vector2(10, 8)
 
 [node name="Spring" type="Area2D"]
-position = Vector2(208, 612)
 collision_layer = 96
 script = ExtResource("1_bfd0d")
 SPRING_RISE_TIME = 0.3

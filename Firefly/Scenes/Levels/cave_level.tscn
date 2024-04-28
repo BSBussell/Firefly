@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cvxhf2cu04nb6"]
+[gd_scene load_steps=14 format=3 uid="uid://cvxhf2cu04nb6"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/cave_level.gd" id="1_bfl7c"]
 [ext_resource type="AudioStream" uid="uid://c8d4kjqyrog77" path="res://Assets/SFX/ambience/creepyCave_near_forest.mp3" id="3_xkvdx"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="10_4b7ke"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="11_ev1sj"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="12_0kfi3"]
+[ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/spring.tscn" id="13_higao"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="17_0t85n"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="19_cc61p"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="21_h1irh"]
@@ -22,9 +23,10 @@ jar_manager = NodePath("JarsManager")
 visible = false
 
 [node name="Moonlight" type="DirectionalLight2D" parent="Lighting"]
+visible = false
 rotation = -0.698132
 enabled = false
-color = Color(0.780392, 0.87451, 0.921569, 1)
+color = Color(0.854902, 0.694118, 0.388235, 1)
 energy = 0.01
 range_layer_min = -101
 shadow_enabled = true
@@ -35,7 +37,7 @@ height = 1.0
 metadata/_edit_lock_ = true
 
 [node name="ShadowFilter" type="CanvasModulate" parent="Lighting"]
-color = Color(0.243137, 0.231373, 0.396078, 1)
+color = Color(0.191529, 0.181509, 0.319464, 1)
 metadata/_edit_lock_ = true
 
 [node name="Particles" type="Node" parent="."]
@@ -83,7 +85,7 @@ GlowWorm = true
 
 [node name="Rope4" parent="Ropes" instance=ExtResource("8_uc64o")]
 position = Vector2(648, -173)
-Segments = 7
+Segments = 6
 
 [node name="Rope3" parent="Ropes" instance=ExtResource("8_uc64o")]
 position = Vector2(523, -154)
@@ -104,6 +106,14 @@ script = ExtResource("21_h1irh")
 position = Vector2(640, 98)
 
 [node name="DeathZones" type="Node2D" parent="."]
+
+[node name="Springs" type="Node2D" parent="."]
+
+[node name="Spring" parent="Springs" instance=ExtResource("13_higao")]
+position = Vector2(488, 160)
+
+[node name="Spring2" parent="Springs" instance=ExtResource("13_higao")]
+position = Vector2(293, -32)
 
 [node name="CameraTargets" type="Node2D" parent="."]
 
