@@ -1,5 +1,7 @@
 extends Node
 
+var viewer = null
+
 var game_viewport_container = null
 var game_viewport = null
 

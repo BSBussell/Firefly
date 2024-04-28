@@ -14,7 +14,7 @@ config/name="Firefly"
 run/main_scene="res://Core/Game/GameViewer.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/image="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png"
-config/icon="res://Assets/BOOT/icon.png"
+config/icon="res://Assets/BOOT/icon_green_bkgt.png"
 
 [audio]
 
@@ -26,9 +26,8 @@ _loader="*res://Scripts/Globals/_loader.gd"
 _debug="*res://Scripts/Globals/_debug.gd"
 _viewports="*res://Scripts/Globals/_viewports.gd"
 _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
-_shake="*res://Scripts/Globals/_shake.gd"
-_ui="*res://Scripts/Globals/_UI.gd"
 _stats="*res://Scripts/Globals/_stats.gd"
+_audio="*res://Scripts/Globals/_audio.gd"
 _globals="*res://Scripts/Globals/_globals.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 
@@ -42,8 +41,6 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/window_width_override=1920
 window/size/window_height_override=1080
-window/stretch/mode="canvas_items"
-window/stretch/scale_mode="integer"
 
 [editor]
 
@@ -165,6 +162,16 @@ Glow_Up={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":10,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
+scale_inc={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":93,"key_label":0,"unicode":93,"echo":false,"script":null)
+]
+}
+scale_dec={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":91,"key_label":0,"unicode":91,"echo":false,"script":null)
+]
+}
 
 [layer_names]
 
@@ -177,10 +184,14 @@ Glow_Up={
 2d_physics/layer_5="Hazards"
 2d_physics/layer_6="Platforms"
 2d_physics/layer_7="CameraTargets"
+2d_physics/layer_8="Water"
+2d_physics/layer_9="Rope"
+2d_physics/layer_10="PlayerRopeDetector"
 
 [physics]
 
 2d/run_on_separate_thread=true
+2d/solver/solver_iterations=20
 
 [rendering]
 

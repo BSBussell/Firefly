@@ -1,5 +1,6 @@
-[gd_scene load_steps=71 format=3 uid="uid://cpc5ssjndq6qc"]
+[gd_scene load_steps=72 format=3 uid="uid://cpc5ssjndq6qc"]
 
+[ext_resource type="Material" uid="uid://caguwajpyntq4" path="res://Core/grass_Sway.tres" id="1_55v2j"]
 [ext_resource type="Shader" path="res://Core/wind.gdshader" id="1_ugprn"]
 [ext_resource type="Texture2D" uid="uid://bkc8jbna0iql3" path="res://Assets/Graphics/Forest_Tile_Set_Extended/forest_tiles_bee_mods.png" id="1_v8b5t"]
 [ext_resource type="Texture2D" uid="uid://w1wqvh6k5alv" path="res://Assets/Graphics/Forest_Tile_Set_Extended/forest_tiles_bee_2.png" id="3_omlka"]
@@ -74,18 +75,6 @@ shader_parameter/offset = 1.0
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6s6el"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h216o"]
-shader = ExtResource("1_ugprn")
-shader_parameter/speed = 1.0
-shader_parameter/minStrength = 0.05
-shader_parameter/maxStrength = 0.01
-shader_parameter/strengthScale = 100.0
-shader_parameter/interval = 3.5
-shader_parameter/detail = 1.0
-shader_parameter/distortion = null
-shader_parameter/heightOffset = null
-shader_parameter/offset = 0.0
-
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_xcr03"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, -4, -8, -4)
 
@@ -94,6 +83,18 @@ polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_w7egx"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_87s0p"]
+shader = ExtResource("1_ugprn")
+shader_parameter/speed = 0.86
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 90.0
+shader_parameter/interval = 3.75
+shader_parameter/detail = 0.855
+shader_parameter/distortion = null
+shader_parameter/heightOffset = 0.0
+shader_parameter/offset = 1.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3cy0c"]
 polygon = PackedVector2Array(8, -8, 8, 8, -8, 8)
@@ -556,7 +557,7 @@ texture = ExtResource("1_v8b5t")
 14:3/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 14:3/0/physics_layer_2/angular_velocity = 0.0
 4:4/0 = 0
-4:4/0/material = SubResource("ShaderMaterial_h216o")
+4:4/0/material = ExtResource("1_55v2j")
 4:4/0/terrain_set = 0
 4:4/0/terrain = 2
 4:4/0/probability = 0.25
@@ -573,6 +574,7 @@ texture = ExtResource("1_v8b5t")
 "type": 5
 }
 5:4/0 = 0
+5:4/0/material = SubResource("ShaderMaterial_87s0p")
 5:4/0/terrain_set = 0
 5:4/0/terrain = 2
 5:4/0/probability = 0.25
@@ -589,6 +591,7 @@ texture = ExtResource("1_v8b5t")
 "type": 5
 }
 6:4/0 = 0
+6:4/0/material = ExtResource("1_55v2j")
 6:4/0/terrain_set = 0
 6:4/0/terrain = 2
 6:4/0/probability = 0.25
@@ -1500,9 +1503,10 @@ texture = ExtResource("3_omlka")
 2:3/0/metadata/_better_terrain = {
 0: [0],
 3: [0],
-4: [2],
-12: [2],
+4: [2, 3],
+12: [2, 3],
 15: [0],
+"symmetry": 1,
 "type": 2
 }
 3:3/0 = 0
@@ -1522,11 +1526,12 @@ texture = ExtResource("3_omlka")
 3:3/0/terrains_peering_bit/top_left_corner = 0
 3:3/0/terrains_peering_bit/top_side = 4
 3:3/0/metadata/_better_terrain = {
-4: [2],
+4: [2, 3],
 7: [0],
 8: [0],
 11: [0],
-12: [2],
+12: [2, 3],
+"symmetry": 1,
 "type": 2
 }
 4:3/0 = 0
@@ -1657,11 +1662,9 @@ texture = ExtResource("3_omlka")
 4:4/0/terrains_peering_bit/bottom_left_corner = 0
 4:4/0/terrains_peering_bit/left_side = 4
 4:4/0/metadata/_better_terrain = {
-0: [2, 3],
-3: [0],
-4: [0],
+4: [2],
 7: [0],
-8: [2, 3],
+8: [2],
 "type": 2
 }
 5:4/0 = 0
@@ -1678,12 +1681,6 @@ texture = ExtResource("3_omlka")
 5:4/0/terrains_peering_bit/bottom_side = 4
 5:4/0/terrains_peering_bit/bottom_left_corner = 0
 5:4/0/terrains_peering_bit/left_side = 4
-5:4/0/metadata/_better_terrain = {
-4: [2],
-7: [0],
-8: [2],
-"type": 2
-}
 0:5/0 = 0
 0:5/0/terrain_set = 0
 0:5/0/terrain = 4
@@ -1801,11 +1798,9 @@ texture = ExtResource("3_omlka")
 4:5/0/terrains_peering_bit/top_side = 0
 4:5/0/terrains_peering_bit/top_right_corner = 0
 4:5/0/metadata/_better_terrain = {
-0: [2],
 8: [2],
 11: [0],
-12: [0],
-15: [0],
+12: [2],
 "type": 2
 }
 5:5/0 = 0
@@ -1822,12 +1817,6 @@ texture = ExtResource("3_omlka")
 5:5/0/terrains_peering_bit/left_side = 4
 5:5/0/terrains_peering_bit/top_left_corner = 0
 5:5/0/terrains_peering_bit/top_side = 4
-5:5/0/metadata/_better_terrain = {
-8: [2],
-11: [0],
-12: [2],
-"type": 2
-}
 1:6/0 = 0
 1:6/0/terrain_set = 0
 1:6/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -1857,9 +1846,7 @@ texture = ExtResource("3_omlka")
 2:6/0/terrains_peering_bit/top_side = 4
 2:6/0/terrains_peering_bit/top_right_corner = 0
 2:6/0/metadata/_better_terrain = {
-0: [0],
-3: [0],
-4: [2],
+0: [2],
 12: [2],
 15: [0],
 "type": 2
@@ -1881,9 +1868,7 @@ texture = ExtResource("3_omlka")
 3:6/0/terrains_peering_bit/top_left_corner = 0
 3:6/0/terrains_peering_bit/top_side = 4
 3:6/0/metadata/_better_terrain = {
-4: [2],
-7: [0],
-8: [0],
+8: [2],
 11: [0],
 12: [2],
 "type": 2
@@ -1914,12 +1899,6 @@ texture = ExtResource("3_omlka")
 2:7/0/terrains_peering_bit/right_side = 4
 2:7/0/terrains_peering_bit/top_side = 4
 2:7/0/terrains_peering_bit/top_right_corner = 0
-2:7/0/metadata/_better_terrain = {
-0: [2],
-12: [2],
-15: [0],
-"type": 2
-}
 3:7/0 = 0
 3:7/0/terrain_set = 0
 3:7/0/terrain = 4
@@ -1934,12 +1913,6 @@ texture = ExtResource("3_omlka")
 3:7/0/terrains_peering_bit/left_side = 4
 3:7/0/terrains_peering_bit/top_left_corner = 0
 3:7/0/terrains_peering_bit/top_side = 4
-3:7/0/metadata/_better_terrain = {
-8: [2],
-11: [0],
-12: [2],
-"type": 2
-}
 3:1/0 = 0
 3:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_cvr1c")
 3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -2070,6 +2043,7 @@ texture = ExtResource("3_omlka")
 4: [2],
 7: [0],
 8: [1],
+11: [1],
 "symmetry": 0,
 "type": 3
 }
@@ -2450,6 +2424,36 @@ texture = ExtResource("3_omlka")
 9:7/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 9:7/0/physics_layer_2/angular_velocity = 0.0
 9:7/0/physics_layer_2/polygon_0/points = PackedVector2Array(-8, 1, 1, 1, 1, 8, -8, 8)
+9:3/0 = 0
+9:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+9:3/0/physics_layer_0/angular_velocity = 0.0
+9:3/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+9:3/0/physics_layer_1/angular_velocity = 0.0
+9:3/0/physics_layer_2/linear_velocity = Vector2(0, 0)
+9:3/0/physics_layer_2/angular_velocity = 0.0
+9:3/0/metadata/_better_terrain = {
+0: [0],
+3: [0],
+4: [0],
+7: [0],
+12: [2],
+"type": 1
+}
+8:3/0 = 0
+8:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+8:3/0/physics_layer_0/angular_velocity = 0.0
+8:3/0/physics_layer_1/linear_velocity = Vector2(0, 0)
+8:3/0/physics_layer_1/angular_velocity = 0.0
+8:3/0/physics_layer_2/linear_velocity = Vector2(0, 0)
+8:3/0/physics_layer_2/angular_velocity = 0.0
+8:3/0/metadata/_better_terrain = {
+3: [0],
+4: [0],
+7: [0],
+8: [0],
+12: [2],
+"type": 1
+}
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jm8kr"]
 resource_name = "BKG_Grass"

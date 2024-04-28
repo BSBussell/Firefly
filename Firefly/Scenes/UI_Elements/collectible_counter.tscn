@@ -1,80 +1,83 @@
-[gd_scene load_steps=8 format=3 uid="uid://bpa4bjwojm2t3"]
+[gd_scene load_steps=7 format=3 uid="uid://bpa4bjwojm2t3"]
 
 [ext_resource type="Script" path="res://Core/Game/CollectibleCounter.gd" id="1_uxj48"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="2_7w2fi"]
-
-[sub_resource type="Animation" id="Animation_1bgpc"]
-resource_name = "Display"
-length = 10.0
-
-[sub_resource type="Animation" id="Animation_d4d62"]
-resource_name = "Hide"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("UI/UIViewPort/CollectibleCounter/Label:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(1425, 200), Vector2(1920, 200)]
-}
-
-[sub_resource type="Animation" id="Animation_jhb4m"]
-resource_name = "Show"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("UI/UIViewPort/CollectibleCounter/Label:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 10.1965),
-"update": 0,
-"values": [Vector2(1920, 200), Vector2(1425, 200)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_s4xwf"]
-_data = {
-"Display": SubResource("Animation_1bgpc"),
-"Hide": SubResource("Animation_d4d62"),
-"Show": SubResource("Animation_jhb4m")
-}
 
 [sub_resource type="LabelSettings" id="LabelSettings_u4aag"]
 font = ExtResource("2_7w2fi")
 font_size = 64
 shadow_size = 0
 
-[node name="CollectibleCounter" type="Control"]
-z_index = 1
-layout_mode = 3
-anchors_preset = 0
-script = ExtResource("1_uxj48")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-root_node = NodePath("../../../..")
-libraries = {
-"": SubResource("AnimationLibrary_s4xwf")
+[sub_resource type="Animation" id="Animation_mlp1y"]
+resource_name = "Hide"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset_right")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(2, 6),
+"update": 0,
+"values": [-200, 480.0]
 }
+
+[sub_resource type="Animation" id="Animation_aijno"]
+resource_name = "Show"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset_right")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(2, 6),
+"update": 0,
+"values": [480, -200]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uw2ul"]
+_data = {
+"Hide": SubResource("Animation_mlp1y"),
+"Show": SubResource("Animation_aijno")
+}
+
+[node name="CollectibleCounter" type="Control" node_paths=PackedStringArray("COUNTER", "COUNTER_ANIMATOR", "ANIMATION_TIMER")]
+layout_mode = 3
+anchor_left = 1.0
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("1_uxj48")
+COUNTER = NodePath("Label")
+COUNTER_ANIMATOR = NodePath("Label/AnimationPlayer")
+ANIMATION_TIMER = NodePath("HideTimer")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 6
+anchors_preset = -1
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -340.0
-offset_right = 480.006
-offset_bottom = -220.0
+offset_top = -60.0
+offset_right = 480.0
+offset_bottom = 60.0
 grow_horizontal = 0
 grow_vertical = 2
-text = "16/16"
+text = "00/00"
 label_settings = SubResource("LabelSettings_u4aag")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Label"]
+libraries = {
+"": SubResource("AnimationLibrary_uw2ul")
+}
 
 [node name="HideTimer" type="Timer" parent="."]
 wait_time = 3.0

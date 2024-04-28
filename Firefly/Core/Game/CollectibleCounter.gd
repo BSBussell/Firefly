@@ -1,9 +1,9 @@
 extends Node
 class_name JarCounter
 
-@onready var COUNTER: Label = $Label
-@onready var COUNTER_ANIMATOR: AnimationPlayer = $AnimationPlayer
-@onready var ANIMATION_TIMER: Timer = $HideTimer
+@export var COUNTER: Label 
+@export var COUNTER_ANIMATOR: AnimationPlayer
+@export var ANIMATION_TIMER: Timer
 
 var victory_screen: VictoryScreen
 var COLLECTED: int = 0
@@ -61,7 +61,7 @@ func peak_counter():
 
 func show_counter():
 	if not out:
-		COUNTER_ANIMATOR.play("Show")
+		play_show()
 		out = true
 
 func hide_counter(time: float = 3.0):
@@ -69,4 +69,18 @@ func hide_counter(time: float = 3.0):
 
 func _on_hide_timer_timeout():
 	out = false
+	play_hide()
+
+## Ensures that on animation playing we don't teleport pos
+func play_show():
+	
+	var current_pos = COUNTER.offset_right  # Assuming you're animating this property
+	COUNTER_ANIMATOR.get_animation("Show").track_set_key_value(0, 0, current_pos)
+	COUNTER_ANIMATOR.play("Show")
+	
+## Ensures that on animation playing we don't teleport pos
+func play_hide():
+	var current_pos = COUNTER.offset_right  # Assuming you're animating this property
+	COUNTER_ANIMATOR.get_animation("Hide").track_set_key_value(0, 0, current_pos)
 	COUNTER_ANIMATOR.play("Hide")
+	

@@ -176,36 +176,6 @@ func handle_walljump(vc_direction, dir = 0):
 		if jump_dir == 0:
 			jump_dir = parent.get_wall_normal().x
 			
-		# SFX
-		#wall_jump_sfx.play(0)
-		#var pitch = 0.2 * jump_dir
-		#wall_jump_sfx.pitch_scale = 1 + pitch 
-		#
-		## Wall Jump Animation
-		#parent.current_animation = parent.ANI_STATES.WALL_JUMP
-		#
-		## Vibration
-		## TODO: Create a vibration manager and use those functions
-		#Input.start_joy_vibration(1, 0.1, 0.1, 0.175)
-		#
-		## Spawn Wall Jump Dust
-		#var new_cloud = parent.WJ_DUST.instantiate()
-		#new_cloud.set_name("WJ_dust_temp")
-		#wj_dust_spawner.add_child(new_cloud)
-		#new_cloud.direction.x *= jump_dir
-		#var animation = new_cloud.get_node("AnimationPlayer")
-		#animation.play("free")
-		#
-		## Sprite squashing
-		#parent.squish_node.squish(parent.wJump_squash)
-		#
-		## TODO: Walljump Animation or something
-		#if (parent.current_animation != parent.ANI_STATES.CRAWL):
-			#parent.current_animation = parent.ANI_STATES.FALLING
-			#parent.restart_animation = true
-			#
-		#
-		#parent.current_wj_dir = jump_dir
 			
 		# Ok so if you are up on a walljump it'll launch you up
 		if vc_direction > 0:

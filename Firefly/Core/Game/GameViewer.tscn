@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=5 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
-[ext_resource type="Shader" path="res://Core/Game/SubPixelSmoothing.gdshader" id="1_jculp"]
 [ext_resource type="Script" path="res://Core/Game/LevelLoader.gd" id="3_oejcr"]
 [ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
 
@@ -19,10 +18,6 @@ glow_levels/7 = 0.26
 glow_blend_mode = 0
 adjustment_enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gjm2h"]
-shader = ExtResource("1_jculp")
-shader_parameter/sub_pixel_offset = Vector2(0, 0)
-
 [node name="GameViewer" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_42j4d")
@@ -31,11 +26,8 @@ script = ExtResource("1_42j4d")
 environment = SubResource("Environment_xxxtd")
 
 [node name="GameContainer" type="SubViewportContainer" parent="."]
-material = SubResource("ShaderMaterial_gjm2h")
-offset_left = -6.0
-offset_top = -6.0
-offset_right = 316.0
-offset_bottom = 176.0
+offset_right = 320.0
+offset_bottom = 180.0
 scale = Vector2(6, 6)
 script = ExtResource("3_oejcr")
 
@@ -48,7 +40,9 @@ snap_2d_vertices_to_pixel = true
 use_hdr_2d = true
 canvas_item_default_texture_filter = 0
 audio_listener_enable_2d = true
-size = Vector2i(322, 182)
+size = Vector2i(320, 180)
+size_2d_override = Vector2i(320, 180)
+size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="UI" type="SubViewportContainer" parent="."]
@@ -61,3 +55,5 @@ transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1920, 1080)
 render_target_update_mode = 4
+
+[node name="ColorRect" type="ColorRect" parent="."]

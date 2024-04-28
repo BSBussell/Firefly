@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://bot2v388wlkwf"]
+
+[ext_resource type="Script" path="res://Scenes/Stuff/Rope/worm.gd" id="1_mtwpq"]
+[ext_resource type="Texture2D" uid="uid://cvmsap05v25s8" path="res://Assets/Graphics/Mechanics/Rope/worm.png" id="1_t534l"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_dcwwd"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4yxa2"]
+atlas = ExtResource("1_t534l")
+region = Rect2(0, 0, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g5j13"]
+atlas = ExtResource("1_t534l")
+region = Rect2(12, 0, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ksrud"]
+atlas = ExtResource("1_t534l")
+region = Rect2(24, 0, 12, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3dw1i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4yxa2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g5j13")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ksrud")
+}],
+"loop": true,
+"name": &"Crawl",
+"speed": 6.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sv30t"]
+size = Vector2(6, 8)
+
+[node name="Worm" type="Node2D"]
+script = ExtResource("1_mtwpq")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -6)
+sprite_frames = SubResource("SpriteFrames_3dw1i")
+animation = &"Crawl"
+frame_progress = 0.712478
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_sv30t")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, -3)
+color = Color(0.211765, 0.772549, 0.956863, 1)
+texture = ExtResource("3_dcwwd")
+texture_scale = 0.05
