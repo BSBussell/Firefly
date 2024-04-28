@@ -8,22 +8,6 @@ font = ExtResource("2_7w2fi")
 font_size = 64
 shadow_size = 0
 
-[sub_resource type="Animation" id="Animation_aijno"]
-resource_name = "Show"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:offset_right")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(2, 6),
-"update": 0,
-"values": [480, -200]
-}
-
 [sub_resource type="Animation" id="Animation_mlp1y"]
 resource_name = "Hide"
 length = 0.5
@@ -38,6 +22,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(2, 6),
 "update": 0,
 "values": [-200, 480.0]
+}
+
+[sub_resource type="Animation" id="Animation_aijno"]
+resource_name = "Show"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset_right")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(2, 6),
+"update": 0,
+"values": [480, -200]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uw2ul"]

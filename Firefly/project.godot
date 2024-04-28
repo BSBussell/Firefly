@@ -185,10 +185,14 @@ scale_dec={
 2d_physics/layer_5="Hazards"
 2d_physics/layer_6="Platforms"
 2d_physics/layer_7="CameraTargets"
+2d_physics/layer_8="Water"
+2d_physics/layer_9="Rope"
+2d_physics/layer_10="PlayerRopeDetector"
 
 [physics]
 
 2d/run_on_separate_thread=true
+2d/solver/solver_iterations=20
 
 [rendering]
 

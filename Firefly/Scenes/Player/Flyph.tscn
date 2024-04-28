@@ -1,4 +1,4 @@
-[gd_scene load_steps=102 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=106 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wall.gd" id="10_eck16"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
 [ext_resource type="AudioStream" uid="uid://dabydr3n6ho76" path="res://Assets/SFX/Player/jump_1.mp3" id="12_m3poj"]
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="13_xelg6"]
 [ext_resource type="AudioStream" uid="uid://b6jwf7oavshmg" path="res://Assets/SFX/Player/jump_2.mp3" id="14_hplrh"]
 [ext_resource type="AudioStream" uid="uid://drn56tacwbwh1" path="res://Assets/SFX/Player/Landing.wav" id="15_o0d2x"]
 [ext_resource type="AudioStream" uid="uid://dhvsjt5lta3gk" path="res://Assets/SFX/Player/Sliding.wav" id="17_r3q20"]
@@ -26,7 +27,9 @@
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Sliding.gd" id="23_0bu6o"]
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
 [ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
+[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Water-ed.gd" id="25_jbi8o"]
 [ext_resource type="Script" path="res://Scenes/Player/Speedometer.gd" id="26_0wrd0"]
+[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wormed.gd" id="27_47nb5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vnjo"]
 size = Vector2(6, 15)
@@ -511,6 +514,11 @@ metadata/_snap_enabled = true
 offsets = PackedFloat32Array(0.879781, 1)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
+[sub_resource type="Curve" id="Curve_8l3iq"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
 [sub_resource type="Curve" id="Curve_e1b3a"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
 point_count = 2
@@ -553,7 +561,7 @@ font_size = 8
 [sub_resource type="LabelSettings" id="LabelSettings_yau3k"]
 font = ExtResource("25_bx13g")
 
-[node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("star", "debug_info", "meter")]
+[node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "WALL_STATE", "WATERED_STATE", "WORMED_STATE", "star", "debug_info", "meter")]
 position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 34
@@ -562,6 +570,12 @@ floor_max_angle = 1.55334
 floor_snap_length = 10.0
 script = ExtResource("1_hphyi")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
+GROUNDED_STATE = NodePath("StateMachine/Grounded")
+AERIAL_STATE = NodePath("StateMachine/Aerial")
+SLIDING_STATE = NodePath("StateMachine/Sliding")
+WALL_STATE = NodePath("StateMachine/Wall")
+WATERED_STATE = NodePath("StateMachine/Water-ed")
+WORMED_STATE = NodePath("StateMachine/Wormed")
 star = NodePath("UI_FX/Star")
 debug_info = NodePath("UI_FX/debug info")
 meter = NodePath("UI_FX/Control/Meter")
@@ -603,10 +617,8 @@ bounce_curve = SubResource("Curve_umqtl")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"wall_hug"
+animation = &"idle"
 autoplay = "idle"
-frame = 2
-frame_progress = 1.0
 flip_h = true
 script = ExtResource("6_vid37")
 
@@ -630,7 +642,7 @@ range_layer_min = -99
 range_item_cull_mask = 3
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
-shadow_filter = 2
+shadow_filter = 1
 shadow_filter_smooth = 10.0
 shadow_item_cull_mask = 2
 texture = ExtResource("6_bo4q8")
@@ -716,6 +728,23 @@ metadata/_edit_lock_ = true
 z_index = 1
 metadata/_edit_lock_ = true
 
+[node name="Wet" type="CPUParticles2D" parent="Particles"]
+position = Vector2(1, -11)
+emitting = false
+amount = 15
+explosiveness = 0.25
+texture = ExtResource("13_xelg6")
+emission_shape = 3
+emission_rect_extents = Vector2(5, 5)
+direction = Vector2(0, 0)
+gravity = Vector2(0, 140)
+angle_min = 80.0
+angle_max = 100.0
+scale_amount_min = 0.3
+scale_amount_max = 0.3
+scale_amount_curve = SubResource("Curve_8l3iq")
+color = Color(0.211765, 0.772549, 0.956863, 1)
+
 [node name="SlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
 z_index = -1
 position = Vector2(0, -2)
@@ -778,12 +807,28 @@ color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_diik4")
 
 [node name="Physics" type="Node2D" parent="."]
-visible = false
 
 [node name="HazardDetector" type="Area2D" parent="Physics"]
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
+position = Vector2(-1, -8.375)
+shape = SubResource("RectangleShape2D_polx2")
+
+[node name="WaterDetector" type="Area2D" parent="Physics"]
+position = Vector2(2, -2)
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/WaterDetector"]
+position = Vector2(-1, -8.375)
+shape = SubResource("RectangleShape2D_polx2")
+
+[node name="RopeDetector" type="Area2D" parent="Physics"]
+position = Vector2(2, -2)
+collision_layer = 512
+collision_mask = 256
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/RopeDetector"]
 position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
@@ -1027,6 +1072,22 @@ jump_buffer = NodePath("../../Timers/JumpBuffer")
 post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 
+[node name="Water-ed" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "AERIAL_STATE")]
+script = ExtResource("25_jbi8o")
+WALL_STATE = NodePath("../Wall")
+AERIAL_STATE = NodePath("../Aerial")
+WATER_ENTRY_COST = 0.3
+WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
+WATER_SPEED_MULTI = 0.7
+WATER_ACCEL_MULTI = 0.8
+WATER_JUMP_MULTI = 0.8
+WATER_GRAV_MULTI = 0.15
+MAX_FALL_MULTI = -0.3
+
+[node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
+script = ExtResource("27_47nb5")
+AERIAL_STATE = NodePath("../Aerial")
+
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
 script = ExtResource("25_5it1v")
 MOMENTUM_TIMER = NodePath("../Timers/MomentumTime")
@@ -1069,4 +1130,7 @@ script = ExtResource("26_0wrd0")
 [connection signal="animation_finished" from="Visuals/SquishCenter/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]
 [connection signal="body_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_body_entered"]
+[connection signal="body_entered" from="Physics/WaterDetector" to="." method="_on_water_detector_body_entered"]
+[connection signal="body_exited" from="Physics/WaterDetector" to="." method="_on_water_detector_body_exited"]
+[connection signal="body_entered" from="Physics/RopeDetector" to="." method="_on_rope_detector_body_entered"]
 [connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]

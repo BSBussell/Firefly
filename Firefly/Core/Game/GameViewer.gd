@@ -29,7 +29,7 @@ func _ready():
 	_loader.connect_loaders(level_loader, ui_loader)
 	
 	# Load our level
-	_loader.load_level("res://Scenes/Levels/tutorial.tscn")
+	_loader.load_level("res://Scenes/Levels/cave_level.tscn")
 	
 	var window_size = DisplayServer.window_get_size()
 	current_scale = int(window_size.x / target_rendering.x)

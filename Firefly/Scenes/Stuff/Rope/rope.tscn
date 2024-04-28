@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bauphk2cyg5tr"]
+
+[ext_resource type="Script" path="res://Scenes/Stuff/Rope/Rope.gd" id="1_5syat"]
+[ext_resource type="Texture2D" uid="uid://cd35jl6vuxohb" path="res://Assets/Graphics/Mechanics/Rope/base.png" id="1_fgnty"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3tpb"]
+size = Vector2(8, 8)
+
+[node name="Rope" type="Node2D"]
+z_index = -1
+script = ExtResource("1_5syat")
+
+[node name="Base" type="StaticBody2D" parent="."]
+collision_layer = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Base"]
+position = Vector2(0, -4)
+texture = ExtResource("1_fgnty")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Base"]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_i3tpb")
+
+[node name="Marker2D" type="Marker2D" parent="Base"]

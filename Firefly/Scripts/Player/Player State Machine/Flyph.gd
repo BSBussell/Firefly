@@ -11,6 +11,7 @@ const CROUCH_JUMP_DUST = preload("res://Scenes/Player/particles/crouchJumpDust.t
 const WJ_DUST = preload("res://Scenes/Player/particles/wallJumpDust.tscn")
 const DEATH_DUST = preload("res://Scenes/Player/particles/DeathParticle.tscn")
 const RESPAWN_DUST = preload("res://Scenes/Player/particles/RespawnParticle.tscn")
+const SPLASH = preload("res://Scenes/Player/particles/splash_dust.tscn")
 
 # ENUMS
 # Animation States
@@ -55,6 +56,8 @@ enum WALLJUMPS {
 @export var AERIAL_STATE: PlayerState
 @export var SLIDING_STATE: PlayerState
 @export var WALL_STATE: PlayerState
+@export var WATERED_STATE: PlayerState
+@export var WORMED_STATE: PlayerState
 
 @export_subgroup("MISC")
 @export var star: CPUParticles2D
@@ -218,6 +221,7 @@ var aerial: bool = false 				# Set every time the player leaves the ground, and 
 var fastFalling: bool = false			# Set when the player begins fast falling, reset on any state change
 var airDriftDisabled: bool = false		# If air drift is disabled by an action this is set to true. Will be reset when falling
 var turningAround: bool = false			# If the player is experiencing a change in direction
+var underWater: bool = false
 
 # Jump Flags
 var jumping: bool = false				# If the player is rising in a jump
@@ -321,7 +325,7 @@ func _physics_process(delta: float) -> void:
 		
 
 		# "Assists" in movement
-		movement_assist(delta)
+		#movement_assist(delta)
 
 		# Store the velocity for next frame
 		prev_velocity_x = velocity.x
@@ -433,7 +437,7 @@ func movement_assist(delta):
 	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta)
 
 	# Auto Enter Tunnel
-	if is_on_wall(): auto_enter_tunnel()
+	if is_on_wall() and not underWater: auto_enter_tunnel()
 
 
 
@@ -866,3 +870,38 @@ func show_speedometer():
 
 func hide_speedometer():
 	debug.visible = false
+
+
+func _on_water_detector_body_entered(body):
+	
+	print("In Water")
+	# Prevent double entries.... its weird, this shouldn't
+	# happen as long as im smart but sometimes,,,
+	if not underWater:
+		underWater = true
+		StateMachine.change_state(WATERED_STATE)
+
+
+func _on_water_detector_body_exited(body):
+	print("Out of Water")
+	# Aerial Feels like the best bet
+	underWater = false
+	StateMachine.change_state(AERIAL_STATE)
+
+
+var stuck_segment: SpitSegment = null
+func enter_rope(segment: SpitSegment):
+	
+	stuck_segment = segment
+	StateMachine.change_state(WORMED_STATE)
+	print("You're touching rope :", segment)
+	
+#func exit_rope():
+	#print("You're Exit Rope :3")
+
+
+func _on_rope_detector_body_entered(body):
+	#pass
+	var segment = body as SpitSegment
+	if segment and not stuck_segment:
+		enter_rope(segment)

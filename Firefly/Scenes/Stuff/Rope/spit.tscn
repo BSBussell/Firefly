@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://dw74c2tkogsdu"]
+
+[ext_resource type="Script" path="res://Scenes/Stuff/Rope/SpitSegment.gd" id="1_e2fpp"]
+[ext_resource type="Texture2D" uid="uid://c54p0vejhh4nt" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit.png" id="1_q2tjy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h3dnq"]
+radius = 2.0
+height = 16.0
+
+[node name="Spit" type="RigidBody2D"]
+collision_layer = 256
+collision_mask = 514
+mass = 0.75
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 5.0
+angular_damp_mode = 1
+angular_damp = 5.0
+script = ExtResource("1_e2fpp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 4)
+texture = ExtResource("1_q2tjy")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(0, 12)
+texture = ExtResource("1_q2tjy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+shape = SubResource("CapsuleShape2D_h3dnq")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(0, 16)
