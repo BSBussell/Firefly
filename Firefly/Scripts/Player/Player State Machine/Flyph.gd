@@ -807,6 +807,10 @@ func kill():
 	mega_speed_particles.emitting = false
 	
 	dying = true
+	
+	StateMachine.change_state(AERIAL_STATE)
+
+	$Physics/HazardDetector.set_collision_mask_value(5, false)
 
 	# Restart and disable the glow mechanic
 	glow_manager.reset_glow()
@@ -817,6 +821,8 @@ func kill():
 
 	# Move the player / camera to the starting position
 	global_position = starting_position
+	
+	$Physics/HazardDetector.set_collision_mask_value(5, true)
 	
 	# Zero out the velocity
 	velocity = Vector2.ZERO
@@ -893,6 +899,7 @@ var stuck_segment: SpitSegment = null
 func enter_rope(segment: SpitSegment):
 	
 	stuck_segment = segment
+	segment.player_grabbed()
 	StateMachine.change_state(WORMED_STATE)
 	print("You're touching rope :", segment)
 	
@@ -903,5 +910,5 @@ func enter_rope(segment: SpitSegment):
 func _on_rope_detector_body_entered(body):
 	#pass
 	var segment = body as SpitSegment
-	if segment and not stuck_segment:
+	if segment and not stuck_segment and not dying:
 		enter_rope(segment)

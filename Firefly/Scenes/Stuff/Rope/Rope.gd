@@ -4,16 +4,20 @@ extends Node2D
 const SPIT = preload("res://Scenes/Stuff/Rope/spit.tscn")
 const JOINT = preload("res://Scenes/Stuff/Rope/joint.tscn")
 const ANCHOR = preload("res://Scenes/Stuff/Rope/anchor.tscn")
+const WORM = preload("res://Scenes/Stuff/Rope/worm.tscn")
 
 ## Length of the rope
 @export var Segments: int = 5
 @export var Swingable: bool = true
 @export var GlowWorm: bool = false
 
-
 # Da base
 @onready var base = $Base
 @onready var lure = $PointLight2D
+
+
+var worm_active: bool = false
+var first_segment: SpitSegment = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -61,6 +65,11 @@ func create_joints() -> void:
 		
 		add_child(joint)
 		add_child(new_segment)
+		
+		# Connect the 'grabbed' signal to the 'activate' method
+		new_segment.connect("grabbed", Callable(self, "activate"))
+		
+		
 		print("bleh")
 		
 		
@@ -71,11 +80,18 @@ func create_joints() -> void:
 			spitSeg.connect_bottom(joint)
 			new_segment.connect_top(joint)
 			
-		# Simply Attach the 
+			spitSeg.next = new_segment
+			new_segment.prev = spitSeg
+			
+		# If we're the base 
 		else:
+			
 			joint.node_a = prev_body.get_path()
 			new_segment.connect_top(joint)
-			#joint.node_b = new_segment.get_path()
+			
+			first_segment = new_segment
+			new_segment.prev = null
+			
 		
 		prev_body = new_segment
 		
@@ -83,6 +99,20 @@ func create_joints() -> void:
 
 func setup_Worm():
 	lure.visible = true
+	#pass
+	
+	
+func activate(segment: SpitSegment):
+	print("Segment activated:", segment.name)
+	if GlowWorm:
+		if not worm_active:
+			
+			var worm = WORM.instantiate()
+			add_child(worm)
+			worm.start_hunt(first_segment)
+			worm_active = true
+	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

@@ -24,6 +24,7 @@ extends PlayerState
 @onready var rope_detector = $"../../Physics/RopeDetector"
 
 @onready var swinging_sfx = $"../../Audio/SwingingSFX"
+@onready var rope_creak_sfx = $"../../Audio/RopeCreakSFX"
 
 
 # Called on state entrance, setup
@@ -48,7 +49,11 @@ func enter() -> void:
 
 
 	#swinging_sfx.pitch_scale = 1.75 if swinging_sfx.pitch_scale != 1.75 else 2
-	swinging_sfx.play()
+	#swinging_sfx.play()
+	
+	rand_from_seed(parent.stuck_segment.global_position.x)
+	rope_creak_sfx.pitch_scale = randf_range(1, 2)
+	rope_creak_sfx.play()
 
 	
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
@@ -74,6 +79,8 @@ func exit() -> void:
 	
 	print("wtf")
 	rope_detector.set_collision_mask_value(9, true)
+	
+	rope_creak_sfx.stop()
 
 	
 
@@ -118,7 +125,9 @@ func process_frame(_delta):
 		if parent.horizontal_axis < 0 and not parent.animation.flip_h:
 			
 			#swinging_sfx.pitch_scale = 1.75
-			swinging_sfx.play()
+			#swinging_sfx.play()
+			rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
+			
 			
 			parent.animation.flip_h = true
 			parent.squish_node.squish(parent.turn_around_squash)
@@ -126,7 +135,8 @@ func process_frame(_delta):
 		elif parent.horizontal_axis > 0 and parent.animation.flip_h:
 			
 			#swinging_sfx.pitch_scale = 2.0
-			swinging_sfx.play()
+			#swinging_sfx.play()
+			rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
 			
 			parent.animation.flip_h = false
 			parent.squish_node.squish(parent.turn_around_squash)

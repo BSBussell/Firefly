@@ -1,4 +1,4 @@
-[gd_scene load_steps=111 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=112 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -29,6 +29,7 @@
 [ext_resource type="AudioStream" uid="uid://c86u0dij278a" path="res://Assets/SFX/Water/getting_out_of_water.mp3" id="21_g6yjb"]
 [ext_resource type="AudioStream" uid="uid://caexb2m0j71la" path="res://Assets/SFX/Mechanics/swinging.mp3" id="22_q5uq7"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Sliding.gd" id="23_0bu6o"]
+[ext_resource type="AudioStream" uid="uid://dexpkegjbcfsv" path="res://Assets/SFX/Mechanics/rope_creak.mp3" id="23_oxbt6"]
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
 [ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Water-ed.gd" id="25_jbi8o"]
@@ -1002,6 +1003,9 @@ bus = &"SFX"
 stream = ExtResource("22_q5uq7")
 volume_db = -5.0
 pitch_scale = 2.5
+
+[node name="RopeCreakSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("23_oxbt6")
 
 [node name="UI_FX" type="CanvasLayer" parent="."]
 

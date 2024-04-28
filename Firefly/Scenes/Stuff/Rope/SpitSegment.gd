@@ -4,6 +4,10 @@ class_name SpitSegment
 
 @onready var spit = $"."
 
+var prev: RigidBody2D = null
+var next: RigidBody2D = null
+
+signal grabbed(segment)
 
 # Connects the joint to the top of the spit
 func connect_top(joint: PinJoint2D):
@@ -15,5 +19,11 @@ func connect_bottom(joint: PinJoint2D):
 	joint.node_a = spit.get_path()
 
 
+func connect_signal(function: Callable):
+	
+	var err = connect("grabbed", function)
+	if err != OK:
+		print("Stupid Error: ", err)
 
-
+func player_grabbed():
+	emit_signal("grabbed", self)
