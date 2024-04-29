@@ -5,6 +5,7 @@ class_name FlyJar
 @onready var animation_player = $AnimationPlayer
 @export var point_value = 0.0
 
+var nabbed = false
 signal collected(jar: FlyJar)
 
 func _ready():
@@ -28,7 +29,9 @@ func collect():
 	# Listeners:
 	#   Jar Manager
 	#   Potentially UI
-	emit_signal("collected", self)
+	if not nabbed:
+		nabbed = true
+		emit_signal("collected", self)
 
 	
 # I am going to kms	

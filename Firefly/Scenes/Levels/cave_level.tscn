@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cvxhf2cu04nb6"]
+[gd_scene load_steps=16 format=3 uid="uid://cvxhf2cu04nb6"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/cave_level.gd" id="1_bfl7c"]
 [ext_resource type="AudioStream" uid="uid://c8d4kjqyrog77" path="res://Assets/SFX/ambience/creepyCave_near_forest.mp3" id="3_xkvdx"]
@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="12_0kfi3"]
 [ext_resource type="Script" path="res://Scenes/Levels/ChangeLevel.gd" id="13_8cde2"]
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/spring.tscn" id="13_r0kpl"]
-[ext_resource type="PackedScene" uid="uid://d2aiiqy7j5ovi" path="res://Scenes/Levels/tutorial.tscn" id="14_bfr57"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="17_0t85n"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="19_cc61p"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="21_h1irh"]
@@ -491,7 +490,7 @@ position = Vector2(-88, 181)
 [node name="levelChangr" type="Area2D" parent="LoadingZones"]
 position = Vector2(166, -887)
 script = ExtResource("13_8cde2")
-new_level = ExtResource("14_bfr57")
+new_level = "res://Scenes/Levels/tutorial.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LoadingZones/levelChangr"]
 position = Vector2(84, 66)

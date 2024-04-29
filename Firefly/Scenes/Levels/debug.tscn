@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=16 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="3_41qlf"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="3_263tg"]
@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="11_dm2r0"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="11_tymp7"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="12_mdqvq"]
-[ext_resource type="PackedScene" uid="uid://d2aiiqy7j5ovi" path="res://Scenes/Levels/tutorial.tscn" id="12_veeod"]
 
 [sub_resource type="GDScript" id="GDScript_0jk77"]
 script/source = "extends \"res://Scripts/Level/Level.gd\"
@@ -203,7 +202,6 @@ Player = NodePath("../Flyph")
 [node name="levelChangr" type="Area2D" parent="Events"]
 position = Vector2(2774, 152)
 script = ExtResource("11_0mgfm")
-new_level = ExtResource("12_veeod")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Events/levelChangr"]
 position = Vector2(-24.25, 38)
