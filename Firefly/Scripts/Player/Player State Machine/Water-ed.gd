@@ -219,13 +219,14 @@ func process_frame(_delta):
 
 
 	# Direction Facing, don't update if we're walljumping up
-	if parent.velocity.x < 0 and not parent.animation.flip_h:
-		parent.animation.flip_h = true
-		parent.squish_node.squish(parent.turn_around_squash)
+	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
+		if parent.velocity.x < 0 and not parent.animation.flip_h:
+			parent.animation.flip_h = true
+			parent.squish_node.squish(parent.turn_around_squash)
 
-	elif parent.velocity.x > 0 and parent.animation.flip_h:
-		parent.animation.flip_h = false
-		parent.squish_node.squish(parent.turn_around_squash)
+		elif parent.velocity.x > 0 and parent.animation.flip_h:
+			parent.animation.flip_h = false
+			parent.squish_node.squish(parent.turn_around_squash)
 
 	# Speed Particle Emission
 	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active:

@@ -2,7 +2,7 @@
 
 [node name="Joint" type="PinJoint2D"]
 bias = 0.9
-softness = 0.1
+softness = 1.1
 angular_limit_enabled = true
 angular_limit_lower = -2.61799
 angular_limit_upper = 2.61799

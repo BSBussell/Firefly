@@ -41,7 +41,7 @@ func enter() -> void:
 	
 	rope_detector.set_collision_mask_value(9, false)	
 	
-	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 1.5), 1.0)
+	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 2.5), 1.0)
 	swing_force = lerpf(min_swing_force, max_swing_force, speed_ratio)
 	
 
@@ -91,8 +91,15 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 
 
-	
+	if Input.is_action_just_pressed("Dive"):
+		if parent.stuck_segment.next:
+			parent.stuck_segment = parent.stuck_segment.next
+		else:
+			return AERIAL_STATE
 
+	if Input.is_action_just_pressed("Up"):
+		if parent.stuck_segment.prev:
+			parent.stuck_segment = parent.stuck_segment.prev
 
 	return null
 

@@ -4,6 +4,8 @@ class_name SpitSegment
 
 @onready var spit = $"."
 
+
+# Hooked up by rope
 var prev: RigidBody2D = null
 var next: RigidBody2D = null
 

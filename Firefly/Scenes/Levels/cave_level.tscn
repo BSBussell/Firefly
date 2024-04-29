@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cvxhf2cu04nb6"]
+[gd_scene load_steps=17 format=3 uid="uid://cvxhf2cu04nb6"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/cave_level.gd" id="1_bfl7c"]
 [ext_resource type="AudioStream" uid="uid://c8d4kjqyrog77" path="res://Assets/SFX/ambience/creepyCave_near_forest.mp3" id="3_xkvdx"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="12_0kfi3"]
 [ext_resource type="Script" path="res://Scenes/Levels/ChangeLevel.gd" id="13_8cde2"]
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/spring.tscn" id="13_r0kpl"]
+[ext_resource type="PackedScene" uid="uid://dtblwt5hi5l4c" path="res://Scenes/Checkpoint/checkpoint.tscn" id="15_ukqlk"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="17_0t85n"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="19_cc61p"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="21_h1irh"]
@@ -136,9 +137,10 @@ Segments = 9
 
 [node name="Rope14" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
 position = Vector2(1817, -607)
-Segments = 15
+Segments = 14
 GlowWorm = true
 worm_delay = 1.5
+worm_speed = 30.0
 
 [node name="Rope15" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
 position = Vector2(1769, -622)
@@ -149,21 +151,31 @@ GlowWorm = true
 position = Vector2(1720, -641)
 Segments = 13
 GlowWorm = true
+worm_speed = 20.0
 
 [node name="Rope17" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
 position = Vector2(1656, -652)
 Segments = 13
+GlowWorm = true
+worm_delay = 2.0
 
 [node name="Rope3" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
 position = Vector2(769, -187)
 Segments = 6
+
+[node name="Rope51" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
+position = Vector2(1871, -589)
+Segments = 7
+GlowWorm = true
+worm_delay = 0.1
+worm_speed = 30.0
 
 [node name="Rope4" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
 position = Vector2(857, -190)
 Segments = 7
 
 [node name="Rope2" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
-position = Vector2(-89, -235)
+position = Vector2(-62, -251)
 Segments = 8
 
 [node name="Rope12" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
@@ -363,12 +375,6 @@ Segments = 4
 Swingable = false
 GlowWorm = true
 
-[node name="Rope51" parent="DecorRope" instance=ExtResource("8_uc64o")]
-position = Vector2(1871, -589)
-Segments = 7
-Swingable = false
-GlowWorm = true
-
 [node name="Rope45" parent="DecorRope" instance=ExtResource("8_uc64o")]
 position = Vector2(260, -508)
 Segments = 3
@@ -449,6 +455,12 @@ Swingable = false
 
 [node name="CheckpointManager" parent="." instance=ExtResource("17_0t85n")]
 
+[node name="CheckpointArea" parent="CheckpointManager" instance=ExtResource("15_ukqlk")]
+position = Vector2(-2, -64)
+
+[node name="CheckpointArea2" parent="CheckpointManager" instance=ExtResource("15_ukqlk")]
+position = Vector2(931, -512)
+
 [node name="GemManager" type="Node2D" parent="."]
 script = ExtResource("19_cc61p")
 
@@ -490,7 +502,7 @@ position = Vector2(-88, 181)
 [node name="levelChangr" type="Area2D" parent="LoadingZones"]
 position = Vector2(166, -887)
 script = ExtResource("13_8cde2")
-new_level = "res://Scenes/Levels/tutorial.tscn"
+new_level = "res://Scenes/Levels/debug.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LoadingZones/levelChangr"]
 position = Vector2(84, 66)

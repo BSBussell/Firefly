@@ -1110,6 +1110,7 @@ WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
 script = ExtResource("27_47nb5")
 AERIAL_STATE = NodePath("../Aerial")
+min_swing_force = 800.0
 swing_up_decel = 400.0
 
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
