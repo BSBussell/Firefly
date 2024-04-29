@@ -808,7 +808,8 @@ func kill():
 	
 	dying = true
 	
-	StateMachine.change_state(AERIAL_STATE)
+	if StateMachine.current_state == WORMED_STATE:
+		StateMachine.change_state(AERIAL_STATE)
 
 	$Physics/HazardDetector.set_collision_mask_value(5, false)
 

@@ -72,13 +72,15 @@ func exit() -> void:
 	# And any potentially on particles
 	speed_particles.emitting = false
 
+	parent.stuck_segment.start_cooldown(0.2)
 	parent.stuck_segment = null
 	
-	# Wait 0.3 seconds before we can grab a rope again
-	await get_tree().create_timer(0.2).timeout
+	 #Wait 0.3 seconds before we can grab a rope again
+	#await get_tree().create_timer(0.2).timeout
 	
 	print("wtf")
 	rope_detector.set_collision_mask_value(9, true)
+	
 	
 	rope_creak_sfx.stop()
 
@@ -205,7 +207,7 @@ func jump():
 	# But if they time the jump right :3
 	# This isn't generally base game stuff
 	# More like silly fun zoom stuff
-	if speeding_up:
+	if speeding_up and sign(parent.horizontal_axis) == sign(fall_dir):
 		swing_multi = lerpf(swing_multi, 10, swing_force/max_swing_force)
 		print("Swing Boost!")
 
@@ -243,6 +245,7 @@ var last_position: Vector2 = Vector2.ZERO
 var current_dir = 0.0
 
 var speeding_up: bool = false
+var fall_dir: int = 0
 func swinging(delta, dir):
 	
 	var offset = Vector2(0, -16)
@@ -252,6 +255,10 @@ func swinging(delta, dir):
 		swing_force = move_toward(swing_force, max_swing_force, swing_down_accel * delta)
 		print("Swing Speed Up")
 		speeding_up = true
+		
+		# Find which direction we're moving towards
+		fall_dir = sign(parent.global_position.x - last_position.x)
+		
 	else:
 		swing_force = move_toward(swing_force, 600, swing_up_decel * delta)
 	

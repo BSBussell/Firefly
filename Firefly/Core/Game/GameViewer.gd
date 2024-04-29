@@ -3,6 +3,8 @@ class_name GameViewer
 
 const target_rendering: Vector2i = Vector2i(320, 180)
 
+@export var start_level: PackedScene
+
 # Our loaders
 @onready var level_loader: LevelLoader = $GameContainer
 @onready var ui_loader: UiLoader = $UI
@@ -29,7 +31,7 @@ func _ready():
 	_loader.connect_loaders(level_loader, ui_loader)
 	
 	# Load our level
-	_loader.load_level("res://Scenes/Levels/cave_level.tscn")
+	_loader.load_level(start_level.resource_path)
 	
 	var window_size = DisplayServer.window_get_size()
 	current_scale = int(window_size.x / target_rendering.x)

@@ -176,7 +176,7 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 
 	# If Fast Falling Input
-	if Input.is_action_just_pressed("Down"):
+	if Input.is_action_just_pressed("Dive"):
 		water_dive()
 
 	return null
