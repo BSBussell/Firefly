@@ -889,11 +889,19 @@ func _on_water_detector_body_entered(body):
 		StateMachine.change_state(WATERED_STATE)
 
 
+var disable_walljump: bool = false
 func _on_water_detector_body_exited(body):
 	print("Out of Water")
 	# Aerial Feels like the best bet
-	underWater = false
+	
+	#consume_jump()
 	StateMachine.change_state(AERIAL_STATE)
+	underWater = false
+	
+	# Wait 0.5 seconds before flipping the flag
+	disable_walljump = true
+	await get_tree().create_timer(0.25).timeout
+	disable_walljump = false
 
 
 var stuck_segment: SpitSegment = null

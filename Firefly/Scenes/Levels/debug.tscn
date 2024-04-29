@@ -31,6 +31,7 @@ func local_ready():
 	moonlight.visible = true
 	shadow_filter.visible = true
 	
+	_audio.set_level_effects([])
 "
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
@@ -58,7 +59,7 @@ PLAYER = NodePath("Flyph")
 [node name="Moonlight" type="DirectionalLight2D" parent="PP + FX"]
 rotation = -0.698132
 color = Color(0.780392, 0.87451, 0.921569, 1)
-energy = 0.8
+energy = 0.4
 range_layer_min = -101
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 0.0235294)

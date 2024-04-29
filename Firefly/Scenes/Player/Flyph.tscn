@@ -547,7 +547,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.588921, 1, 1, 1, 0)
 size = Vector2(6.5, 13.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k824u"]
-size = Vector2(10, 7)
+size = Vector2(10, 5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dj0fv"]
 size = Vector2(0, 10)
@@ -828,7 +828,7 @@ position = Vector2(2, -2)
 collision_mask = 128
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/WaterDetector"]
-position = Vector2(-1, -10.5)
+position = Vector2(-1, -11.5)
 shape = SubResource("RectangleShape2D_k824u")
 
 [node name="RopeDetector" type="Area2D" parent="Physics"]

@@ -35,6 +35,9 @@ func enter() -> void:
 	if OS.is_debug_build():
 		print("Wormed State")
 
+	# Reset this value with silly number that hz axis will never be
+	slow_dir = 5.0
+	last_position= Vector2.ZERO
 
 	parent.set_standing_collider()
 
@@ -133,8 +136,6 @@ func process_frame(_delta):
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
 		if parent.horizontal_axis < 0 and not parent.animation.flip_h:
 			
-			#swinging_sfx.pitch_scale = 1.75
-			#swinging_sfx.play()
 			rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
 			
 			
@@ -143,8 +144,7 @@ func process_frame(_delta):
 
 		elif parent.horizontal_axis > 0 and parent.animation.flip_h:
 			
-			#swinging_sfx.pitch_scale = 2.0
-			#swinging_sfx.play()
+			
 			rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
 			
 			parent.animation.flip_h = false
@@ -249,35 +249,51 @@ func jump():
 
 
 var last_position: Vector2 = Vector2.ZERO
-var current_dir = 0.0
+
+# Set to the direction that makes us fall down
+var slow_dir = 5.0
 
 var speeding_up: bool = false
 var fall_dir: int = 0
+var hz_speed: float = 0.0
 func swinging(delta, dir):
 	
 	var offset = Vector2(0, -16)
 	parent.global_position = parent.stuck_segment.global_position - offset
 	
-	if parent.global_position.y > last_position.y and current_dir != parent.horizontal_axis:
+	# If we've moved down since last pool, and 
+	if parent.global_position.y > last_position.y and slow_dir != parent.horizontal_axis:
 		swing_force = move_toward(swing_force, max_swing_force, swing_down_accel * delta)
 		print("Swing Speed Up")
 		speeding_up = true
 		
 		# Find which direction we're moving towards
-		fall_dir = sign(parent.global_position.x - last_position.x)
+		hz_speed = parent.global_position.x - last_position.x
+		fall_dir = sign(hz_speed)
+		
+		#slow_dir = -parent.horizontal_axis
 		
 	else:
 		swing_force = move_toward(swing_force, 600, swing_up_decel * delta)
 	
-		current_dir = parent.horizontal_axis
+		
+		
+		
+		#if parent.global_position.y > last_position.y:
+			#slow_dir = -parent.horizontal_axis
 		
 		speeding_up = false
 	
-		print("Swing Slow Down")
+		print("Swing Slow Down:")
+		print("Swing Pos Bool: ", parent.global_position.y > last_position.y)
+		#print("Swing Dir Bool: ", current_dir != parent.horizontal_axis)
+	
+	# Register that this direction slows us down now
+	if parent.global_position.y <= last_position.y:
+		slow_dir = sign(parent.global_position.x - last_position.x)
+		print("Swing Set Slow Dir: ", slow_dir)
 	
 	last_position = parent.global_position
-	
-	
 	
 	if parent.horizontal_axis:
 		

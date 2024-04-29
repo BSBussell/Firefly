@@ -157,7 +157,7 @@ func apply_airResistance(delta, direction):
 func handle_walljump(vc_direction, dir = 0):	
 	
 	# Attempt jump pretty much just checks if a jump has been buffered and removes that from the buffer if it has
-	if parent.attempt_jump():
+	if not parent.disable_walljump and parent.attempt_jump():
 	
 		## Set Global Flags
 		#parent.wallJumping = true
