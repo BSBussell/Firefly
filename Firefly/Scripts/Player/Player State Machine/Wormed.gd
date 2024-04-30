@@ -94,7 +94,7 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 
 
-	if Input.is_action_just_pressed("Dive"):
+	if Input.is_action_just_pressed("Down"):
 		if parent.stuck_segment.next:
 			parent.stuck_segment = parent.stuck_segment.next
 		else:
