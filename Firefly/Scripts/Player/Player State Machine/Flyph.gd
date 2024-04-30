@@ -266,16 +266,15 @@ func _ready() -> void:
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)
 
+
 func _unhandled_input(event: InputEvent) -> void:
 
 	# Log if a jump is pressed
 	if Input.is_action_just_pressed("Jump"):
 		jump_buffer.start()
 
-	# Ok for some reason my joystick is giving like 0.9998 which when holding left, which apparently
-	# is enough for my player to move considerably slower than like i want them to... so im just gonna
-	horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
-	vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
+	
+		
 
 	# For quickly chaning states
 	if OS.is_debug_build():
@@ -288,6 +287,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# Pass The Input to the State Machine
 	StateMachine.process_input(event)
+
+
+
 
 ## Attempt to consume a jump buffer
 # This will be called by the state machine when it wants to consume a jump buffer
@@ -314,7 +316,45 @@ func attempt_post_jump() -> bool:
 		return true
 	return false
 
+
+# This is handled here
+func set_input_axis(delta: float) -> void:
+	
+	# Ok for some reason my joystick is giving like 0.9998 which when holding left, which apparently
+	# is enough for my player to move considerably slower than like i want them to... so built in UCF???
+	horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
+	vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
+
+
+	# If we've just pressed an input then unlock the direction (so silly players
+	# can regain control if they want to)
+	if Input.is_action_just_pressed("Right") or Input.is_action_just_pressed("Left"):
+			lock_dir = false
+
+	# Update Lock Timer
+	lock_time -= delta
+	if lock_time <= 0:
+		lock_dir = false
+
+	# If we're still locked then assign the locked value to input
+	if lock_dir:
+		horizontal_axis = hold_dir
+	
+	
+	
+var lock_dir: bool = true
+var hold_dir: float = 0.0
+var lock_time: float = 0.5
+## Locks the horizontal axis to a value for a given amount of time
+func lock_h_dir(dir: float, time: float):
+	
+	lock_dir = true
+	hold_dir = dir
+	lock_time = time
+
 func _physics_process(delta: float) -> void:
+
+	set_input_axis(delta)
 
 	# Stop the players 'world' on death :3
 	if not dying:

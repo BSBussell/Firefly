@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cvxhf2cu04nb6"]
+[gd_scene load_steps=19 format=3 uid="uid://cvxhf2cu04nb6"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/cave_level.gd" id="1_bfl7c"]
 [ext_resource type="AudioStream" uid="uid://c8d4kjqyrog77" path="res://Assets/SFX/ambience/creepyCave_near_forest.mp3" id="3_xkvdx"]
@@ -12,12 +12,16 @@
 [ext_resource type="Script" path="res://Scenes/Levels/ChangeLevel.gd" id="13_8cde2"]
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/spring.tscn" id="13_r0kpl"]
 [ext_resource type="PackedScene" uid="uid://dtblwt5hi5l4c" path="res://Scenes/Checkpoint/checkpoint.tscn" id="15_ukqlk"]
+[ext_resource type="Script" path="res://Scenes/Camera/CameraTriggers/CameraTarget.gd" id="16_nggfg"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="17_0t85n"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="19_cc61p"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="21_h1irh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kao5a"]
 size = Vector2(103.5, 138)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c8xov"]
+size = Vector2(223, 278)
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager")]
 script = ExtResource("1_bfl7c")
@@ -485,6 +489,7 @@ position = Vector2(919, 237)
 
 [node name="FlyJar6" parent="JarsManager" instance=ExtResource("12_0kfi3")]
 position = Vector2(-62, -404)
+pull_strength = 0.0
 
 [node name="FlyJar3" parent="JarsManager" instance=ExtResource("12_0kfi3")]
 position = Vector2(1286, 140)
@@ -521,6 +526,16 @@ position = Vector2(-9, -304)
 position = Vector2(25, -224)
 
 [node name="CameraTargets" type="Node2D" parent="."]
+
+[node name="CameraTarget" type="Area2D" parent="CameraTargets"]
+position = Vector2(43, -401)
+script = ExtResource("16_nggfg")
+blend_priority = 1
+blend_override = 0.4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraTargets/CameraTarget"]
+position = Vector2(26, 46)
+shape = SubResource("RectangleShape2D_c8xov")
 
 [node name="Enemies" type="Node2D" parent="."]
 
