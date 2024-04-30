@@ -25,5 +25,5 @@ func _input(_event: InputEvent) -> void:
 		
 	# Load Debug Environment
 	if Input.is_key_pressed(KEY_0):
-		_loader.load_level("res://Scenes/Levels/debug.tscn")
+		_loader.load_level("res://Scenes/Levels/cave_level.tscn")
 		

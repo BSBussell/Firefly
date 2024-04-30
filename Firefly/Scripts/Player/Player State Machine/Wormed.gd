@@ -35,13 +35,16 @@ func enter() -> void:
 	if OS.is_debug_build():
 		print("Wormed State")
 
+	# Reset this value with silly number that hz axis will never be
+	slow_dir = 5.0
+	last_position= Vector2.ZERO
 
 	parent.set_standing_collider()
 
 	
 	rope_detector.set_collision_mask_value(9, false)	
 	
-	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 1.5), 1.0)
+	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 2.5), 1.0)
 	swing_force = lerpf(min_swing_force, max_swing_force, speed_ratio)
 	
 
@@ -72,13 +75,15 @@ func exit() -> void:
 	# And any potentially on particles
 	speed_particles.emitting = false
 
+	parent.stuck_segment.start_cooldown(0.2)
 	parent.stuck_segment = null
 	
-	# Wait 0.3 seconds before we can grab a rope again
-	await get_tree().create_timer(0.2).timeout
+	 #Wait 0.3 seconds before we can grab a rope again
+	#await get_tree().create_timer(0.2).timeout
 	
 	print("wtf")
 	rope_detector.set_collision_mask_value(9, true)
+	
 	
 	rope_creak_sfx.stop()
 
@@ -89,8 +94,15 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 
 
-	
+	if Input.is_action_just_pressed("Dive"):
+		if parent.stuck_segment.next:
+			parent.stuck_segment = parent.stuck_segment.next
+		else:
+			return AERIAL_STATE
 
+	if Input.is_action_just_pressed("Up"):
+		if parent.stuck_segment.prev:
+			parent.stuck_segment = parent.stuck_segment.prev
 
 	return null
 
@@ -124,8 +136,6 @@ func process_frame(_delta):
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
 		if parent.horizontal_axis < 0 and not parent.animation.flip_h:
 			
-			#swinging_sfx.pitch_scale = 1.75
-			#swinging_sfx.play()
 			rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
 			
 			
@@ -134,8 +144,7 @@ func process_frame(_delta):
 
 		elif parent.horizontal_axis > 0 and parent.animation.flip_h:
 			
-			#swinging_sfx.pitch_scale = 2.0
-			#swinging_sfx.play()
+			
 			rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
 			
 			parent.animation.flip_h = false
@@ -205,7 +214,7 @@ func jump():
 	# But if they time the jump right :3
 	# This isn't generally base game stuff
 	# More like silly fun zoom stuff
-	if speeding_up:
+	if speeding_up and sign(parent.horizontal_axis) == sign(fall_dir):
 		swing_multi = lerpf(swing_multi, 10, swing_force/max_swing_force)
 		print("Swing Boost!")
 
@@ -240,30 +249,51 @@ func jump():
 
 
 var last_position: Vector2 = Vector2.ZERO
-var current_dir = 0.0
+
+# Set to the direction that makes us fall down
+var slow_dir = 5.0
 
 var speeding_up: bool = false
+var fall_dir: int = 0
+var hz_speed: float = 0.0
 func swinging(delta, dir):
 	
 	var offset = Vector2(0, -16)
 	parent.global_position = parent.stuck_segment.global_position - offset
 	
-	if parent.global_position.y > last_position.y and current_dir != parent.horizontal_axis:
+	# If we've moved down since last pool, and 
+	if parent.global_position.y > last_position.y and slow_dir != parent.horizontal_axis:
 		swing_force = move_toward(swing_force, max_swing_force, swing_down_accel * delta)
 		print("Swing Speed Up")
 		speeding_up = true
+		
+		# Find which direction we're moving towards
+		hz_speed = parent.global_position.x - last_position.x
+		fall_dir = sign(hz_speed)
+		
+		#slow_dir = -parent.horizontal_axis
+		
 	else:
 		swing_force = move_toward(swing_force, 600, swing_up_decel * delta)
 	
-		current_dir = parent.horizontal_axis
+		
+		
+		
+		#if parent.global_position.y > last_position.y:
+			#slow_dir = -parent.horizontal_axis
 		
 		speeding_up = false
 	
-		print("Swing Slow Down")
+		print("Swing Slow Down:")
+		print("Swing Pos Bool: ", parent.global_position.y > last_position.y)
+		#print("Swing Dir Bool: ", current_dir != parent.horizontal_axis)
+	
+	# Register that this direction slows us down now
+	if parent.global_position.y <= last_position.y:
+		slow_dir = sign(parent.global_position.x - last_position.x)
+		print("Swing Set Slow Dir: ", slow_dir)
 	
 	last_position = parent.global_position
-	
-	
 	
 	if parent.horizontal_axis:
 		

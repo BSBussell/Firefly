@@ -11,6 +11,10 @@ var displayed: bool = false
 func _ready():
 	visible = false
 
+func _input(event):
+	
+	if Input.is_action_just_pressed("ui_accept"):
+		hide_Victory_Screen()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -33,6 +37,7 @@ func show_Victory_Screen():
 
 func hide_Victory_Screen():
 	visible = false
+	get_tree().paused = false
 	displayed = false
 	
 func connect_signal(sig: String):

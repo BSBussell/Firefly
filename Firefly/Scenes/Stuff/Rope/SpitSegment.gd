@@ -4,6 +4,8 @@ class_name SpitSegment
 
 @onready var spit = $"."
 
+
+# Hooked up by rope
 var prev: RigidBody2D = null
 var next: RigidBody2D = null
 
@@ -27,3 +29,7 @@ func connect_signal(function: Callable):
 
 func player_grabbed():
 	emit_signal("grabbed", self)
+
+func start_cooldown(time: float) -> void:
+	
+	get_parent().start_cooldown(time)

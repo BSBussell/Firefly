@@ -147,6 +147,11 @@ func spring_jump():
 	launch_velocity += momentum
 	
 	flyph.launch(launch_velocity, launch_gravity, SPRING_SQUASH)
+	
+	
+	# If we're launching horizontally lock input to that direction for time
+	if abs(rotation) > 0:
+		flyph.lock_h_dir(sign(launch_velocity.x), 0.2)
 
 
 ## Do Momentum Math for a Job Boost

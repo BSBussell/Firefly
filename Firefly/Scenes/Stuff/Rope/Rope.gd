@@ -23,6 +23,7 @@ const WORM = preload("res://Scenes/Stuff/Rope/worm.tscn")
 
 var worm_active: bool = false
 var first_segment: SpitSegment = null
+var segments: Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -65,6 +66,7 @@ func create_joints() -> void:
 			
 		if not Swingable:
 			new_segment.set_collision_layer_value(9, false)
+			new_segment.set_collision_mask_value(1, true)
 		
 		print(next_pos)
 		
@@ -98,6 +100,7 @@ func create_joints() -> void:
 			new_segment.prev = null
 			
 		
+		segments.append(new_segment)
 		prev_body = new_segment
 		
 
@@ -119,6 +122,17 @@ func activate(segment: SpitSegment):
 			worm.start_hunt(first_segment, worm_speed)
 			worm_active = true
 	
+	
+func start_cooldown(time: float) -> void:
+	
+	print("Starting Cooldown")
+	for each: SpitSegment in segments:
+		each.set_collision_layer_value(9, false)
+		
+	await get_tree().create_timer(time).timeout
+	
+	for each: SpitSegment in segments:
+		each.set_collision_layer_value(9, true)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

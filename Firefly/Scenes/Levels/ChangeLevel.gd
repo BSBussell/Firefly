@@ -1,14 +1,23 @@
 extends Area2D
 
-@export var new_level: PackedScene
-
+#@export var new_level: PackedScene
+@export_file("*.tscn") var new_level: String
 @onready var world: Level = $"../.."
 
 
-	
+var execute_once: bool = false
 
 
 func _on_area_entered(area):
-	var new_level_path = new_level.get_path()
+	
+	
+	
+	if not new_level:
+		print("uh")
+		return
+	var new_level_path = new_level
 	print(new_level_path)
-	world.load_level(new_level_path)
+	
+	if not execute_once:
+		execute_once = true
+		world.load_level(new_level_path)

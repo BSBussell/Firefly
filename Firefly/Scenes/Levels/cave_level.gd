@@ -9,10 +9,7 @@ extends "res://Scripts/Level/Level.gd"
 
 
 
-# We have the player start without glow on this level
-func player_startup_logic():
-	
-	PLAYER.disable_glow()
+
 
 
 # And becasue of that we hide the gems
