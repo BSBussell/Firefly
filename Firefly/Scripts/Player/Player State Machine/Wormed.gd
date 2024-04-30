@@ -100,7 +100,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 		else:
 			return AERIAL_STATE
 
-	if Input.is_action_just_pressed("Up"):
+	elif Input.is_action_just_pressed("Up"):
 		if parent.stuck_segment.prev:
 			parent.stuck_segment = parent.stuck_segment.prev
 
