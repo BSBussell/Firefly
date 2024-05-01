@@ -155,6 +155,7 @@ size = Vector2(103.5, 138)
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = ExtResource("1_dar63")
+Text = "- FireFly -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")

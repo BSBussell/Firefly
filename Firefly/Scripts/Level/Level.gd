@@ -12,6 +12,9 @@ signal Win()
 ## Signal Emitted to have the player Change Level
 signal ChangeLevel(path: String)
 
+@export_category("Title")
+@export var Text: String = "- Debug -"
+
 ## The Active Player for the Level
 @export_category("Components")
 @export var PLAYER: Flyph
