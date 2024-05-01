@@ -9,7 +9,7 @@ var current_level_path: String
 var current_level_instance: Level = null
 
 
-func load_level(level_path: String):
+func load_level(level_path: String, spawn_id: String = ""):
 	clear_current_level()
 	current_level_path = level_path
 	
@@ -18,8 +18,20 @@ func load_level(level_path: String):
 	if level_scene:
 		
 		current_level_instance = level_scene.instantiate()
-		game_view_port.add_child(current_level_instance)
+		
+		print(spawn_id)
+		# If we are given a spawn point id set it
+		if spawn_id:
+			print(spawn_id)
+			current_level_instance.set_spawn_id(spawn_id)
+			
 		current_level_instance.connect_level_loader(self)
+		
+		game_view_port.add_child(current_level_instance)
+		
+		
+		
+		
 		
 		return current_level_instance
 	else:

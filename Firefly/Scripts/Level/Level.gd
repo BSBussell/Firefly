@@ -33,11 +33,18 @@ signal ChangeLevel(path: String)
 var level_loader: LevelLoader = null
 var ui_loader: UiLoader = null
 
+var spawn_point: SpawnPoints = null
+var spawn_point_id: String = ""
+
 ## Used by the loaders to pass themself to the level
-func connect_level_loader(ll: LevelLoader):
+func connect_level_loader(ll: LevelLoader) -> void:
 	level_loader = ll
 	
-func connect_ui_loader(ui: UiLoader):
+
+func set_spawn_id(id: String) -> void:
+	spawn_point_id = id
+
+func connect_ui_loader(ui: UiLoader) -> void:
 	ui_loader = ui
 
 func setup_components() -> void:
@@ -46,6 +53,21 @@ func setup_components() -> void:
 	if PLAYER:
 		_globals.ACTIVE_PLAYER = PLAYER
 		player_startup_logic()
+		
+		# Check if any spawn points in the scene match the id
+		var spawnpoints = []
+		spawnpoints = get_tree().get_nodes_in_group("SpawnPoint")
+		for point: SpawnPoints in spawnpoints:
+			if point.id == spawn_point_id:
+				PLAYER.global_position = point.global_position
+				PLAYER.set_respawn_point(point.global_position)
+				
+				spawn_point = point
+				break
+		
+		PLAYER.connect_to_death(Callable(self, "on_death"))
+		
+		
 	else:
 		_globals.ACTIVE_PLAYER = null
 		
@@ -69,8 +91,8 @@ func setup_components() -> void:
 		_globals.GEM_MANAGER = null
 
 ## Calls the level loader to load a new level
-func load_level(path: String):
-	await _loader.load_level(path)
+func load_level(path: String, spawn_id: String):
+	await _loader.load_level(path, spawn_id)
 	
 	
 
@@ -110,4 +132,6 @@ func jars_startup_logic() -> void:
 func gem_startup_logic() -> void:
 	pass
 
-
+## Function Called on Players Death
+func on_death() -> void:
+	pass

@@ -29,8 +29,9 @@ func connect_loaders(ll: LevelLoader, ui: UiLoader):
 
 	
 
-func load_level(path: String):
+func load_level(path: String, spawn_id: String = ""):
 	
+	print(spawn_id)
 
 	print("Calling Method")
 	var loading_screen = await show_loading()
@@ -46,7 +47,7 @@ func load_level(path: String):
 	await get_tree().process_frame
 	
 	# Load new level
-	var level = level_loader.load_level(current_path)
+	var level = level_loader.load_level(current_path, spawn_id)
 	# Load new ui
 	ui_loader.setup(level)
 	

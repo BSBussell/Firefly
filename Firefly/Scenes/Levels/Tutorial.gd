@@ -35,3 +35,6 @@ func local_ready():
 	lighting.visible = true
 
 
+func on_death():
+	
+	gem_manager.respawn_all()

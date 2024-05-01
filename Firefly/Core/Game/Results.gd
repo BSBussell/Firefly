@@ -13,7 +13,7 @@ func _ready():
 
 func _input(event):
 	
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") and visible:
 		hide_Victory_Screen()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -46,6 +46,8 @@ enum WALLJUMPS {
 	DOWNWARD
 }
 
+signal dead()
+
 ## Editor Variables
 @export_category("Movement Resource")
 @export var movement_states: Array[PlayerMovementData]
@@ -868,9 +870,8 @@ func kill():
 	# Zero out the velocity
 	velocity = Vector2.ZERO
 	
-	if _globals.GEM_MANAGER:
-		_globals.GEM_MANAGER.respawn_all()
-
+	# Let any Listeners know we dead
+	emit_signal("dead")
 
 	# Respawn Animation
 	var respawn_cloud = RESPAWN_DUST.instantiate()
@@ -895,6 +896,11 @@ func kill():
 	# Give control back to the player
 	dying = false
 
+
+## Connect given callable to be called on death
+func connect_to_death(method: Callable):
+	
+	connect("dead", method)
 
 # Ways of death:
 func _on_hazard_detector_area_entered(_area):

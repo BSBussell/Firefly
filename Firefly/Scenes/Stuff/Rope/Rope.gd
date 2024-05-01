@@ -1,5 +1,5 @@
 extends Node2D
-
+class_name Rope
 
 const SPIT = preload("res://Scenes/Stuff/Rope/spit.tscn")
 const JOINT = preload("res://Scenes/Stuff/Rope/joint.tscn")
@@ -21,6 +21,7 @@ const WORM = preload("res://Scenes/Stuff/Rope/worm.tscn")
 @onready var lure = $PointLight2D
 
 
+var active_worm: Worm = null
 var worm_active: bool = false
 var first_segment: SpitSegment = null
 var segments: Array = []
@@ -115,13 +116,19 @@ func activate(segment: SpitSegment):
 	if GlowWorm:
 		if not worm_active:
 			
-			var worm = WORM.instantiate()
-			add_child(worm)
+			worm_active = true
+			active_worm = WORM.instantiate()
+			add_child(active_worm)
 			# Wait 0.3 seconds before we can grab a rope again
 			await get_tree().create_timer(worm_delay).timeout
-			worm.start_hunt(first_segment, worm_speed)
-			worm_active = true
+			active_worm.start_hunt(first_segment, worm_speed)
+			
+
+func kill_worm():
 	
+	if worm_active:
+		active_worm.queue_free()
+		worm_active = false	
 	
 func start_cooldown(time: float) -> void:
 	

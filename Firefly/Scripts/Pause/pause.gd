@@ -38,6 +38,7 @@ func toggle_pause():
 	
 	# If there is another ui element up
 	if conflict():
+		print("can't pause")
 		return
 	
 	if paused:
