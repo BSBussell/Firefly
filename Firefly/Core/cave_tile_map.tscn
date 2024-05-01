@@ -799,7 +799,9 @@ texture = ExtResource("1_evea0")
 2:10/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 2:10/0/physics_layer_2/angular_velocity = 0.0
 2:10/0/metadata/_better_terrain = {
+3: [2, 1],
 4: [1],
+7: [2, 1],
 "symmetry": 2,
 "type": 7
 }

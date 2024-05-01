@@ -22,6 +22,9 @@ signal ChangeLevel(path: String)
 ## The Gem's Parent
 @export var gem_manager: GemManager
 
+## Each Level Should Have a Unique ID, plz assign
+@export var id: int
+
 @export_category("Settings")
 
 ## Do we load a pause menu

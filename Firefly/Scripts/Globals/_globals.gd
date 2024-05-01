@@ -1,7 +1,7 @@
 extends Node
 
 ## This is true if we are within the game loop
-var ACTIVE_LEVEL: bool
+var ACTIVE_LEVEL: Level
 
 ## This holds the active player object
 var ACTIVE_PLAYER: Flyph

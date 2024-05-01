@@ -53,6 +53,7 @@ size = Vector2(103.5, 138)
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER")]
 script = SubResource("GDScript_0jk77")
 PLAYER = NodePath("Flyph")
+id = 2
 
 [node name="PP + FX" type="Node" parent="."]
 

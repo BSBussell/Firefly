@@ -47,6 +47,8 @@ func _input(event: InputEvent) -> void:
 		
 		_stats.DEATHS = 0
 		_stats.TIME = 0
+		
+		_jar_tracker.reset_jars()
 
 		# Reload the scene
 		get_tree().paused = false

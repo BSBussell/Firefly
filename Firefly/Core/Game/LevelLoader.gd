@@ -19,6 +19,8 @@ func load_level(level_path: String, spawn_id: String = ""):
 		
 		current_level_instance = level_scene.instantiate()
 		
+		_globals.ACTIVE_LEVEL = current_level_instance
+		
 		print(spawn_id)
 		# If we are given a spawn point id set it
 		if spawn_id:

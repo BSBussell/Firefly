@@ -29,6 +29,7 @@ _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
 _stats="*res://Scripts/Globals/_stats.gd"
 _audio="*res://Scripts/Globals/_audio.gd"
 _globals="*res://Scripts/Globals/_globals.gd"
+_jar_tracker="*res://Scripts/Globals/_jar_tracker.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 
 [debug]
