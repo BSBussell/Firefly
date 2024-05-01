@@ -332,24 +332,35 @@ func set_input_axis(delta: float) -> void:
 	# can regain control if they want to)
 	if Input.is_action_just_pressed("Right") or Input.is_action_just_pressed("Left"):
 			lock_dir = false
+			lock_time = 0
+	if soft_lock and (Input.is_action_pressed("Right") or Input.is_action_pressed("Left")):
+			lock_dir = false
+			lock_time = 0
 
 	# Update Lock Timer
-	lock_time -= delta
-	if lock_time <= 0:
+	if lock_time > 0:
+		lock_time -= delta
+	else:
 		lock_dir = false
 
 	# If we're still locked then assign the locked value to input
 	if lock_dir:
 		horizontal_axis = hold_dir
 	
-	
-	
+
+
+
+
+# If we are locking dir
 var lock_dir: bool = true
+# If the lock is overwritten easily
+var soft_lock: bool = false
 var hold_dir: float = 0.0
 var lock_time: float = 0.5
 ## Locks the horizontal axis to a value for a given amount of time
-func lock_h_dir(dir: float, time: float):
+func lock_h_dir(dir: float, time: float, soft: bool = false):
 	
+	soft_lock = soft
 	lock_dir = true
 	hold_dir = dir
 	lock_time = time

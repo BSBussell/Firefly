@@ -14,6 +14,9 @@ func _ready():
 	var id = gen_id()
 	if _jar_tracker.is_jar_collected(id):
 		
+		visible = false
+		
+		# Wait for the collecter to init
 		await get_tree().create_timer(1).timeout
 		
 		# Signal to the counter

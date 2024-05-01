@@ -163,15 +163,18 @@ func update_effects() -> void:
 		# Turn off dust when we stop
 		slide_dust.emitting = false
 
-	elif not slide_dust.emitting:
-		# Sliding sfx
-		sliding_sfx.play(sliding_sfx.get_playback_position())
+	else:
+		
 
-		# Slide Particle Effects
-		slide_dust.emitting = true
+		if not slide_dust.emitting:
+			
+			# Sliding sfx
+			sliding_sfx.play(sliding_sfx.get_playback_position())
+			# Slide Particle Effects
+			slide_dust.emitting = true
 
-		# Update Particle Direction (im so dumb)
-		slide_dust.direction.x = 1 if (parent.animation.flip_h) else -1
+			# Update Particle Direction (im so dumb)
+			slide_dust.direction.x = 1 if (parent.animation.flip_h) else -1
 
 ## Updates our sliding animation
 func update_slide_animation() -> void:

@@ -47,6 +47,8 @@ func exit() -> void:
 	
 	# Turn Off the Dust
 	wall_slide_dust.emitting = false
+	
+	sliding_sfx.stop()
 
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
@@ -263,6 +265,8 @@ func upward_walljump(jump_dir: float) -> void:
 
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
 	
+	parent.lock_h_dir(-jump_dir, 0.2, true)
+	
 	
 
 
@@ -284,6 +288,8 @@ func downward_walljump(jump_dir: float) -> void:
 	var facing: bool = (jump_dir < 0)
 
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
+	
+	parent.lock_h_dir(jump_dir, 0.2, true)
 
 	
 	
@@ -309,6 +315,8 @@ func away_walljump(jump_dir: float) -> void:
 	var facing: bool = (jump_dir < 0)
 
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
+	
+	parent.lock_h_dir(jump_dir, 0.2, true)
 	
 
 ## General Wall Jump Function
