@@ -77,10 +77,6 @@ func create_joints() -> void:
 		# Connect the 'grabbed' signal to the 'activate' method
 		new_segment.connect("grabbed", Callable(self, "activate"))
 		
-		
-		print("bleh")
-		
-		
 		var spitSeg = prev_body as SpitSegment
 		
 		if spitSeg:
@@ -112,7 +108,6 @@ func setup_Worm():
 	
 	
 func activate(segment: SpitSegment):
-	print("Segment activated:", segment.name)
 	if GlowWorm:
 		if not worm_active:
 			
@@ -132,7 +127,6 @@ func kill_worm():
 	
 func start_cooldown(time: float) -> void:
 	
-	print("Starting Cooldown")
 	for each: SpitSegment in segments:
 		each.set_collision_layer_value(9, false)
 		

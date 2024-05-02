@@ -80,7 +80,6 @@ func _on_area_2d_area_entered(area: Area2D):
 	var target: CameraTarget = area as CameraTarget
 	if target:
 		targets[target.get_instance_id()] = target
-		print("Camera Target On Screen")
 
 # When an area is exited, remove it from the dictionary
 func _on_area_2d_area_exited(area: Area2D):

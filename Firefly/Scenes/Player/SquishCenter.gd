@@ -25,8 +25,13 @@ func _process(delta):
 # Set the scale for squash/stretch and start interpolating back to original scale
 func squish(new_scale: Vector2, new_speed: float = rebound_speed) -> void:
 	
+	# Make sure the order of magnitude stays in the hundreths place
+	var safe_scale: Vector2
+	safe_scale.x = snappedf(new_scale.x, 0.01)
+	safe_scale.y = snappedf(new_scale.y, 0.01)
+	
 	# Set Scale
-	scale = new_scale
+	scale = safe_scale
 	
 	# Tweening variables
 	squish_from = new_scale

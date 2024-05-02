@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=24 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="3_41qlf"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="3_263tg"]
 [ext_resource type="Texture2D" uid="uid://f4xhpem7fo4b" path="res://Assets/Graphics/Deep_Forest_Resource/bg_mountains_3.png" id="4_jrcyl"]
 [ext_resource type="Texture2D" uid="uid://8nctejfx4eoj" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_2.png" id="5_vuwpx"]
 [ext_resource type="Texture2D" uid="uid://pux5vi5jthqm" path="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png" id="6_aqrhp"]
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="6_prvn5"]
 [ext_resource type="Texture2D" uid="uid://b1yvkgf4mxi26" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_1.png" id="7_im6pt"]
 [ext_resource type="AudioStream" uid="uid://cu2e2bu6ld7xt" path="res://Assets/SFX/ambience/forest_ambience_b.mp3" id="8_0y8n3"]
 [ext_resource type="AudioStream" uid="uid://cc71beoeqyxis" path="res://Assets/SFX/ambience/CaveEntrance.wav" id="9_qfnol"]
@@ -14,6 +15,8 @@
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="12_mdqvq"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="13_nucbu"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="14_o42d8"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="15_gqk47"]
+[ext_resource type="Shader" path="res://Scenes/Levels/fog_light.gdshader" id="16_5jjrv"]
 
 [sub_resource type="GDScript" id="GDScript_0jk77"]
 script/source = "extends \"res://Scripts/Level/Level.gd\"
@@ -55,8 +58,29 @@ colors = PackedColorArray(0, 0, 0, 1, 0.977813, 0.977813, 0.977813, 0.0221871, 0
 metadata/_snap_enabled = true
 metadata/_snap_count = 9
 
+[sub_resource type="Gradient" id="Gradient_ng1fs"]
+offsets = PackedFloat32Array(0.907378, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m7kih"]
 size = Vector2(103.5, 138)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ja5pb"]
+resource_local_to_scene = true
+shader = ExtResource("16_5jjrv")
+shader_parameter/angle = 0.46
+shader_parameter/position = 0.3
+shader_parameter/spread = 0.003
+shader_parameter/cutoff = -0.293
+shader_parameter/falloff = 0.323
+shader_parameter/edge_fade = 0.628
+shader_parameter/speed = 5.0
+shader_parameter/ray1_density = 8.0
+shader_parameter/ray2_density = 30.0
+shader_parameter/ray2_intensity = 0.3
+shader_parameter/color = Color(0.211765, 0.772549, 0.956863, 1)
+shader_parameter/hdr = true
+shader_parameter/seed = -108.54
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager")]
 script = SubResource("GDScript_0jk77")
@@ -181,6 +205,28 @@ metadata/_edit_lock_ = true
 
 [node name="Particles" type="Node" parent="."]
 
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Particles"]
+position = Vector2(2936, 303)
+amount = 64
+lifetime = 5.0
+preprocess = 5.0
+texture = ExtResource("6_prvn5")
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(-1, 0)
+gravity = Vector2(0, -10)
+initial_velocity_min = 25.0
+initial_velocity_max = 50.0
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+radial_accel_min = -2.5
+radial_accel_max = 2.5
+tangential_accel_min = -0.5
+tangential_accel_max = 0.5
+scale_amount_min = 0.2
+scale_amount_max = 0.4
+color_ramp = SubResource("Gradient_ng1fs")
+
 [node name="Level" parent="." instance=ExtResource("3_41qlf")]
 position = Vector2(1, 0)
 layer_0/tile_data = PackedInt32Array(131159, 983040, 6, 131158, 983040, 7, 131160, 983040, 6, 131161, 983040, 6, 131162, 1048576, 6, 983204, 327680, 4, 983203, 327680, 4, 983202, 393216, 4, 983201, 393216, 4, 983200, 262144, 4, 983199, 393216, 4, 983198, 262144, 4, 983197, 327680, 4, 983196, 393216, 4, 917671, 262144, 4, 917672, 393216, 4, 1048730, 327680, 4, 1048729, 393216, 4, 1048728, 262144, 4, 1048727, 327680, 4, 1048726, 262144, 4, 1048725, 327680, 4, 1048724, 262144, 4, 1048723, 393216, 4, 1048722, 262144, 4, 1048721, 327680, 4, 1048720, 393216, 4, 1048719, 327680, 4, 1048718, 393216, 4, 1048717, 262144, 4, 983179, 393216, 4, 983178, 393216, 4, 917640, 327680, 4, 917641, 393216, 4, 852102, 327680, 4, 852101, 262144, 4, 917636, 327680, 4, 917635, 327680, 4, 917634, 327680, 4, 589950, 327680, 4, 458876, 262144, 4, 327802, 262144, 4, 196727, 262144, 4, 131189, 327680, 4, 65651, 393216, 4, 114, 262144, 4, -65429, 262144, 4, -65428, 393216, 4, -65427, 393216, 4, -65426, 393216, 4, -65425, 327680, 4, -65424, 393216, 4, 917646, 65536, 5, 917674, 327680, 4, 983213, 262145, 3, 721068, 262144, 805306372, 983218, 262144, 805306372, 917681, 393216, 1610612740, 786608, 262145, 6, 983221, 262145, 6, 721067, 131072, 5, 852145, 65537, 6, -393220, 131072, 268435461, -65543, 65537, 6, 524280, 262144, 4, 524281, 393216, 4)
@@ -246,5 +292,23 @@ position = Vector2(1502, -17)
 
 [node name="FlyJar4" parent="JarManager" instance=ExtResource("14_o42d8")]
 position = Vector2(2337, 179)
+
+[node name="Lights" type="Node2D" parent="."]
+position = Vector2(63, 159)
+
+[node name="PointLight2D" type="PointLight2D" parent="Lights"]
+position = Vector2(2810.08, 138.5)
+scale = Vector2(1.235, 1.05859)
+color = Color(0.211765, 0.772549, 0.956863, 1)
+texture = ExtResource("15_gqk47")
+
+[node name="OutRays" type="ColorRect" parent="Lights"]
+material = SubResource("ShaderMaterial_ja5pb")
+offset_left = 2957.0
+offset_top = 68.0
+offset_right = 3195.0
+offset_bottom = 306.0
+rotation = -0.933751
+scale = Vector2(-1, -1)
 
 [connection signal="area_entered" from="Events/levelChangr" to="Events/levelChangr" method="_on_area_entered"]

@@ -20,7 +20,6 @@ func _ready():
 
 var animation_finished: bool = false
 func _unhandled_input(event):
-	print("Input Happened")
 	if animation_finished and event.is_action_pressed("ui_accept"):
 		#await get_tree().create_timer(2.0).timeout
 		animation_player.play("Fade-Out")
@@ -40,6 +39,5 @@ func update_font_size():
 	
 	# Set the font size based on the scaling factor
 	var new_font_size = int(64 * scale_factor)  # 64 is the base font size at 1920x1080
-	
-	print(new_font_size)
+
 	label.label_settings.font_size = new_font_size

@@ -9,7 +9,6 @@ var current_path: String
 
 
 func show_loading():
-	print("Showing Loading Screen")
 	var loading_screen = preload("res://Core/loading_screen.tscn").instantiate()
 	if ui_loader:
 		ui_loader.add_child(loading_screen)
@@ -31,9 +30,6 @@ func connect_loaders(ll: LevelLoader, ui: UiLoader):
 
 func load_level(path: String, spawn_id: String = ""):
 	
-	print(spawn_id)
-
-	print("Calling Method")
 	var loading_screen = await show_loading()
 
 	current_path = path

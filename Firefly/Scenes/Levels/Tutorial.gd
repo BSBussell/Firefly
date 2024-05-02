@@ -13,13 +13,15 @@ extends "res://Scripts/Level/Level.gd"
 # We have the player start without glow on this level
 func player_startup_logic():
 	
-	PLAYER.disable_glow()
+	if not spawn_point_id:
+		PLAYER.disable_glow()
 
 
 # And becasue of that we hide the gems
 func gem_startup_logic():
 	
-	gem_manager.hide_gems()
+	if not spawn_point_id:
+		gem_manager.hide_gems()
 
 func local_ready():
 

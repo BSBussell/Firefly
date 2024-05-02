@@ -22,8 +22,6 @@ func _ready():
 ## Emits a signal when all jars are collected
 func jar_collected(jar: FlyJar):
 	
-	print("We can find this here")
-	
 	collected += 1
 	
 	if collected >= max:

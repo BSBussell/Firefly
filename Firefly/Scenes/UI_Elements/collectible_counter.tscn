@@ -5,7 +5,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_u4aag"]
 font = ExtResource("2_7w2fi")
-font_size = 48
+font_size = 64
 shadow_size = 0
 
 [sub_resource type="Animation" id="Animation_mlp1y"]
