@@ -2,7 +2,7 @@ extends PlayerState
 
 @export_subgroup("TRANSITIONAL STATES")
 @export var GROUNDED_STATE: PlayerState = null
-@export var AERIAL_STATE: PlayerState = null
+@onready var AERIAL_STATE: PlayerState = $"../Aerial"
 @export var SLIDING_STATE: PlayerState = null
 
 # And check the jump buffer on landing

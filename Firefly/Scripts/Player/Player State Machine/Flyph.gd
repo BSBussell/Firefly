@@ -505,7 +505,7 @@ func movement_assist(delta):
 	if jumping and not is_on_wall(): jump_corner_correction(delta)
 
 	# Help the player get up small ledges, if we're moving or holding a direction
-	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta)
+	#if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta)
 
 	# Auto Enter Tunnel
 	if is_on_wall() and not underWater: auto_enter_tunnel()
