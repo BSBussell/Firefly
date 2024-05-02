@@ -41,7 +41,6 @@ func enter() -> void:
 
 	# Also disable temp gravity when landing just incase we land without falling lol
 	if parent.temp_gravity_active and parent.velocity.y >= 0:
-		print("disabling temp_gravity")
 		parent.temp_gravity_active = false
 		parent.launched = false
 
@@ -338,6 +337,5 @@ func on_steep_slope() -> bool:
 func calc_landing_squish() -> Vector2:
 
 	var squish_blend = abs(parent.prev_velocity_y) / parent.movement_data.MAX_FALL_SPEED
-	var squish_factor = lerpf(0.0, 0.5, squish_blend)
-	print(squish_factor)
+	var squish_factor = snappedf(lerpf(0.0, 0.5, squish_blend), 0.01)
 	return Vector2(1.0 + squish_factor, 1.0 - squish_factor)

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqmn1d67osiw6"]
+
+[ext_resource type="Script" path="res://Scripts/Level/SpawnPoint.gd" id="1_gj3gp"]
+
+[node name="SpawnPoint" type="Marker2D" groups=["SpawnPoint"]]
+position = Vector2(357, -761)
+script = ExtResource("1_gj3gp")
+identifer = "exit"

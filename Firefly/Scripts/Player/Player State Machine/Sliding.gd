@@ -115,14 +115,9 @@ func process_input(_event: InputEvent) -> PlayerState:
 # Processing Frames in this state, returns nil or new state
 func process_frame(_delta: float) -> PlayerState:
 
-	print("Do we ever draw?")
 	update_facing(parent.velocity.x)
-	print("Do we finish facing?")
 	update_effects()
-	print("IS it the effects that crash us?")
 	update_slide_animation()
-
-	print("Do we escape draw?")
 	return null
 	
 ## Updates which direction the player is facing based on direction
@@ -163,15 +158,18 @@ func update_effects() -> void:
 		# Turn off dust when we stop
 		slide_dust.emitting = false
 
-	elif not slide_dust.emitting:
-		# Sliding sfx
-		sliding_sfx.play(sliding_sfx.get_playback_position())
+	else:
+		
 
-		# Slide Particle Effects
-		slide_dust.emitting = true
+		if not slide_dust.emitting:
+			
+			# Sliding sfx
+			sliding_sfx.play(sliding_sfx.get_playback_position())
+			# Slide Particle Effects
+			slide_dust.emitting = true
 
-		# Update Particle Direction (im so dumb)
-		slide_dust.direction.x = 1 if (parent.animation.flip_h) else -1
+			# Update Particle Direction (im so dumb)
+			slide_dust.direction.x = 1 if (parent.animation.flip_h) else -1
 
 ## Updates our sliding animation
 func update_slide_animation() -> void:
@@ -189,13 +187,9 @@ func update_slide_animation() -> void:
 func process_physics(delta: float) -> PlayerState:
 
 	
-	print("Slide Bug do we process physics")
-
 	# When sliding, the only actions are jumping and friction
 	jump_logic(delta)
 	apply_friction(delta, parent.horizontal_axis)
-
-	print("Do we make it to the bottom?")
 
 	return state_status()
 

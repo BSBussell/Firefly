@@ -7,8 +7,7 @@ extends "res://Scripts/Level/Level.gd"
 
 @onready var lighting = $Lighting
 
-
-
+@onready var ropes = $SwingAbleRopes
 
 
 
@@ -34,3 +33,6 @@ func local_ready():
 	lighting.visible = true
 
 
+func on_death():
+	
+	ropes.reset_worms()

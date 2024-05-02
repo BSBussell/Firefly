@@ -94,13 +94,13 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 
 
-	if Input.is_action_just_pressed("Dive"):
+	if Input.is_action_just_pressed("Down"):
 		if parent.stuck_segment.next:
 			parent.stuck_segment = parent.stuck_segment.next
 		else:
 			return AERIAL_STATE
 
-	if Input.is_action_just_pressed("Up"):
+	elif Input.is_action_just_pressed("Up"):
 		if parent.stuck_segment.prev:
 			parent.stuck_segment = parent.stuck_segment.prev
 
@@ -216,7 +216,6 @@ func jump():
 	# More like silly fun zoom stuff
 	if speeding_up and sign(parent.horizontal_axis) == sign(fall_dir):
 		swing_multi = lerpf(swing_multi, 10, swing_force/max_swing_force)
-		print("Swing Boost!")
 
 	if sign(parent.velocity.x) != sign(jump_dir):
 		parent.velocity.x *= -1
@@ -264,7 +263,6 @@ func swinging(delta, dir):
 	# If we've moved down since last pool, and 
 	if parent.global_position.y > last_position.y and slow_dir != parent.horizontal_axis:
 		swing_force = move_toward(swing_force, max_swing_force, swing_down_accel * delta)
-		print("Swing Speed Up")
 		speeding_up = true
 		
 		# Find which direction we're moving towards
@@ -284,14 +282,10 @@ func swinging(delta, dir):
 		
 		speeding_up = false
 	
-		print("Swing Slow Down:")
-		print("Swing Pos Bool: ", parent.global_position.y > last_position.y)
-		#print("Swing Dir Bool: ", current_dir != parent.horizontal_axis)
-	
+		
 	# Register that this direction slows us down now
 	if parent.global_position.y <= last_position.y:
 		slow_dir = sign(parent.global_position.x - last_position.x)
-		print("Swing Set Slow Dir: ", slow_dir)
 	
 	last_position = parent.global_position
 	

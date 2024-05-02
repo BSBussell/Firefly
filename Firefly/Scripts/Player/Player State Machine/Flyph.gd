@@ -46,6 +46,8 @@ enum WALLJUMPS {
 	DOWNWARD
 }
 
+signal dead()
+
 ## Editor Variables
 @export_category("Movement Resource")
 @export var movement_states: Array[PlayerMovementData]
@@ -100,10 +102,20 @@ enum WALLJUMPS {
 @onready var spotlight: PointLight2D = $Visuals/Spotlight
 @onready var light: PointLight2D = $Visuals/Spotlight
 @onready var trail: Line2D = $Visuals/Trail
-@onready var deathDust: Marker2D = $Particles/JumpDustSpawner
+
+# Particles
 @onready var glow_aura = $Particles/GlowAura
-@onready var mega_speed_particles = $Particles/MegaSpeedParticles
+@onready var promotion_fx = $Particles/PromotionFx
 @onready var wall_slide_dust = $Particles/WallSlideDust
+@onready var wet = $Particles/Wet
+@onready var slide_dust = $Particles/SlideDust
+@onready var dash_dust = $Particles/DashDust
+@onready var mega_speed_particles = $Particles/MegaSpeedParticles
+
+
+@onready var deathDust: Marker2D = $Particles/JumpDustSpawner
+
+
 
 
 # Timers
@@ -286,7 +298,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			calculate_properties()
 
 	# Pass The Input to the State Machine
-	StateMachine.process_input(event)
+	if not dying:
+		StateMachine.process_input(event)
 
 
 
@@ -330,24 +343,35 @@ func set_input_axis(delta: float) -> void:
 	# can regain control if they want to)
 	if Input.is_action_just_pressed("Right") or Input.is_action_just_pressed("Left"):
 			lock_dir = false
+			lock_time = 0
+	if soft_lock and (Input.is_action_pressed("Right") or Input.is_action_pressed("Left")):
+			lock_dir = false
+			lock_time = 0
 
 	# Update Lock Timer
-	lock_time -= delta
-	if lock_time <= 0:
+	if lock_time > 0:
+		lock_time -= delta
+	else:
 		lock_dir = false
 
 	# If we're still locked then assign the locked value to input
 	if lock_dir:
 		horizontal_axis = hold_dir
 	
-	
-	
+
+
+
+
+# If we are locking dir
 var lock_dir: bool = true
+# If the lock is overwritten easily
+var soft_lock: bool = false
 var hold_dir: float = 0.0
 var lock_time: float = 0.5
 ## Locks the horizontal axis to a value for a given amount of time
-func lock_h_dir(dir: float, time: float):
+func lock_h_dir(dir: float, time: float, soft: bool = false):
 	
+	soft_lock = soft
 	lock_dir = true
 	hold_dir = dir
 	lock_time = time
@@ -393,7 +417,8 @@ func _process(delta: float) -> void:
 	prev_animation = current_animation
 
 	# Let each component do their visual stuff
-	StateMachine.process_frame(delta)
+	if not dying:
+		StateMachine.process_frame(delta)
 
 
 
@@ -631,7 +656,6 @@ func enter_tunnel():
 		# Set the flag
 		crouchJumping = true
 		
-		print("Entering Tunnel")
 
 # Gadgets
 
@@ -841,10 +865,18 @@ func kill():
 	# Squish the player
 	squish_node.squish(Vector2(0.5, 0.5))
 
+	# Hide Sprite
 	animation.visible = false
+	
+	# Turn off particles
 	glow_aura.emitting = false
+	promotion_fx.emitting = false
 	wall_slide_dust.emitting = false
+	
+	slide_dust.emitting = false
+	dash_dust.emitting = false
 	mega_speed_particles.emitting = false
+
 	
 	dying = true
 	
@@ -868,9 +900,8 @@ func kill():
 	# Zero out the velocity
 	velocity = Vector2.ZERO
 	
-	if _globals.GEM_MANAGER:
-		_globals.GEM_MANAGER.respawn_all()
-
+	# Let any Listeners know we dead
+	emit_signal("dead")
 
 	# Respawn Animation
 	var respawn_cloud = RESPAWN_DUST.instantiate()
@@ -895,6 +926,11 @@ func kill():
 	# Give control back to the player
 	dying = false
 
+
+## Connect given callable to be called on death
+func connect_to_death(method: Callable):
+	
+	connect("dead", method)
 
 # Ways of death:
 func _on_hazard_detector_area_entered(_area):
@@ -921,7 +957,6 @@ func hide_speedometer():
 
 func _on_water_detector_body_entered(body):
 	
-	print("In Water")
 	# Prevent double entries.... its weird, this shouldn't
 	# happen as long as im smart but sometimes,,,
 	if not underWater:
@@ -931,7 +966,7 @@ func _on_water_detector_body_entered(body):
 
 var disable_walljump: bool = false
 func _on_water_detector_body_exited(body):
-	print("Out of Water")
+	
 	# Aerial Feels like the best bet
 	
 	#consume_jump()
@@ -950,10 +985,7 @@ func enter_rope(segment: SpitSegment):
 	stuck_segment = segment
 	segment.player_grabbed()
 	StateMachine.change_state(WORMED_STATE)
-	print("You're touching rope :", segment)
-	
-#func exit_rope():
-	#print("You're Exit Rope :3")
+
 
 
 func _on_rope_detector_body_entered(body):

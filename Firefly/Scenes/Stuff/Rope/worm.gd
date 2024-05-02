@@ -3,6 +3,7 @@ class_name Worm
 
 @onready var sprite_2d = $Sprite2D
 @onready var point_light_2d = $PointLight2D
+@onready var audio_stream_player_2d = $AudioStreamPlayer2D
 
 var first_segment: SpitSegment
 var target_segment: SpitSegment
@@ -44,6 +45,7 @@ func start_hunt(initial: SpitSegment, speed: float):
 	target_segment = initial
 	target = initial.get_node("Marker2D").global_position
 	sprite_2d.play("Crawl")
+	audio_stream_player_2d.play()
 
 func crawl(delta):
 	
@@ -86,3 +88,7 @@ var joint: DampedSpringJoint2D
 func pin_worm_to_segment():
 	# Creates
 	pass
+
+
+func _on_audio_stream_player_2d_finished():
+	audio_stream_player_2d.play()

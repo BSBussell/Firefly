@@ -9,8 +9,7 @@ func _input(_event: InputEvent) -> void:
 		KEY_4: 1,
 		KEY_5: 1.25,
 		KEY_6: 1.5,
-		KEY_7: 1.75,
-		KEY_8: 2
+		KEY_7: 2.,
 	}
 
 	for key in scale_factors.keys():
@@ -20,10 +19,13 @@ func _input(_event: InputEvent) -> void:
 			break
 
 	# Load Tutorial
-	if Input.is_key_pressed(KEY_9):
+	if Input.is_key_pressed(KEY_8):
 		_loader.load_level("res://Scenes/Levels/tutorial.tscn")
 		
 	# Load Debug Environment
-	if Input.is_key_pressed(KEY_0):
+	if Input.is_key_pressed(KEY_9):
 		_loader.load_level("res://Scenes/Levels/cave_level.tscn")
 		
+	# Load Debug Environment
+	if Input.is_key_pressed(KEY_0):
+		_loader.load_level("res://Scenes/Levels/debug.tscn")

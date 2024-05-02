@@ -5,6 +5,7 @@ class_name UiLoader
 const PAUSE_MENU: PackedScene = preload("res://Core/Game/pause.tscn")
 const COLLECTIBLE_COUNTER: PackedScene = preload("res://Scenes/UI_Elements/collectible_counter.tscn")
 const RESULTS: PackedScene = preload("res://Scenes/UI_Elements/results.tscn")
+const LEVEL_TITLE = preload("res://Scenes/UI_Elements/LevelTitle.tscn")
 
 # Corresponding instance variables
 var pause_instance: PauseMenu
@@ -33,10 +34,24 @@ func reset_ui():
 	counter_instance = null
 	results_instance = null
 
+
+
+var has_displayed_title: bool = false
 func load_ui(context: Level):
 	
 	# Remove all existing ui
 	reset_ui()
+	
+	
+	# If we haven't already said the levels name
+	if not has_displayed_title or context.id != 0:
+		
+		# Put in the levels name
+		var level_title = LEVEL_TITLE.instantiate()
+		level_title.set_title(context.Text)
+		_viewports.ui_viewport.add_child(level_title)
+		has_displayed_title = true
+	
 	
 	if context.Can_Pause:
 		print("Setting Up Pause Instance")
