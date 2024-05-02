@@ -4,6 +4,7 @@ class_name CheckPoint
 var active = false
 
 @export var optional_target: Marker2D = null
+@export var hide: bool = false
 
 @onready var checkpoint_sprite = $CheckpointSprite
 @onready var spotlight = $Spotlight
@@ -17,6 +18,9 @@ var manager: CheckPointManager
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	spotlight.set_brightness(0)
+	
+	if hide:
+		visible = false
 
 
 
@@ -26,11 +30,14 @@ func set_manager(checkpoint_manager: CheckPointManager):
 
 ## Activates the Checkpoint
 func activate_checkpoint(player: Flyph):
-	checkpoint_sprite.set_frame(1)
-	spotlight.set_brightness(0.6)
-	explode.emitting = true
-	lightparticles.emitting = true
-	check_point_lit.play()
+	
+	# If this isn't a hidden checkpoint play fx
+	if not hide:
+		checkpoint_sprite.set_frame(1)
+		spotlight.set_brightness(0.6)
+		explode.emitting = true
+		lightparticles.emitting = true
+		check_point_lit.play()
 	
 	# If a target is defined use that for respawn
 	if optional_target:

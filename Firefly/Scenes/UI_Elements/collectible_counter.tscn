@@ -5,7 +5,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_u4aag"]
 font = ExtResource("2_7w2fi")
-font_size = 64
+font_size = 48
 shadow_size = 0
 
 [sub_resource type="Animation" id="Animation_mlp1y"]
@@ -21,7 +21,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(2, 6),
 "update": 0,
-"values": [-200, 480.0]
+"values": [-150, 480.0]
 }
 
 [sub_resource type="Animation" id="Animation_aijno"]
@@ -37,7 +37,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(2, 6),
 "update": 0,
-"values": [480, -200]
+"values": [480, -150]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uw2ul"]
@@ -51,7 +51,7 @@ layout_mode = 3
 anchor_left = 1.0
 anchor_top = 0.1
 anchor_right = 1.0
-anchor_bottom = 0.5
+anchor_bottom = 0.4
 grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("1_uxj48")

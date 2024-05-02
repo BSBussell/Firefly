@@ -1,63 +1,122 @@
-[gd_scene load_steps=7 format=3 uid="uid://bivga0jwulfyg"]
+[gd_scene load_steps=11 format=3 uid="uid://bivga0jwulfyg"]
 
 [ext_resource type="Script" path="res://Core/loading_screen.gd" id="1_0il42"]
+[ext_resource type="Shader" path="res://Core/transition.gdshader" id="1_38x6w"]
 [ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="1_u6wva"]
 [ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="2_6qk3d"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uth8b"]
+shader = ExtResource("1_38x6w")
+shader_parameter/progress = 1.0
+shader_parameter/diamondPixelSize = 500.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e2l5o"]
+
 [sub_resource type="Animation" id="Animation_7qpbv"]
 resource_name = "load_in"
-length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:anchor_right")
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4),
-"transitions": PackedFloat32Array(0.4, 3.75),
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HBoxContainer:anchor_left")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
 }
 
 [sub_resource type="Animation" id="Animation_plopa"]
 resource_name = "load_out"
-length = 0.5
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:anchor_right")
-tracks/0/interp = 2
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(2, 3.75),
-"update": 0,
-"values": [1.0, 0.0]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.5),
+"times": PackedFloat32Array(1),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
 "method": &"queue_free"
 }]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:material:shader_parameter/progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.8, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HBoxContainer:anchor_left")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_4wqga"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HBoxContainer:anchor_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_70yrc"]
 _data = {
+"RESET": SubResource("Animation_4wqga"),
 "load_in": SubResource("Animation_7qpbv"),
 "load_out": SubResource("Animation_plopa")
 }
 
 [node name="LoadingScreen" type="ColorRect"]
 z_index = 100
+material = SubResource("ShaderMaterial_uth8b")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -81,6 +140,7 @@ grow_vertical = 0
 theme_override_constants/separation = 100
 
 [node name="Loading" type="Label" parent="HBoxContainer"]
+material = SubResource("ShaderMaterial_e2l5o")
 layout_mode = 2
 text = "Loading..."
 label_settings = ExtResource("1_u6wva")

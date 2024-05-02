@@ -4,6 +4,7 @@ extends "res://Scripts/Level/Level.gd"
 
 @onready var music = $LevelAudio/Music
 @onready var ambience = $LevelAudio/Ambience
+@onready var cave_entrance = $LevelAudio/CaveEntrance
 
 @onready var lighting = $Lighting
 
@@ -27,6 +28,7 @@ func local_ready():
 	# Start playing the music
 	music.play(0)
 	ambience.play(0)
+	#cave_entrance.play(0)
 	
 	_audio.set_level_effects([])
 

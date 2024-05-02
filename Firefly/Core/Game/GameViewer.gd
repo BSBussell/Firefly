@@ -49,6 +49,8 @@ func _input(event: InputEvent) -> void:
 		_stats.TIME = 0
 		
 		_jar_tracker.reset_jars()
+		
+		ui_loader.has_displayed_title = false
 
 		# Reload the scene
 		get_tree().paused = false
@@ -86,7 +88,6 @@ func swap_fullscreen_mode():
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 		
 		## Update Render Scaling
-		#OS.get_screen_size().
 		var window_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
 		resize_game_viewport(int(window_size.x / target_rendering.x))
 		ui_view_port.size = window_size

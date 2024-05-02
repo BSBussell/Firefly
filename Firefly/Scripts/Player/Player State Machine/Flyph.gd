@@ -102,10 +102,20 @@ signal dead()
 @onready var spotlight: PointLight2D = $Visuals/Spotlight
 @onready var light: PointLight2D = $Visuals/Spotlight
 @onready var trail: Line2D = $Visuals/Trail
-@onready var deathDust: Marker2D = $Particles/JumpDustSpawner
+
+# Particles
 @onready var glow_aura = $Particles/GlowAura
-@onready var mega_speed_particles = $Particles/MegaSpeedParticles
+@onready var promotion_fx = $Particles/PromotionFx
 @onready var wall_slide_dust = $Particles/WallSlideDust
+@onready var wet = $Particles/Wet
+@onready var slide_dust = $Particles/SlideDust
+@onready var dash_dust = $Particles/DashDust
+@onready var mega_speed_particles = $Particles/MegaSpeedParticles
+
+
+@onready var deathDust: Marker2D = $Particles/JumpDustSpawner
+
+
 
 
 # Timers
@@ -288,7 +298,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			calculate_properties()
 
 	# Pass The Input to the State Machine
-	StateMachine.process_input(event)
+	if not dying:
+		StateMachine.process_input(event)
 
 
 
@@ -406,7 +417,8 @@ func _process(delta: float) -> void:
 	prev_animation = current_animation
 
 	# Let each component do their visual stuff
-	StateMachine.process_frame(delta)
+	if not dying:
+		StateMachine.process_frame(delta)
 
 
 
@@ -644,7 +656,6 @@ func enter_tunnel():
 		# Set the flag
 		crouchJumping = true
 		
-		print("Entering Tunnel")
 
 # Gadgets
 
@@ -854,10 +865,18 @@ func kill():
 	# Squish the player
 	squish_node.squish(Vector2(0.5, 0.5))
 
+	# Hide Sprite
 	animation.visible = false
+	
+	# Turn off particles
 	glow_aura.emitting = false
+	promotion_fx.emitting = false
 	wall_slide_dust.emitting = false
+	
+	slide_dust.emitting = false
+	dash_dust.emitting = false
 	mega_speed_particles.emitting = false
+
 	
 	dying = true
 	
@@ -938,7 +957,6 @@ func hide_speedometer():
 
 func _on_water_detector_body_entered(body):
 	
-	print("In Water")
 	# Prevent double entries.... its weird, this shouldn't
 	# happen as long as im smart but sometimes,,,
 	if not underWater:
@@ -948,7 +966,7 @@ func _on_water_detector_body_entered(body):
 
 var disable_walljump: bool = false
 func _on_water_detector_body_exited(body):
-	print("Out of Water")
+	
 	# Aerial Feels like the best bet
 	
 	#consume_jump()
@@ -967,10 +985,7 @@ func enter_rope(segment: SpitSegment):
 	stuck_segment = segment
 	segment.player_grabbed()
 	StateMachine.change_state(WORMED_STATE)
-	print("You're touching rope :", segment)
-	
-#func exit_rope():
-	#print("You're Exit Rope :3")
+
 
 
 func _on_rope_detector_body_entered(body):

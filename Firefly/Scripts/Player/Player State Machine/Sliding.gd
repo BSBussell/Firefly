@@ -115,14 +115,9 @@ func process_input(_event: InputEvent) -> PlayerState:
 # Processing Frames in this state, returns nil or new state
 func process_frame(_delta: float) -> PlayerState:
 
-	print("Do we ever draw?")
 	update_facing(parent.velocity.x)
-	print("Do we finish facing?")
 	update_effects()
-	print("IS it the effects that crash us?")
 	update_slide_animation()
-
-	print("Do we escape draw?")
 	return null
 	
 ## Updates which direction the player is facing based on direction
@@ -192,13 +187,9 @@ func update_slide_animation() -> void:
 func process_physics(delta: float) -> PlayerState:
 
 	
-	print("Slide Bug do we process physics")
-
 	# When sliding, the only actions are jumping and friction
 	jump_logic(delta)
 	apply_friction(delta, parent.horizontal_axis)
-
-	print("Do we make it to the bottom?")
 
 	return state_status()
 
