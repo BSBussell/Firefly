@@ -815,9 +815,9 @@ color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_diik4")
 
 [node name="Physics" type="Node2D" parent="."]
-visible = false
 
 [node name="HazardDetector" type="Area2D" parent="Physics"]
+visible = false
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
@@ -825,6 +825,7 @@ position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="WaterDetector" type="Area2D" parent="Physics"]
+visible = false
 position = Vector2(2, -2)
 collision_mask = 128
 
@@ -833,6 +834,7 @@ position = Vector2(-1, -11.5)
 shape = SubResource("RectangleShape2D_k824u")
 
 [node name="RopeDetector" type="Area2D" parent="Physics"]
+visible = false
 position = Vector2(2, -2)
 collision_layer = 512
 collision_mask = 256
@@ -842,7 +844,6 @@ position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="Raycasts" type="Node2D" parent="."]
-visible = false
 position = Vector2(0, -8)
 
 [node name="Right_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]

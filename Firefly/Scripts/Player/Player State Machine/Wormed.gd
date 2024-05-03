@@ -42,7 +42,9 @@ func enter() -> void:
 	parent.set_standing_collider()
 
 	
-	rope_detector.set_collision_mask_value(9, false)	
+	#call_deferred()
+	rope_detector.set_deferred("monitoring", false)
+	#rope_detector.set_collision_mask_value(9, false)	
 	
 	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 2.5), 1.0)
 	swing_force = lerpf(min_swing_force, max_swing_force, speed_ratio)
@@ -82,7 +84,8 @@ func exit() -> void:
 	#await get_tree().create_timer(0.2).timeout
 	
 	print("wtf")
-	rope_detector.set_collision_mask_value(9, true)
+	rope_detector.set_deferred("monitoring", true)
+	#rope_detector.set_collision_mask_value(9, true)
 	
 	
 	rope_creak_sfx.stop()

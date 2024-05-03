@@ -41,11 +41,8 @@ func setup(result: VictoryScreen):
 	COUNTER.text = "%d/%d" % [COLLECTED, max]
 	victory_screen = result
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
-func jar_collected(jar: FlyJar):
+func jar_collected(_jar: FlyJar):
 	
 	#print("Boom Im a genius")
 	
