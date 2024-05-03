@@ -61,8 +61,8 @@ script = ExtResource("1_w3xqf")
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_vrbk6")
 animation = &"Walking"
-frame = 1
-frame_progress = 0.984586
+autoplay = "Walking"
+frame_progress = 0.279129
 
 [node name="FrontRayCast" type="RayCast2D" parent="."]
 position = Vector2(0, -7)

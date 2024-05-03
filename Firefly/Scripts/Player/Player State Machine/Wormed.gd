@@ -94,7 +94,7 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 
 
-	if Input.is_action_just_pressed("Down"):
+	if Input.is_action_just_pressed("Dive"):
 		if parent.stuck_segment.next:
 			parent.stuck_segment = parent.stuck_segment.next
 		else:
@@ -295,7 +295,7 @@ func swinging(delta, dir):
 		grab_force *= dir
 		apply_rope_force(grab_force)
 	
-func apply_weight(delta):
+func apply_weight(_delta):
 
 	apply_rope_force(Vector2(0, player_weight))
 

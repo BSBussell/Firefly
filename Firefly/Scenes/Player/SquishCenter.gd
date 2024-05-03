@@ -14,22 +14,22 @@ var initial_difference: Vector2 = Vector2()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if interpolating:
-		print("Adjusting Squish")
 		interpolation_time += delta
 		var t = min(interpolation_time / rebound_speed, 1.0)  # Clamp to [0, 1]
 		var curve_value = bounce_curve.sample(t)
-		scale = lerp(squish_from, original_scale, curve_value)
+		var uncapped_scale: Vector2 = lerp(squish_from, original_scale, curve_value)
+		var capped_scale = Vector2(snappedf(uncapped_scale.x, 0.001), snappedf(uncapped_scale.y,  0.001))
+		scale = capped_scale
 		
 		if t >= 1.0:
 			interpolating = false  # Stop interpolating
-		print("Done Adjusting Squish")
+		
 
 # Set the scale for squash/stretch and start interpolating back to original scale
 func squish(new_scale: Vector2, new_speed: float = rebound_speed) -> void:
 	
-	print("Setting Squish")
 	# Make sure the order of magnitude stays in the hundreths place
-	var safe_scale: Vector2
+	var safe_scale: Vector2 = Vector2.ZERO
 	safe_scale.x = snappedf(new_scale.x, 0.01)
 	safe_scale.y = snappedf(new_scale.y, 0.01)
 	
@@ -46,6 +46,4 @@ func squish(new_scale: Vector2, new_speed: float = rebound_speed) -> void:
 	
 	# Set new_speed
 	rebound_speed = new_speed 
-	
-	print("Squish Set")
  

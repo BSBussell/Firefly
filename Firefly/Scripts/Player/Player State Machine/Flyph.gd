@@ -505,7 +505,7 @@ func movement_assist(delta):
 	if jumping and not is_on_wall(): jump_corner_correction(delta)
 
 	# Help the player get up small ledges, if we're moving or holding a direction
-	#if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta)
+	if (abs(horizontal_axis) > 0 or abs(velocity.x) > 0): horizontal_corner_correction(delta)
 
 	# Auto Enter Tunnel
 	if is_on_wall() and not underWater: auto_enter_tunnel()
@@ -714,8 +714,8 @@ func spawn_getup_dust(left: bool):
 		new_particle.get_node("Dust").get_node("RightDust").visible = false
 
 	jump_dust_spawner.add_child(new_particle)
-	var animation = new_particle.get_node("AnimationPlayer")
-	animation.play("free")
+	var particle_animation = new_particle.get_node("AnimationPlayer")
+	particle_animation.play("free")
 
 # Spawns the given preloaded particle at the given marker
 func generic_spawn_particles(particles: PackedScene, spawner: Marker2D):
@@ -723,8 +723,8 @@ func generic_spawn_particles(particles: PackedScene, spawner: Marker2D):
 	var new_particle = particles.instantiate()
 	new_particle.set_name("temp_particles")
 	spawner.add_child(new_particle)
-	var animation = new_particle.get_node("AnimationPlayer")
-	animation.play("free")
+	var particle_animation = new_particle.get_node("AnimationPlayer")
+	particle_animation.play("free")
 	
 	
 	
