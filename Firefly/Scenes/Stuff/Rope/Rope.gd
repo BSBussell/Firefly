@@ -77,10 +77,6 @@ func create_joints() -> void:
 		# Connect the 'grabbed' signal to the 'activate' method
 		new_segment.connect("grabbed", Callable(self, "activate"))
 		
-		
-		print("bleh")
-		
-		
 		var spitSeg = prev_body as SpitSegment
 		
 		if spitSeg:
@@ -112,16 +108,17 @@ func setup_Worm():
 	
 	
 func activate(segment: SpitSegment):
-	print("Segment activated:", segment.name)
 	if GlowWorm:
 		if not worm_active:
 			
 			worm_active = true
 			active_worm = WORM.instantiate()
-			add_child(active_worm)
-			# Wait 0.3 seconds before we can grab a rope again
-			await get_tree().create_timer(worm_delay).timeout
-			active_worm.start_hunt(first_segment, worm_speed)
+			#add_child(active_worm)
+			
+			call_deferred("add_child", active_worm)
+			
+			# Wait X amount seconds before we can grab a rope again
+			active_worm.setup_hunt(first_segment, worm_speed, worm_delay)
 			
 
 func kill_worm():
@@ -132,14 +129,15 @@ func kill_worm():
 	
 func start_cooldown(time: float) -> void:
 	
-	print("Starting Cooldown")
 	for each: SpitSegment in segments:
-		each.set_collision_layer_value(9, false)
+		each.set_deferred("collision_layer", 0)
+		#each.set_collision_layer_value(9, false)
 		
 	await get_tree().create_timer(time).timeout
 	
 	for each: SpitSegment in segments:
-		each.set_collision_layer_value(9, true)
+		each.set_deferred("collision_layer", 256)
+		#each.set_collision_layer_value(9, true)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

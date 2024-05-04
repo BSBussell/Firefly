@@ -17,16 +17,24 @@ func _process(delta):
 		interpolation_time += delta
 		var t = min(interpolation_time / rebound_speed, 1.0)  # Clamp to [0, 1]
 		var curve_value = bounce_curve.sample(t)
-		scale = lerp(squish_from, original_scale, curve_value)
+		var uncapped_scale: Vector2 = lerp(squish_from, original_scale, curve_value)
+		var capped_scale = Vector2(snappedf(uncapped_scale.x, 0.001), snappedf(uncapped_scale.y,  0.001))
+		scale = capped_scale
 		
 		if t >= 1.0:
 			interpolating = false  # Stop interpolating
+		
 
 # Set the scale for squash/stretch and start interpolating back to original scale
 func squish(new_scale: Vector2, new_speed: float = rebound_speed) -> void:
 	
+	# Make sure the order of magnitude stays in the hundreths place
+	var safe_scale: Vector2 = Vector2.ZERO
+	safe_scale.x = snappedf(new_scale.x, 0.01)
+	safe_scale.y = snappedf(new_scale.y, 0.01)
+	
 	# Set Scale
-	scale = new_scale
+	scale = safe_scale
 	
 	# Tweening variables
 	squish_from = new_scale

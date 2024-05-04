@@ -817,6 +817,7 @@ color_ramp = SubResource("Gradient_diik4")
 [node name="Physics" type="Node2D" parent="."]
 
 [node name="HazardDetector" type="Area2D" parent="Physics"]
+visible = false
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/HazardDetector"]
@@ -824,6 +825,7 @@ position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="WaterDetector" type="Area2D" parent="Physics"]
+visible = false
 position = Vector2(2, -2)
 collision_mask = 128
 
@@ -832,6 +834,7 @@ position = Vector2(-1, -11.5)
 shape = SubResource("RectangleShape2D_k824u")
 
 [node name="RopeDetector" type="Area2D" parent="Physics"]
+visible = false
 position = Vector2(2, -2)
 collision_layer = 512
 collision_mask = 256
@@ -841,7 +844,6 @@ position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="Raycasts" type="Node2D" parent="."]
-visible = false
 position = Vector2(0, -8)
 
 [node name="Right_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
@@ -883,7 +885,7 @@ collision_mask = 2
 hit_from_inside = true
 
 [node name="StepMaxRight" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
-position = Vector2(3, 1.5)
+position = Vector2(3, 1)
 target_position = Vector2(3, 0)
 collision_mask = 2
 hit_from_inside = true
@@ -905,7 +907,7 @@ hit_from_inside = true
 
 [node name="StepMaxLeft" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
 z_index = 4
-position = Vector2(-3, 1.5)
+position = Vector2(-3, 1)
 target_position = Vector2(-3, 0)
 collision_mask = 2
 hit_from_inside = true
@@ -1085,10 +1087,9 @@ SLIDING_STATE = NodePath("../Sliding")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
-[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "post_jump_buffer")]
+[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "SLIDING_STATE", "jump_buffer", "post_jump_buffer")]
 script = ExtResource("10_eck16")
 GROUNDED_STATE = NodePath("../Grounded")
-AERIAL_STATE = NodePath("../Aerial")
 SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")

@@ -20,7 +20,6 @@ func refresh_focus():
 	# Setup focus neighbors because our thing involes
 	if focus_neighbor_left:
 		button.focus_neighbor_left = NodePath( "../" + str(focus_neighbor_left))
-		print(button.focus_neighbor_left)
 	if focus_neighbor_top:
 		button.focus_neighbor_top = NodePath( "../" + str(focus_neighbor_top))
 	if focus_neighbor_right:
@@ -40,8 +39,6 @@ func _on_pressed():
 
 
 func _on_focus_entered():
-	
-	print("Focus Entered")
 	
 	animated_sprite_2d.modulate = "#FFFFFF"
 	

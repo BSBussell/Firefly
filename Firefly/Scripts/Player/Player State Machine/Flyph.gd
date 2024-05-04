@@ -12,7 +12,7 @@ const WJ_DUST = preload("res://Scenes/Player/particles/wallJumpDust.tscn")
 const DEATH_DUST = preload("res://Scenes/Player/particles/DeathParticle.tscn")
 const RESPAWN_DUST = preload("res://Scenes/Player/particles/RespawnParticle.tscn")
 const SPLASH = preload("res://Scenes/Player/particles/splash_dust.tscn")
-
+const GET_UP_LEDGE = preload("res://Scenes/Player/particles/get_up_ledge.tscn")
 # ENUMS
 # Animation States
 enum ANI_STATES {
@@ -112,10 +112,16 @@ signal dead()
 @onready var dash_dust = $Particles/DashDust
 @onready var mega_speed_particles = $Particles/MegaSpeedParticles
 
-
+# Particle Spawners
+@onready var jump_dust_spawner = $Particles/JumpDustSpawner
 @onready var deathDust: Marker2D = $Particles/JumpDustSpawner
+@onready var landing_dust_spawner = $Particles/LandingDustSpawner
 
 
+# SFX
+@onready var sliding_sfx = $Audio/SlidingSFX
+@onready var wall_slide_sfx = $Audio/WallSlideSFX
+@onready var run_sfx = $Audio/RunSFX
 
 
 # Timers
@@ -542,7 +548,12 @@ func horizontal_corner_correction(delta):
 	# Adjust the Raycast Length based on usecase (if grounded step we need longer)
 	if not is_on_floor():
 		set_corner_snapping_length(1)
-		return
+		
+		# Only do this on rising
+		if velocity.y >= 0:
+			return
+			
+		
 	else:
 		# Make it a bit bigger when doing floor corrections in order to give us a little xtra time to get up lol
 		set_corner_snapping_length(3)
@@ -574,6 +585,8 @@ func horizontal_corner_correction(delta):
 			else:
 				#offset += 2
 				correction_speed = 100
+				spawn_getup_dust(true)
+				
 
 			# Calculate the desired new position
 			var test_y = move_toward(position.y, position.y-offset, delta * correction_speed)
@@ -586,6 +599,8 @@ func horizontal_corner_correction(delta):
 				# If no collision, update the position
 				position.y = test_y
 				squish_node.squish( Vector2(1.2, 0.8))
+				
+				
 
 
 	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
@@ -609,8 +624,10 @@ func horizontal_corner_correction(delta):
 				offset += 6
 				correction_speed = 250
 			else:
-				offset += 2
+				#offset += 2
 				correction_speed = 100
+				spawn_getup_dust(false)
+				
 
 			# Attempt to smoothly
 			# Calculate the desired new position
@@ -675,6 +692,42 @@ func set_corner_snapping_length(offset: float):
 
 
 
+## Visual Things
+
+func spawn_jump_dust():
+	
+	# Give dust on landing
+	generic_spawn_particles(JUMP_DUST, jump_dust_spawner)
+	
+func spawn_landing_dust():
+	
+	generic_spawn_particles(LANDING_DUST, landing_dust_spawner)
+	
+func spawn_getup_dust(left: bool):
+	
+	var new_particle = GET_UP_LEDGE.instantiate()
+	new_particle.set_name("temp_particles")
+	
+	if left:
+		new_particle.get_node("Dust").get_node("LeftDust").visible = false
+	else:
+		new_particle.get_node("Dust").get_node("RightDust").visible = false
+
+	jump_dust_spawner.add_child(new_particle)
+	var particle_animation = new_particle.get_node("AnimationPlayer")
+	particle_animation.play("free")
+
+# Spawns the given preloaded particle at the given marker
+func generic_spawn_particles(particles: PackedScene, spawner: Marker2D):
+	
+	var new_particle = particles.instantiate()
+	new_particle.set_name("temp_particles")
+	spawner.add_child(new_particle)
+	var particle_animation = new_particle.get_node("AnimationPlayer")
+	particle_animation.play("free")
+	
+	
+	
 ##  Glow State Functions
 #######################################
 #######################################
@@ -877,6 +930,10 @@ func kill():
 	dash_dust.emitting = false
 	mega_speed_particles.emitting = false
 
+	# Disable SFX
+	run_sfx.stop()
+	sliding_sfx.stop()
+	wall_slide_sfx.stop()
 	
 	dying = true
 	

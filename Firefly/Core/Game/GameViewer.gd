@@ -40,7 +40,7 @@ func _ready():
 	# Let us process input even when game beat
 	set_process_input(true)
 
-func _input(event: InputEvent) -> void:
+func _input(_event: InputEvent) -> void:
 	
 	# Handle Resets
 	if Input.is_action_just_pressed("reset"):
@@ -65,22 +65,13 @@ func _input(event: InputEvent) -> void:
 		current_scale -= 1
 		set_render_scale(current_scale)
 
-
-#func _process(_delta):
-	#if last_size != DisplayServer.window_get_size():
-		#last_size = DisplayServer.window_get_size()
-		#resize_viewport(last_size)
 	
-
 # Stuff Game View Handles
 func swap_fullscreen_mode():
 	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		
 		# Update Render Scaling
-		#var window_size = DisplayServer.window_get_size()
-		#print(window_size)
-		#current_scale = int(window_size.x / target_rendering.x)
 		set_render_scale(current_scale)
 		
 		

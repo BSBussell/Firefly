@@ -65,4 +65,8 @@ max_distance = 640.0
 attenuation = 3.24901
 bus = &"SFX"
 
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="finished" from="AudioStreamPlayer2D" to="." method="_on_audio_stream_player_2d_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

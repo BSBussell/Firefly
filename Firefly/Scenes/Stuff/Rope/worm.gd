@@ -5,15 +5,20 @@ class_name Worm
 @onready var point_light_2d = $PointLight2D
 @onready var audio_stream_player_2d = $AudioStreamPlayer2D
 
+@onready var timer = $Timer
+
 var first_segment: SpitSegment
 var target_segment: SpitSegment
 var target: Vector2
 var active: bool = false
 var reversed: bool = false
 var climb_speed: float = 0.0
+var delay: float = 1.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	timer.start(delay)
 	pass # Replace with function body.
 
 func _process(delta):
@@ -34,16 +39,20 @@ func _physics_process(delta):
 		else:
 			get_prev_segment()
 
-
-
-func start_hunt(initial: SpitSegment, speed: float):
+func setup_hunt(initial: SpitSegment, speed: float, delay: float):
 	
 	first_segment = initial
-	
 	climb_speed = speed
-	active = true
 	target_segment = initial
-	target = initial.get_node("Marker2D").global_position
+	
+	
+	self.delay = delay
+	
+
+func start_hunt():
+	
+	active = true
+	target = target_segment.get_node("Marker2D").global_position
 	sprite_2d.play("Crawl")
 	audio_stream_player_2d.play()
 
@@ -92,3 +101,7 @@ func pin_worm_to_segment():
 
 func _on_audio_stream_player_2d_finished():
 	audio_stream_player_2d.play()
+
+
+func _on_timer_timeout():
+	start_hunt()
