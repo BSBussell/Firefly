@@ -97,7 +97,7 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 
 
-	if Input.is_action_just_pressed("Dive"):
+	if Input.is_action_just_pressed("Down"):
 		if parent.stuck_segment.next:
 			parent.stuck_segment = parent.stuck_segment.next
 		else:
@@ -227,8 +227,8 @@ func jump():
 
 
 	var vertical_control = 1.0
-	if parent.vertical_axis < 0:
-		vertical_control = -0.4
+	#if parent.vertical_axis < 0:
+		#vertical_control = -0.4
 		
 
 	# Jump Velocity

@@ -196,6 +196,7 @@ Text = "- FireFly -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
+win_condition = 1
 
 [node name="Lighting" type="Node2D" parent="."]
 visible = false

@@ -20,7 +20,7 @@ func _ready():
 
 var animation_finished: bool = false
 func _unhandled_input(event):
-	if animation_finished and event.is_action_pressed("ui_accept"):
+	if animation_finished and event.is_action_pressed("Jump"):
 		#await get_tree().create_timer(2.0).timeout
 		animation_player.play("Fade-Out")
 	
