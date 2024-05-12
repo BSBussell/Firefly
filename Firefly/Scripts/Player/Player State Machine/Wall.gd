@@ -35,8 +35,11 @@ func enter() -> void:
 	# TODO: Make this work, prev velocity is zero'd for some reason
 	# I want flyph to be squashed like a bug if they slam into this wall
 	var squash_value: float
-	squash_value = snappedf(lerpf(0.1, 0.75, abs(parent.prev_velocity_x) / (parent.air_speed * 5)), 0.01)
-	parent.squish_node.squish(Vector2(1.0 - squash_value, 1.0 + squash_value))
+	var squash_dur: float
+	
+	squash_dur = snappedf(lerpf(0.65, 1.1, abs(parent.prev_velocity_x) / (parent.air_speed * 5)), 0.01)
+	squash_value = snappedf(lerpf(0.3, 0.75, abs(parent.prev_velocity_x) / (parent.air_speed * 5)), 0.01)
+	parent.squish_node.squish(Vector2(1.0 - squash_value, 1.0 + squash_value), squash_dur)
 	
 	# Spawn some wall hug dust
 	print("Escaped Enter")

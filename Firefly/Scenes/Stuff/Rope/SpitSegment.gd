@@ -9,6 +9,10 @@ class_name SpitSegment
 var prev: RigidBody2D = null
 var next: RigidBody2D = null
 
+
+var origin: Vector2 = Vector2.ZERO
+
+
 signal grabbed(segment)
 
 # Connects the joint to the top of the spit

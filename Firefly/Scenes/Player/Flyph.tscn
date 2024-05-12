@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://dsjjsd36v17p1" path="res://Scenes/Player/Movement_Presets/Stage2Movement.tres" id="4_66rk6"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="5_63g2f"]
 [ext_resource type="Script" path="res://Scenes/Player/SquishCenter.gd" id="5_t485n"]
+[ext_resource type="Curve" uid="uid://dyvlanr1e1e5r" path="res://Scenes/Player/bounce_curve.tres" id="6_3hdso"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="6_bo4q8"]
 [ext_resource type="Script" path="res://Scenes/Player/Modulation.gd" id="6_vid37"]
 [ext_resource type="Script" path="res://Scenes/Player/trail.gd" id="7_se6t7"]
@@ -44,12 +45,6 @@ size = Vector2(6, 15)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_seiic"]
 size = Vector2(6, 8.5)
-
-[sub_resource type="Curve" id="Curve_umqtl"]
-max_value = 2.0
-_data = [Vector2(0, 0), 0.0, 3.0, 0, 0, Vector2(0.25, 1.2), -1.5, -1.5, 0, 0, Vector2(0.5, 0.8), 1.0, 1.0, 0, 0, Vector2(1, 1), 0.25, 0.0, 0, 0]
-point_count = 4
-metadata/_snap_enabled = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpwsx"]
 atlas = ExtResource("5_63g2f")
@@ -575,7 +570,7 @@ collision_layer = 5
 collision_mask = 34
 floor_constant_speed = true
 floor_max_angle = 1.55334
-floor_snap_length = 10.0
+floor_snap_length = 7.0
 script = ExtResource("1_hphyi")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 GROUNDED_STATE = NodePath("StateMachine/Grounded")
@@ -597,6 +592,7 @@ turn_around_squash = Vector2(0.9, 1.1)
 death_squash = Vector2(0.5, 1.5)
 
 [node name="Collider" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_6vnjo")
 debug_color = Color(0.890196, 0.921569, 0.34902, 0.733333)
@@ -620,7 +616,7 @@ debug_color = Color(0, 0.764706, 0, 0.372549)
 
 [node name="SquishCenter" type="Node2D" parent="Visuals"]
 script = ExtResource("5_t485n")
-bounce_curve = SubResource("Curve_umqtl")
+bounce_curve = ExtResource("6_3hdso")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
@@ -645,7 +641,7 @@ length = 0
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
 color = Color(1, 0.980392, 0.803922, 1)
-energy = 0.4
+energy = 0.6
 range_layer_min = -99
 range_item_cull_mask = 3
 shadow_enabled = true
@@ -844,6 +840,7 @@ position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="Raycasts" type="Node2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 
 [node name="Right_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]

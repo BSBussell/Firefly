@@ -216,6 +216,7 @@ blend_priority = 0
 blend_override = 0.15
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_5d1v6")
 

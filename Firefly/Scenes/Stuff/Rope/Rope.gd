@@ -31,6 +31,9 @@ func _ready():
 	create_joints()
 	if GlowWorm:
 		setup_Worm()
+		
+	if not Swingable:
+		self_modulate = "#3e3b65bf"
 
 
 
@@ -68,8 +71,11 @@ func create_joints() -> void:
 		if not Swingable:
 			new_segment.set_collision_layer_value(9, false)
 			new_segment.set_collision_mask_value(1, true)
+			new_segment.modulate = "#3e3b65bf"
 		
 		print(next_pos)
+		
+		new_segment.origin = global_position
 		
 		add_child(joint)
 		add_child(new_segment)

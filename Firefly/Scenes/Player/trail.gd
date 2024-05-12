@@ -24,7 +24,7 @@ var fps_adjusted_length: int = 10
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	fps_adjusted_length = length * (Engine.get_frames_per_second() / 60)
+	fps_adjusted_length = max(length * (Engine.get_frames_per_second() / 60), 0)
 	
 	global_position = Vector2(0, 0)
 	global_rotation = 0
@@ -34,8 +34,11 @@ func _process(delta):
 
 	add_point(point)
 
+	#if fps_adjusted_length >= 0: 
 	while get_point_count() > fps_adjusted_length:
 		remove_point(0)
+	#else:
+		#print("WOAH FR?")
 
 	if interpolating:
 		interpolation_time += delta

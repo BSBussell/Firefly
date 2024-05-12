@@ -8,9 +8,7 @@
 [sub_resource type="Environment" id="Environment_xxxtd"]
 background_mode = 3
 tonemap_mode = 2
-tonemap_exposure = 0.9
-tonemap_white = 1.14
-glow_enabled = true
+tonemap_white = 1.2
 glow_levels/1 = 0.18
 glow_levels/2 = 0.39
 glow_levels/3 = 0.0

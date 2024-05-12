@@ -9,6 +9,6 @@ noise = SubResource("FastNoiseLite_sc7xm")
 
 [resource]
 shader = ExtResource("1_c5wjw")
-shader_parameter/distortion_strength = 6.57
+shader_parameter/distortion_strength = 100.0
 shader_parameter/tint_color = Color(0.0862745, 0.533333, 0.870588, 0.196078)
 shader_parameter/noise_tex = SubResource("NoiseTexture2D_2ah3u")

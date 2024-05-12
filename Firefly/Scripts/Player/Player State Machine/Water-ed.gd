@@ -155,13 +155,14 @@ func exit() -> void:
 	animation.play("free")
 
 	# SFX
-	out_of_water_sfx.play()
-	swimming_sfx.stop()
+	if get_tree():
+		out_of_water_sfx.play()
+		swimming_sfx.stop()
 
 	# Set the modulation to the default
 	parent.animation.set_glow(parent.movement_data.GLOW, 2)
 
-	# disable Water Audio Filers
+	# disable Water Audio Filters
 	_audio.disable_underwater_fx()
 	
 	wet.emitting = true

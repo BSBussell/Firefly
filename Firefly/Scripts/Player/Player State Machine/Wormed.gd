@@ -94,18 +94,32 @@ func exit() -> void:
 
 
 # Processing input in this state, returns nil or new state
-func process_input(_event: InputEvent) -> PlayerState:
+func process_input(event: InputEvent) -> PlayerState:
 
 
-	if Input.is_action_just_pressed("Down"):
-		if parent.stuck_segment.next:
-			parent.stuck_segment = parent.stuck_segment.next
-		else:
-			return AERIAL_STATE
+	# If its just a keyboard
+	if event is InputEventKey:
+		if Input.is_action_just_pressed("Down"):
+			if parent.stuck_segment.next:
+				parent.stuck_segment = parent.stuck_segment.next
+			else:
+				return AERIAL_STATE
+				
+		elif Input.is_action_just_pressed("Up"):
+			if parent.stuck_segment.prev:
+				parent.stuck_segment = parent.stuck_segment.prev
+	
+	# If its anything other than a keyboard
+	else:
+		if Input.is_action_just_pressed("Down") and not Input.is_action_just_pressed("Dive"):
+			if parent.stuck_segment.next:
+				parent.stuck_segment = parent.stuck_segment.next
+			else:
+				return AERIAL_STATE
 
-	elif Input.is_action_just_pressed("Up"):
-		if parent.stuck_segment.prev:
-			parent.stuck_segment = parent.stuck_segment.prev
+		elif Input.is_action_just_pressed("Up"):
+			if parent.stuck_segment.prev:
+				parent.stuck_segment = parent.stuck_segment.prev
 
 	return null
 
@@ -154,7 +168,7 @@ func process_frame(_delta):
 			parent.squish_node.squish(parent.turn_around_squash)
 
 	# Speed Particle Emission
-	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active:
+	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active or speeding_up:
 		speed_particles.emitting = true
 		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
 	else:
@@ -255,34 +269,36 @@ var last_position: Vector2 = Vector2.ZERO
 # Set to the direction that makes us fall down
 var slow_dir = 5.0
 
+# Set to true if we are moving "downward" or speeding up in the swing
 var speeding_up: bool = false
+
+# Records which direction is now a slow direction
 var fall_dir: int = 0
+
+# Tracks the players horizontal speed
 var hz_speed: float = 0.0
 func swinging(delta, dir):
 	
 	var offset = Vector2(0, -16)
 	parent.global_position = parent.stuck_segment.global_position - offset
 	
+	var relative_position = parent.global_position - parent.stuck_segment.origin
+	
 	# If we've moved down since last pool, and 
-	if parent.global_position.y > last_position.y and slow_dir != parent.horizontal_axis:
+	if sign(parent.horizontal_axis) != sign(relative_position.x) and parent.horizontal_axis != 0:
+	#if parent.global_position.y > last_position.y and slow_dir != parent.horizontal_axis:
 		swing_force = move_toward(swing_force, max_swing_force, swing_down_accel * delta)
 		speeding_up = true
-		
+			
 		# Find which direction we're moving towards
 		hz_speed = parent.global_position.x - last_position.x
 		fall_dir = sign(hz_speed)
 		
-		#slow_dir = -parent.horizontal_axis
+		parent.add_glow(0.1)
 		
 	else:
 		swing_force = move_toward(swing_force, 600, swing_up_decel * delta)
 	
-		
-		
-		
-		#if parent.global_position.y > last_position.y:
-			#slow_dir = -parent.horizontal_axis
-		
 		speeding_up = false
 	
 		

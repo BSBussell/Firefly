@@ -237,7 +237,6 @@ win_condition = 1
 visible = false
 
 [node name="Moonlight" type="DirectionalLight2D" parent="Lighting"]
-visible = false
 rotation = -0.698132
 enabled = false
 color = Color(0.854902, 0.694118, 0.388235, 1)
@@ -334,7 +333,7 @@ bus = &"Ambience"
 [node name="CaveExit" type="AudioStreamPlayer2D" parent="LevelAudio"]
 position = Vector2(276, -928)
 stream = ExtResource("4_qurpt")
-volume_db = -10.0
+volume_db = -12.0
 autoplay = true
 attenuation = 1.27456
 bus = &"Ambience"
@@ -462,7 +461,6 @@ position = Vector2(52, -457)
 Segments = 6
 
 [node name="DecorRope" type="Node2D" parent="."]
-modulate = Color(0.243137, 0.231373, 0.396078, 0.74902)
 z_index = -1
 
 [node name="Rope" parent="DecorRope" instance=ExtResource("8_uc64o")]
@@ -731,6 +729,7 @@ Segments = 4
 Swingable = false
 
 [node name="Events" type="Node2D" parent="."]
+visible = false
 
 [node name="UnderWaterTutorial" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
 z_index = -1
@@ -770,6 +769,7 @@ libraries = {
 position = Vector2(-2, -64)
 
 [node name="CheckpointArea3" parent="CheckpointManager" node_paths=PackedStringArray("optional_target") instance=ExtResource("15_ukqlk")]
+visible = false
 position = Vector2(446, -23)
 scale = Vector2(15.195, 1)
 optional_target = NodePath("Marker2D")
@@ -854,6 +854,7 @@ offset_right = 49.0
 offset_bottom = 221.0
 
 [node name="LoadingZones" type="Node2D" parent="."]
+visible = false
 
 [node name="levelChangr" type="Area2D" parent="LoadingZones"]
 position = Vector2(166, -887)
@@ -888,6 +889,7 @@ position = Vector2(-9, -304)
 position = Vector2(25, -224)
 
 [node name="CameraTargets" type="Node2D" parent="."]
+visible = false
 
 [node name="CameraTarget" type="Area2D" parent="CameraTargets"]
 position = Vector2(46, -401)
