@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://bot2v388wlkwf"]
 
-[ext_resource type="Script" path="res://Scenes/Stuff/Rope/worm.gd" id="1_mtwpq"]
+[ext_resource type="Script" path="res://Scripts/Rope/GlowWorm/worm.gd" id="1_mtwpq"]
 [ext_resource type="Texture2D" uid="uid://cvmsap05v25s8" path="res://Assets/Graphics/Mechanics/Rope/worm.png" id="1_t534l"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_dcwwd"]
 [ext_resource type="AudioStream" uid="uid://b5h0t4dut8krd" path="res://Assets/SFX/Mechanics/grossworm/theWorst.mp3" id="4_3smny"]

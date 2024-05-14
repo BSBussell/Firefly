@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dw74c2tkogsdu"]
 
-[ext_resource type="Script" path="res://Scenes/Stuff/Rope/SpitSegment.gd" id="1_e2fpp"]
+[ext_resource type="Script" path="res://Scripts/Rope/SpitSegment.gd" id="1_e2fpp"]
 [ext_resource type="Texture2D" uid="uid://c54p0vejhh4nt" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit.png" id="1_q2tjy"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h3dnq"]

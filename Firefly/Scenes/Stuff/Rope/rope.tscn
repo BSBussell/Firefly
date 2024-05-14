@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bauphk2cyg5tr"]
 
-[ext_resource type="Script" path="res://Scenes/Stuff/Rope/Rope.gd" id="1_5syat"]
+[ext_resource type="Script" path="res://Scripts/Rope/Rope.gd" id="1_5syat"]
 [ext_resource type="Texture2D" uid="uid://cd35jl6vuxohb" path="res://Assets/Graphics/Mechanics/Rope/base.png" id="1_fgnty"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_ob0ul"]
 

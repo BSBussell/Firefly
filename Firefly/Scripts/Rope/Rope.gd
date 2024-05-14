@@ -1,10 +1,10 @@
 extends Node2D
 class_name Rope
 
-const SPIT = preload("res://Scenes/Stuff/Rope/spit.tscn")
-const JOINT = preload("res://Scenes/Stuff/Rope/joint.tscn")
-const ANCHOR = preload("res://Scenes/Stuff/Rope/anchor.tscn")
-const WORM = preload("res://Scenes/Stuff/Rope/worm.tscn")
+const SPIT = preload("res://Scenes/Stuff/Rope/RopePieces/spit.tscn")
+const JOINT = preload("res://Scenes/Stuff/Rope/RopePieces/joint.tscn")
+const ANCHOR = preload("res://Scenes/Stuff/Rope/RopePieces/anchor.tscn")
+const WORM = preload("res://Scenes/Stuff/Rope/GlowWorm/worm.tscn")
 
 ## Length of the rope
 @export var Segments: int = 5
