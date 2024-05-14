@@ -24,6 +24,7 @@ enum ANI_STATES {
 	JUMP,
 	FALLING,
 	LANDING,
+	PADDLE,
 
 	CROUCH,
 	CRAWL,
@@ -125,7 +126,7 @@ signal dead()
 
 
 # Timers
-@onready var jump_buffer: Timer = $Timers/JumpBuffer
+#@onready var jump_buffer: Timer = $Timers/JumpBuffer
 @onready var coyote_time: Timer = $Timers/CoyoteTime
 @onready var momentum_time: Timer = $Timers/MomentumTime
 @onready var post_jump_buffer = $Timers/PostJumpBuffer
@@ -289,7 +290,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# Log if a jump is pressed
 	if Input.is_action_just_pressed("Jump"):
-		jump_buffer.start()
+		jump_buffer = base_jump_buffer
 
 	
 		
@@ -309,23 +310,28 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 
+var base_jump_buffer: float = 0.125
+var jump_buffer: float = -1
 
 ## Attempt to consume a jump buffer
 # This will be called by the state machine when it wants to consume a jump buffer
 # Returns True if the jump buffer was consumed
-func attempt_jump() -> bool:
+func attempt_jump(leniancy: float = 0.0) -> bool:
 	
-	
-
-	if jump_buffer.time_left > 0.0:
+	if jump_buffer > -leniancy:
 		consume_jump()
 		return true
 	return false
 
+func update_buffer_timer(delta: float):
+	# Cut off at 1 second
+	if jump_buffer > -1:
+		jump_buffer -= delta
+
 # Uses up anything potentially in the jump buffer
 func consume_jump() -> void:
 	
-	jump_buffer.stop()
+	jump_buffer = -1
 	
 ## This is used by the spring routine
 func attempt_post_jump() -> bool:
@@ -385,6 +391,7 @@ func lock_h_dir(dir: float, time: float, soft: bool = false):
 func _physics_process(delta: float) -> void:
 
 	set_input_axis(delta)
+	update_buffer_timer(delta)
 
 	# Stop the players 'world' on death :3
 	if not dying:
@@ -465,6 +472,10 @@ func update_animations():
 			animation.play("falling")
 		ANI_STATES.LANDING:
 			animation.play("landing")
+			
+		# Water Animations
+		ANI_STATES.PADDLE:
+			animation.play("paddle")
 			
 		# Wall Animations
 		ANI_STATES.WALL_HUG:
@@ -570,6 +581,10 @@ func horizontal_corner_correction(delta):
 			# Scan using the shapecast
 			right_accuracy.force_shapecast_update()
 
+			# Return if nothing was found
+			if right_accuracy.get_collision_count() == 0:
+				return
+				
 			var collision_y = right_accuracy.get_collision_point(0).y
 
 			if collision_y == 0:
@@ -610,6 +625,10 @@ func horizontal_corner_correction(delta):
 
 			# Scan using the shape cast
 			left_accuracy.force_shapecast_update()
+
+			# Return if nothing was found
+			if left_accuracy.get_collision_count() == 0:
+				return
 
 			var collision_y = left_accuracy.get_collision_point(0).y
 
@@ -842,7 +861,7 @@ func calculate_properties():
 
 	# Set timers
 	coyote_time.wait_time = movement_data.COYOTE_TIME
-	jump_buffer.wait_time = movement_data.JUMP_BUFFER
+#	jump_buffer.wait_time = movement_data.JUMP_BUFFER
 	momentum_time.wait_time = movement_data.STRICTNESS
 
 	# Visual
@@ -895,6 +914,10 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	# If a squash is given, squash the player
 	if (squash != Vector2.ZERO):
 		squish_node.squish(squash)
+		
+	# Restart whatever animation we're in
+	# That way we either restart the air movements, or restart running
+	restart_animation = true
 		
 	consume_jump()
 

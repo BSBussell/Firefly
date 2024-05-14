@@ -1,9 +1,12 @@
 extends Node2D
 
-@export var rebound_speed: float = 0.5
+@export var base_rebound_speed: float = 0.5
 @export var bounce_curve: Curve
 
+
+
 # State
+var rebound_speed: float = 0.0
 var original_scale: Vector2 = Vector2(1.0, 1.0)
 var squish_from: Vector2 = Vector2.ZERO
 var interpolating: bool = false
@@ -26,7 +29,7 @@ func _process(delta):
 		
 
 # Set the scale for squash/stretch and start interpolating back to original scale
-func squish(new_scale: Vector2, new_speed: float = rebound_speed) -> void:
+func squish(new_scale: Vector2, new_speed: float = base_rebound_speed) -> void:
 	
 	# Make sure the order of magnitude stays in the hundreths place
 	var safe_scale: Vector2 = Vector2.ZERO

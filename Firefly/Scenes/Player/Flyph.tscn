@@ -1,23 +1,20 @@
-[gd_scene load_steps=112 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=117 format=3 uid="uid://bbae0lck5bmhv"]
 
-[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Flyph.gd" id="1_hphyi"]
+[ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
 [ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
 [ext_resource type="Resource" uid="uid://csjt8cboxggev" path="res://Scenes/Player/Movement_Presets/Stage1Movement.tres" id="3_w3b7s"]
 [ext_resource type="Resource" uid="uid://dsjjsd36v17p1" path="res://Scenes/Player/Movement_Presets/Stage2Movement.tres" id="4_66rk6"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="5_63g2f"]
-[ext_resource type="Script" path="res://Scenes/Player/SquishCenter.gd" id="5_t485n"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/SquishCenter.gd" id="5_xcpgn"]
 [ext_resource type="Curve" uid="uid://dyvlanr1e1e5r" path="res://Scenes/Player/bounce_curve.tres" id="6_3hdso"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="6_bo4q8"]
-[ext_resource type="Script" path="res://Scenes/Player/Modulation.gd" id="6_vid37"]
-[ext_resource type="Script" path="res://Scenes/Player/trail.gd" id="7_se6t7"]
-[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Grounded.gd" id="7_x3sml"]
-[ext_resource type="Script" path="res://Scripts/Player/PlayerSpotlight.gd" id="8_728xn"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/Modulation.gd" id="8_dying"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="8_shld8"]
 [ext_resource type="PackedScene" uid="uid://ba3c7whb0dsjn" path="res://Scenes/Player/particles/slideDust.tscn" id="9_c4aqh"]
-[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Aerial.gd" id="9_vj5hi"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/trail.gd" id="9_iifmr"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/PlayerStateMachine.gd" id="10_amheu"]
-[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wall.gd" id="10_eck16"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/PlayerSpotlight.gd" id="11_aonwn"]
 [ext_resource type="AudioStream" uid="uid://dabydr3n6ho76" path="res://Assets/SFX/Player/jump_1.mp3" id="12_m3poj"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="13_xelg6"]
 [ext_resource type="AudioStream" uid="uid://b6jwf7oavshmg" path="res://Assets/SFX/Player/jump_2.mp3" id="14_hplrh"]
@@ -29,13 +26,16 @@
 [ext_resource type="AudioStream" uid="uid://bahbkt2kqpg2w" path="res://Assets/SFX/Water/underWater.mp3" id="20_j21pw"]
 [ext_resource type="AudioStream" uid="uid://c86u0dij278a" path="res://Assets/SFX/Water/getting_out_of_water.mp3" id="21_g6yjb"]
 [ext_resource type="AudioStream" uid="uid://caexb2m0j71la" path="res://Assets/SFX/Mechanics/swinging.mp3" id="22_q5uq7"]
-[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Sliding.gd" id="23_0bu6o"]
 [ext_resource type="AudioStream" uid="uid://dexpkegjbcfsv" path="res://Assets/SFX/Mechanics/rope_creak.mp3" id="23_oxbt6"]
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
 [ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
-[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Water-ed.gd" id="25_jbi8o"]
-[ext_resource type="Script" path="res://Scenes/Player/Speedometer.gd" id="26_0wrd0"]
-[ext_resource type="Script" path="res://Scripts/Player/Player State Machine/Wormed.gd" id="27_47nb5"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Grounded.gd" id="28_u1lt2"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Aerial.gd" id="29_yqxc8"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Wall.gd" id="30_24240"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Sliding.gd" id="31_f37eu"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Water-ed.gd" id="32_qjlto"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Wormed.gd" id="33_e7xfe"]
+[ext_resource type="Script" path="res://Scripts/Player/Speedometer.gd" id="36_btfxn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vnjo"]
 size = Vector2(6, 15)
@@ -113,6 +113,26 @@ region = Rect2(1408, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_jvcha"]
 atlas = ExtResource("5_63g2f")
 region = Rect2(1472, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_loynt"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(1280, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whyrq"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(1216, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ut3b3"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(1152, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5nisr"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(1088, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohwf0"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(1024, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7p8b0"]
 atlas = ExtResource("5_63g2f")
@@ -335,6 +355,26 @@ animations = [{
 }],
 "loop": false,
 "name": &"landing",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_loynt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_whyrq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ut3b3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5nisr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohwf0")
+}],
+"loop": true,
+"name": &"paddle",
 "speed": 10.0
 }, {
 "frames": [{
@@ -571,7 +611,7 @@ collision_mask = 34
 floor_constant_speed = true
 floor_max_angle = 1.55334
 floor_snap_length = 7.0
-script = ExtResource("1_hphyi")
+script = ExtResource("1_ikygr")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 GROUNDED_STATE = NodePath("StateMachine/Grounded")
 AERIAL_STATE = NodePath("StateMachine/Aerial")
@@ -615,7 +655,7 @@ debug_color = Color(0, 0.764706, 0, 0.372549)
 [node name="Visuals" type="Node2D" parent="."]
 
 [node name="SquishCenter" type="Node2D" parent="Visuals"]
-script = ExtResource("5_t485n")
+script = ExtResource("5_xcpgn")
 bounce_curve = ExtResource("6_3hdso")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
@@ -623,8 +663,10 @@ position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
 animation = &"falling"
 autoplay = "idle"
+frame = 4
+frame_progress = 1.0
 flip_h = true
-script = ExtResource("6_vid37")
+script = ExtResource("8_dying")
 
 [node name="Trail" type="Line2D" parent="Visuals"]
 modulate = Color(2.5, 2.6, 1.25, 1)
@@ -636,7 +678,7 @@ width_curve = SubResource("Curve_w5yy1")
 default_color = Color(0.960784, 0.898039, 0, 1)
 gradient = SubResource("Gradient_nk0tk")
 antialiased = true
-script = ExtResource("7_se6t7")
+script = ExtResource("9_iifmr")
 length = 0
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
@@ -650,7 +692,7 @@ shadow_filter = 1
 shadow_filter_smooth = 10.0
 shadow_item_cull_mask = 2
 texture = ExtResource("6_bo4q8")
-script = ExtResource("8_728xn")
+script = ExtResource("11_aonwn")
 curve_in = SubResource("Curve_grp02")
 curve_out = SubResource("Curve_5ulra")
 metadata/_edit_lock_ = true
@@ -1069,7 +1111,7 @@ script = ExtResource("10_amheu")
 starting_state = NodePath("Grounded")
 
 [node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "coyote_time", "post_jump_buffer")]
-script = ExtResource("7_x3sml")
+script = ExtResource("28_u1lt2")
 AERIAL_STATE = NodePath("../Aerial")
 SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
@@ -1077,7 +1119,7 @@ coyote_time = NodePath("../../Timers/CoyoteTime")
 post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 
 [node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "coyote_time", "jump_buffer")]
-script = ExtResource("9_vj5hi")
+script = ExtResource("29_yqxc8")
 WALL_STATE = NodePath("../Wall")
 GROUNDED_STATE = NodePath("../Grounded")
 SLIDING_STATE = NodePath("../Sliding")
@@ -1085,14 +1127,14 @@ coyote_time = NodePath("../../Timers/CoyoteTime")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
 [node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "SLIDING_STATE", "jump_buffer", "post_jump_buffer")]
-script = ExtResource("10_eck16")
+script = ExtResource("30_24240")
 GROUNDED_STATE = NodePath("../Grounded")
 SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 
 [node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "post_jump_buffer", "coyote_time")]
-script = ExtResource("23_0bu6o")
+script = ExtResource("31_f37eu")
 GROUNDED_STATE = NodePath("../Grounded")
 AERIAL_STATE = NodePath("../Aerial")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
@@ -1100,15 +1142,23 @@ post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 
 [node name="Water-ed" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "AERIAL_STATE")]
-script = ExtResource("25_jbi8o")
+script = ExtResource("32_qjlto")
 WALL_STATE = NodePath("../Wall")
 AERIAL_STATE = NodePath("../Aerial")
+WATER_ENTRY_COST = null
 WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
+WATER_SPEED_MULTI = null
+WATER_ACCEL_MULTI = null
+WATER_JUMP_MULTI = null
+WATER_DIVE_MULTI = null
+WATER_GRAV_MULTI = null
+MAX_FALL_MULTI = null
 
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
-script = ExtResource("27_47nb5")
+script = ExtResource("33_e7xfe")
 AERIAL_STATE = NodePath("../Aerial")
 min_swing_force = 800.0
+swing_down_accel = 1700.0
 swing_up_decel = 400.0
 
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
@@ -1148,7 +1198,7 @@ offset_bottom = -15.0
 text = "120"
 label_settings = SubResource("LabelSettings_yau3k")
 horizontal_alignment = 1
-script = ExtResource("26_0wrd0")
+script = ExtResource("36_btfxn")
 
 [connection signal="animation_finished" from="Visuals/SquishCenter/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="area_entered" from="Physics/HazardDetector" to="." method="_on_hazard_detector_area_entered"]

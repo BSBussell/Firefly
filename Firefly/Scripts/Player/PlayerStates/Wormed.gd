@@ -35,12 +35,16 @@ func enter() -> void:
 	if OS.is_debug_build():
 		print("Wormed State")
 
-	# Reset this value with silly number that hz axis will never be
-	slow_dir = 5.0
-	last_position= Vector2.ZERO
+	# We are not speeding up on thingy
+	speeding_up = false
 
 	parent.set_standing_collider()
 
+	# Don't allow buffer a jump prior to landing on the rope
+	# Ik i suck for this, but it puts more uh, sticking-feeling
+	# to the ropes when you can't just buffer jump to get out
+	# you actually just have to jump out of them
+	#parent.consume_jump()
 	
 	#call_deferred()
 	rope_detector.set_deferred("monitoring", false)
@@ -48,6 +52,18 @@ func enter() -> void:
 	
 	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 2.5), 1.0)
 	swing_force = lerpf(min_swing_force, max_swing_force, speed_ratio)
+	
+	# This is the coolest shit i've done
+	# Relative position to the ropes center
+
+	var a = lerpf(min_frequency, max_frequency, swing_force/max_swing_force)
+	# This is the coolest shit i've done
+	if sign(parent.velocity.x) > 0:
+		period = PI/(2*a) 
+	else:
+		period = (3*PI)/(2*a)
+			
+	pendulum_force = swing_force
 	
 
 	apply_rope_impulse(parent.velocity * grab_force_multi)
@@ -200,7 +216,7 @@ func handle_jump(_delta) -> bool:
 	
 
 	# If the player has buffered a jump
-	if parent.attempt_jump():
+	if parent.attempt_jump(-0.05):
 
 		# Update Animation State if we aren't holding crawl still
 		if (parent.current_animation != parent.ANI_STATES.CRAWL):
@@ -227,12 +243,22 @@ func jump():
 	# The player should be able to do a lot regardless
 	# with swinging
 	var swing_multi = 3.5
+	var max_jump_multi = 15
 	
 	# But if they time the jump right :3
 	# This isn't generally base game stuff
 	# More like silly fun zoom stuff
-	if speeding_up and sign(parent.horizontal_axis) == sign(fall_dir):
-		swing_multi = lerpf(swing_multi, 10, swing_force/max_swing_force)
+	# The goal of this is to simulate the boost you might get
+	# From jumping with the ropes force
+	if speeding_up:
+		
+		# As the players swing speed increases it gradually approaches 15
+		var t = swing_force / max_swing_force  # Normalized force value between 0 and 1
+		var exponent = 3  # Adjust this exponent to control the growth rate
+		var exponential_multi = ((max_jump_multi - swing_multi) * pow(t, exponent)) + swing_multi  # Calculate the exponential multiplier
+
+		swing_multi = exponential_multi  # Apply the calculated multiplier
+		print(swing_multi)
 
 	if sign(parent.velocity.x) != sign(jump_dir):
 		parent.velocity.x *= -1
@@ -264,55 +290,86 @@ func jump():
 	parent.restart_animation = true
 
 
-var last_position: Vector2 = Vector2.ZERO
-
-# Set to the direction that makes us fall down
-var slow_dir = 5.0
 
 # Set to true if we are moving "downward" or speeding up in the swing
 var speeding_up: bool = false
 
-# Records which direction is now a slow direction
-var fall_dir: int = 0
+var ret_force: float = 0.0
 
-# Tracks the players horizontal speed
-var hz_speed: float = 0.0
+var period: float = 0.0
+var pendulum_force: float = 0.0
+
+var max_frequency = 5.0
+var min_frequency = 2.5
+
 func swinging(delta, dir):
 	
+	# Tie the players position to the rope
 	var offset = Vector2(0, -16)
 	parent.global_position = parent.stuck_segment.global_position - offset
 	
+	# Relative position to the ropes center
 	var relative_position = parent.global_position - parent.stuck_segment.origin
 	
+	
+	
 	# If we've moved down since last pool, and 
-	if sign(parent.horizontal_axis) != sign(relative_position.x) and parent.horizontal_axis != 0:
-	#if parent.global_position.y > last_position.y and slow_dir != parent.horizontal_axis:
+	if dir and sign(dir) != sign(relative_position.x):
+
+		
+		# Increase the players swing force
 		swing_force = move_toward(swing_force, max_swing_force, swing_down_accel * delta)
 		speeding_up = true
-			
-		# Find which direction we're moving towards
-		hz_speed = parent.global_position.x - last_position.x
-		fall_dir = sign(hz_speed)
 		
+		pendulum_force = swing_force
+		
+		var a = lerpf(min_frequency, max_frequency, pendulum_force/max_swing_force)
+		# This is the coolest shit i've done
+		if sign(dir) > 0:
+			period = PI/(2*a) 
+		else:
+			period = (3*PI)/(2*a)
+		
+		# Set the glow
 		parent.add_glow(0.1)
 		
-	else:
-		swing_force = move_toward(swing_force, 600, swing_up_decel * delta)
 	
+	else:
+		
+		# Decrease the players swing force
+		swing_force = move_toward(swing_force, 600, swing_up_decel * delta)
+		pendulum_force = min(pendulum_force, swing_force)
+	
+		# Register that the player is slowing down, used for discerning jump
 		speeding_up = false
 	
-		
-	# Register that this direction slows us down now
-	if parent.global_position.y <= last_position.y:
-		slow_dir = sign(parent.global_position.x - last_position.x)
 	
-	last_position = parent.global_position
+	# Update the sine sillyness
+	period += delta
 	
+	
+	# If the player is pushing in a direction
 	if parent.horizontal_axis:
 		
-		var grab_force: Vector2 = Vector2(swing_force,0)
-		grab_force *= dir
-		apply_rope_force(grab_force)
+		var push_force: Vector2 = Vector2(swing_force,0)
+		push_force *= dir
+		apply_rope_force(push_force)
+		
+	# If the player is just letting the forces do what they do
+	if not parent.horizontal_axis: #and round(relative_position.x) != 0:
+		
+		pendulum_force -= 1
+		pendulum_force = max(pendulum_force, 0)
+		
+		var return_force: Vector2 = Vector2(pendulum_force, 0)
+		
+		var wave_length: float = 0.0
+		wave_length = lerpf(min_frequency, max_frequency, pendulum_force/max_swing_force)
+		
+		# Holy Fuck my PreCalc professors would be so proud of me
+		return_force *= sin(wave_length * period)
+		print(wave_length)
+		apply_rope_force(return_force)
 	
 func apply_weight(_delta):
 

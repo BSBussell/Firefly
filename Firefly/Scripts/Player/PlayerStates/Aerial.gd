@@ -182,7 +182,7 @@ func state_status():
 func process_frame(_delta):
 
 	# Fall squishing :3
-	if parent.velocity.y > 0:
+	if parent.velocity.y > 0 and not parent.launched:
 		var spriteBlend = min(parent.velocity.y / parent.movement_data.MAX_FALL_SPEED, 1)
 		var squishVal = Vector2()
 		squishVal.x = lerp(1.0, parent.falling_squash.x, spriteBlend)

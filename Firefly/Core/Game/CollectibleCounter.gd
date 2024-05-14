@@ -26,7 +26,7 @@ func setup(result: VictoryScreen):
 	max = 0
 	
 	var collectibles = []
-	collectibles = get_tree().get_nodes_in_group("Collectible")
+	collectibles = get_tree().get_nodes_in_group("FlyJar")
 	for jar in collectibles:
 		
 		# Connecting our jar collected signals
@@ -35,17 +35,26 @@ func setup(result: VictoryScreen):
 			print(error)
 	
 	max = collectibles.size()
-	print("Max:", max)
 	COLLECTED = 0
 	
 	COUNTER.text = "%d/%d" % [COLLECTED, max]
 	victory_screen = result
+	
+	# Connect Blue Jars:
+	
+	
+	collectibles = get_tree().get_nodes_in_group("BlueJar")
+	for jar in collectibles:
+		
+		# Connecting our jar collected signals
+		var error = jar.connect("collected", Callable(self, "jar_collected"))
+		if error:
+			print(error)
+	
 
 
 func jar_collected(_jar: FlyJar):
-	
-	#print("Boom Im a genius")
-	
+		
 	COLLECTED += 1
 	COUNTER.text = "%d/%d" % [COLLECTED, max]
 	

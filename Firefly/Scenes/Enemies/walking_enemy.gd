@@ -1,12 +1,15 @@
 extends CharacterBody2D
 class_name goober
 
+
+@export var speed = 60.0
+
+
 @onready var standing_zone = $Standing_Zone
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var facing_right = true
-var speed = 60.0
 
 func process(delta):
 	

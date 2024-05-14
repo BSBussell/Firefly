@@ -104,7 +104,7 @@ func enter() -> void:
 
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
 	if (not slide_fall) or (not parent.crouchJumping and parent.boostJumping) or parent.launched:
-		parent.current_animation = parent.ANI_STATES.FALLING
+		parent.current_animation = parent.ANI_STATES.PADDLE
 		parent.restart_animation = true
 		
 	
@@ -248,10 +248,12 @@ func animation_end() -> PlayerState:
 		parent.current_animation = parent.ANI_STATES.FALLING
 
 	# If falling ends pause the animation
+	if parent.current_animation == parent.ANI_STATES.PADDLE:
+		parent.current_animation = parent.ANI_STATES.FALLING
+		#parent.animation.pause()
+		
 	if parent.current_animation == parent.ANI_STATES.FALLING:
 		parent.restart_animation = true
-		parent.animation.speed_scale = 1
-		#parent.animation.pause()
 
 	return null
 
@@ -291,7 +293,7 @@ func water_jump():
 	parent.squish_node.squish(Vector2(0.8, 1.2))
 	
 	# Animation
-	parent.current_animation = parent.ANI_STATES.FALLING
+	parent.current_animation = parent.ANI_STATES.PADDLE
 	parent.restart_animation = true
 
 func water_dive():
@@ -317,8 +319,8 @@ func water_dive():
 	parent.current_animation = parent.ANI_STATES.FALLING
 	
 	# Reverse the animation :3
-	parent.animation.speed_scale = -1
-	parent.animation.frame = 3
+	#parent.animation.speed_scale = -1
+	#parent.animation.frame = 3
 	
 	parent.restart_animation = true
 	

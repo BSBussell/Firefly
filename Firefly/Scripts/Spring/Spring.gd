@@ -104,9 +104,15 @@ func spring_jump():
 	# The horizontal momentum; this value will be based on the players current movement speed
 	var momentum: Vector2 = Vector2.ZERO
 	
+	var leniancy_max = 0.5
+	var leniancy_min = 0.01
+	
+	var leniancy_blend = flyph.velocity.x/flyph.air_speed
+	var leniancy = lerpf(leniancy_min, leniancy_max, leniancy_blend)
+	
 	# Check if player is boosting upward by pressing a on the spring
 	# This is ordered intentionally to not consume a jump if the player is already jumping
-	if flyph.attempt_post_jump() or flyph.attempt_jump() and not flyph.wallJumping:
+	if flyph.attempt_post_jump() or flyph.attempt_jump(leniancy) and not flyph.wallJumping:
 		
 		# Needed in order to prevent double jump inputs
 		flyph.consume_jump()

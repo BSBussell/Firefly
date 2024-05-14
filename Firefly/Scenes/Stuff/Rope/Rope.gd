@@ -113,7 +113,7 @@ func setup_Worm():
 	#pass
 	
 	
-func activate(segment: SpitSegment):
+func activate(_segment: SpitSegment):
 	if GlowWorm:
 		if not worm_active:
 			
@@ -145,7 +145,3 @@ func start_cooldown(time: float) -> void:
 		each.set_deferred("collision_layer", 256)
 		#each.set_collision_layer_value(9, true)
 	
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
