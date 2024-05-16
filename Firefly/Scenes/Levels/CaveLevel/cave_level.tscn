@@ -1,6 +1,7 @@
-[gd_scene load_steps=37 format=3 uid="uid://cvxhf2cu04nb6"]
+[gd_scene load_steps=38 format=3 uid="uid://cvxhf2cu04nb6"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/CaveLevel/cave_level.gd" id="1_bfl7c"]
+[ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_s8gsc"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="2_tbtnh"]
 [ext_resource type="AudioStream" uid="uid://c8d4kjqyrog77" path="res://Assets/SFX/ambience/creepyCave_near_forest.mp3" id="3_xkvdx"]
 [ext_resource type="Material" uid="uid://dknfr3m14nn24" path="res://Assets/Materials/WaterDistortion.tres" id="4_6ko4m"]
@@ -231,6 +232,7 @@ script = ExtResource("1_bfl7c")
 Text = "- GlowWorm Caverns -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
+ui_components = Array[PackedScene]([ExtResource("2_s8gsc")])
 id = 1
 win_condition = 1
 

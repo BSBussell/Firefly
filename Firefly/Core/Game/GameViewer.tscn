@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
-[ext_resource type="PackedScene" uid="uid://d2aiiqy7j5ovi" path="res://Scenes/Levels/TutorialLevel/tutorial.tscn" id="2_gamt3"]
+[ext_resource type="PackedScene" uid="uid://cbgoqx8kcalop" path="res://Scenes/Levels/TutorialLevel/tutorial.tscn" id="2_gamt3"]
 [ext_resource type="Script" path="res://Core/Game/LevelLoader.gd" id="3_oejcr"]
 [ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
 

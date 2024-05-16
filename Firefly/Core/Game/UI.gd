@@ -5,7 +5,7 @@ class_name UiLoader
 const PAUSE_MENU: PackedScene = preload("res://Core/Game/pause.tscn")
 const COLLECTIBLE_COUNTER: PackedScene = preload("res://Scenes/UI_Elements/collectible_counter.tscn")
 const RESULTS: PackedScene = preload("res://Scenes/UI_Elements/results.tscn")
-const LEVEL_TITLE = preload("res://Scenes/UI_Elements/LevelTitle.tscn")
+const LEVEL_TITLE: PackedScene = preload("res://Scenes/UI_Elements/LevelTitle.tscn")
 
 # Corresponding instance variables
 var pause_instance: PauseMenu
@@ -33,24 +33,67 @@ func reset_ui():
 	pause_instance = null
 	counter_instance = null
 	results_instance = null
+	
+	# Empty the ui_components
+	ui_components = {}
 
 
 
-var has_displayed_title: bool = false
-func load_ui(context: Level):
+var ui_components: Dictionary = {}
+
+func load_ui(context: Level) -> void:
 	
 	# Remove all existing ui
 	reset_ui()
 	
-	
-	# If we haven't already said the levels name
-	if not has_displayed_title or context.id != 0:
+	# Loop through the packed ui components
+	for componentsScenes: PackedScene in context.ui_components:
+
+		# Load the scene
+		var instance: Node = componentsScenes.instantiate()
+
+		# Cast it to a UiComponent
+		var ui_element: UiComponent = instance as UiComponent
+
+		if ui_element:
+			# Add it to the ui_components array with the class name as the key
+			ui_components[ui_element.name] = ui_element
+
+			# Connect it to the level
+			ui_element.connect_level(context)
+
+			
+
 		
-		# Put in the levels name
-		var level_title = LEVEL_TITLE.instantiate()
-		level_title.set_title(context.Text)
-		_viewports.ui_viewport.add_child(level_title)
-		has_displayed_title = true
+			ui_element.define_dependencies()
+
+
+
+	# Fuck bro, do i really wanna get the map out for this tn?
+	# Isn't that pre-mature optimizations :3
+	# Loop through the ui components
+	for ui_component: UiComponent in ui_components.values():
+		# Loop through the dependencies
+		for dependency: UiComponent in ui_component.dependencies:
+			# Look up the dependency in the map
+			var dep: UiComponent = ui_components[dependency.name]
+			if dep:
+				ui_component.connect_dependency(dep)
+		
+		# Finally add it to the ui_viewport
+		_viewports.ui_viewport.add_child(ui_component)
+		
+			
+
+
+	# If we haven't already said the levels name
+	#if not has_displayed_title or context.id != 0:
+		#
+		## Put in the levels name
+		#var level_title = LEVEL_TITLE.instantiate()
+		#level_title.set_title(context.Text)
+		#_viewports.ui_viewport.add_child(level_title)
+		#has_displayed_title = true
 	
 	
 	if context.Can_Pause:

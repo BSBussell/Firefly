@@ -15,6 +15,8 @@ signal ChangeLevel(path: String)
 @export_category("Title")
 @export var Text: String = "- Debug -"
 
+
+
 ## The Active Player for the Level
 @export_category("Components")
 @export var PLAYER: Flyph
@@ -24,6 +26,9 @@ signal ChangeLevel(path: String)
 
 ## The Gem's Parent
 @export var gem_manager: GemManager
+
+# The necessary Ui Components for the Level. Only place UiComponents here
+@export var ui_components: Array[PackedScene] = []
 
 ## Each Level Should Have a Unique ID, plz assign
 @export var id: int

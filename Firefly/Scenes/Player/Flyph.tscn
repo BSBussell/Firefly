@@ -38,6 +38,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/Speedometer.gd" id="36_btfxn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vnjo"]
+custom_solver_bias = 0.1
 size = Vector2(6, 15)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_143ut"]

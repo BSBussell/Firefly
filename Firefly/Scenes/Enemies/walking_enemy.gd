@@ -21,14 +21,13 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-	#if run into a wall, turn around
-	if $FrontRayCast.is_colliding():
+
+	var wall_in_front: bool = $FrontRayCast.is_colliding()
+	var close_to_ledge: bool = !$BelowRayCast.is_colliding() && is_on_floor()
+
+	if wall_in_front or close_to_ledge:
 		flip()
 	
-	#if close to ledge, turn around
-	if !$BelowRayCast.is_colliding() && is_on_floor():
-		flip()
-
 	velocity.x = speed
 	
 	# Have the standing zones applied velocity be the current vel

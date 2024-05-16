@@ -1,6 +1,7 @@
-[gd_scene load_steps=34 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=35 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="1_nnlyf"]
+[ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="1_x8o00"]
 [ext_resource type="Texture2D" uid="uid://f4xhpem7fo4b" path="res://Assets/Graphics/Deep_Forest_Resource/bg_mountains_3.png" id="2_l635b"]
 [ext_resource type="Texture2D" uid="uid://8nctejfx4eoj" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_2.png" id="3_0dvwb"]
 [ext_resource type="Texture2D" uid="uid://pux5vi5jthqm" path="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png" id="4_k5dd6"]
@@ -187,6 +188,7 @@ script = SubResource("GDScript_0jk77")
 Text = "- FireFly Meadow -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarManager")
+ui_components = Array[PackedScene]([ExtResource("1_x8o00")])
 id = 2
 
 [node name="PP + FX" type="Node" parent="."]
@@ -305,7 +307,7 @@ metadata/_edit_lock_ = true
 
 [node name="Particles" type="Node" parent="."]
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="Particles"]
+[node name="CaveEntranceParticle" type="CPUParticles2D" parent="Particles"]
 position = Vector2(2936, 303)
 amount = 50
 lifetime = 5.0
