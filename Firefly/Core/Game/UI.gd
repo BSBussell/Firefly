@@ -57,14 +57,10 @@ func load_ui(context: Level) -> void:
 
 		if ui_element:
 			# Add it to the ui_components array with the class name as the key
-			ui_components[ui_element.name] = ui_element
-
+			ui_components[get_script_class_name(ui_element)] = ui_element
 			# Connect it to the level
 			ui_element.connect_level(context)
-
 			
-
-		
 			ui_element.define_dependencies()
 
 
@@ -74,56 +70,25 @@ func load_ui(context: Level) -> void:
 	# Loop through the ui components
 	for ui_component: UiComponent in ui_components.values():
 		# Loop through the dependencies
-		for dependency: UiComponent in ui_component.dependencies:
+		for dependency_name: String in ui_component.dependencies.keys():
 			# Look up the dependency in the map
-			var dep: UiComponent = ui_components[dependency.name]
-			if dep:
-				ui_component.connect_dependency(dep)
+			if ui_components.has(dependency_name):
+				ui_component.connect_dependency(ui_components[dependency_name])
+			else:
+				push_warning("Depdency: ", dependency_name, " could not be found!")
 		
 		# Finally add it to the ui_viewport
 		_viewports.ui_viewport.add_child(ui_component)
 		
-			
 
-
-	# If we haven't already said the levels name
-	#if not has_displayed_title or context.id != 0:
-		#
-		## Put in the levels name
-		#var level_title = LEVEL_TITLE.instantiate()
-		#level_title.set_title(context.Text)
-		#_viewports.ui_viewport.add_child(level_title)
-		#has_displayed_title = true
-	
-	
-	if context.Can_Pause:
-		print("Setting Up Pause Instance")
-		pause_instance = PAUSE_MENU.instantiate()
-		_viewports.ui_viewport.add_child(pause_instance)
-		pause_instance.visible = false
-	
-	# If there are jars to collect
-	if context.jar_manager:
-		
-		
-	
-		# Setup Victory Screen
-		results_instance = RESULTS.instantiate()
-		_viewports.ui_viewport.add_child(results_instance)
-		
-		var victory_function: Callable = Callable(results_instance, "show_Victory_Screen")
-		context.connect_to_win(victory_function)
-		
-		# Setup the colelctible counter
-		print("Setting up Counter")
-		counter_instance = COLLECTIBLE_COUNTER.instantiate()
-		_viewports.ui_viewport.add_child(counter_instance)
-		
-		# If the pause instance exists too
-		if context.Can_Pause:
-			pause_instance.connect_counter(counter_instance)
-			pause_instance.connect_results(results_instance)
-		
-		# Connect it to the victory screen
-		counter_instance.setup(results_instance)
-		
+# Method to get the custom class name
+func get_script_class_name(obj: Node) -> String:
+	var script_class_name = obj.get_class()
+	var script: Script = obj.get_script()
+	if script != null:
+		var script_resource_path = script.resource_path
+		for x in ProjectSettings.get_global_class_list():
+			if str(x["path"]) == script_resource_path:
+				script_class_name = str(x["class"])
+				break
+	return script_class_name

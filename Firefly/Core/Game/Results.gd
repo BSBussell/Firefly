@@ -1,4 +1,4 @@
-extends Control
+extends UiComponent
 class_name VictoryScreen
 
 signal Show_Victory()
@@ -9,11 +9,15 @@ var displayed: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	visible = false
+	
+	self.visible = false
+	
+	var victory_function: Callable = Callable(self, "show_Victory_Screen")
+	context.connect_to_win(victory_function)
 
 func _input(event):
 	
-	if Input.is_action_just_pressed("ui_accept") and visible:
+	if Input.is_action_just_pressed("ui_accept") and self.visible:
 		hide_Victory_Screen()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,12 +35,12 @@ func _process(delta):
 	stats_label.text = "Time: %s\n Total Deaths: %d" % [display_time, _stats.DEATHS]
 
 func show_Victory_Screen():
-	visible = true
+	self.visible = true
 	get_tree().paused = true
 	displayed = true
 
 func hide_Victory_Screen():
-	visible = false
+	self.visible = false
 	get_tree().paused = false
 	displayed = false
 	

@@ -1,10 +1,11 @@
-extends Node
+extends UiComponent
 class_name PauseMenu
 
-@onready var resume_button = $VBoxContainer/Items/Top/ResumeButton
-
+# Settings Container
 @onready var settings_container = $VBoxContainer/Items/Top/Settings/SettingsContainer
 
+# Buttons
+@onready var resume_button = $VBoxContainer/Items/Top/ResumeButton
 @onready var mixer_setting = $VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting
 
 # Sliders
@@ -20,9 +21,21 @@ var paused: bool = false
 var counter: JarCounter = null
 var result_screen: VictoryScreen = null
 
-func connect_counter(new_counter: JarCounter):
+func _ready():
 	
-	counter = new_counter
+	self.visible = false
+
+	counter = get_dependency("JarCounter", false)
+	result_screen = get_dependency("VictoryScreen", false)
+
+func define_dependencies() -> void:
+	
+	define_dependency("JarCounter", counter)
+	define_dependency("VictoryScreen", result_screen)
+
+#func connect_counter(new_counter: JarCounter):
+	
+	#counter = new_counter
 	
 func connect_results(results: VictoryScreen):
 	
