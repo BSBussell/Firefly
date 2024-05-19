@@ -5,54 +5,55 @@ extends Area2D
 
 
 @export_category("Spring Properties")
+## The time the player is locked to a direction after a spring launch
+@export var SPRING_DIR_LOCK_TIME: float = 0.2		
+
 @export_subgroup("ONLY TOUCH IN PARENT SCENE")
 ## The Max height of our jump in tiles
-@export var MAX_SPRING_HEIGHT: float = 4			# The max height of our jump in tiles because im so silly like that
+@export var MAX_SPRING_HEIGHT: float = 4
 
 ## The Time it takes us to reach that height
-@export var SPRING_RISE_TIME: float = 0.25			# The time it takes to reach that height
-
+@export var SPRING_RISE_TIME: float = 0.3
+## The max height of a spring boosted by a jump
 @export var MAX_JUMP_BOOST_HEIGHT: float = 6
+## How long it takes to reach that height
+@export var JUMP_BOOST_RISE_TIME: float = 0.36
 
-@export var JUMP_BOOST_RISE_TIME: float = 0.3
+## The scale of the player
+@export var SPRING_SQUASH: Vector2 = Vector2(0.5, 1.5)
 
-## Potentially Unused lol
-@export var SPRING_HORIZ_BOOST: float = 60		# The max speed added on jumping
 
-@export var SPRING_SQUASH: Vector2 = Vector2(1.5, 0.5)
+## The player that jumped on the spring
+var flyph: Flyph
 
+## If the spring has been pressed in the last 0.2 seconds.
 var primed: bool = false
 
-var spring_actual_height: float
+#
 var spring_velocity: float
 var spring_gravity: float
 
-var spring_jb_height: float
 var spring_jb_velocity: float
 var spring_jb_gravity: float
 
-var jump_buffer: Timer
-var post_jump_buffer: Timer
-
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 	
-	spring_actual_height = MAX_SPRING_HEIGHT * 16
+	# Calculate Velocities and such at initialization
+	var spring_actual_height: float = MAX_SPRING_HEIGHT * 16
 	spring_velocity = ((-2.0 * spring_actual_height) / SPRING_RISE_TIME)
 	spring_gravity = (-2.0 * spring_actual_height) / (SPRING_RISE_TIME * SPRING_RISE_TIME)
 	
-	
-	spring_jb_height = MAX_JUMP_BOOST_HEIGHT * 16
+	# Calculate Spring boosted velocities at initialization
+	var spring_jb_height: float = MAX_JUMP_BOOST_HEIGHT * 16
 	spring_jb_velocity = ((-2.0 * spring_jb_height) / JUMP_BOOST_RISE_TIME)
 	spring_jb_gravity = (-2.0 * spring_jb_height) / (JUMP_BOOST_RISE_TIME ** 2)
 	
-	pass # Replace with function body.
 
 
 
-var flyph: Flyph
 
-func _on_body_entered(body: Flyph):
+func _on_body_entered(body: Flyph) -> void:
 	
 	# If this spring is currently being pressed do nothing
 	if primed: return
@@ -80,22 +81,23 @@ func _on_body_entered(body: Flyph):
 	primed = false
 	
 # Effects on spring down
-func spring_down_fx():
+func spring_down_fx() -> void:
 	
 	# Play spring bounce animation, jump to "spring pressed" frame
+	sprite_2d.stop()
 	sprite_2d.play("bounce")
-	sprite_2d.frame = 2
+	#sprite_2d.frame = 2
 	
 	# Vibrate controller
 	Input.start_joy_vibration(1, 0.1, 0.3, 0.11)
 
 # Effect on spring launch
-func spring_up_fx():
+func spring_up_fx() -> void:
 	
 	# Just Sound :3
 	boing_.play(0)
 
-func spring_jump():
+func spring_jump() -> void:
 	
 	# Values for the launch function
 	var launch_velocity: Vector2 = Vector2.ZERO
@@ -104,15 +106,16 @@ func spring_jump():
 	# The horizontal momentum; this value will be based on the players current movement speed
 	var momentum: Vector2 = Vector2.ZERO
 	
-	var leniancy_max = 0.5
-	var leniancy_min = 0.01
+	var leniancy_max: float = 0.5
+	var leniancy_min: float = 0.01
 	
-	var leniancy_blend = flyph.velocity.x/flyph.air_speed
-	var leniancy = lerpf(leniancy_min, leniancy_max, leniancy_blend)
+	# The faster the player is moving the more leniancy we give for jump boosted spring bounces
+	var leniancy_blend: float = flyph.velocity.x/flyph.air_speed
+	var leniancy: float = lerpf(leniancy_min, leniancy_max, leniancy_blend)
 	
 	# Check if player is boosting upward by pressing a on the spring
 	# This is ordered intentionally to not consume a jump if the player is already jumping
-	if flyph.attempt_post_jump() or flyph.attempt_jump(leniancy) and not flyph.wallJumping:
+	if (flyph.attempt_post_jump() or flyph.attempt_jump(leniancy)) and not flyph.wallJumping:
 		
 		# Needed in order to prevent double jump inputs
 		flyph.consume_jump()
@@ -122,7 +125,7 @@ func spring_jump():
 		launch_gravity = spring_jb_gravity
 		
 		# Recklessly allow Speed to stack if you are doing jump boosts
-		momentum = _jump_boost_momentum_set()
+		momentum = _calc_jump_boost_momentum()
 		
 		# Make the SFX higher
 		boing_.pitch_scale = 1.3
@@ -135,7 +138,7 @@ func spring_jump():
 		launch_gravity = spring_gravity
 	
 		
-		momentum = _bounce_momentum_set()
+		momentum = _calc_bounce_momentum()
 			
 		# Play audio at default pitch
 		boing_.pitch_scale = 1.0
@@ -152,6 +155,7 @@ func spring_jump():
 	# Add our "adjusted" momentum to the launch
 	launch_velocity += momentum
 	
+	# Use player launch function
 	flyph.launch(launch_velocity, launch_gravity, SPRING_SQUASH)
 	
 	
@@ -161,7 +165,7 @@ func spring_jump():
 
 
 ## Do Momentum Math for a Job Boost
-func _jump_boost_momentum_set() -> Vector2:
+func _calc_jump_boost_momentum() -> Vector2:
 	
 	var momentum: Vector2 = Vector2.ZERO
 	
@@ -176,7 +180,7 @@ func _jump_boost_momentum_set() -> Vector2:
 	return momentum
 	
 ## Do Momentum for a basic bounce
-func _bounce_momentum_set() -> Vector2:
+func _calc_bounce_momentum() -> Vector2:
 	
 	var momentum: Vector2 = Vector2.ZERO
 	
