@@ -50,8 +50,6 @@ func _input(_event: InputEvent) -> void:
 		
 		_jar_tracker.reset_jars()
 		
-		ui_loader.has_displayed_title = false
-
 		# Reload the scene
 		get_tree().paused = false
 		
