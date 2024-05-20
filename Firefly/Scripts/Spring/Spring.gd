@@ -1,12 +1,14 @@
 extends Area2D
+class_name Spring
 
+@export var boing_: AudioStreamPlayer2D
 @onready var sprite_2d = $Sprite2D
-@onready var boing_ = $"Boing!"
+
 
 
 @export_category("Spring Properties")
 ## The time the player is locked to a direction after a spring launch
-@export var SPRING_DIR_LOCK_TIME: float = 0.2		
+@export var SPRING_DIR_LOCK_TIME: float = 0.2
 
 @export_subgroup("ONLY TOUCH IN PARENT SCENE")
 ## The Max height of our jump in tiles
@@ -51,9 +53,14 @@ func _ready() -> void:
 	
 
 
-
-
+## Overwritten by subclasses
 func _on_body_entered(body: Flyph) -> void:
+	
+	active_spring(body)
+	
+
+## Called to do spring things
+func active_spring(body: Flyph):
 	
 	# If this spring is currently being pressed do nothing
 	if primed: return
