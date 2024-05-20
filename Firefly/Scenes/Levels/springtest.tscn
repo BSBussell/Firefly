@@ -1,10 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://dnelnmxstuaut"]
+[gd_scene load_steps=7 format=3 uid="uid://diq3v1qiq8p8p"]
 
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="1_defs5"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="2_0l08t"]
-[ext_resource type="Script" path="res://Scripts/Events/Spring.gd" id="3_d0mgq"]
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/spring.tscn" id="3_m0piy"]
 [ext_resource type="Texture2D" uid="uid://cdude3ng54o4n" path="res://Assets/Graphics/Hazards/temp_spring.png" id="3_xa53u"]
+[ext_resource type="Script" path="res://Scripts/Spring/Spring.gd" id="4_aj6xf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3es8a"]
 
@@ -25,7 +25,7 @@ position = Vector2(145, 641)
 
 [node name="Spring2" type="Area2D" parent="."]
 position = Vector2(444, 692)
-script = ExtResource("3_d0mgq")
+script = ExtResource("4_aj6xf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spring2"]
 position = Vector2(34, 45)

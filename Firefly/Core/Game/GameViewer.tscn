@@ -1,16 +1,14 @@
 [gd_scene load_steps=6 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
-[ext_resource type="PackedScene" uid="uid://d2aiiqy7j5ovi" path="res://Scenes/Levels/tutorial.tscn" id="2_gamt3"]
+[ext_resource type="PackedScene" uid="uid://cbgoqx8kcalop" path="res://Scenes/Levels/TutorialLevel/tutorial.tscn" id="2_gamt3"]
 [ext_resource type="Script" path="res://Core/Game/LevelLoader.gd" id="3_oejcr"]
 [ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
 
 [sub_resource type="Environment" id="Environment_xxxtd"]
 background_mode = 3
 tonemap_mode = 2
-tonemap_exposure = 0.9
-tonemap_white = 1.14
-glow_enabled = true
+tonemap_white = 1.2
 glow_levels/1 = 0.18
 glow_levels/2 = 0.39
 glow_levels/3 = 0.0

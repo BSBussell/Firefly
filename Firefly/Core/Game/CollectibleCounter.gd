@@ -1,11 +1,10 @@
-extends Node
+extends UiComponent
 class_name JarCounter
 
 @export var COUNTER: Label 
 @export var COUNTER_ANIMATOR: AnimationPlayer
 @export var ANIMATION_TIMER: Timer
 
-var victory_screen: VictoryScreen
 var COLLECTED: int = 0
 var max: int = 100
 
@@ -14,19 +13,10 @@ var out: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	
-	pass # Replace with function body.
-
-
-
-
-func setup(result: VictoryScreen):
-	
 	max = 0
 	
 	var collectibles = []
-	collectibles = get_tree().get_nodes_in_group("Collectible")
+	collectibles = get_tree().get_nodes_in_group("FlyJar")
 	for jar in collectibles:
 		
 		# Connecting our jar collected signals
@@ -35,17 +25,31 @@ func setup(result: VictoryScreen):
 			print(error)
 	
 	max = collectibles.size()
-	print("Max:", max)
 	COLLECTED = 0
 	
 	COUNTER.text = "%d/%d" % [COLLECTED, max]
-	victory_screen = result
+	
+	# Connect Blue Jars:
+	
+	
+	collectibles = get_tree().get_nodes_in_group("BlueJar")
+	for jar in collectibles:
+		
+		# Connecting our jar collected signals
+		var error = jar.connect("collected", Callable(self, "jar_collected"))
+		if error:
+			print(error)
+	
+	pass # Replace with function body.
+
+
+
+	
+	
 
 
 func jar_collected(_jar: FlyJar):
-	
-	#print("Boom Im a genius")
-	
+		
 	COLLECTED += 1
 	COUNTER.text = "%d/%d" % [COLLECTED, max]
 	

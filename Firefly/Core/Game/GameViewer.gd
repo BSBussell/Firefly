@@ -50,8 +50,6 @@ func _input(_event: InputEvent) -> void:
 		
 		_jar_tracker.reset_jars()
 		
-		ui_loader.has_displayed_title = false
-
 		# Reload the scene
 		get_tree().paused = false
 		
@@ -66,23 +64,32 @@ func _input(_event: InputEvent) -> void:
 		set_render_scale(current_scale)
 
 	
+var fullscreen = false
+
 # Stuff Game View Handles
 func swap_fullscreen_mode():
 	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		
-		# Update Render Scaling
-		set_render_scale(current_scale)
-		
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)		
+		set_fullscreen_scale()
+		fullscreen = true
 		
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		set_windowed_scale()
+		fullscreen = false
 		
-		## Update Render Scaling
-		var window_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
-		resize_game_viewport(int(window_size.x / target_rendering.x))
-		ui_view_port.size = window_size
 
+
+func set_fullscreen_scale():
+	# Update Render Scaling
+	set_render_scale(current_scale)
+		
+func set_windowed_scale():
+	
+	## Update Render Scaling
+	var window_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
+	resize_game_viewport(int(window_size.x / target_rendering.x))
+	ui_view_port.size = window_size
 
 func set_render_scale(scale_factor: int):
 	

@@ -20,12 +20,12 @@ func _input(_event: InputEvent) -> void:
 
 	# Load Tutorial
 	if Input.is_key_pressed(KEY_8):
-		_loader.load_level("res://Scenes/Levels/tutorial.tscn")
+		_loader.load_level("res://Scenes/Levels/TutorialLevel/tutorial.tscn")
 		
 	# Load Debug Environment
 	if Input.is_key_pressed(KEY_9):
-		_loader.load_level("res://Scenes/Levels/cave_level.tscn")
+		_loader.load_level("res://Scenes/Levels/CaveLevel/cave_level.tscn")
 		
 	# Load Debug Environment
 	if Input.is_key_pressed(KEY_0):
-		_loader.load_level("res://Scenes/Levels/debug.tscn")
+		_loader.load_level("res://Scenes/Levels/DebugLevel/debug.tscn")

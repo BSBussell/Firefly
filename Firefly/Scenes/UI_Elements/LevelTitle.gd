@@ -1,4 +1,4 @@
-extends Control
+extends UiComponent
 
 @onready var animation_player = $AnimationPlayer
 @onready var label = $Label
@@ -6,12 +6,14 @@ extends Control
 
 var title_text: String = "oop"
 
-func set_title(title: String):
+#func set_title(title: String):
 	
-	title_text = title
+	#title_text = title
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	title_text = context.Text
 	label.text = title_text
 	update_font_size()
 	await get_tree().create_timer(1.0).timeout

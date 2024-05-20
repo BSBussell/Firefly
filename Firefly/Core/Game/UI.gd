@@ -5,7 +5,7 @@ class_name UiLoader
 const PAUSE_MENU: PackedScene = preload("res://Core/Game/pause.tscn")
 const COLLECTIBLE_COUNTER: PackedScene = preload("res://Scenes/UI_Elements/collectible_counter.tscn")
 const RESULTS: PackedScene = preload("res://Scenes/UI_Elements/results.tscn")
-const LEVEL_TITLE = preload("res://Scenes/UI_Elements/LevelTitle.tscn")
+const LEVEL_TITLE: PackedScene = preload("res://Scenes/UI_Elements/LevelTitle.tscn")
 
 # Corresponding instance variables
 var pause_instance: PauseMenu
@@ -33,54 +33,62 @@ func reset_ui():
 	pause_instance = null
 	counter_instance = null
 	results_instance = null
+	
+	# Empty the ui_components
+	ui_components = {}
 
 
 
-var has_displayed_title: bool = false
-func load_ui(context: Level):
+var ui_components: Dictionary = {}
+
+func load_ui(context: Level) -> void:
 	
 	# Remove all existing ui
 	reset_ui()
 	
-	
-	# If we haven't already said the levels name
-	if not has_displayed_title or context.id != 0:
+	# Loop through the packed ui components
+	for componentsScenes: PackedScene in context.ui_components:
+
+		# Load the scene
+		var instance: Node = componentsScenes.instantiate()
+
+		# Cast it to a UiComponent
+		var ui_element: UiComponent = instance as UiComponent
+
+		if ui_element:
+			# Add it to the ui_components array with the class name as the key
+			ui_components[get_script_class_name(ui_element)] = ui_element
+			# Connect it to the level
+			ui_element.connect_level(context)
+			
+			ui_element.define_dependencies()
+
+
+
+	# Fuck bro, do i really wanna get the map out for this tn?
+	# Isn't that pre-mature optimizations :3
+	# Loop through the ui components
+	for ui_component: UiComponent in ui_components.values():
+		# Loop through the dependencies
+		for dependency_name: String in ui_component.dependencies.keys():
+			# Look up the dependency in the map
+			if ui_components.has(dependency_name):
+				ui_component.connect_dependency(ui_components[dependency_name])
+			else:
+				push_warning("Depdency: ", dependency_name, " could not be found!")
 		
-		# Put in the levels name
-		var level_title = LEVEL_TITLE.instantiate()
-		level_title.set_title(context.Text)
-		_viewports.ui_viewport.add_child(level_title)
-		has_displayed_title = true
-	
-	
-	if context.Can_Pause:
-		print("Setting Up Pause Instance")
-		pause_instance = PAUSE_MENU.instantiate()
-		_viewports.ui_viewport.add_child(pause_instance)
-		pause_instance.visible = false
-	
-	# If there are jars to collect
-	if context.jar_manager:
+		# Finally add it to the ui_viewport
+		_viewports.ui_viewport.add_child(ui_component)
 		
-		
-	
-		# Setup Victory Screen
-		results_instance = RESULTS.instantiate()
-		_viewports.ui_viewport.add_child(results_instance)
-		
-		var victory_function: Callable = Callable(results_instance, "show_Victory_Screen")
-		context.connect_to_win(victory_function)
-		
-		# Setup the colelctible counter
-		print("Setting up Counter")
-		counter_instance = COLLECTIBLE_COUNTER.instantiate()
-		_viewports.ui_viewport.add_child(counter_instance)
-		
-		# If the pause instance exists too
-		if context.Can_Pause:
-			pause_instance.connect_counter(counter_instance)
-			pause_instance.connect_results(results_instance)
-		
-		# Connect it to the victory screen
-		counter_instance.setup(results_instance)
-		
+
+# Method to get the custom class name
+func get_script_class_name(obj: Node) -> String:
+	var script_class_name = obj.get_class()
+	var script: Script = obj.get_script()
+	if script != null:
+		var script_resource_path = script.resource_path
+		for x in ProjectSettings.get_global_class_list():
+			if str(x["path"]) == script_resource_path:
+				script_class_name = str(x["class"])
+				break
+	return script_class_name

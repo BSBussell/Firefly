@@ -1,11 +1,11 @@
 [gd_scene load_steps=21 format=3 uid="uid://mhckwfmi6yo1"]
 
-[ext_resource type="Script" path="res://Scenes/Collectibles/gem.gd" id="1_c61ke"]
+[ext_resource type="Script" path="res://Scripts/Gems/gem.gd" id="1_eksiw"]
 [ext_resource type="Texture2D" uid="uid://kfaixciq44ug" path="res://Assets/Graphics/Collectible/gem.png" id="2_wh124"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="3_a4fmp"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_ib1j4"]
-[ext_resource type="Script" path="res://Scripts/Player/PlayerSpotlight.gd" id="4_dq5jo"]
 [ext_resource type="AudioStream" uid="uid://binoki6dtc4uu" path="res://Assets/SFX/Player/respawn.mp3" id="5_5e2oq"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/PlayerSpotlight.gd" id="5_veaes"]
 [ext_resource type="AudioStream" uid="uid://b7erxcmdiohly" path="res://Assets/SFX/Mechanics/collectible.mp3" id="7_uiscv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_luq4i"]
@@ -139,9 +139,7 @@ _data = {
 }
 
 [node name="Gem" type="Node2D"]
-visible = false
-scale = Vector2(0.2, 0.2)
-script = ExtResource("1_c61ke")
+script = ExtResource("1_eksiw")
 
 [node name="RespawnTimer" type="Timer" parent="."]
 wait_time = 15.0
@@ -165,6 +163,7 @@ shape = SubResource("RectangleShape2D_8u1i6")
 [node name="CPUParticles2D" type="CPUParticles2D" parent="Particles"]
 z_index = -1
 position = Vector2(0, -7)
+emitting = false
 amount = 10
 lifetime = 0.4
 one_shot = true
@@ -198,7 +197,7 @@ shadow_filter = 2
 shadow_filter_smooth = 10.0
 shadow_item_cull_mask = 2
 texture = ExtResource("3_ib1j4")
-script = ExtResource("4_dq5jo")
+script = ExtResource("5_veaes")
 curve_in = SubResource("Curve_r77qj")
 curve_out = SubResource("Curve_of1vn")
 
