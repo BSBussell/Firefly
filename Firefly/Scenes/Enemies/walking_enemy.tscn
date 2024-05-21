@@ -53,13 +53,13 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s5ues"]
 radius = 3.5
-height = 12.0
+height = 13.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lpitg"]
-size = Vector2(9, 1)
+size = Vector2(8.5, 2)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_glqx8"]
-size = Vector2(9, 1)
+size = Vector2(8, 1)
 
 [node name="WalkingEnemy" type="CharacterBody2D"]
 collision_layer = 16
@@ -86,7 +86,7 @@ collision_mask = 2
 collide_with_areas = true
 
 [node name="BelowRayCast" type="RayCast2D" parent="."]
-position = Vector2(6, -3)
+position = Vector2(12, -3)
 target_position = Vector2(0, 9)
 collision_mask = 2
 collide_with_areas = true
@@ -103,11 +103,11 @@ boing_ = NodePath("../Pop")
 sprite_2d = NodePath("../SquishNode/AnimatedSprite2D")
 MAX_SPRING_HEIGHT = 2.1
 SPRING_RISE_TIME = 0.31
-MAX_JUMP_BOOST_HEIGHT = 2.5
-JUMP_BOOST_RISE_TIME = 0.28
+MAX_JUMP_BOOST_HEIGHT = 3.0
+JUMP_BOOST_RISE_TIME = 0.35
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bouncy"]
-position = Vector2(0, -10)
+position = Vector2(0, -9.5)
 shape = SubResource("RectangleShape2D_lpitg")
 
 [node name="Standing_Zone" type="StaticBody2D" parent="."]
@@ -133,4 +133,9 @@ max_distance = 320.0
 attenuation = 3.86375
 bus = &"SFX"
 
+[node name="BounceCoolDown" type="Timer" parent="."]
+wait_time = 5.0
+
 [connection signal="body_entered" from="Bouncy" to="Bouncy" method="_on_body_entered"]
+[connection signal="bounce" from="Bouncy" to="." method="_on_bouncy_bounce"]
+[connection signal="timeout" from="BounceCoolDown" to="." method="_on_bounce_cool_down_timeout"]

@@ -73,6 +73,7 @@ func _on_body_entered(body: Flyph) -> void:
 	# Launch the player
 	print("Runing Spring_Jump_Routine")
 	spring_jump()
+	emit_signal("bounce")
 	
 	# Play Spring Up Fx
 	spring_up_fx()
