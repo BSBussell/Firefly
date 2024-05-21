@@ -125,10 +125,11 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3es8a"]
 size = Vector2(10, 8)
 
-[node name="Spring" type="Area2D" node_paths=PackedStringArray("boing_")]
+[node name="Spring" type="Area2D" node_paths=PackedStringArray("boing_", "sprite_2d")]
 collision_layer = 96
 script = ExtResource("1_bfd0d")
 boing_ = NodePath("Boing!")
+sprite_2d = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -1

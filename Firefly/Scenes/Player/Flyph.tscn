@@ -6,8 +6,8 @@
 [ext_resource type="Resource" uid="uid://dsjjsd36v17p1" path="res://Scenes/Player/Movement_Presets/Stage2Movement.tres" id="4_66rk6"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="5_63g2f"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/SquishCenter.gd" id="5_xcpgn"]
-[ext_resource type="Curve" uid="uid://dyvlanr1e1e5r" path="res://Scenes/Player/bounce_curve.tres" id="6_3hdso"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="6_bo4q8"]
+[ext_resource type="Curve" uid="uid://150nk1os3gx8" path="res://Scenes/Player/bounce_curve_exagerated.tres" id="6_y2p2e"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/Modulation.gd" id="8_dying"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="8_shld8"]
 [ext_resource type="PackedScene" uid="uid://ba3c7whb0dsjn" path="res://Scenes/Player/particles/slideDust.tscn" id="9_c4aqh"]
@@ -657,7 +657,7 @@ debug_color = Color(0, 0.764706, 0, 0.372549)
 
 [node name="SquishCenter" type="Node2D" parent="Visuals"]
 script = ExtResource("5_xcpgn")
-bounce_curve = ExtResource("6_3hdso")
+bounce_curve = ExtResource("6_y2p2e")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)

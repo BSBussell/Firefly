@@ -2,19 +2,22 @@ extends CharacterBody2D
 class_name goober
 
 
+
 @export var speed = 60.0
 
-
 @onready var standing_zone = $Standing_Zone
+@onready var animated_sprite_2d = $SquishNode/AnimatedSprite2D
+
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var facing_right = true
 
+func _ready():
+	pass
+
 func process(delta):
-	
-	if scale != Vector2(1.0, 1.0):
-		scale = scale.move_toward(Vector2(1.0,1.0), delta)
+	pass
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -30,8 +33,6 @@ func _physics_process(delta):
 	
 	velocity.x = speed
 	
-	# Have the standing zones applied velocity be the current vel
-	standing_zone.constant_linear_velocity = velocity
 	move_and_slide()
 	
 func flip():
@@ -44,4 +45,3 @@ func flip():
 	else:
 		speed = abs(speed) * -1
 		
-	#scale = Vector2(1.1,0.9)

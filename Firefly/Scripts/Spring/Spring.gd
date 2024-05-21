@@ -2,9 +2,9 @@ extends Area2D
 class_name Spring
 
 @export var boing_: AudioStreamPlayer2D
-@onready var sprite_2d = $Sprite2D
+@export var sprite_2d: AnimatedSprite2D
 
-
+signal bounce()
 
 @export_category("Spring Properties")
 ## The time the player is locked to a direction after a spring launch
@@ -56,14 +56,8 @@ func _ready() -> void:
 ## Overwritten by subclasses
 func _on_body_entered(body: Flyph) -> void:
 	
-	active_spring(body)
-	
-
-## Called to do spring things
-func active_spring(body: Flyph):
-	
 	# If this spring is currently being pressed do nothing
-	if primed: return
+	if primed or body.dying: return
 	
 	print("Entered")
 	
@@ -86,6 +80,11 @@ func active_spring(body: Flyph):
 	# Re-enable the spring after a short delay to prevent potential re-triggering
 	await get_tree().create_timer(0.2).timeout
 	primed = false
+	reset()
+	
+
+func reset():
+	pass
 	
 # Effects on spring down
 func spring_down_fx() -> void:

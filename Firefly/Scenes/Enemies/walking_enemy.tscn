@@ -1,9 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://bn0ibiwauibvx"]
+[gd_scene load_steps=16 format=3 uid="uid://bn0ibiwauibvx"]
 
 [ext_resource type="Texture2D" uid="uid://c208mmxa0olv3" path="res://Scenes/Enemies/red-slime-spritesheet.png" id="1_pxwv7"]
 [ext_resource type="Script" path="res://Scenes/Enemies/walking_enemy.gd" id="1_w3xqf"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/SquishCenter.gd" id="2_vy3sh"]
 [ext_resource type="Script" path="res://Scenes/Enemies/Bouncy.gd" id="3_3na1u"]
 [ext_resource type="AudioStream" uid="uid://r4h4rsiyb1fd" path="res://Assets/SFX/slime/wet_squish_1.mp3" id="3_mxono"]
+[ext_resource type="Curve" uid="uid://150nk1os3gx8" path="res://Scenes/Player/bounce_curve_exagerated.tres" id="3_sdrd7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ba48j"]
 atlas = ExtResource("1_pxwv7")
@@ -48,21 +50,27 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3dwa4"]
-size = Vector2(10, 7)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s5ues"]
+radius = 3.5
+height = 12.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lpitg"]
-size = Vector2(10, 1)
+size = Vector2(9, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_glqx8"]
-size = Vector2(10, 1)
+size = Vector2(9, 1)
 
 [node name="WalkingEnemy" type="CharacterBody2D"]
 collision_layer = 16
 collision_mask = 2
 script = ExtResource("1_w3xqf")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="SquishNode" type="Node2D" parent="."]
+script = ExtResource("2_vy3sh")
+base_rebound_speed = 2.0
+bounce_curve = ExtResource("3_sdrd7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SquishNode"]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_vrbk6")
 animation = &"Walking"
@@ -82,17 +90,20 @@ target_position = Vector2(0, 9)
 collision_mask = 2
 collide_with_areas = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
-shape = SubResource("RectangleShape2D_3dwa4")
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_s5ues")
 
-[node name="Bouncy" type="Area2D" parent="." node_paths=PackedStringArray("boing_")]
+[node name="Bouncy" type="Area2D" parent="." node_paths=PackedStringArray("boing_", "sprite_2d")]
+collision_layer = 2
 script = ExtResource("3_3na1u")
 boing_ = NodePath("../AudioStreamPlayer2D")
-MAX_SPRING_HEIGHT = 1.5
-SPRING_RISE_TIME = 0.15
-MAX_JUMP_BOOST_HEIGHT = 3.0
-JUMP_BOOST_RISE_TIME = 0.3
+sprite_2d = NodePath("../SquishNode/AnimatedSprite2D")
+MAX_SPRING_HEIGHT = 2.1
+SPRING_RISE_TIME = 0.315
+MAX_JUMP_BOOST_HEIGHT = 2.5
+JUMP_BOOST_RISE_TIME = 0.28
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bouncy"]
 position = Vector2(0, -10)
@@ -100,7 +111,6 @@ shape = SubResource("RectangleShape2D_lpitg")
 
 [node name="Standing_Zone" type="StaticBody2D" parent="."]
 collision_layer = 2
-collision_mask = 9
 constant_linear_velocity = Vector2(60, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Standing_Zone"]
