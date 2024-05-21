@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bn0ibiwauibvx"]
+[gd_scene load_steps=17 format=3 uid="uid://bn0ibiwauibvx"]
 
 [ext_resource type="Texture2D" uid="uid://c208mmxa0olv3" path="res://Scenes/Enemies/red-slime-spritesheet.png" id="1_pxwv7"]
 [ext_resource type="Script" path="res://Scenes/Enemies/walking_enemy.gd" id="1_w3xqf"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Scenes/Enemies/Bouncy.gd" id="3_3na1u"]
 [ext_resource type="AudioStream" uid="uid://r4h4rsiyb1fd" path="res://Assets/SFX/slime/wet_squish_1.mp3" id="3_mxono"]
 [ext_resource type="Curve" uid="uid://150nk1os3gx8" path="res://Scenes/Player/bounce_curve_exagerated.tres" id="3_sdrd7"]
+[ext_resource type="AudioStream" uid="uid://cuojwghlwv8wb" path="res://Assets/SFX/slime/slime_pop.mp3" id="6_auxxk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ba48j"]
 atlas = ExtResource("1_pxwv7")
@@ -98,10 +99,10 @@ shape = SubResource("CapsuleShape2D_s5ues")
 [node name="Bouncy" type="Area2D" parent="." node_paths=PackedStringArray("boing_", "sprite_2d")]
 collision_layer = 2
 script = ExtResource("3_3na1u")
-boing_ = NodePath("../AudioStreamPlayer2D")
+boing_ = NodePath("../Pop")
 sprite_2d = NodePath("../SquishNode/AnimatedSprite2D")
 MAX_SPRING_HEIGHT = 2.1
-SPRING_RISE_TIME = 0.315
+SPRING_RISE_TIME = 0.31
 MAX_JUMP_BOOST_HEIGHT = 2.5
 JUMP_BOOST_RISE_TIME = 0.28
 
@@ -110,7 +111,7 @@ position = Vector2(0, -10)
 shape = SubResource("RectangleShape2D_lpitg")
 
 [node name="Standing_Zone" type="StaticBody2D" parent="."]
-collision_layer = 2
+collision_layer = 32
 constant_linear_velocity = Vector2(60, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Standing_Zone"]
@@ -118,7 +119,12 @@ position = Vector2(0, -9)
 shape = SubResource("RectangleShape2D_glqx8")
 one_way_collision = true
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="Pop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_auxxk")
+volume_db = -1.0
+bus = &"SFX"
+
+[node name="Walking" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_mxono")
 volume_db = -7.0
 pitch_scale = 0.7
