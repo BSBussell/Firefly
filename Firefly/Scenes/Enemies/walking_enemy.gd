@@ -2,8 +2,8 @@ extends CharacterBody2D
 class_name goober
 
 
-@export var accel = 500
-@export var deccel = 300
+@export var accel = 750
+@export var deccel = 550
 @export var speed = 60.0
 
 @onready var standing_zone = $Standing_Zone
