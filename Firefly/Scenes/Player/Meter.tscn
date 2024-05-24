@@ -11,9 +11,35 @@
 offsets = PackedFloat32Array(0, 0.104167, 0.885417, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.552941, 0, 0)
 
-[node name="Meter" type="TextureProgressBar"]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+script = ExtResource("4_qwq71")
+increase_speed = 400.0
+decrease_speed = 900.0
+
+[node name="Meter" type="TextureProgressBar" parent="."]
+z_index = 100
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_top = -40.0
+offset_right = -200.0
+offset_bottom = -200.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(6, 6)
 value = 100.0
 allow_greater = true
 allow_lesser = true
@@ -22,13 +48,14 @@ texture_under = ExtResource("1_s86km")
 texture_over = ExtResource("2_eg2ve")
 texture_progress = ExtResource("3_rr7kc")
 tint_progress = Color(1.8, 1.8, 1, 1)
-script = ExtResource("4_qwq71")
+metadata/_edit_use_anchors_ = true
 
-[node name="Particle" type="CPUParticles2D" parent="."]
+[node name="Particle" type="CPUParticles2D" parent="Meter"]
 modulate = Color(1.8, 1.8, 1, 1)
 position = Vector2(16, 30)
 amount = 16
 lifetime = 1.1
+local_coords = true
 emission_shape = 3
 emission_rect_extents = Vector2(8, 1)
 gravity = Vector2(0, -50)
@@ -44,12 +71,12 @@ scale_amount_max = 2.0
 color = Color(0.960784, 0.898039, 0, 1)
 color_ramp = SubResource("Gradient_8qie6")
 
-[node name="FireLit" type="AudioStreamPlayer" parent="."]
+[node name="FireLit" type="AudioStreamPlayer" parent="Meter"]
 stream = ExtResource("5_xvpry")
 volume_db = -10.0
 bus = &"SFX"
 
-[node name="FireRumble" type="AudioStreamPlayer" parent="."]
+[node name="FireRumble" type="AudioStreamPlayer" parent="Meter"]
 stream = ExtResource("6_4gy3n")
 volume_db = -7.0
 pitch_scale = 0.8

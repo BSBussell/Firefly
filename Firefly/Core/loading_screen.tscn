@@ -8,7 +8,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uth8b"]
 shader = ExtResource("1_38x6w")
 shader_parameter/progress = 1.0
-shader_parameter/diamondPixelSize = 500.0
+shader_parameter/diamondPixelSize = 128.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e2l5o"]
 

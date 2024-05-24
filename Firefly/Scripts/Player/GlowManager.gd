@@ -8,12 +8,13 @@ extends Node
 @export var MOMENTUM_TIMER: Timer
 
 @onready var PLAYER: Flyph = $".."
-@onready var meter = $"../UI_FX/Control/Meter"
-@onready var stars = $"../UI_FX/Star"
+
+
 @onready var glow_aura = $"../Particles/GlowAura"
 @onready var promotion_fx = $"../Particles/PromotionFx"
 
-
+signal glow_meter_changed(new_value: float)
+signal glow_promote()
 
 # Players Movement Score
 var movement_level: int = 0
@@ -33,6 +34,11 @@ var decaying = false
 var exponential_decay: float = 0.0
 
 var surplus_multiplier: float = 2.0
+
+
+var meter = null
+
+
 
 
 # Can be called whenever we want to restart the movement system
@@ -113,7 +119,7 @@ func _process(delta):
 				
 	
 	# Update our meter
-	meter.set_score(glow_points)
+	emit_signal("glow_meter_changed", glow_points)
 
 
 # Returns the current speed normalized to "expected" max speeds.
@@ -170,8 +176,11 @@ func reset_glow():
 # How we should be accessing change_state() 99% of the time unless in debug
 # Returns whether or not we promoted
 func promote(starting_points: int = 20) -> bool:
+
+	emit_signal("glow_promote")
+
 	if movement_level < max_level:
-		stars.emitting = true
+		
 		
 		change_state(movement_level + 1)
 		

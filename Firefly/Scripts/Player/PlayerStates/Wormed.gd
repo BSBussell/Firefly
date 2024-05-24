@@ -81,6 +81,7 @@ func enter() -> void:
 	parent.current_animation = parent.ANI_STATES.WALL_SLIDE
 	parent.restart_animation = true
 		
+	print("We have finished Enter")
 
 
 	
@@ -112,6 +113,7 @@ func exit() -> void:
 # Processing input in this state, returns nil or new state
 func process_input(event: InputEvent) -> PlayerState:
 
+	print("Processing Input")
 
 	# If its just a keyboard
 	if event is InputEventKey:
@@ -137,12 +139,14 @@ func process_input(event: InputEvent) -> PlayerState:
 			if parent.stuck_segment.prev:
 				parent.stuck_segment = parent.stuck_segment.prev
 
+
+
 	return null
 
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 
-
+	print("Process Physics")
 
 	# Swing
 	swinging(delta, parent.horizontal_axis)
@@ -151,6 +155,7 @@ func process_physics(delta: float) -> PlayerState:
 	
 	velocity_decay(delta)
 	
+	print("Finished Sway, Weight, Decay")
 
 	# Water State Change Handled by the Water Detection
 	if handle_jump(delta):
@@ -163,7 +168,7 @@ func process_physics(delta: float) -> PlayerState:
 
 func process_frame(_delta):
 
-	
+	print("Process Frame")
 
 	# Direction Facing, don't update if we're walljumping up
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
@@ -195,7 +200,7 @@ func process_frame(_delta):
 	else:
 		parent.current_animation = parent.ANI_STATES.WALL_HUG
 
-	pass
+	print("Finished Processing Frame")
 
 ## Called when an animation ends. How we handle transitioning to different animations
 func animation_end() -> PlayerState:

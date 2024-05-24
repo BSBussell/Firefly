@@ -752,6 +752,14 @@ func generic_spawn_particles(particles: PackedScene, spawner: Marker2D):
 #######################################
 #######################################
 
+func connect_meter(update_score: Callable):
+	
+	glow_manager.connect("glow_meter_changed", update_score)
+
+func connect_upgrade(promotion_ui_fx: Callable):
+
+	glow_manager.connect("glow_promote", promotion_ui_fx)
+
 ## Enables the glow mechanic
 func enable_glow():
 

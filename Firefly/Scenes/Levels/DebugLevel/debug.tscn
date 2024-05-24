@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=40 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="1_nnlyf"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="1_x8o00"]
@@ -8,8 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/collectible_counter.tscn" id="3_7p2gx"]
 [ext_resource type="Texture2D" uid="uid://pux5vi5jthqm" path="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png" id="4_k5dd6"]
 [ext_resource type="PackedScene" uid="uid://bkeka0x5vwxx7" path="res://Scenes/UI_Elements/results.tscn" id="4_olpyo"]
+[ext_resource type="PackedScene" uid="uid://d0s632u2p275n" path="res://Core/CustomUIElements/upgrade_star.tscn" id="5_625ch"]
 [ext_resource type="Texture2D" uid="uid://b1yvkgf4mxi26" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_1.png" id="5_m4lqk"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="6_l80cy"]
+[ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="6_nlli1"]
 [ext_resource type="Texture2D" uid="uid://b1fmfctkk6alf" path="res://Assets/Graphics/Particles/leaf.png" id="7_xa1ik"]
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="8_pg4rs"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="9_l5d0m"]
@@ -191,7 +193,7 @@ script = SubResource("GDScript_0jk77")
 Text = "- FireFly Meadow -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarManager")
-ui_components = Array[PackedScene]([ExtResource("1_x8o00"), ExtResource("2_m02wd"), ExtResource("3_7p2gx"), ExtResource("4_olpyo")])
+ui_components = Array[PackedScene]([ExtResource("1_x8o00"), ExtResource("2_m02wd"), ExtResource("3_7p2gx"), ExtResource("4_olpyo"), ExtResource("5_625ch"), ExtResource("6_nlli1")])
 id = 2
 
 [node name="PP + FX" type="Node" parent="."]
