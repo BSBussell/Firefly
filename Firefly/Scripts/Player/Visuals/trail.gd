@@ -24,6 +24,8 @@ var fps_adjusted_length: int = 10
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
+	
+	
 	fps_adjusted_length = max(length * (Engine.get_frames_per_second() / 60), 0)
 	
 	global_position = Vector2(0, 0)
@@ -49,6 +51,8 @@ func _process(delta):
 
 		if t >= 1.0:
 			interpolating = false  # Stop interpolating
+	
+	
 
 func set_glow(new_color: Color, duration: float = 1.0) -> void:
 	goal_color = new_color

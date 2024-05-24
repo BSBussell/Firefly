@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0s632u2p275n"]
+
+[ext_resource type="Script" path="res://Core/CustomUIElements/upgrade_star.gd" id="1_1g5pq"]
+[ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="1_3f2yx"]
+
+[sub_resource type="Curve" id="Curve_fjbh2"]
+_data = [Vector2(0, 0.9), 0.0, -0.148742, 0, 0, Vector2(1, 0), -6.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_k6x1h"]
+offsets = PackedFloat32Array(0, 0.930769, 1)
+colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0.34902, 1, 1, 1, 1, 0)
+
+[node name="Star_Control" type="Control"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_1g5pq")
+
+[node name="Star" type="CPUParticles2D" parent="."]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+emitting = false
+amount = 32
+lifetime = 1.1
+one_shot = true
+explosiveness = 0.78
+local_coords = true
+texture = ExtResource("1_3f2yx")
+emission_shape = 3
+emission_rect_extents = Vector2(1920, 10)
+gravity = Vector2(0, -1960)
+orbit_velocity_min = -0.01
+orbit_velocity_max = 0.01
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 2.0
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_fjbh2")
+color = Color(1, 1, 0.337255, 1)
+color_ramp = SubResource("Gradient_k6x1h")

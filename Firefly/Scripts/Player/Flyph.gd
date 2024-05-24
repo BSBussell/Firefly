@@ -391,6 +391,7 @@ func lock_h_dir(dir: float, time: float, soft: bool = false):
 
 func _physics_process(delta: float) -> void:
 
+	print("Flyph Physics Process")
 	set_input_axis(delta)
 	update_buffer_timer(delta)
 
@@ -412,11 +413,14 @@ func _physics_process(delta: float) -> void:
 		# Apply Velocities
 		move_and_slide()
 
-		
+	print("Flyph Physics Process End")
+
 
 		
 
 func _process(delta: float) -> void:
+
+	print("Flyph _process()")
 
 	# If restarting the animation
 	if restart_animation:
@@ -433,6 +437,8 @@ func _process(delta: float) -> void:
 	# Let each component do their visual stuff
 	if not dying:
 		StateMachine.process_frame(delta)
+
+	print("Flyph _process() end")
 
 
 
@@ -491,8 +497,12 @@ func update_animations():
 # When an animation ends
 func _on_animated_sprite_2d_animation_finished():
 
+	print("Flyph Animation Event")
+
 	# Pass to the state machine
 	StateMachine.animation_end()
+
+	print("Flyph Animation Event End")
 
 ## Alternate Collider
 # This method was the best way I could get the collider size to change
@@ -522,6 +532,8 @@ func movement_assist(delta):
 	# Auto Enter Tunnel
 	if is_on_wall() and not underWater: auto_enter_tunnel()
 
+	print("Exit assists function")
+
 
 
 const JUMP_CORRECTION_FACTOR = 0.9
@@ -529,6 +541,9 @@ const JUMP_CORRECTION_FACTOR = 0.9
 # Corrects the player's jump when near a ceiling to smooth out collisions.
 # The strength of the correction is proportional to the rising velocity.
 func jump_corner_correction(delta):
+
+	
+
 	var strength = abs(velocity.y) * JUMP_CORRECTION_FACTOR
 
 	# Check for collisions on the top left and top right
@@ -544,6 +559,7 @@ func jump_corner_correction(delta):
 
 	# Apply the correction if there's no collision in the direction we're moving
 	if correction_direction != 0 and not test_move(global_transform, Vector2(strength * delta * correction_direction, 0)):
+		print("Attempting Vertical Corner Correction")
 		position.x += strength * delta * correction_direction
 		squish_node.squish(jump_squash)
 
@@ -612,6 +628,9 @@ func horizontal_corner_correction(delta):
 
 			# Check if the motion would cause a collision
 			if not test_move(global_transform, motion):
+
+				print("Attempting Horizontal Corner Correction")
+
 				# If no collision, update the position
 				position.y = test_y
 				squish_node.squish( Vector2(1.2, 0.8))
@@ -658,6 +677,9 @@ func horizontal_corner_correction(delta):
 
 			# Check if the motion would cause a collision
 			if not test_move(global_transform, motion):
+
+				print("Attempting Horizontal Corner Correction")
+
 				# If no collision, update the position
 				position.y = test_y
 				squish_node.squish( Vector2(1.2, 0.8))
@@ -666,6 +688,8 @@ func horizontal_corner_correction(delta):
 
 # Auto enter hole
 func auto_enter_tunnel():
+
+	
 
 	var left_open: bool = not crouch_left.is_colliding() and not bottom_left.is_colliding()
 	var right_open: bool = not crouch_right.is_colliding() and not bottom_right.is_colliding()
@@ -681,6 +705,8 @@ func auto_enter_tunnel():
 	
 
 func enter_tunnel():
+
+		print("Shoving Player into Tunnel")
 		
 		set_crouch_collider()
 		
@@ -751,6 +777,14 @@ func generic_spawn_particles(particles: PackedScene, spawner: Marker2D):
 ##  Glow State Functions
 #######################################
 #######################################
+
+func connect_meter(update_score: Callable):
+	
+	glow_manager.connect("glow_meter_changed", update_score)
+
+func connect_upgrade(promotion_ui_fx: Callable):
+
+	glow_manager.connect("glow_promote", promotion_ui_fx)
 
 ## Enables the glow mechanic
 func enable_glow():
@@ -1036,6 +1070,9 @@ func hide_speedometer():
 	debug.visible = false
 
 
+## Event Based State Changes
+
+## Water Detection
 func _on_water_detector_body_entered(body):
 	
 	# Prevent double entries.... its weird, this shouldn't
@@ -1060,17 +1097,22 @@ func _on_water_detector_body_exited(body):
 	disable_walljump = false
 
 
+## Rope Detection
 var stuck_segment: SpitSegment = null
 func enter_rope(segment: SpitSegment):
 	
+	print("Grabbing Rope")
 	stuck_segment = segment
 	segment.player_grabbed()
 	StateMachine.change_state(WORMED_STATE)
+	print("Grabbed Rope")
 
 
 
+# When the player enters a rope
 func _on_rope_detector_body_entered(body):
-	#pass
+	
+	print("Rope Detected")
 	var segment = body as SpitSegment
 	if segment and not stuck_segment and not dying:
 		enter_rope(segment)

@@ -54,8 +54,12 @@ func _ready() -> void:
 
 
 ## Overwritten by subclasses
-func _on_body_entered(body: Flyph) -> void:
+func _on_body_entered(body: PhysicsBody2D) -> void:
 	
+	# If body is not a player do nothing
+	flyph = body as Flyph
+	if not flyph: return
+
 	# If this spring is currently being pressed do nothing
 	if primed or body.dying: return
 	
@@ -63,9 +67,6 @@ func _on_body_entered(body: Flyph) -> void:
 	
 	# Prime the spring
 	primed = true
-	
-	# Set Flyph Up
-	flyph = body
 	
 	# Play the effects that queue on spring down
 	spring_down_fx()

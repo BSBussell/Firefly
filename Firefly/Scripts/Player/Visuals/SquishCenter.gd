@@ -16,6 +16,9 @@ var initial_difference: Vector2 = Vector2()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	print("Squish  - Process")
+	
 	if interpolating:
 		interpolation_time += delta
 		var t = min(interpolation_time / rebound_speed, 1.0)  # Clamp to [0, 1]
@@ -26,7 +29,7 @@ func _process(delta):
 		
 		if t >= 1.0:
 			interpolating = false  # Stop interpolating
-		
+	print("Squish  - Process Exit")
 
 # Set the scale for squash/stretch and start interpolating back to original scale
 func squish(new_scale: Vector2, new_speed: float = base_rebound_speed) -> void:

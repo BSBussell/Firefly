@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://cbgoqx8kcalop"]
+[gd_scene load_steps=59 format=3 uid="uid://cbgoqx8kcalop"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/Tutorial.gd" id="1_pdcac"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="2_3oj2l"]
@@ -9,7 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/collectible_counter.tscn" id="4_uy0kn"]
 [ext_resource type="Texture2D" uid="uid://pux5vi5jthqm" path="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png" id="5_rbtjl"]
 [ext_resource type="PackedScene" uid="uid://bkeka0x5vwxx7" path="res://Scenes/UI_Elements/results.tscn" id="5_xontx"]
+[ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="6_8gtqn"]
 [ext_resource type="Texture2D" uid="uid://b1yvkgf4mxi26" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_1.png" id="6_oraqx"]
+[ext_resource type="PackedScene" uid="uid://d0s632u2p275n" path="res://Core/CustomUIElements/upgrade_star.tscn" id="7_0unlf"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="7_yf0gu"]
 [ext_resource type="Texture2D" uid="uid://b1fmfctkk6alf" path="res://Assets/Graphics/Particles/leaf.png" id="8_ff3cn"]
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="9_n6462"]
@@ -201,7 +203,7 @@ Text = "- FireFly -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
-ui_components = Array[PackedScene]([ExtResource("2_us1rr"), ExtResource("3_iiuvo"), ExtResource("4_uy0kn"), ExtResource("5_xontx")])
+ui_components = Array[PackedScene]([ExtResource("4_uy0kn"), ExtResource("2_us1rr"), ExtResource("3_iiuvo"), ExtResource("6_8gtqn"), ExtResource("5_xontx"), ExtResource("7_0unlf")])
 win_condition = 1
 
 [node name="Lighting" type="Node2D" parent="."]
@@ -1021,7 +1023,9 @@ shape = SubResource("RectangleShape2D_o61f5")
 position = Vector2(63, 159)
 
 [node name="WalkingEnemy" parent="Enemies" instance=ExtResource("29_dubhh")]
-position = Vector2(-747, -128)
+position = Vector2(-747, -142)
+scale = Vector2(1.5, 1.5)
+speed = 55.0
 
 [node name="WalkingEnemy4" parent="Enemies" instance=ExtResource("29_dubhh")]
 position = Vector2(-580, -287)

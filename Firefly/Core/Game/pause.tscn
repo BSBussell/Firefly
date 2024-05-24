@@ -15,6 +15,7 @@ _data = {
 }
 
 [node name="PauseMenu" type="ColorRect"]
+z_index = 1000
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -92,7 +93,7 @@ layout_mode = 2
 
 [node name="AudioSettingContainer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
 layout_mode = 2
-theme_override_constants/separation = 100
+theme_override_constants/separation = -250
 
 [node name="Audio" type="Button" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer"]
 layout_mode = 2

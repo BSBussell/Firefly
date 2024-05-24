@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://cvxhf2cu04nb6"]
+[gd_scene load_steps=43 format=3 uid="uid://cvxhf2cu04nb6"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/CaveLevel/cave_level.gd" id="1_bfl7c"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_s8gsc"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Core/Game/pause.tscn" id="4_moxw1"]
 [ext_resource type="AudioStream" uid="uid://cc71beoeqyxis" path="res://Assets/SFX/ambience/CaveEntrance.wav" id="4_qurpt"]
 [ext_resource type="PackedScene" uid="uid://bkeka0x5vwxx7" path="res://Scenes/UI_Elements/results.tscn" id="5_by1im"]
+[ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="6_pkwh7"]
+[ext_resource type="PackedScene" uid="uid://d0s632u2p275n" path="res://Core/CustomUIElements/upgrade_star.tscn" id="7_h4wtv"]
 [ext_resource type="Script" path="res://Scripts/Rope/RopeManager.gd" id="8_5v4l1"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="8_iqr4r"]
 [ext_resource type="PackedScene" uid="uid://bauphk2cyg5tr" path="res://Scenes/Stuff/Rope/rope.tscn" id="8_uc64o"]
@@ -235,7 +237,7 @@ script = ExtResource("1_bfl7c")
 Text = "- GlowWorm Caverns -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
-ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("4_moxw1"), ExtResource("5_by1im")])
+ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("4_moxw1"), ExtResource("5_by1im"), ExtResource("6_pkwh7"), ExtResource("7_h4wtv")])
 id = 1
 win_condition = 1
 

@@ -48,6 +48,7 @@ point_count = 2
 metadata/_snap_enabled = true
 
 [node name="CheckpointArea" type="Area2D"]
+z_index = -1
 collision_layer = 68
 script = ExtResource("1_y2n64")
 blend_priority = 0
