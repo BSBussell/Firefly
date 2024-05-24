@@ -17,11 +17,14 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	
 	update_sensor()
+	
 
 func update_sensor():
 	# Adjust the sensor's shape based on the camera's zoom
-	var zoom_adjusted_size = render_size / cam.zoom
+	
+	var zoom_adjusted_size = _globals.RENDER_SIZE / cam.zoom
 	sensor_shape.shape.extents = zoom_adjusted_size * 0.5  # Assuming a rectangular shape
 
 	# Adjust the sensor's position to follow the camera's offset

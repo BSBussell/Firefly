@@ -83,7 +83,6 @@ wait_time = 0.5
 one_shot = true
 
 [node name="Sensor" type="Node2D" parent="."]
-visible = false
 script = ExtResource("9_ku080")
 
 [node name="Area2D" type="Area2D" parent="Sensor"]

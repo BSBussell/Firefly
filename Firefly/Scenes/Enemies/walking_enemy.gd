@@ -9,6 +9,8 @@ class_name goober
 @onready var standing_zone = $Standing_Zone
 @onready var animated_sprite_2d = $SquishNode/AnimatedSprite2D
 @onready var bounce_cool_down = $BounceCoolDown
+@onready var front_ray_cast = $Raycasts/FrontRayCast
+@onready var below_ray_cast = $Raycasts/BelowRayCast
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -18,8 +20,6 @@ var facing_right = true
 func _ready():
 	pass
 
-func process(delta):
-	pass
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -27,8 +27,8 @@ func _physics_process(delta):
 		velocity.y += gravity * delta
 	
 
-	var wall_in_front: bool = $FrontRayCast.is_colliding()
-	var close_to_ledge: bool = !$BelowRayCast.is_colliding() && is_on_floor()
+	var wall_in_front: bool = front_ray_cast.is_colliding()
+	var close_to_ledge: bool = !below_ray_cast.is_colliding() && is_on_floor()
 
 	if wall_in_front or close_to_ledge:
 		flip()

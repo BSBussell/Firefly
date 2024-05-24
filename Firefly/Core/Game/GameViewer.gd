@@ -228,6 +228,7 @@ func res_interpolate(delta: float):
 		
 		# Round up to the nearest integer
 		game_res = ceil(float_res)
+		_globals.RENDER_SIZE = game_res
 
 		window_scale = lerp(window_scale, target_scale, t)
 
@@ -262,6 +263,7 @@ func zoom_render(new_scale: float) :
 	
 	# New pixel art, rendering size
 	game_res = base_aspect_ratio * new_scale
+	_globals.RENDER_SIZE = game_res
 	
 	window_scale = snappedf(float(window_size.x) / float(game_res.x), 0.01)
 	

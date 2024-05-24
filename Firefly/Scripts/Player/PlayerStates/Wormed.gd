@@ -51,7 +51,7 @@ func enter() -> void:
 	#rope_detector.set_collision_mask_value(9, false)	
 	
 	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 2.5), 1.0)
-	swing_force = lerpf(min_swing_force, max_swing_force, speed_ratio)
+	swing_force = snappedf(lerpf(min_swing_force, max_swing_force, speed_ratio), 1)
 	
 	# This is the coolest shit i've done
 	# Relative position to the ropes center
@@ -146,7 +146,7 @@ func process_input(event: InputEvent) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 
-	print("Process Physics")
+	print("Wormed Process Physics")
 
 	# Swing
 	swinging(delta, parent.horizontal_axis)
@@ -155,12 +155,17 @@ func process_physics(delta: float) -> PlayerState:
 	
 	velocity_decay(delta)
 	
-	print("Finished Sway, Weight, Decay")
+	
 
 	# Water State Change Handled by the Water Detection
 	if handle_jump(delta):
+
+		print("Finished Wormed Process Physics - Jumping")
+
 		return AERIAL_STATE
 		
+	print("Finished Wormed Process Physics")
+
 	return null
 
 
@@ -168,7 +173,7 @@ func process_physics(delta: float) -> PlayerState:
 
 func process_frame(_delta):
 
-	print("Process Frame")
+	print("Wormed Process Frame")
 
 	# Direction Facing, don't update if we're walljumping up
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
@@ -200,7 +205,7 @@ func process_frame(_delta):
 	else:
 		parent.current_animation = parent.ANI_STATES.WALL_HUG
 
-	print("Finished Processing Frame")
+	print("Finished Wormed Processing Frame")
 
 ## Called when an animation ends. How we handle transitioning to different animations
 func animation_end() -> PlayerState:
@@ -315,7 +320,6 @@ func swinging(delta, dir):
 	
 	# Relative position to the ropes center
 	var relative_position = parent.global_position - parent.stuck_segment.origin
-	
 	
 	
 	# If we've moved down since last pool, and 

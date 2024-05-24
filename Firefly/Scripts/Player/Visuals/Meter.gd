@@ -25,6 +25,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
+	print("Meter _process")
 	var multiplier = 1.0
 	if interpolated_score > actual_score:
 		multiplier = decrease_speed
@@ -45,6 +46,8 @@ func _process(delta):
 		particle.emitting = false
 		played_sound = false
 		fire_rumble.stop()
+		
+	print("Meter Process End")
 
 func set_score(score):
 	actual_score = min(score, 100)

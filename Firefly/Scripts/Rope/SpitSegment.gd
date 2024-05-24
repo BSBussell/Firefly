@@ -32,6 +32,7 @@ func connect_signal(function: Callable):
 		print("Stupid Error: ", err)
 
 func player_grabbed():
+	print("Emitting Grabbed Signal")
 	emit_signal("grabbed", self)
 
 func start_cooldown(time: float) -> void:

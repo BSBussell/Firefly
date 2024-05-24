@@ -63,7 +63,7 @@ size = Vector2(8, 1)
 
 [node name="WalkingEnemy" type="CharacterBody2D"]
 collision_layer = 16
-collision_mask = 2
+collision_mask = 18
 script = ExtResource("1_w3xqf")
 
 [node name="SquishNode" type="Node2D" parent="."]
@@ -79,16 +79,18 @@ autoplay = "Walking"
 frame_progress = 0.279129
 speed_scale = 0.9
 
-[node name="FrontRayCast" type="RayCast2D" parent="."]
-position = Vector2(0, -7)
-target_position = Vector2(10, 0)
-collision_mask = 2
+[node name="Raycasts" type="Node2D" parent="."]
+
+[node name="FrontRayCast" type="RayCast2D" parent="Raycasts"]
+position = Vector2(0, -5)
+target_position = Vector2(14, 0)
+collision_mask = 18
 collide_with_areas = true
 
-[node name="BelowRayCast" type="RayCast2D" parent="."]
+[node name="BelowRayCast" type="RayCast2D" parent="Raycasts"]
 position = Vector2(12, -3)
 target_position = Vector2(0, 9)
-collision_mask = 2
+collision_mask = 18
 collide_with_areas = true
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]

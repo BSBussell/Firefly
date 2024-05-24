@@ -1023,7 +1023,9 @@ shape = SubResource("RectangleShape2D_o61f5")
 position = Vector2(63, 159)
 
 [node name="WalkingEnemy" parent="Enemies" instance=ExtResource("29_dubhh")]
-position = Vector2(-747, -128)
+position = Vector2(-747, -142)
+scale = Vector2(1.5, 1.5)
+speed = 55.0
 
 [node name="WalkingEnemy4" parent="Enemies" instance=ExtResource("29_dubhh")]
 position = Vector2(-580, -287)

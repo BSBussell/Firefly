@@ -11,8 +11,11 @@ const WORM = preload("res://Scenes/Stuff/Rope/GlowWorm/worm.tscn")
 @export var Swingable: bool = true
 
 @export_category("GlowWorm Properties")
+## Does this rope have a glow worm?
 @export var GlowWorm: bool = false
+## How long does the worm wait after a player grabs the rope?
 @export var worm_delay: float = 0.75
+## How fast does the worm move?
 @export var worm_speed: float = 25
 
 
@@ -73,7 +76,6 @@ func create_joints() -> void:
 			new_segment.set_collision_mask_value(1, true)
 			new_segment.modulate = "#3e3b65bf"
 		
-		print(next_pos)
 		
 		new_segment.origin = global_position
 		
@@ -114,6 +116,9 @@ func setup_Worm():
 	
 	
 func activate(_segment: SpitSegment):
+	
+	print("Receiving Grabbed Signal")
+	
 	if GlowWorm:
 		if not worm_active:
 			

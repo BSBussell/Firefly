@@ -55,7 +55,11 @@ func startup():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
+	
+	
 	if not GLOW_ENABLED:
+		
+		
 		return
 	
 	# Update Scoring information based on movement speed, etc.
@@ -120,6 +124,7 @@ func _process(delta):
 	
 	# Update our meter
 	emit_signal("glow_meter_changed", glow_points)
+	
 
 
 # Returns the current speed normalized to "expected" max speeds.
