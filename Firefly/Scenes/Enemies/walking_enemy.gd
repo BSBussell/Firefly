@@ -2,19 +2,24 @@ extends CharacterBody2D
 class_name goober
 
 
+@export var accel = 750
+@export var deccel = 550
 @export var speed = 60.0
 
-
 @onready var standing_zone = $Standing_Zone
+@onready var animated_sprite_2d = $SquishNode/AnimatedSprite2D
+@onready var bounce_cool_down = $BounceCoolDown
+
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var facing_right = true
 
+func _ready():
+	pass
+
 func process(delta):
-	
-	if scale != Vector2(1.0, 1.0):
-		scale = scale.move_toward(Vector2(1.0,1.0), delta)
+	pass
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -28,11 +33,17 @@ func _physics_process(delta):
 	if wall_in_front or close_to_ledge:
 		flip()
 	
-	velocity.x = speed
+	accelerate(delta)
 	
-	# Have the standing zones applied velocity be the current vel
-	standing_zone.constant_linear_velocity = velocity
 	move_and_slide()
+
+func accelerate(delta: float) -> void:
+	
+	if sign(velocity.x) != sign(speed):
+		velocity.x = move_toward(velocity.x, speed, delta * deccel)
+	else:
+		velocity.x = move_toward(velocity.x, speed, delta * accel)
+
 	
 func flip():
 	facing_right = !facing_right
@@ -44,4 +55,15 @@ func flip():
 	else:
 		speed = abs(speed) * -1
 		
-	#scale = Vector2(1.1,0.9)
+
+var stored_speed: float
+func _on_bouncy_bounce():
+	print("Starting Cool Down")
+	#stored_speed = speed
+	#speed = 0
+	velocity.x = velocity.x * -0.5
+	#bounce_cool_down.start()
+	
+	
+func _on_bounce_cool_down_timeout():
+	speed = stored_speed

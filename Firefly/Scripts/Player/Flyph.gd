@@ -242,6 +242,7 @@ var airDriftDisabled: bool = false		# If air drift is disabled by an action this
 var turningAround: bool = false			# If the player is experiencing a change in direction
 var underWater: bool = false
 
+
 # Jump Flags
 var jumping: bool = false				# If the player is rising in a jump
 var wallJumping: bool = false			# If the player is rising in a walljump

@@ -1,12 +1,14 @@
 extends Area2D
+class_name Spring
 
-@onready var sprite_2d = $Sprite2D
-@onready var boing_ = $"Boing!"
+@export var boing_: AudioStreamPlayer2D
+@export var sprite_2d: AnimatedSprite2D
 
+signal bounce()
 
 @export_category("Spring Properties")
 ## The time the player is locked to a direction after a spring launch
-@export var SPRING_DIR_LOCK_TIME: float = 0.2		
+@export var SPRING_DIR_LOCK_TIME: float = 0.2
 
 @export_subgroup("ONLY TOUCH IN PARENT SCENE")
 ## The Max height of our jump in tiles
@@ -51,12 +53,11 @@ func _ready() -> void:
 	
 
 
-
-
+## Overwritten by subclasses
 func _on_body_entered(body: Flyph) -> void:
 	
 	# If this spring is currently being pressed do nothing
-	if primed: return
+	if primed or body.dying: return
 	
 	print("Entered")
 	
@@ -72,6 +73,7 @@ func _on_body_entered(body: Flyph) -> void:
 	# Launch the player
 	print("Runing Spring_Jump_Routine")
 	spring_jump()
+	emit_signal("bounce")
 	
 	# Play Spring Up Fx
 	spring_up_fx()
@@ -79,6 +81,11 @@ func _on_body_entered(body: Flyph) -> void:
 	# Re-enable the spring after a short delay to prevent potential re-triggering
 	await get_tree().create_timer(0.2).timeout
 	primed = false
+	reset()
+	
+
+func reset():
+	pass
 	
 # Effects on spring down
 func spring_down_fx() -> void:
@@ -107,11 +114,13 @@ func spring_jump() -> void:
 	var momentum: Vector2 = Vector2.ZERO
 	
 	var leniancy_max: float = 0.5
-	var leniancy_min: float = 0.01
+	var leniancy_min: float = 0.05
 	
 	# The faster the player is moving the more leniancy we give for jump boosted spring bounces
-	var leniancy_blend: float = flyph.velocity.x/flyph.air_speed
+	var leniancy_blend: float = abs(flyph.velocity.x)/flyph.air_speed
+	print(leniancy_blend)
 	var leniancy: float = lerpf(leniancy_min, leniancy_max, leniancy_blend)
+	print(leniancy)
 	
 	# Check if player is boosting upward by pressing a on the spring
 	# This is ordered intentionally to not consume a jump if the player is already jumping
