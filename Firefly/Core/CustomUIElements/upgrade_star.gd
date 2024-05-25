@@ -12,4 +12,5 @@ func _ready():
 func upgrade():
 	var window_size = DisplayServer.window_get_size()
 	particles.emission_rect_extents.x = window_size.x/2
+	particles.lifetime = float(window_size.y)/980.0
 	particles.emitting = true
