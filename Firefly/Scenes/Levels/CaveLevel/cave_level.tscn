@@ -13,8 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="6_pkwh7"]
 [ext_resource type="PackedScene" uid="uid://d0s632u2p275n" path="res://Core/CustomUIElements/upgrade_star.tscn" id="7_h4wtv"]
 [ext_resource type="Script" path="res://Scripts/Rope/RopeManager.gd" id="8_5v4l1"]
-[ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="8_iqr4r"]
 [ext_resource type="PackedScene" uid="uid://bauphk2cyg5tr" path="res://Scenes/Stuff/Rope/rope.tscn" id="8_uc64o"]
+[ext_resource type="AudioStream" uid="uid://cfo2ll4203qp5" path="res://Assets/Music/GlowWorm_Cavern_RD.wav" id="9_u6n2t"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="10_4b7ke"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="11_ev1sj"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="12_0kfi3"]
@@ -329,8 +329,8 @@ color_ramp = SubResource("Gradient_vagcp")
 process_mode = 3
 
 [node name="Music" type="AudioStreamPlayer" parent="LevelAudio"]
-stream = ExtResource("8_iqr4r")
-volume_db = -15.0
+stream = ExtResource("9_u6n2t")
+volume_db = -10.0
 bus = &"Music"
 
 [node name="Ambience" type="AudioStreamPlayer" parent="LevelAudio"]
