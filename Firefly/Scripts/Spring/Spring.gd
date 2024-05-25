@@ -63,7 +63,7 @@ func _on_body_entered(body: PhysicsBody2D) -> void:
 	# If this spring is currently being pressed do nothing
 	if primed or body.dying: return
 	
-	print("Entered")
+	_logger.info("Spring - Entered")
 	
 	# Prime the spring
 	primed = true
@@ -72,7 +72,7 @@ func _on_body_entered(body: PhysicsBody2D) -> void:
 	spring_down_fx()
 	
 	# Launch the player
-	print("Runing Spring_Jump_Routine")
+	_logger.info("Spring - Runing Spring_Jump_Routine")
 	spring_jump()
 	emit_signal("bounce")
 	
@@ -119,9 +119,7 @@ func spring_jump() -> void:
 	
 	# The faster the player is moving the more leniancy we give for jump boosted spring bounces
 	var leniancy_blend: float = abs(flyph.velocity.x)/flyph.air_speed
-	print(leniancy_blend)
 	var leniancy: float = lerpf(leniancy_min, leniancy_max, leniancy_blend)
-	print(leniancy)
 	
 	# Check if player is boosting upward by pressing a on the spring
 	# This is ordered intentionally to not consume a jump if the player is already jumping

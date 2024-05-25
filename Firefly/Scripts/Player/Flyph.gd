@@ -391,7 +391,7 @@ func lock_h_dir(dir: float, time: float, soft: bool = false):
 
 func _physics_process(delta: float) -> void:
 
-	print("Flyph Physics Process")
+	_logger.info("Flyph - Physics Process Started")
 	set_input_axis(delta)
 	update_buffer_timer(delta)
 
@@ -413,14 +413,14 @@ func _physics_process(delta: float) -> void:
 		# Apply Velocities
 		move_and_slide()
 
-	print("Flyph Physics Process End")
+	_logger.info("Flyph Physics Process End")
 
 
 		
 
 func _process(delta: float) -> void:
 
-	print("Flyph _process()")
+	_logger.info("Flyph _process()")
 
 	# If restarting the animation
 	if restart_animation:
@@ -438,7 +438,7 @@ func _process(delta: float) -> void:
 	if not dying:
 		StateMachine.process_frame(delta)
 
-	print("Flyph _process() end")
+	_logger.info("Flyph _process() end")
 
 
 
@@ -497,12 +497,12 @@ func update_animations():
 # When an animation ends
 func _on_animated_sprite_2d_animation_finished():
 
-	print("Flyph Animation Event")
+	_logger.info("Flyph Animation Event")
 
 	# Pass to the state machine
 	StateMachine.animation_end()
 
-	print("Flyph Animation Event End")
+	_logger.info("Flyph Animation Event End")
 
 ## Alternate Collider
 # This method was the best way I could get the collider size to change
@@ -532,7 +532,7 @@ func movement_assist(delta):
 	# Auto Enter Tunnel
 	if is_on_wall() and not underWater: auto_enter_tunnel()
 
-	print("Exit assists function")
+	_logger.info("Exit assists function")
 
 
 
@@ -559,7 +559,7 @@ func jump_corner_correction(delta):
 
 	# Apply the correction if there's no collision in the direction we're moving
 	if correction_direction != 0 and not test_move(global_transform, Vector2(strength * delta * correction_direction, 0)):
-		print("Attempting Vertical Corner Correction")
+		_logger.info("Attempting Vertical Corner Correction")
 		position.x += strength * delta * correction_direction
 		squish_node.squish(jump_squash)
 
@@ -629,7 +629,7 @@ func horizontal_corner_correction(delta):
 			# Check if the motion would cause a collision
 			if not test_move(global_transform, motion):
 
-				print("Attempting Horizontal Corner Correction")
+				_logger.info("Attempting Horizontal Corner Correction")
 
 				# If no collision, update the position
 				position.y = test_y
@@ -678,7 +678,7 @@ func horizontal_corner_correction(delta):
 			# Check if the motion would cause a collision
 			if not test_move(global_transform, motion):
 
-				print("Attempting Horizontal Corner Correction")
+				_logger.info("Attempting Horizontal Corner Correction")
 
 				# If no collision, update the position
 				position.y = test_y
@@ -706,7 +706,7 @@ func auto_enter_tunnel():
 
 func enter_tunnel():
 
-		print("Shoving Player into Tunnel")
+		_logger.info("Shoving Player into Tunnel")
 		
 		set_crouch_collider()
 		
@@ -1101,18 +1101,18 @@ func _on_water_detector_body_exited(body):
 var stuck_segment: SpitSegment = null
 func enter_rope(segment: SpitSegment):
 	
-	print("Grabbing Rope")
+	_logger.info("Grabbing Rope")
 	stuck_segment = segment
 	segment.player_grabbed()
 	StateMachine.change_state(WORMED_STATE)
-	print("Grabbed Rope")
+	_logger.info("Grabbed Rope")
 
 
 
 # When the player enters a rope
 func _on_rope_detector_body_entered(body):
 	
-	print("Rope Detected")
+	_logger.info("Rope Detected")
 	var segment = body as SpitSegment
 	if segment and not stuck_segment and not dying:
 		enter_rope(segment)

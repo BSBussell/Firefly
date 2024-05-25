@@ -102,14 +102,6 @@ extends Resource
 @export var BJ_REVERSE_MULTIPLIER: float = 0.0
 
 
-
-
-@export_subgroup("Spring Jump") # Copy and pasted jump code so comments are the same
-@export var MAX_SPRING_HEIGHT: float = 4			# The max height of our jump in tiles because im so silly like that
-@export var SPRING_RISE_TIME: float = 0.4			# The time it takes to reach that height
-@export var SPRING_FALL_TIME: float = 0.3 		# The time it takes to fall back down
-@export var SPRING_HORIZ_BOOST: float = 60		# The max speed added on jumping
-
 @export_group("Assists")
 ## How long after leaving the ground the player can still jump
 @export var COYOTE_TIME: float = 0.1
@@ -134,5 +126,9 @@ extends Resource
 @export var GLOW_DECAY_RATE: float = 3
 ## When the normalized speed is > 1 we multiplier the surplus by this
 @export var SURPLUS_MULTIPLIER: float = 2.0
+
+## Velocity Boost gained from upgrading
+@export var GLOW_UPGRADE_BOOST: float = 100.0
+
 ## How long we wait before Glow starts to decay
 @export var STRICTNESS: float = 3.0

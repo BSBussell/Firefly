@@ -33,7 +33,7 @@ func enter() -> void:
 	
 	
 	if OS.is_debug_build():
-		print("Wormed State")
+		_logger.info("Wormed State")
 
 	# We are not speeding up on thingy
 	speeding_up = false
@@ -81,7 +81,7 @@ func enter() -> void:
 	parent.current_animation = parent.ANI_STATES.WALL_SLIDE
 	parent.restart_animation = true
 		
-	print("We have finished Enter")
+	_logger.info("We have finished Enter")
 
 
 	
@@ -100,7 +100,7 @@ func exit() -> void:
 	 #Wait 0.3 seconds before we can grab a rope again
 	#await get_tree().create_timer(0.2).timeout
 	
-	print("wtf")
+	_logger.info("wtf")
 	rope_detector.set_deferred("monitoring", true)
 	#rope_detector.set_collision_mask_value(9, true)
 	
@@ -113,7 +113,7 @@ func exit() -> void:
 # Processing input in this state, returns nil or new state
 func process_input(event: InputEvent) -> PlayerState:
 
-	print("Processing Input")
+	_logger.info("Processing Input")
 
 	# If its just a keyboard
 	if event is InputEventKey:
@@ -146,7 +146,7 @@ func process_input(event: InputEvent) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 
-	print("Wormed Process Physics")
+	_logger.info("Wormed Process Physics")
 
 	# Swing
 	swinging(delta, parent.horizontal_axis)
@@ -160,11 +160,11 @@ func process_physics(delta: float) -> PlayerState:
 	# Water State Change Handled by the Water Detection
 	if handle_jump(delta):
 
-		print("Finished Wormed Process Physics - Jumping")
+		_logger.info("Finished Wormed Process Physics - Jumping")
 
 		return AERIAL_STATE
 		
-	print("Finished Wormed Process Physics")
+	_logger.info("Finished Wormed Process Physics")
 
 	return null
 
@@ -173,7 +173,7 @@ func process_physics(delta: float) -> PlayerState:
 
 func process_frame(_delta):
 
-	print("Wormed Process Frame")
+	_logger.info("Wormed Process Frame")
 
 	# Direction Facing, don't update if we're walljumping up
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
@@ -205,7 +205,7 @@ func process_frame(_delta):
 	else:
 		parent.current_animation = parent.ANI_STATES.WALL_HUG
 
-	print("Finished Wormed Processing Frame")
+	_logger.info("Finished Wormed Processing Frame")
 
 ## Called when an animation ends. How we handle transitioning to different animations
 func animation_end() -> PlayerState:
@@ -268,7 +268,6 @@ func jump():
 		var exponential_multi = ((max_jump_multi - swing_multi) * pow(t, exponent)) + swing_multi  # Calculate the exponential multiplier
 
 		swing_multi = exponential_multi  # Apply the calculated multiplier
-		print(swing_multi)
 
 	if sign(parent.velocity.x) != sign(jump_dir):
 		parent.velocity.x *= -1
@@ -377,7 +376,6 @@ func swinging(delta, dir):
 		
 		# Holy Fuck my PreCalc professors would be so proud of me
 		return_force *= sin(wave_length * period)
-		print(wave_length)
 		apply_rope_force(return_force)
 	
 func apply_weight(_delta):

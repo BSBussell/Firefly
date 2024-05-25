@@ -1096,14 +1096,7 @@ coyote_time = NodePath("../../Timers/CoyoteTime")
 script = ExtResource("32_qjlto")
 WALL_STATE = NodePath("../Wall")
 AERIAL_STATE = NodePath("../Aerial")
-WATER_ENTRY_COST = null
 WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
-WATER_SPEED_MULTI = null
-WATER_ACCEL_MULTI = null
-WATER_JUMP_MULTI = null
-WATER_DIVE_MULTI = null
-WATER_GRAV_MULTI = null
-MAX_FALL_MULTI = null
 
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
 script = ExtResource("33_e7xfe")

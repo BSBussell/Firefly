@@ -14,22 +14,22 @@ var interpolation_time: float = 0.0
 var initial_difference: Vector2 = Vector2()
  
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+# Called every frame when interpolating. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	print("Squish  - Process")
+	_logger.info("Squish  - Process")
+	interpolation_time += delta
+	var t = min(interpolation_time / rebound_speed, 1.0)  # Clamp to [0, 1]
+	var curve_value = bounce_curve.sample(t)
+	var uncapped_scale: Vector2 = lerp(squish_from, original_scale, curve_value)
+	var capped_scale = Vector2(snappedf(uncapped_scale.x, 0.001), snappedf(uncapped_scale.y,  0.001))
+	scale = capped_scale
 	
-	if interpolating:
-		interpolation_time += delta
-		var t = min(interpolation_time / rebound_speed, 1.0)  # Clamp to [0, 1]
-		var curve_value = bounce_curve.sample(t)
-		var uncapped_scale: Vector2 = lerp(squish_from, original_scale, curve_value)
-		var capped_scale = Vector2(snappedf(uncapped_scale.x, 0.001), snappedf(uncapped_scale.y,  0.001))
-		scale = capped_scale
-		
-		if t >= 1.0:
-			interpolating = false  # Stop interpolating
-	print("Squish  - Process Exit")
+	if t >= 1.0:
+		# Stop calling process
+		set_process(false)
+
+	_logger.info("Squish  - Process Exit")
 
 # Set the scale for squash/stretch and start interpolating back to original scale
 func squish(new_scale: Vector2, new_speed: float = base_rebound_speed) -> void:
@@ -45,11 +45,13 @@ func squish(new_scale: Vector2, new_speed: float = base_rebound_speed) -> void:
 	# Tweening variables
 	squish_from = new_scale
 	initial_difference = new_scale - original_scale
-	interpolating = true
 	
 	# Reset Tween Time
 	interpolation_time = 0.0
 	
 	# Set new_speed
 	rebound_speed = new_speed 
+
+	# Enable Process
+	set_process(true)
  

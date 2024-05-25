@@ -24,7 +24,7 @@ var cache_airdrift
 func enter() -> void:
 	
 	if OS.is_debug_build():
-		print("Wall State")
+		_logger.info("Flyph - Wall State")
 
 	parent.animation.flip_h = 1 if parent.get_wall_normal().x > 0 else 0
 
@@ -42,7 +42,7 @@ func enter() -> void:
 	parent.squish_node.squish(Vector2(1.0 - squash_value, 1.0 + squash_value), squash_dur)
 	
 	# Spawn some wall hug dust
-	print("Escaped Enter")
+	_logger.info("Flyph - Wall Escaped Enter")
 
 
 # Called before exiting the state, cleanup
@@ -56,12 +56,12 @@ func exit() -> void:
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
 	
-	print("Processing Input")
+	_logger.info("Flyph - Wall Processing Input")
 	if Input.is_action_just_pressed("Down"):
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
 
-	print("Done Processing Input")
+	_logger.info("Flyph - Wall Done Processing Input")
 	return null
 
 # Processing Frames in this state, returns nil or new state
@@ -71,7 +71,7 @@ func process_frame(_delta: float) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 	
-	print("Processing Physics")
+	_logger.info("Flyph::Wall - Processing Physics")
 	apply_gravity(delta, parent.horizontal_axis)
 	handle_walljump(parent.vertical_axis)
 	AERIAL_STATE.handle_sHop(delta)
@@ -79,7 +79,7 @@ func process_physics(delta: float) -> PlayerState:
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
 	
-	print("Finishing Processing Physics")
+	_logger.info("Flyph::Wall - Finishing Processing Physics")
 	return state_status()
 	
 # What state are we returning.
@@ -167,16 +167,6 @@ func handle_walljump(vc_direction, dir = 0):
 	
 	# Attempt jump pretty much just checks if a jump has been buffered and removes that from the buffer if it has
 	if not parent.disable_walljump and parent.attempt_jump():
-	
-		## Set Global Flags
-		#parent.wallJumping = true
-		#
-		## Have Walljumps interrupt temp gravity(this won't interrupt launches)
-		#if parent.temp_gravity_active:	
-			#parent.temp_gravity_active = false
-#
-		## Start post jump timer
-		#post_jump_buffer.start() 
 	
 		# Which direction is away from the wall
 		var jump_dir: float = dir
@@ -351,9 +341,6 @@ func general_walljump(walljump_type: int, disable_drift: bool, jump_velocity: Ve
 	parent.animation.flip_h = facing
 	
 		
-
-
-			
 	
 
 func get_which_wall_collided():

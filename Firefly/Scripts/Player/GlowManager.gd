@@ -186,6 +186,8 @@ func promote(starting_points: int = 20) -> bool:
 
 	if movement_level < max_level:
 		
+		print("Glow Boost ", PLAYER.movement_data.GLOW_UPGRADE_BOOST)
+		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
 		
 		change_state(movement_level + 1)
 		
@@ -193,15 +195,15 @@ func promote(starting_points: int = 20) -> bool:
 		if movement_level != max_level:
 			glow_points = starting_points
 		
-		PLAYER.give_boost(200)
+		
 		promotion_fx.emitting = true
 		
 		return true
 		
 	# Just use the boost and consume points
 	else:
-		
-		PLAYER.give_boost(250)
+		print("Glow Boost ", PLAYER.movement_data.GLOW_UPGRADE_BOOST)
+		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
 		glow_points = 10
 		return false
 

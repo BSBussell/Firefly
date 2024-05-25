@@ -117,7 +117,7 @@ func setup_Worm():
 	
 func activate(_segment: SpitSegment):
 	
-	print("Receiving Grabbed Signal")
+	_logger.info("Rope - Receiving Grabbed Signal")
 	
 	if GlowWorm:
 		if not worm_active:

@@ -68,7 +68,7 @@ func enter() -> void:
 	wet.emitting = false
 
 	if OS.is_debug_build():
-		print("Water State")
+		_logger.info("Water State")
 
 	
 	if parent.velocity.y > 150:
@@ -98,9 +98,6 @@ func enter() -> void:
 	
 
 	slide_fall = parent.current_animation == parent.ANI_STATES.CRAWL
-
-	if not slide_fall:
-		print("Current Animation: ", parent.current_animation)
 
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
 	if (not slide_fall) or (not parent.crouchJumping and parent.boostJumping) or parent.launched:
@@ -318,10 +315,6 @@ func water_dive():
 	# Animation
 	parent.current_animation = parent.ANI_STATES.FALLING
 	
-	# Reverse the animation :3
-	#parent.animation.speed_scale = -1
-	#parent.animation.frame = 3
-	
 	parent.restart_animation = true
 	
 
@@ -353,8 +346,6 @@ func handle_sHop(_delta):
 
 	# Otherwise if we let go of jump, decrease their velocity
 	elif Input.is_action_just_released("Jump"):
-
-		print("Released")
 
 		# If we aren't already below ff_velocity
 		if parent.velocity.y < parent.ff_velocity:

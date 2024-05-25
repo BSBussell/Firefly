@@ -12,6 +12,7 @@ config_version=5
 
 config/name="Firefly"
 run/main_scene="res://Core/Game/GameViewer.tscn"
+config/use_custom_user_dir=true
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0.0588235, 0.188235, 0.129412, 1)
 boot_splash/image="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png"
@@ -23,18 +24,20 @@ driver/output_latency.web=90
 
 [autoload]
 
+_logger="*res://Scripts/Globals/_logger.gd"
 _loader="*res://Scripts/Globals/_loader.gd"
 _debug="*res://Scripts/Globals/_debug.gd"
 _viewports="*res://Scripts/Globals/_viewports.gd"
 _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
 _stats="*res://Scripts/Globals/_stats.gd"
-_audio="*res://Scripts/Globals/_audio.gd"
 _globals="*res://Scripts/Globals/_globals.gd"
+_audio="*res://Scripts/Globals/_audio.gd"
 _jar_tracker="*res://Scripts/Globals/_jar_tracker.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 
 [debug]
 
+file_logging/enable_file_logging=true
 gdscript/warnings/integer_division=0
 
 [display]
@@ -50,6 +53,12 @@ movie_writer/movie_file="/home/bee/Documents/GitHub/Firefly/Mov/output.avi"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/better-terrain/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://Scripts/Globals/": "red"
+}
 
 [input]
 

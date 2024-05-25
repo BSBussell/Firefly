@@ -6,9 +6,9 @@
 [ext_resource type="Script" path="res://Scripts/Camera/Idle.gd" id="5_mfikc"]
 [ext_resource type="Script" path="res://Scripts/Camera/Follow.gd" id="6_y5nkv"]
 [ext_resource type="Script" path="res://Scripts/Camera/LookAhead.gd" id="7_pjrc4"]
-[ext_resource type="Script" path="res://Scenes/Camera/Falling.gd" id="8_71vy3"]
-[ext_resource type="Script" path="res://Scenes/Camera/Dynamic-Cam.gd" id="8_r82q3"]
-[ext_resource type="Script" path="res://Scenes/Camera/SensorResizing.gd" id="9_ku080"]
+[ext_resource type="Script" path="res://Scripts/Camera/Falling.gd" id="8_71vy3"]
+[ext_resource type="Script" path="res://Scripts/Camera/Dynamic-Cam.gd" id="8_r82q3"]
+[ext_resource type="Script" path="res://Scripts/Camera/SensorResizing.gd" id="9_ku080"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mqckl"]
 size = Vector2(320, 160)

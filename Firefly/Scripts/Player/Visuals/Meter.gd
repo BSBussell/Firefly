@@ -25,7 +25,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	print("Meter _process")
+	_logger.info("Meter _process")
+
 	var multiplier = 1.0
 	if interpolated_score > actual_score:
 		multiplier = decrease_speed
@@ -47,10 +48,17 @@ func _process(delta):
 		played_sound = false
 		fire_rumble.stop()
 		
-	print("Meter Process End")
+	# If we have reached the interpolated score, stop calling the process function
+	if interpolated_score == actual_score:
+		set_process(false)
+
+	_logger.info("Meter Process End")
 
 func set_score(score):
 	actual_score = min(score, 100)
+	
+	# If we have a new score, we need to start the process function
+	set_process(true)
 
 # Adjust the ranges and fits the score inside it to score from jumping around weirdly
 func update_range(new_min, new_max):
