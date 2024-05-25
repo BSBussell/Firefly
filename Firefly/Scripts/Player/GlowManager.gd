@@ -56,10 +56,8 @@ func startup():
 func _process(delta):
 	
 	
-	
+	# If we haven't enabled glow yet then we don't do anything
 	if not GLOW_ENABLED:
-		
-		
 		return
 	
 	# Update Scoring information based on movement speed, etc.
@@ -90,7 +88,7 @@ func _process(delta):
 			MOMENTUM_TIMER.start()
 			
 		# If we start moving then we stop the timer
-		elif PLAYER.velocity.x != 0 and not MOMENTUM_TIMER.is_stopped():
+		elif PLAYER.velocity.x > PLAYER.speed and not MOMENTUM_TIMER.is_stopped():
 			MOMENTUM_TIMER.stop()
 			
 			# Reset the decay rate once the player starts moving again

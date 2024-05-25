@@ -40,22 +40,14 @@ func enter() -> void:
 
 	parent.set_standing_collider()
 
-	# Don't allow buffer a jump prior to landing on the rope
-	# Ik i suck for this, but it puts more uh, sticking-feeling
-	# to the ropes when you can't just buffer jump to get out
-	# you actually just have to jump out of them
-	#parent.consume_jump()
-	
-	#call_deferred()
+	# Make us unable to grab another rope
 	rope_detector.set_deferred("monitoring", false)
-	#rope_detector.set_collision_mask_value(9, false)	
 	
 	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 2.5), 1.0)
 	swing_force = snappedf(lerpf(min_swing_force, max_swing_force, speed_ratio), 1)
 	
-	# This is the coolest shit i've done
+	
 	# Relative position to the ropes center
-
 	var a = lerpf(min_frequency, max_frequency, swing_force/max_swing_force)
 	# This is the coolest shit i've done
 	if sign(parent.velocity.x) > 0:
@@ -68,9 +60,6 @@ func enter() -> void:
 
 	apply_rope_impulse(parent.velocity * grab_force_multi)
 
-
-	#swinging_sfx.pitch_scale = 1.75 if swinging_sfx.pitch_scale != 1.75 else 2
-	#swinging_sfx.play()
 	
 	rand_from_seed(parent.stuck_segment.global_position.x)
 	rope_creak_sfx.pitch_scale = randf_range(1, 2)
@@ -100,12 +89,13 @@ func exit() -> void:
 	 #Wait 0.3 seconds before we can grab a rope again
 	#await get_tree().create_timer(0.2).timeout
 	
-	_logger.info("wtf")
 	rope_detector.set_deferred("monitoring", true)
 	#rope_detector.set_collision_mask_value(9, true)
 	
 	
 	rope_creak_sfx.stop()
+
+	_logger.info("Flyph - Worm Exit")
 
 	
 
@@ -276,6 +266,8 @@ func jump():
 
 
 	var vertical_control = 1.0
+
+	# Downward jump off rope
 	#if parent.vertical_axis < 0:
 		#vertical_control = -0.4
 		
@@ -283,8 +275,6 @@ func jump():
 	# Jump Velocity
 	parent.velocity.y = parent.jump_velocity * vertical_control
 
-	
-	# TODO: Water Jump :3
 	# Jump SFX
 	jumping_sfx.play(0)
 	

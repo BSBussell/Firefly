@@ -662,7 +662,7 @@ frame_progress = 1.0
 flip_h = true
 script = ExtResource("8_dying")
 
-[node name="Trail" type="Line2D" parent="Visuals"]
+[node name="Trail" type="Line2D" parent="Visuals" node_paths=PackedStringArray("FLYPH")]
 modulate = Color(2.5, 2.6, 1.25, 1)
 show_behind_parent = true
 z_index = -1
@@ -674,6 +674,7 @@ gradient = SubResource("Gradient_nk0tk")
 antialiased = true
 script = ExtResource("9_iifmr")
 length = 0
+FLYPH = NodePath("../..")
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
 color = Color(1, 0.980392, 0.803922, 1)

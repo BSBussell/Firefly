@@ -22,6 +22,9 @@ func _ready():
 
 
 func _physics_process(delta):
+	
+	_logger.info("Goober - Physics Process")
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -36,6 +39,8 @@ func _physics_process(delta):
 	accelerate(delta)
 	
 	move_and_slide()
+	
+	_logger.info("Goober - Physics Process End")
 
 func accelerate(delta: float) -> void:
 	

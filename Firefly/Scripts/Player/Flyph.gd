@@ -410,8 +410,13 @@ func _physics_process(delta: float) -> void:
 		prev_velocity_x = velocity.x
 		prev_velocity_y = velocity.y
 
-		# Apply Velocities
-		move_and_slide()
+		_logger.info("Pre-Move and Sliding")
+		
+		# Apply Velocities if we're in a velocity based state
+		if StateMachine.current_state != WORMED_STATE:
+			move_and_slide()
+		
+		_logger.info("Post Move and Sliding")
 
 	_logger.info("Flyph Physics Process End")
 

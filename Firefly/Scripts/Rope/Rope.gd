@@ -77,12 +77,15 @@ func create_joints() -> void:
 			
 			
 		if not Swingable:
-			new_segment.set_collision_layer_value(9, false)
-			new_segment.set_collision_mask_value(1, true)
+			# new_segment.set_collision_layer_value(9, false)
+			# new_segment.set_collision_mask_value(1, true)
+			new_segment.set_deferred("collision_layer", 0)
+			# new_segment.set_deferred("collision_mask", 1)
 			new_segment.modulate = "#3e3b65bf"
 		
 		
 		new_segment.origin = global_position
+		new_segment.root = self
 		
 		add_child(joint)
 		add_child(new_segment)
@@ -144,13 +147,21 @@ func kill_worm():
 	
 func start_cooldown(time: float) -> void:
 	
-	for each: SpitSegment in segments:
-		each.set_deferred("collision_layer", 0)
-		#each.set_collision_layer_value(9, false)
-		
-	await get_tree().create_timer(time).timeout
+	_logger.info("Rope - Cooldown Function Started")
 	
 	for each: SpitSegment in segments:
-		each.set_deferred("collision_layer", 256)
-		#each.set_collision_layer_value(9, true)
+		each.set_deferred("collision_layer", 0)
+		
+	_logger.info("Rope - Cooldown Started")
+	
+	await get_tree().create_timer(time).timeout
+	
+	_logger.info("Rope - Cooldown Finished")
+
+
+	for each: SpitSegment in segments:
+		each.set_deferred("collision_layer", 1 << 8)
+	
+	_logger.info("Rope - Cooldown Finished")
+		
 	

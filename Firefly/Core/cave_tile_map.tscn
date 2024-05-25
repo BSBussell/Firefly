@@ -1187,8 +1187,7 @@ texture = ExtResource("1_evea0")
 [sub_resource type="TileSet" id="TileSet_2hbov"]
 occlusion_layer_0/light_mask = 3
 physics_layer_0/collision_layer = 2
-physics_layer_0/collision_mask = 9
-physics_layer_1/collision_layer = 17
+physics_layer_1/collision_layer = 18
 physics_layer_2/collision_layer = 128
 sources/2 = SubResource("TileSetAtlasSource_ii55k")
 metadata/_better_terrain = {

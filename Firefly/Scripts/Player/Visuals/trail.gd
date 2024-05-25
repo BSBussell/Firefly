@@ -4,6 +4,8 @@ extends Line2D
 
 @export var length: int = 10
 
+@export var FLYPH: Flyph
+
 # Color values
 @onready var current_color: Color = modulate
 @onready var goal_color: Color = modulate
@@ -24,14 +26,14 @@ var fps_adjusted_length: int = 10
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	
+	_logger.info("Flyph - Trail Process")
 	
 	fps_adjusted_length = max(length * (Engine.get_frames_per_second() / 60), 0)
 	
 	global_position = Vector2(0, 0)
 	global_rotation = 0
 
-	point = get_parent().get_parent().global_position
+	point = FLYPH.global_position
 	point.y -= 10
 
 	add_point(point)
@@ -52,6 +54,7 @@ func _process(delta):
 		if t >= 1.0:
 			interpolating = false  # Stop interpolating
 	
+	_logger.info("Flyph - Trail Process End")
 	
 
 func set_glow(new_color: Color, duration: float = 1.0) -> void:

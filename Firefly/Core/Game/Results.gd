@@ -27,7 +27,7 @@ func _input(event):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	
+	_logger.info("Result - Process")
 	
 	if not get_tree().paused:
 		_stats.TIME += delta
@@ -40,7 +40,7 @@ func _process(delta):
 
 	stats_label.text = "Time: %s\n Total Deaths: %d" % [display_time, _stats.DEATHS]
 
-	
+	_logger.info("Result - Process End")
 
 func show_Victory_Screen():
 	self.visible = true
