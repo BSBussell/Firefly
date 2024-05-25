@@ -36,5 +36,4 @@ func player_grabbed():
 	emit_signal("grabbed", self)
 
 func start_cooldown(time: float) -> void:
-	
 	get_parent().start_cooldown(time)

@@ -193,7 +193,7 @@ script = SubResource("GDScript_0jk77")
 Text = "- FireFly Meadow -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarManager")
-ui_components = Array[PackedScene]([ExtResource("1_x8o00"), ExtResource("2_m02wd"), ExtResource("3_7p2gx"), ExtResource("4_olpyo"), ExtResource("5_625ch"), ExtResource("6_nlli1")])
+ui_components = Array[PackedScene]([ExtResource("6_nlli1"), ExtResource("1_x8o00"), ExtResource("5_625ch"), ExtResource("2_m02wd"), ExtResource("3_7p2gx"), ExtResource("4_olpyo")])
 id = 2
 
 [node name="PP + FX" type="Node" parent="."]

@@ -10,16 +10,13 @@ extends Area2D
 var execute_once: bool = false
 
 
-func _on_area_entered(area):
-	
-	
-	
+func _on_area_entered(_area):
+
 	if not new_level:
-		print("uh")
+		printerr("Set a new Level in the editor")
 		return
-	var new_level_path = new_level
-	print(new_level_path)
-	
+
+	var new_level_path = new_level	
 	if not execute_once:
 		execute_once = true
 		world.load_level(new_level_path, spawn_id)

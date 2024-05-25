@@ -33,13 +33,6 @@ func define_dependencies() -> void:
 	define_dependency("JarCounter", counter)
 	define_dependency("VictoryScreen", result_screen)
 
-#func connect_counter(new_counter: JarCounter):
-	
-	#counter = new_counter
-	
-func connect_results(results: VictoryScreen):
-	
-	result_screen = results
 
 func _input(event):
 	
@@ -138,10 +131,9 @@ func _on_resume_button_pressed():
 func _on_settings_button_pressed():
 	if not settings_container.visible:
 		settings_container.visible = true
-		#expand_container(settings_container)
+		
 	else:
 		settings_container.visible = false
-	#settings_container.visible = not settings_container.visible
 
 
 
@@ -150,14 +142,12 @@ func _on_settings_button_pressed():
 ## Fullscreen Enabled
 func _on_full_screen_toggle_switched_on():
 	_viewports.viewer.swap_fullscreen_mode()
-	#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	
 	
 
 ## Fullscreen disabled
 func _on_full_screen_toggle_switched_off():
 	_viewports.viewer.swap_fullscreen_mode()
-	#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	
 	
 	

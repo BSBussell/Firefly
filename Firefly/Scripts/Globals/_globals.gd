@@ -12,4 +12,5 @@ var GEM_MANAGER: GemManager
 ## The Jar Manager Object for the Current Level
 var JAR_MANAGER: JarManager
 
+## The current game render size
 var RENDER_SIZE: Vector2 = Vector2(320, 180)

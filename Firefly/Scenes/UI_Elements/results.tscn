@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bkeka0x5vwxx7"]
+[gd_scene load_steps=7 format=3 uid="uid://bkeka0x5vwxx7"]
 
 [ext_resource type="Script" path="res://Core/Game/Results.gd" id="1_cunm8"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="2_wux1v"]
@@ -11,7 +11,13 @@ font_size = 128
 [sub_resource type="LabelSettings" id="LabelSettings_55r0k"]
 font_size = 32
 
+[sub_resource type="LabelSettings" id="LabelSettings_yn33q"]
+font = ExtResource("3_wf4fc")
+font_size = 25
+font_color = Color(0.780392, 0.87451, 0.921569, 1)
+
 [node name="Results" type="ColorRect"]
+z_index = 100
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -63,7 +69,30 @@ text = "Press Space To Close!"
 label_settings = SubResource("LabelSettings_55r0k")
 horizontal_alignment = 2
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -25.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.0
+offset_top = -30.0
+offset_right = 82.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0.2.0"
+label_settings = SubResource("LabelSettings_yn33q")
+horizontal_alignment = 1

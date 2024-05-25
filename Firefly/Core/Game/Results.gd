@@ -4,6 +4,7 @@ class_name VictoryScreen
 signal Show_Victory()
 @onready var stats_label = $VBoxContainer/CenterContainer2/Stats
 
+@onready var version_num = $Control/Label
 
 var displayed: bool = false
 
@@ -14,6 +15,9 @@ func _ready():
 	
 	var victory_function: Callable = Callable(self, "show_Victory_Screen")
 	context.connect_to_win(victory_function)
+
+	version_num.text = _meta.VERSION_NO
+
 
 func _input(event):
 	

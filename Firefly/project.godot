@@ -24,6 +24,7 @@ driver/output_latency.web=90
 
 [autoload]
 
+_meta="*res://Scripts/Globals/_meta.gd"
 _logger="*res://Scripts/Globals/_logger.gd"
 _loader="*res://Scripts/Globals/_loader.gd"
 _debug="*res://Scripts/Globals/_debug.gd"

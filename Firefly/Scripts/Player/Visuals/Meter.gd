@@ -1,5 +1,5 @@
 extends UiComponent
-class_name ScoreMeter
+class_name Meter
 
 
 @export var increase_speed: float = 10

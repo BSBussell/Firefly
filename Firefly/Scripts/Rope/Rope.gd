@@ -31,12 +31,17 @@ var segments: Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+
+	_logger.info("Rope - Ready")
+
 	create_joints()
 	if GlowWorm:
 		setup_Worm()
 		
 	if not Swingable:
 		self_modulate = "#3e3b65bf"
+
+	_logger.info("Rope - Ready Finished")
 
 
 
@@ -112,7 +117,6 @@ func create_joints() -> void:
 
 func setup_Worm():
 	lure.visible = true
-	#pass
 	
 	
 func activate(_segment: SpitSegment):
