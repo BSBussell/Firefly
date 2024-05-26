@@ -189,6 +189,11 @@ func state_status():
 		_logger.info("Flyph Aerial State -> Wall State")
 		return WALL_STATE
 
+	# Contigency
+	if parent.velocity.x == 0 and not have_stand_room():
+		_logger.info("Contingency Aerial State -> Sliding State")
+		return SLIDING_STATE
+
 	_logger.info("Flyph Aerial State -> Null")
 	return null
 
