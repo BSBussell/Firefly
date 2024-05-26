@@ -1024,6 +1024,7 @@ bus = &"SFX"
 
 [node name="LightSplashSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("19_5b1pc")
+volume_db = -5.0
 bus = &"SFX"
 
 [node name="SwimmingSFX" type="AudioStreamPlayer2D" parent="Audio"]
@@ -1032,16 +1033,17 @@ bus = &"Ambience"
 
 [node name="OutOfWaterSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("21_g6yjb")
-volume_db = -3.0
+volume_db = -10.0
 bus = &"SFX"
 
 [node name="SwingingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("22_q5uq7")
-volume_db = -5.0
+volume_db = -8.0
 pitch_scale = 2.5
 
 [node name="RopeCreakSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("23_oxbt6")
+volume_db = -4.0
 
 [node name="UI_FX" type="CanvasLayer" parent="."]
 
