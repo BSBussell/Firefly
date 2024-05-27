@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=43 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="1_nnlyf"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="1_x8o00"]
@@ -26,6 +26,9 @@
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="18_uld0x"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="19_yl7uk"]
 [ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="20_ecmjs"]
+[ext_resource type="PackedScene" uid="uid://bap20rtuqiwkb" path="res://Scenes/Stuff/Log/flat_plat_3.tscn" id="27_pog7r"]
+[ext_resource type="PackedScene" uid="uid://b8neo6fmiclhw" path="res://Scenes/Stuff/Log/flat_plat_1.tscn" id="28_oebt1"]
+[ext_resource type="PackedScene" uid="uid://dpsftqwolritj" path="res://Scenes/Stuff/Log/flat_plat_2.tscn" id="29_1pwh1"]
 
 [sub_resource type="GDScript" id="GDScript_0jk77"]
 script/source = "extends \"res://Scripts/Level/Level.gd\"
@@ -467,6 +470,15 @@ offset_right = 3195.0
 offset_bottom = 306.0
 rotation = -0.933751
 scale = Vector2(-1, -1)
+
+[node name="Breakable" parent="." instance=ExtResource("27_pog7r")]
+position = Vector2(2601, 222)
+
+[node name="Breakable2" parent="." instance=ExtResource("28_oebt1")]
+position = Vector2(2537, 191)
+
+[node name="Breakable3" parent="." instance=ExtResource("29_1pwh1")]
+position = Vector2(2584, 159)
 
 [connection signal="area_entered" from="Events/levelChangr" to="Events/levelChangr" method="_on_area_entered"]
 [connection signal="body_entered" from="Events/ThankNote" to="Events/ThankNote" method="_on_body_entered"]

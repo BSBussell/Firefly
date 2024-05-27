@@ -55,7 +55,9 @@ func _process(delta):
 	_logger.info("Meter Process End")
 
 func set_score(score):
-	actual_score = min(score * 10, 1000)
+	
+	var adjusted_score: float = (-0.01 * pow(score-100,2) )+100
+	actual_score = min((adjusted_score * 10), 1000)
 	
 	# If we have a new score, we need to start the process function
 	set_process(true)

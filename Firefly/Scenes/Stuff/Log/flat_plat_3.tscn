@@ -1,0 +1,287 @@
+[gd_scene load_steps=17 format=3 uid="uid://bap20rtuqiwkb"]
+
+[ext_resource type="Shader" path="res://Scenes/Stuff/Log/Rect.gdshader" id="1_7214m"]
+[ext_resource type="Texture2D" uid="uid://dqnpi7h0fsgle" path="res://Assets/Graphics/Mechanics/Log/plat_3.png" id="1_a8xy0"]
+[ext_resource type="Script" path="res://Scripts/Breakable/breakable.gd" id="1_v7gb3"]
+[ext_resource type="Texture2D" uid="uid://dexgtvcjtki2a" path="res://Assets/Graphics/Particles/plat_broken.png" id="3_s4fxc"]
+[ext_resource type="AudioStream" uid="uid://b8actgd2i8vo4" path="res://Assets/SFX/Mechanics/Plat/warning.mp3" id="5_cy6gu"]
+[ext_resource type="AudioStream" uid="uid://cqkuk3ovjbdfn" path="res://Assets/SFX/Mechanics/Plat/small_thin_pieces_of_wood.mp3" id="6_ar3ak"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h5ti5"]
+shader = ExtResource("1_7214m")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/right = 16
+shader_parameter/top = 16
+shader_parameter/left = 16
+shader_parameter/bottom = 16
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2hchr"]
+size = Vector2(52, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wbvo3"]
+size = Vector2(52, 1)
+
+[sub_resource type="Animation" id="Animation_2tmny"]
+resource_name = "Break"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Explosion:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -4)]
+}
+
+[sub_resource type="Animation" id="Animation_j3hxl"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -3)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ds0xq"]
+resource_name = "Shake"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.4),
+"transitions": PackedFloat32Array(2, 2, 2, 2),
+"update": 0,
+"values": [Vector2(0, -3), Vector2(0, -4), Vector2(0, -2), Vector2(0, -3)]
+}
+
+[sub_resource type="Animation" id="Animation_iv1h6"]
+resource_name = "respawn"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Vector2(0, 3), Vector2(0, -3)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:visible")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:scale")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.5),
+"update": 0,
+"values": [Vector2(0.9, 0.9), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cthsq"]
+_data = {
+"Break": SubResource("Animation_2tmny"),
+"RESET": SubResource("Animation_j3hxl"),
+"Shake": SubResource("Animation_ds0xq"),
+"respawn": SubResource("Animation_iv1h6")
+}
+
+[sub_resource type="Curve" id="Curve_vyyk6"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_lb2wv"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Breakable" type="Node2D" node_paths=PackedStringArray("sprite_2d", "break_time", "respawn_time", "collider")]
+script = ExtResource("1_v7gb3")
+sprite_2d = NodePath("Sprite2D")
+break_time = NodePath("Timer/BreakTime")
+respawn_time = NodePath("Timer/RespawnTime")
+collider = NodePath("Collider")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 3
+material = SubResource("ShaderMaterial_h5ti5")
+position = Vector2(0, -3)
+texture = ExtResource("1_a8xy0")
+
+[node name="Collider" type="StaticBody2D" parent="."]
+position = Vector2(0, -9)
+collision_layer = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
+position = Vector2(0, 3.5)
+shape = SubResource("RectangleShape2D_2hchr")
+one_way_collision = true
+
+[node name="PlayerDetection" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
+position = Vector2(0, -6.5)
+shape = SubResource("RectangleShape2D_wbvo3")
+
+[node name="Timer" type="Node" parent="."]
+
+[node name="BreakTime" type="Timer" parent="Timer"]
+one_shot = true
+
+[node name="RespawnTime" type="Timer" parent="Timer"]
+wait_time = 3.0
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cthsq")
+}
+
+[node name="Explosion" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 7
+one_shot = true
+explosiveness = 1.0
+texture = ExtResource("3_s4fxc")
+emission_shape = 3
+emission_rect_extents = Vector2(30, 1)
+direction = Vector2(0, -1)
+gravity = Vector2(0, 300)
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+orbit_velocity_min = -0.1
+orbit_velocity_max = 0.1
+scale_amount_curve = SubResource("Curve_vyyk6")
+color_ramp = SubResource("Gradient_lb2wv")
+
+[node name="Audio" type="Node2D" parent="."]
+
+[node name="Snap" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("5_cy6gu")
+
+[node name="Crash" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("6_ar3ak")
+
+[connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
+[connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]
+[connection signal="timeout" from="Timer/BreakTime" to="." method="_on_break_time_timeout"]
+[connection signal="timeout" from="Timer/RespawnTime" to="." method="_on_respawn_time_timeout"]
