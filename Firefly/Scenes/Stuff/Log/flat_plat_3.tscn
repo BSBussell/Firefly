@@ -1,19 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://bap20rtuqiwkb"]
+[gd_scene load_steps=14 format=3 uid="uid://bap20rtuqiwkb"]
 
-[ext_resource type="Shader" path="res://Scenes/Stuff/Log/Rect.gdshader" id="1_7214m"]
 [ext_resource type="Texture2D" uid="uid://dqnpi7h0fsgle" path="res://Assets/Graphics/Mechanics/Log/plat_3.png" id="1_a8xy0"]
 [ext_resource type="Script" path="res://Scripts/Breakable/breakable.gd" id="1_v7gb3"]
 [ext_resource type="Texture2D" uid="uid://dexgtvcjtki2a" path="res://Assets/Graphics/Particles/plat_broken.png" id="3_s4fxc"]
-[ext_resource type="AudioStream" uid="uid://b8actgd2i8vo4" path="res://Assets/SFX/Mechanics/Plat/warning.mp3" id="5_cy6gu"]
-[ext_resource type="AudioStream" uid="uid://cqkuk3ovjbdfn" path="res://Assets/SFX/Mechanics/Plat/small_thin_pieces_of_wood.mp3" id="6_ar3ak"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h5ti5"]
-shader = ExtResource("1_7214m")
-shader_parameter/scale = Vector2(1, 1)
-shader_parameter/right = 16
-shader_parameter/top = 16
-shader_parameter/left = 16
-shader_parameter/bottom = 16
+[ext_resource type="PackedScene" uid="uid://bwh20ix2o5lnj" path="res://Scenes/Stuff/Log/plat_base.tscn" id="5_vq7rq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hchr"]
 size = Vector2(52, 1)
@@ -153,7 +143,7 @@ tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 0.5),
+"transitions": PackedFloat32Array(0.2, 0.5),
 "update": 0,
 "values": [Vector2(0, 3), Vector2(0, -3)]
 }
@@ -177,7 +167,7 @@ tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 0.5),
+"transitions": PackedFloat32Array(0.2, 0.5),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
@@ -189,9 +179,9 @@ tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 0.5),
+"transitions": PackedFloat32Array(0.2, 0.5),
 "update": 0,
-"values": [Vector2(0.9, 0.9), Vector2(1, 1)]
+"values": [Vector2(0.8, 0.8), Vector2(1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cthsq"]
@@ -210,7 +200,7 @@ metadata/_snap_enabled = true
 [sub_resource type="Gradient" id="Gradient_lb2wv"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[node name="Breakable" type="Node2D" node_paths=PackedStringArray("sprite_2d", "break_time", "respawn_time", "collider")]
+[node name="plat_3" type="Node2D" node_paths=PackedStringArray("sprite_2d", "break_time", "respawn_time", "collider")]
 script = ExtResource("1_v7gb3")
 sprite_2d = NodePath("Sprite2D")
 break_time = NodePath("Timer/BreakTime")
@@ -220,7 +210,6 @@ collider = NodePath("Collider")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture_repeat = 3
-material = SubResource("ShaderMaterial_h5ti5")
 position = Vector2(0, -3)
 texture = ExtResource("1_a8xy0")
 
@@ -273,13 +262,7 @@ orbit_velocity_max = 0.1
 scale_amount_curve = SubResource("Curve_vyyk6")
 color_ramp = SubResource("Gradient_lb2wv")
 
-[node name="Audio" type="Node2D" parent="."]
-
-[node name="Snap" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("5_cy6gu")
-
-[node name="Crash" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("6_ar3ak")
+[node name="Audio" parent="." instance=ExtResource("5_vq7rq")]
 
 [connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
 [connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]

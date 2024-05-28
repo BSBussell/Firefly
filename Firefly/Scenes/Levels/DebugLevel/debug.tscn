@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=44 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="1_nnlyf"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="1_x8o00"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="18_uld0x"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="19_yl7uk"]
 [ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="20_ecmjs"]
+[ext_resource type="PackedScene" uid="uid://b5syfsbo715ra" path="res://Scenes/Collectibles/BlueJar.tscn" id="25_rdncv"]
 [ext_resource type="PackedScene" uid="uid://bap20rtuqiwkb" path="res://Scenes/Stuff/Log/flat_plat_3.tscn" id="27_pog7r"]
 [ext_resource type="PackedScene" uid="uid://b8neo6fmiclhw" path="res://Scenes/Stuff/Log/flat_plat_1.tscn" id="28_oebt1"]
 [ext_resource type="PackedScene" uid="uid://dpsftqwolritj" path="res://Scenes/Stuff/Log/flat_plat_2.tscn" id="29_1pwh1"]
@@ -452,6 +453,9 @@ position = Vector2(1502, -17)
 [node name="FlyJar4" parent="JarManager" instance=ExtResource("18_uld0x")]
 position = Vector2(2337, 179)
 
+[node name="BlueJar" parent="JarManager" instance=ExtResource("25_rdncv")]
+position = Vector2(2268, -45)
+
 [node name="Lights" type="Node2D" parent="."]
 position = Vector2(63, 159)
 
@@ -471,14 +475,34 @@ offset_bottom = 306.0
 rotation = -0.933751
 scale = Vector2(-1, -1)
 
-[node name="Breakable" parent="." instance=ExtResource("27_pog7r")]
-position = Vector2(2601, 222)
+[node name="PlatManager" type="Node2D" parent="."]
 
-[node name="Breakable2" parent="." instance=ExtResource("28_oebt1")]
-position = Vector2(2537, 191)
+[node name="plat_3" parent="PlatManager" instance=ExtResource("27_pog7r")]
+position = Vector2(2588, 211)
 
-[node name="Breakable3" parent="." instance=ExtResource("29_1pwh1")]
-position = Vector2(2584, 159)
+[node name="plat_2" parent="PlatManager" instance=ExtResource("29_1pwh1")]
+position = Vector2(2525, 180)
+
+[node name="plat_1" parent="PlatManager" instance=ExtResource("28_oebt1")]
+position = Vector2(2578, 149)
+
+[node name="plat_4" parent="PlatManager" instance=ExtResource("27_pog7r")]
+position = Vector2(2512, 131)
+
+[node name="plat_5" parent="PlatManager" instance=ExtResource("28_oebt1")]
+position = Vector2(2460, 96)
+
+[node name="plat_6" parent="PlatManager" instance=ExtResource("29_1pwh1")]
+position = Vector2(2422, 64)
+
+[node name="plat_7" parent="PlatManager" instance=ExtResource("27_pog7r")]
+position = Vector2(2269, 42)
+
+[node name="plat_8" parent="PlatManager" instance=ExtResource("29_1pwh1")]
+position = Vector2(2388, 10)
+
+[node name="plat_9" parent="PlatManager" instance=ExtResource("28_oebt1")]
+position = Vector2(2269, -12)
 
 [connection signal="area_entered" from="Events/levelChangr" to="Events/levelChangr" method="_on_area_entered"]
 [connection signal="body_entered" from="Events/ThankNote" to="Events/ThankNote" method="_on_body_entered"]

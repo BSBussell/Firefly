@@ -1,19 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://dpsftqwolritj"]
+[gd_scene load_steps=14 format=3 uid="uid://dpsftqwolritj"]
 
 [ext_resource type="Script" path="res://Scripts/Breakable/breakable.gd" id="1_hfeje"]
-[ext_resource type="Shader" path="res://Scenes/Stuff/Log/Rect.gdshader" id="2_mlk10"]
 [ext_resource type="Texture2D" uid="uid://dmcec80gdl2tp" path="res://Assets/Graphics/Mechanics/Log/plat_2.png" id="3_u725a"]
 [ext_resource type="Texture2D" uid="uid://dexgtvcjtki2a" path="res://Assets/Graphics/Particles/plat_broken.png" id="4_s3baj"]
-[ext_resource type="AudioStream" uid="uid://b8actgd2i8vo4" path="res://Assets/SFX/Mechanics/Plat/warning.mp3" id="5_ca2sc"]
-[ext_resource type="AudioStream" uid="uid://cqkuk3ovjbdfn" path="res://Assets/SFX/Mechanics/Plat/small_thin_pieces_of_wood.mp3" id="6_ppfq6"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h5ti5"]
-shader = ExtResource("2_mlk10")
-shader_parameter/scale = Vector2(1, 1)
-shader_parameter/right = 16
-shader_parameter/top = 16
-shader_parameter/left = 16
-shader_parameter/bottom = 16
+[ext_resource type="PackedScene" uid="uid://bwh20ix2o5lnj" path="res://Scenes/Stuff/Log/plat_base.tscn" id="5_apftb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2hchr"]
 size = Vector2(34, 1)
@@ -210,7 +200,7 @@ metadata/_snap_enabled = true
 [sub_resource type="Gradient" id="Gradient_lb2wv"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[node name="Breakable" type="Node2D" node_paths=PackedStringArray("sprite_2d", "break_time", "respawn_time", "collider")]
+[node name="plat_2" type="Node2D" node_paths=PackedStringArray("sprite_2d", "break_time", "respawn_time", "collider")]
 script = ExtResource("1_hfeje")
 sprite_2d = NodePath("Sprite2D")
 break_time = NodePath("Timer/BreakTime")
@@ -220,7 +210,6 @@ collider = NodePath("Collider")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture_repeat = 3
-material = SubResource("ShaderMaterial_h5ti5")
 position = Vector2(0, -3)
 texture = ExtResource("3_u725a")
 
@@ -273,13 +262,7 @@ orbit_velocity_max = 0.1
 scale_amount_curve = SubResource("Curve_vyyk6")
 color_ramp = SubResource("Gradient_lb2wv")
 
-[node name="Audio" type="Node2D" parent="."]
-
-[node name="Snap" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("5_ca2sc")
-
-[node name="Crash" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("6_ppfq6")
+[node name="Audio" parent="." instance=ExtResource("5_apftb")]
 
 [connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
 [connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]
