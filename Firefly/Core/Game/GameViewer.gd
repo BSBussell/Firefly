@@ -51,6 +51,12 @@ func _ready():
 
 	# Set the window size to be windowed
 	set_windowed_scale()
+
+	# Get zoom from config
+	res_scale = _config.get_setting("game_zoom")
+
+	# Smoothly zoom the render to the current scale
+	smoothly_zoom_render(res_scale)
 	
 	# Let us process input even when game beat
 	set_process_input(true)
@@ -76,12 +82,19 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("scale_inc"):
 		
 		res_scale = move_toward(res_scale, 1.4, 0.1)
+
+		# Set Config
+		_config.set_setting("game_zoom", res_scale)
+		_config.save_settings()
 		print("inc: ", res_scale)
 		smoothly_zoom_render(res_scale)
 	
 	elif Input.is_action_just_pressed("scale_dec"):
 		
 		res_scale = move_toward(res_scale, 0.5, 0.1)
+		# Set Config
+		_config.set_setting("game_zoom", res_scale)
+		_config.save_settings()
 		print("dec:", res_scale)
 		smoothly_zoom_render(res_scale)
 
@@ -252,6 +265,8 @@ func smoothly_zoom_render(new_scale: float) :
 	
 	# Add Extra Padding to the target scale
 	target_scale += 0.15
+	
+	
 
 	# Setup the interpolation
 	interpolating_res = true
@@ -268,7 +283,9 @@ func zoom_render(new_scale: float) :
 	window_scale = snappedf(float(window_size.x) / float(game_res.x), 0.01)
 	
 	# Extra Padding
-	target_scale += 0.15
+	window_scale += 0.15
+	
+	
 	
 	# Take the scale and game res and resize viewports
 	update_gameview_res()

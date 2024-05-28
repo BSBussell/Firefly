@@ -499,10 +499,10 @@ position = Vector2(2422, 64)
 position = Vector2(2269, 42)
 
 [node name="plat_8" parent="PlatManager" instance=ExtResource("29_1pwh1")]
-position = Vector2(2388, 10)
+position = Vector2(2388, 14)
 
 [node name="plat_9" parent="PlatManager" instance=ExtResource("28_oebt1")]
-position = Vector2(2269, -12)
+position = Vector2(2269, -6)
 
 [connection signal="area_entered" from="Events/levelChangr" to="Events/levelChangr" method="_on_area_entered"]
 [connection signal="body_entered" from="Events/ThankNote" to="Events/ThankNote" method="_on_body_entered"]

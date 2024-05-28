@@ -8,11 +8,15 @@ class_name PauseMenu
 @onready var resume_button = $VBoxContainer/Items/Top/ResumeButton
 @onready var mixer_setting = $VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting
 
+# Toggle
+@onready var fullScreen_toggle: AnimatedToggle = $VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer/FullScreenToggle
+@onready var speedometer_toggle: AnimatedToggle = $VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer/speedometerToggle
+@onready var glow_mode_toggle: AnimatedToggle = $VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle
+
 # Sliders
 @onready var music_slider = $VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music/MusicSlider
 @onready var sfx_slider = $VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX/SFXSlider
 @onready var ambience_slider = $VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience/AmbienceSlider
-
 
 @onready var menu = $"."
 
@@ -28,10 +32,55 @@ func _ready():
 	counter = get_dependency("JarCounter", false)
 	result_screen = get_dependency("VictoryScreen", false)
 
+	load_configs()
+
+
 func define_dependencies() -> void:
 	
 	define_dependency("JarCounter", counter)
 	define_dependency("VictoryScreen", result_screen)
+
+
+func load_configs():
+
+	# Full Screen Check
+	if _config.get_setting("fullscreen"):
+		fullScreen_toggle.toggle_on()
+	else:
+		fullScreen_toggle.toggle_off()
+
+	# Speedometer Check
+	if _config.get_setting("show_speedometer"):
+		speedometer_toggle.toggle_on()
+	else:
+		speedometer_toggle.toggle_off()
+	
+	# Glow Mode Check
+	if _config.get_setting("auto_glow"):
+		glow_mode_toggle.toggle_on()
+	else:
+		glow_mode_toggle.toggle_off()
+
+	# Music Slider
+	var mixer_settings: Dictionary = _config.get_setting("mixer_settings")
+
+	if mixer_settings:
+		music_slider.value = (mixer_settings["music"] + 10) / 20
+		sfx_slider.value = (mixer_settings["sfx"] + 10) / 20
+		ambience_slider.value = (mixer_settings["ambience"] + 10) / 20
+
+		# Set the volume
+		AudioServer.set_bus_volume_db(1, mixer_settings["music"])
+		AudioServer.set_bus_volume_db(2, mixer_settings["ambience"])
+		AudioServer.set_bus_volume_db(3, mixer_settings["sfx"])
+
+		# Mute if appropriate
+		if mixer_settings["music"] == -10:
+			AudioServer.set_bus_mute(1, true)
+		if mixer_settings["ambience"] == -10:
+			AudioServer.set_bus_mute(2, true)
+		if mixer_settings["sfx"] == -10:
+			AudioServer.set_bus_mute(3, true)
 
 
 func _input(event):
@@ -124,7 +173,6 @@ func expand_container(container: VBoxContainer, final_height: float = 0, duratio
 
 
 func _on_resume_button_pressed():
-	
 	unpause()
 
 # Reveal Settings Hierarchy
@@ -141,13 +189,17 @@ func _on_settings_button_pressed():
 
 ## Fullscreen Enabled
 func _on_full_screen_toggle_switched_on():
-	_viewports.viewer.swap_fullscreen_mode()
+	_config.set_setting("fullscreen", true)
+	_config.save_settings()
+	_viewports.viewer.set_fullscreen_scale()
 	
 	
 
 ## Fullscreen disabled
 func _on_full_screen_toggle_switched_off():
-	_viewports.viewer.swap_fullscreen_mode()
+	_config.set_setting("fullscreen", false)
+	_config.save_settings()
+	_viewports.viewer.set_windowed_scale()
 	
 	
 	
@@ -160,45 +212,41 @@ func _on_audio_pressed():
 
 
 func _on_quit_button_pressed():
+	_config.save_settings()
 	get_tree().quit()
 
 
 var min_vol = -10
 var max_vol = 10
-func _on_music_slider_drag_ended(value_changed):
-	if value_changed:
-		var adjusted_val = min_vol + ((max_vol - min_vol ) * music_slider.value)
-		
-		# Let them mute it lol
-		if adjusted_val == min_vol:
-			AudioServer.set_bus_mute(1, true)
-		else:
-			AudioServer.set_bus_mute(1, false)
-		AudioServer.set_bus_volume_db(1, adjusted_val)
-		
+func set_bus_vol(bus: int, volume: float):
 	
-func _on_ambience_slider_drag_ended(value_changed):
-	if value_changed:
-		var adjusted_val = min_vol + ((max_vol - min_vol ) * ambience_slider.value)
+	var adjusted_val = min_vol + ((max_vol - min_vol ) * volume)
+	
+	# Let them mute it lol
+	if adjusted_val == min_vol:
+		AudioServer.set_bus_mute(bus, true)
+	else:
+		AudioServer.set_bus_mute(bus, false)
 		
-		# Let them mute it lol
-		if adjusted_val == min_vol:
-			AudioServer.set_bus_mute(2, true)
-		else:
-			AudioServer.set_bus_mute(2, false)
-		AudioServer.set_bus_volume_db(2, adjusted_val)
+	AudioServer.set_bus_volume_db(bus, adjusted_val)
+	
+	# Save the settings
+	var mixer_settings: Dictionary = _config.get_setting("mixer_settings")
+	
+	if not mixer_settings:
+		mixer_settings = {
+			"music": 0,
+			"ambience": 0,
+			"sfx": 0
+		}
+	
+	mixer_settings["music"] = AudioServer.get_bus_volume_db(1)
+	mixer_settings["ambience"] = AudioServer.get_bus_volume_db(2)
+	mixer_settings["sfx"] = AudioServer.get_bus_volume_db(3)
+	
+	_config.set_setting("mixer_settings", mixer_settings)
+	_config.save_settings()
 
-func _on_sfx_slider_drag_ended(value_changed):
-	if value_changed:
-		var adjusted_val = min_vol + ((max_vol - min_vol ) * sfx_slider.value)
-		
-		# Let them mute it lol
-		if adjusted_val == min_vol:
-			AudioServer.set_bus_mute(3, true)
-		else:
-			AudioServer.set_bus_mute(3, false)
-			
-		AudioServer.set_bus_volume_db(3, adjusted_val)
 
 
 
@@ -217,21 +265,53 @@ func _on_ambience_slider_focus_entered():
 
 func _on_glow_mode_toggle_switched_on():
 	
+	_config.set_setting("auto_glow", true)
+	_config.save_settings()
+
 	if _globals.ACTIVE_PLAYER:
 		_globals.ACTIVE_PLAYER.enable_auto_glow()
 
 
 func _on_glow_mode_toggle_switched_off():
+
+	_config.set_setting("auto_glow", false)
+	_config.save_settings()
+
 	if _globals.ACTIVE_PLAYER:
 		_globals.ACTIVE_PLAYER.disable_auto_glow()
 
 
 func _on_speedometer_toggle_switched_off():
 	
+	_config.set_setting("show_speedometer", false)
+	_config.save_settings()
+
 	if _globals.ACTIVE_PLAYER:
+
+		
+
 		_globals.ACTIVE_PLAYER.hide_speedometer()
 
 
 func _on_speedometer_toggle_switched_on():
+
+	_config.set_setting("show_speedometer", true)
+	_config.save_settings()
+
 	if _globals.ACTIVE_PLAYER:
+
+		
+
 		_globals.ACTIVE_PLAYER.show_speedometer()
+
+
+func _on_music_slider_value_changed(value):
+	set_bus_vol(1, value)
+
+
+func _on_sfx_slider_value_changed(value):
+	set_bus_vol(3, value)
+
+
+func _on_ambience_slider_value_changed(value):
+	set_bus_vol(2, value)

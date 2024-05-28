@@ -6,10 +6,11 @@ const CONFIG_FILE: String = "user://config.json"
 # Game settings
 var settings: Dictionary = {
     "game_zoom": 1.0,
+
 	"mixer_settings": {
-        "sfx_volume": 1.0,
-        "music_volume": 1.0,
-        "ambience_volume": 1.0
+        "sfx": 1.0,
+        "music": 1.0,
+        "ambience": 1.0
     },
 
     "fullscreen": false,

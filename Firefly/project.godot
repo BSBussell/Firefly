@@ -25,13 +25,14 @@ driver/output_latency.web=90
 [autoload]
 
 _meta="*res://Scripts/Globals/_meta.gd"
+_config="*res://Scripts/Globals/_config.gd"
 _logger="*res://Scripts/Globals/_logger.gd"
 _loader="*res://Scripts/Globals/_loader.gd"
 _debug="*res://Scripts/Globals/_debug.gd"
 _viewports="*res://Scripts/Globals/_viewports.gd"
 _gerblesh="*res://Scripts/Globals/_gerblesh.gd"
-_stats="*res://Scripts/Globals/_stats.gd"
 _globals="*res://Scripts/Globals/_globals.gd"
+_stats="*res://Scripts/Globals/_stats.gd"
 _audio="*res://Scripts/Globals/_audio.gd"
 _jar_tracker="*res://Scripts/Globals/_jar_tracker.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
