@@ -868,23 +868,23 @@ offset_bottom = 221.0
 [node name="LoadingZones" type="Node2D" parent="."]
 visible = false
 
-[node name="levelChangr" type="Area2D" parent="LoadingZones"]
+[node name="Meadow" type="Area2D" parent="LoadingZones"]
 position = Vector2(166, -887)
 script = ExtResource("13_8cde2")
 new_level = "res://Scenes/Levels/DebugLevel/debug.tscn"
 spawn_id = "cave_exit"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LoadingZones/levelChangr"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LoadingZones/Meadow"]
 position = Vector2(84, 66)
 shape = SubResource("RectangleShape2D_kao5a")
 
-[node name="levelChangr2" type="Area2D" parent="LoadingZones"]
+[node name="Tutorial" type="Area2D" parent="LoadingZones"]
 position = Vector2(403, -945)
 script = ExtResource("13_8cde2")
 new_level = "res://Scenes/Levels/TutorialLevel/tutorial.tscn"
 spawn_id = "cave"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LoadingZones/levelChangr2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LoadingZones/Tutorial"]
 position = Vector2(84, 66)
 shape = SubResource("RectangleShape2D_kao5a")
 
@@ -925,5 +925,5 @@ id = "cave_exit"
 
 [connection signal="body_entered" from="Events/UnderWaterTutorial" to="Events/UnderWaterTutorial" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/UnderWaterTutorial" to="Events/UnderWaterTutorial" method="_on_body_exited"]
-[connection signal="area_entered" from="LoadingZones/levelChangr" to="LoadingZones/levelChangr" method="_on_area_entered"]
-[connection signal="area_entered" from="LoadingZones/levelChangr2" to="LoadingZones/levelChangr2" method="_on_area_entered"]
+[connection signal="area_entered" from="LoadingZones/Meadow" to="LoadingZones/Meadow" method="_on_area_entered"]
+[connection signal="area_entered" from="LoadingZones/Tutorial" to="LoadingZones/Tutorial" method="_on_area_entered"]

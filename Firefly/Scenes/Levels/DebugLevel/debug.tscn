@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://bxpfadjfys05l"]
+[gd_scene load_steps=45 format=3 uid="uid://bxpfadjfys05l"]
 
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="1_nnlyf"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="1_x8o00"]
@@ -81,6 +81,10 @@ max_value = 500.0
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.01), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 3
 metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_jx7nb"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.972, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m7kih"]
 size = Vector2(103.5, 138)
@@ -341,22 +345,23 @@ color_ramp = SubResource("Gradient_ng1fs")
 [node name="LeafVillage" type="CPUParticles2D" parent="Particles"]
 z_index = 1
 position = Vector2(1256, -528)
-amount = 300
+amount = 250
 lifetime = 25.0
 preprocess = 100.0
 texture = ExtResource("7_xa1ik")
 emission_shape = 3
 emission_rect_extents = Vector2(1500, 1)
 gravity = Vector2(0, 5)
-angular_velocity_min = -45.0
-angular_velocity_max = 45.0
-orbit_velocity_min = -0.01
-orbit_velocity_max = 0.01
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+orbit_velocity_min = -0.02
+orbit_velocity_max = 0.02
 orbit_velocity_curve = SubResource("Curve_ynah8")
 angle_min = -45.0
 angle_max = 45.0
 scale_amount_min = 0.8
-scale_amount_max = 0.8
+scale_amount_max = 0.9
+scale_amount_curve = SubResource("Curve_jx7nb")
 
 [node name="Level" parent="." instance=ExtResource("8_pg4rs")]
 position = Vector2(1, 0)
