@@ -20,13 +20,13 @@
 [ext_resource type="AudioStream" uid="uid://cc71beoeqyxis" path="res://Assets/SFX/ambience/CaveEntrance.wav" id="12_u21pq"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="13_otwob"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="14_rlc3w"]
-[ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/spring.tscn" id="15_ceqgf"]
 [ext_resource type="Script" path="res://Scripts/Events/reveal_text_event.gd" id="16_xdq1v"]
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="17_2knxy"]
 [ext_resource type="Script" path="res://Scripts/Events/Guide_Tut2.gd" id="18_xljo3"]
 [ext_resource type="Script" path="res://Scripts/Events/text_add_score.gd" id="19_img1u"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="20_pt55a"]
 [ext_resource type="PackedScene" uid="uid://dtblwt5hi5l4c" path="res://Scenes/Checkpoint/checkpoint.tscn" id="21_41qdo"]
+[ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/Spring/spring.tscn" id="21_jydlm"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="22_krb2s"]
 [ext_resource type="PackedScene" uid="uid://mhckwfmi6yo1" path="res://Scenes/Collectibles/gem.tscn" id="23_rutx8"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="24_re622"]
@@ -401,91 +401,91 @@ Player = NodePath("../Flyph")
 
 [node name="Springs" type="Node2D" parent="."]
 
-[node name="Spring4" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring4" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2791, -601)
 
-[node name="Spring5" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring5" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2775, -657)
 
-[node name="Spring6" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring6" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2743, -737)
 
-[node name="Spring7" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring7" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2231, -202)
 rotation = -0.785398
 
-[node name="Spring8" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring8" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2324, -233)
 rotation = 0.785398
 
-[node name="Spring26" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring26" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2226, -249)
 rotation = -0.785398
 
-[node name="Spring9" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring9" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2203, -312)
 rotation = -0.785398
 
-[node name="Spring10" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring10" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2345, -273)
 
-[node name="Spring11" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring11" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2309, -186)
 rotation = 0.785398
 
-[node name="Spring12" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring12" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2259, -157)
 rotation = -0.785398
 
-[node name="Spring13" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring13" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2089, -306)
 
-[node name="Spring25" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring25" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2057, -181)
 
-[node name="Spring14" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring14" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2489, -353)
 
-[node name="Spring15" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring15" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2431, -233)
 
-[node name="Spring16" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring16" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2412, -312)
 rotation = -0.785398
 
-[node name="Spring17" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring17" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2570, -348)
 rotation = -0.785398
 
-[node name="Spring18" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring18" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2696, -429)
 rotation = -0.436332
 
-[node name="Spring19" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring19" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2436, -853)
 
-[node name="Spring21" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring21" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2330, -944)
 
-[node name="Spring29" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring29" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2173, -1053)
 
-[node name="Spring28" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring28" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-2375, -1037)
 
-[node name="Spring20" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring20" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(-1223, -241)
 
-[node name="Spring22" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring22" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(628, -173)
 
-[node name="Spring27" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring27" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(521, -189)
 
-[node name="Spring23" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring23" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(1385, 95)
 
-[node name="Spring24" parent="Springs" instance=ExtResource("15_ceqgf")]
+[node name="Spring24" parent="Springs" instance=ExtResource("21_jydlm")]
 position = Vector2(1799, -225)
 
 [node name="Events" type="Node2D" parent="."]

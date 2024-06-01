@@ -47,6 +47,9 @@ func load_level(path: String, spawn_id: String = ""):
 	# Load new ui
 	ui_loader.setup(level)
 	
+	# Unpause 
+	get_tree().paused = false
+
 	await hide_loading(loading_screen)
 
 func reload_level():

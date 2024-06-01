@@ -14,6 +14,13 @@ extends PlayerState
 @export var grab_force_multi: float = 1.75
 @export var jump_force_multi: float = -1.75
 
+# The player should be able to do a lot regardless
+# with swinging
+## The base multiplier when jumping off a rope
+@export var swing_min: float = 3.5
+## The max multiplier when jumping off a rope at the right timing.
+@export var max_jump_multi: float = 11
+
 
 # Effects
 @onready var speed_particles = $"../../Particles/MegaSpeedParticles"
@@ -240,10 +247,8 @@ func jump():
 	if jump_dir == 0:
 		jump_dir = -1 if parent.animation.flip_h else 1
 	
-	# The player should be able to do a lot regardless
-	# with swinging
-	var swing_multi = 3.5
-	var max_jump_multi = 15
+	# Base Swing Multiplier
+	var swing_multi: float = swing_min
 	
 	# But if they time the jump right :3
 	# This isn't generally base game stuff
@@ -253,23 +258,33 @@ func jump():
 	if speeding_up:
 		
 		# As the players swing speed increases it gradually approaches 15
-		var t = swing_force / max_swing_force  # Normalized force value between 0 and 1
+		# Normalized force value between 0 and 1
+		var t = swing_force / max_swing_force
 		var exponent = 3  # Adjust this exponent to control the growth rate
 		var exponential_multi = ((max_jump_multi - swing_multi) * pow(t, exponent)) + swing_multi  # Calculate the exponential multiplier
 
-		swing_multi = exponential_multi  # Apply the calculated multiplier
+		swing_multi = exponential_multi
+
+		print("Swing Multiplier: ", swing_multi)
+
+		# Set the flag cuz we wanna assume zoooming has started
+		parent.boostJumping = true
 
 	if sign(parent.velocity.x) != sign(jump_dir):
 		parent.velocity.x *= -1
 	
-	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
+	print("Swing Multiplier: ", swing_multi)
 
+	if parent.boostJumping or speeding_up:
+		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
+	else:
+		parent.velocity.x = parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
 
 	var vertical_control = 1.0
 
 	# Downward jump off rope
-	#if parent.vertical_axis < 0:
-		#vertical_control = -0.4
+	if parent.vertical_axis < 0:
+		vertical_control = -0.4
 		
 
 	# Jump Velocity
@@ -308,11 +323,11 @@ func swinging(delta, dir):
 	parent.global_position = parent.stuck_segment.global_position - offset
 	
 	# Relative position to the ropes center
-	var relative_position = parent.global_position - parent.stuck_segment.origin
+	var relative_position = round(parent.global_position - parent.stuck_segment.origin)
 	
 	
 	# If we've moved down since last pool, and 
-	if dir and sign(dir) != sign(relative_position.x):
+	if dir and sign(dir) != sign(relative_position.x) and relative_position.x != 0:
 
 		
 		# Increase the players swing force
