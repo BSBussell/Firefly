@@ -63,7 +63,12 @@ func _on_body_entered(body: PhysicsBody2D) -> void:
 	# If this spring is currently being pressed do nothing
 	if primed or body.dying: return
 	
-	_logger.info("Spring - Entered")
+	
+	
+	# Allow custom logic for preventing a launch
+	if block_spring(): return
+
+	print("Spring - Entered")
 	
 	# Prime the spring
 	primed = true
@@ -84,6 +89,9 @@ func _on_body_entered(body: PhysicsBody2D) -> void:
 	primed = false
 	reset()
 	
+## Override this with logic for blocking the spring
+func block_spring() -> bool:
+	return false
 
 func reset():
 	pass

@@ -36,7 +36,7 @@ func _ready():
 	snap.pitch_scale = plat_pitch
 	
 	break_time.wait_time = TIME_TO_BREAK
-	break_time.wait_time = TIME_TO_RESPAWN
+	respawn_time.wait_time = TIME_TO_RESPAWN
 	
 	
 	pass

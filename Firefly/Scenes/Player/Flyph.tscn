@@ -988,6 +988,7 @@ hit_from_inside = true
 [node name="LandingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("15_o0d2x")
 volume_db = -10.0
+pitch_scale = 1.5
 bus = &"SFX"
 
 [node name="JumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
@@ -1062,7 +1063,7 @@ label_settings = SubResource("LabelSettings_iomiv")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("10_amheu")
-starting_state = NodePath("Grounded")
+starting_state = NodePath("Aerial")
 
 [node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "coyote_time", "post_jump_buffer")]
 script = ExtResource("28_u1lt2")

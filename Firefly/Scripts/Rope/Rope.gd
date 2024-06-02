@@ -80,7 +80,7 @@ func create_joints() -> void:
 			# new_segment.set_collision_layer_value(9, false)
 			# new_segment.set_collision_mask_value(1, true)
 			new_segment.set_deferred("collision_layer", 0)
-			# new_segment.set_deferred("collision_mask", 1)
+			new_segment.set_deferred("collision_mask", 1)
 			new_segment.modulate = "#3e3b65bf"
 		
 		

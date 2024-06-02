@@ -15,7 +15,8 @@ var settings: Dictionary = {
 
     "fullscreen": false,
     "auto_glow": false,
-	"show_speedometer": true
+	"show_speedometer": true,
+    "show_timer": false
 }
 
 # Called when the node is added to the scene
@@ -45,7 +46,7 @@ func save_settings() -> void:
 
 # Get a setting value by key
 func get_setting(key: String) -> Variant:
-    return settings.get(key, null)
+    return settings.get(key)
 
 # Set a setting value by key and save to file
 func set_setting(key: String, value: Variant) -> void:

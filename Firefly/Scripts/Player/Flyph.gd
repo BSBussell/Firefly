@@ -370,6 +370,9 @@ func set_input_axis(delta: float) -> void:
 	# If we're still locked then assign the locked value to input
 	if lock_dir:
 		horizontal_axis = hold_dir
+
+	if horizontal_axis:
+		print(horizontal_axis)
 	
 
 
@@ -966,6 +969,9 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 ## DEATH RELATED METHODS!
 # Whatever we need to do when the player dies can be called here
 func kill():
+
+	# Prevent double calls mid death
+	if dying: return
 
 	# Reset the trail
 	trail.clear_points()

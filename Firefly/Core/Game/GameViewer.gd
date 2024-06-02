@@ -65,10 +65,11 @@ func _ready():
 func _input(_event: InputEvent) -> void:
 	
 	# Handle Resets
-	if Input.is_action_just_pressed("reset"):
+	if Input.is_action_just_pressed("reset") and not _loader.loading:
 		
 		_stats.DEATHS = 0
-		_stats.TIME = 0
+		_stats.reset_timer()
+		_stats.INVALID_RUN = false
 		
 		_jar_tracker.reset_jars()
 		
@@ -155,7 +156,7 @@ func set_fullscreen_scale():
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 	## Update Render Scaling
-	var screen_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
+	var screen_size = get_usable_screen_size()
 	
 	window_size = screen_size
 
@@ -190,12 +191,15 @@ func rescale_game_viewport(scale_factor):
 func update_aspect_ratio():
 	
 	# Find the screen size and then aspect ratio of the screen
-	var screen_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
+	var screen_size = get_usable_screen_size()
 	var aspect_ratio: float = float(screen_size.x) / float(screen_size.y)
 	
 	# Set the base aspect ratio
 	base_aspect_ratio = BASE_RENDER
 	base_aspect_ratio.y = ceil( float(BASE_RENDER.x) / aspect_ratio ) 
+
+	_logger.info(str(screen_size))
+	_logger.info(str(base_aspect_ratio))
 	
 
 ## Resizes the game to the aspect ratio of the screen
@@ -290,3 +294,19 @@ func zoom_render(new_scale: float) :
 	# Take the scale and game res and resize viewports
 	update_gameview_res()
 	rescale_game_viewport(window_scale)
+
+
+
+## Works on Apple Silicon Macbooks :/ (this is kinda bad idk how else id do this tbh)
+func get_usable_screen_size() -> Vector2i:
+
+
+	# Find the screen size and then aspect ratio of the screen
+	var screen_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
+	var aspect_ratio: float = float(screen_size.x) / float(screen_size.y)
+
+	# If the aspect ratio matches a silicon mac laptop
+	if aspect_ratio == (3456.0 / 2234.0):
+		screen_size.y -= 74
+	
+	return screen_size

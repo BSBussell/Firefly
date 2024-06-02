@@ -12,6 +12,7 @@ class_name PauseMenu
 @onready var fullScreen_toggle: AnimatedToggle = $VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer/FullScreenToggle
 @onready var speedometer_toggle: AnimatedToggle = $VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer/speedometerToggle
 @onready var glow_mode_toggle: AnimatedToggle = $VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle
+@onready var timer_toggle: AnimatedToggle = $VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer/timerToggle
 
 # Sliders
 @onready var music_slider = $VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music/MusicSlider
@@ -23,6 +24,7 @@ class_name PauseMenu
 var paused: bool = false
 
 var counter: JarCounter = null
+var game_timer: GameTimer = null
 var result_screen: VictoryScreen = null
 
 func _ready():
@@ -31,6 +33,7 @@ func _ready():
 
 	counter = get_dependency("JarCounter", false)
 	result_screen = get_dependency("VictoryScreen", false)
+	game_timer = get_dependency("GameTimer", true)
 
 	load_configs()
 
@@ -39,6 +42,7 @@ func define_dependencies() -> void:
 	
 	define_dependency("JarCounter", counter)
 	define_dependency("VictoryScreen", result_screen)
+	define_dependency("GameTimer", game_timer)
 
 
 func load_configs():
@@ -60,6 +64,17 @@ func load_configs():
 		glow_mode_toggle.toggle_on()
 	else:
 		glow_mode_toggle.toggle_off()
+
+
+	# Speedrun timer check
+	if _config.get_setting("show_timer"):
+
+		timer_toggle.toggle_on()
+		game_timer.show_timer()
+	else:
+		timer_toggle.toggle_off()
+		game_timer.hide_timer()
+
 
 	# Music Slider
 	var mixer_settings: Dictionary = _config.get_setting("mixer_settings")
@@ -315,3 +330,15 @@ func _on_sfx_slider_value_changed(value):
 
 func _on_ambience_slider_value_changed(value):
 	set_bus_vol(2, value)
+
+
+
+func _on_timer_toggle_switched_on():
+	game_timer.show_timer()
+	_config.set_setting("show_timer", true)
+	_config.save_settings()
+
+func _on_timer_toggle_switched_off():
+	game_timer.hide_timer()
+	_config.set_setting("show_timer", false)
+	_config.save_settings()

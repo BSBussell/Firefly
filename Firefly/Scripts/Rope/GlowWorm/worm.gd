@@ -90,9 +90,7 @@ func reached_segment():
 func get_prev_segment():
 	if target_segment.prev == null:
 		
-		target_segment = target_segment.next
-		reversed = false
-		sprite_2d.flip_v = false
+		target_segment.root.kill_worm()
 	else:	
 		target_segment = target_segment.prev
 		

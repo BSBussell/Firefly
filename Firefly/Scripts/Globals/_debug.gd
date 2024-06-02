@@ -16,16 +16,22 @@ func _input(_event: InputEvent) -> void:
 		if Input.is_key_pressed(key) and Engine.time_scale != scale_factors[key]:
 			var scale_factor = scale_factors[key]
 			Engine.time_scale = scale_factor
+
+			
+			_stats.INVALID_RUN = true
 			break
 
 	# Load Tutorial
-	if Input.is_key_pressed(KEY_8):
+	if Input.is_key_pressed(KEY_8) and not _loader.loading:
 		_loader.load_level("res://Scenes/Levels/TutorialLevel/tutorial.tscn")
+		_stats.INVALID_RUN = true
 		
 	# Load Debug Environment
-	if Input.is_key_pressed(KEY_9):
+	if Input.is_key_pressed(KEY_9) and not _loader.loading:
 		_loader.load_level("res://Scenes/Levels/CaveLevel/cave_level.tscn")
+		_stats.INVALID_RUN = true
 		
 	# Load Debug Environment
-	if Input.is_key_pressed(KEY_0):
+	if Input.is_key_pressed(KEY_0) and not _loader.loading:
 		_loader.load_level("res://Scenes/Levels/DebugLevel/debug.tscn")
+		_stats.INVALID_RUN = true

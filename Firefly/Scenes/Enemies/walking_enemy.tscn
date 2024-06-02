@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bn0ibiwauibvx"]
+[gd_scene load_steps=16 format=3 uid="uid://bn0ibiwauibvx"]
 
 [ext_resource type="Texture2D" uid="uid://c208mmxa0olv3" path="res://Scenes/Enemies/red-slime-spritesheet.png" id="1_pxwv7"]
 [ext_resource type="Script" path="res://Scenes/Enemies/walking_enemy.gd" id="1_w3xqf"]
@@ -53,16 +53,13 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s5ues"]
 radius = 3.5
-height = 13.0
+height = 10.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lpitg"]
-size = Vector2(8.5, 2)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_glqx8"]
-size = Vector2(8, 1)
+size = Vector2(13, 9)
 
 [node name="WalkingEnemy" type="CharacterBody2D"]
-collision_layer = 16
+collision_layer = 0
 collision_mask = 18
 script = ExtResource("1_w3xqf")
 
@@ -93,33 +90,34 @@ target_position = Vector2(0, 9)
 collision_mask = 18
 collide_with_areas = true
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+[node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_s5ues")
 
 [node name="Bouncy" type="Area2D" parent="." node_paths=PackedStringArray("boing_", "sprite_2d")]
 collision_layer = 2
+priority = 1
 script = ExtResource("3_3na1u")
 boing_ = NodePath("../Pop")
 sprite_2d = NodePath("../SquishNode/AnimatedSprite2D")
 MAX_SPRING_HEIGHT = 2.1
 SPRING_RISE_TIME = 0.31
-MAX_JUMP_BOOST_HEIGHT = 3.0
-JUMP_BOOST_RISE_TIME = 0.35
+MAX_JUMP_BOOST_HEIGHT = 3.5
+JUMP_BOOST_RISE_TIME = 0.4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bouncy"]
-position = Vector2(0, -9.5)
+position = Vector2(0, -6.5)
 shape = SubResource("RectangleShape2D_lpitg")
 
-[node name="Standing_Zone" type="StaticBody2D" parent="."]
-collision_layer = 32
-constant_linear_velocity = Vector2(60, 0)
+[node name="HazardArea" type="Area2D" parent="."]
+collision_layer = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Standing_Zone"]
-position = Vector2(0, -9)
-shape = SubResource("RectangleShape2D_glqx8")
-one_way_collision = true
+[node name="Collider2" type="CollisionShape2D" parent="HazardArea"]
+position = Vector2(0, -5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_s5ues")
+debug_color = Color(0.986904, 0, 0.318713, 0.42)
 
 [node name="Pop" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_auxxk")
@@ -140,4 +138,5 @@ wait_time = 5.0
 
 [connection signal="body_entered" from="Bouncy" to="Bouncy" method="_on_body_entered"]
 [connection signal="bounce" from="Bouncy" to="." method="_on_bouncy_bounce"]
+[connection signal="body_entered" from="HazardArea" to="." method="_on_hazard_area_body_entered"]
 [connection signal="timeout" from="BounceCoolDown" to="." method="_on_bounce_cool_down_timeout"]

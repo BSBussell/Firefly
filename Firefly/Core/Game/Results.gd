@@ -26,25 +26,27 @@ func _input(event):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
+
+	pass	
 	_logger.info("Result - Process")
 	
-	if not get_tree().paused:
-		_stats.TIME += delta
+	var display_time = _stats.get_timer_string()
 
-	var minutes: int = int(_stats.TIME) / 60
-	var seconds: int = int(_stats.TIME) % 60
-	var milliseconds: int = int((_stats.TIME - int(_stats.TIME)) * 1000)
+	var found_jars: int = _jar_tracker.num_found_jars()
 
-	var display_time = "%02d:%02d:%03d" % [minutes, seconds, milliseconds]
-
-	stats_label.text = "Time: %s\n Total Deaths: %d" % [display_time, _stats.DEATHS]
+	stats_label.text = "Time: %s\n Jars Found: %d\n Total Deaths: %d" % [display_time, found_jars, _stats.DEATHS]
 
 	_logger.info("Result - Process End")
 
 func show_Victory_Screen():
 	self.visible = true
 	get_tree().paused = true
+
+	# Update stats label
+	var display_time = _stats.get_timer_string()
+	var found_jars: int = _jar_tracker.num_found_jars()
+	stats_label.text = "Time: %s\n Jars Found: %d\n Total Deaths: %d" % [display_time, found_jars, _stats.DEATHS]
+
 	displayed = true
 
 func hide_Victory_Screen():

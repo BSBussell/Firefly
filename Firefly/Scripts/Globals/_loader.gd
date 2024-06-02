@@ -5,6 +5,10 @@ var ui_loader: UiLoader
 
 var current_path: String
 
+
+## If the game is currently loading a level
+var loading: bool = true
+
 #@onready var loading_screen = preload("res://Core/loading_screen.tscn").instantiate()
 
 
@@ -29,7 +33,11 @@ func connect_loaders(ll: LevelLoader, ui: UiLoader):
 	
 
 func load_level(path: String, spawn_id: String = ""):
-	
+
+	loading = true
+
+	# Start the timer while the loading screen
+	_stats.stop_timer()	
 	var loading_screen = await show_loading()
 
 	current_path = path
@@ -51,6 +59,11 @@ func load_level(path: String, spawn_id: String = ""):
 	get_tree().paused = false
 
 	await hide_loading(loading_screen)
+
+	# Once we've finished loading start the timer
+	_stats.start_timer()
+
+	loading = false
 
 func reload_level():
 	load_level(current_path)

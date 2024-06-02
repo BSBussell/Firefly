@@ -269,6 +269,7 @@ func jump():
 
 		# Set the flag cuz we wanna assume zoooming has started
 		parent.boostJumping = true
+	
 
 	if sign(parent.velocity.x) != sign(jump_dir):
 		parent.velocity.x *= -1
@@ -279,6 +280,7 @@ func jump():
 		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
 	else:
 		parent.velocity.x = parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
+
 
 	var vertical_control = 1.0
 
