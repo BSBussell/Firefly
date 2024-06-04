@@ -357,6 +357,11 @@ func set_input_axis(delta: float) -> void:
 	horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
 	vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
 
+	if horizontal_axis == 0.5:
+		horizontal_axis = 1.0
+	elif horizontal_axis == -0.5:
+		horizontal_axis = -1.0
+
 
 	# If we've just pressed an input then unlock the direction (so silly players
 	# can regain control if they want to)

@@ -376,6 +376,7 @@ scale_amount_max = 0.4
 stream = ExtResource("4_aa8wm")
 volume_db = -5.0
 pitch_scale = 1.6
+bus = &"SFX"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Explosion"]
 libraries = {

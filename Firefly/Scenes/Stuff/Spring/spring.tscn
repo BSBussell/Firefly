@@ -145,5 +145,6 @@ shape = SubResource("RectangleShape2D_3es8a")
 
 [node name="Boing!" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_454p6")
+bus = &"SFX"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
