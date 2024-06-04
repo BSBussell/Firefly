@@ -19,7 +19,13 @@ extends PlayerState
 ## The base multiplier when jumping off a rope
 @export var swing_min: float = 3.5
 ## The max multiplier when jumping off a rope at the right timing.
-@export var max_jump_multi: float = 11
+@export var max_jump_multi: float = 8
+
+## Height of jumping off a rope
+@export var swing_jump_height: float = 2.0
+@export var swing_jump_rise_time: float = 0.2
+@export var boosted_sj_height: float = 2.0
+@export var boost_sj_rise_time: float = 0.3
 
 
 # Effects
@@ -33,6 +39,19 @@ extends PlayerState
 @onready var swinging_sfx = $"../../Audio/SwingingSFX"
 @onready var rope_creak_sfx = $"../../Audio/RopeCreakSFX"
 
+
+@onready var real_swing_jump_height: float = swing_jump_height * 16
+@onready var real_bsj_height: float = boosted_sj_height * 16
+
+## The vertical velocity of the player when they swing jump
+@onready var swing_jump_velocity: float = ((-2.0 * real_swing_jump_height) / swing_jump_rise_time)
+## The gravity of the player when they swing jump
+@onready var swing_jump_gravity: float = ((-2.0 * real_swing_jump_height) / pow(swing_jump_rise_time, 2))
+
+## The vertical velocity of the player when they boost jump
+@onready var boost_sj_velocity: float = ((-2.0 * real_bsj_height) / boost_sj_rise_time)
+## The gravity of the player when they boost jump
+@onready var boost_sj_gravity: float = ((-2.0 * real_bsj_height) / pow(boost_sj_rise_time, 2))
 
 # Called on state entrance, setup
 func enter() -> void:
@@ -246,51 +265,64 @@ func jump():
 	var jump_dir = parent.horizontal_axis
 	if jump_dir == 0:
 		jump_dir = -1 if parent.animation.flip_h else 1
-	
+
+	var vertical_multi = 1.0
+
+	# Downward jump off rope
+	if parent.vertical_axis < 0:
+		vertical_multi = -0.4
+
 	# Base Swing Multiplier
 	var swing_multi: float = swing_min
+
+	var jump_y_vel: float = parent.jump_velocity
 	
 	# But if they time the jump right :3
-	# This isn't generally base game stuff
-	# More like silly fun zoom stuff
-	# The goal of this is to simulate the boost you might get
-	# From jumping with the ropes force
+	# The goal of this is to simulate how horizontal velocity is highest
 	if speeding_up:
 		
 		# As the players swing speed increases it gradually approaches 15
 		# Normalized force value between 0 and 1
-		var t = swing_force / max_swing_force
-		var exponent = 3  # Adjust this exponent to control the growth rate
-		var exponential_multi = ((max_jump_multi - swing_multi) * pow(t, exponent)) + swing_multi  # Calculate the exponential multiplier
-
+			# var t = swing_force / max_swing_force
+			# var exponent = 3  # Adjust this exponent to control the growth rate
+		
+		
+			# var exponential_multi = ((max_jump_multi - swing_multi) * pow(t, exponent)) + swing_multi
+			# var exponential_multi = lerp(swing_min, max_jump_multi, swing_force/max_swing_force)
+		
+		var exponential_multi = max_jump_multi
 		swing_multi = exponential_multi
 
 		print("Swing Multiplier: ", swing_multi)
 
+		parent.set_temp_gravity(boost_sj_gravity)
+
+		jump_y_vel = boost_sj_velocity
+
 		# Set the flag cuz we wanna assume zoooming has started
 		parent.boostJumping = true
 	
+	# else:
+
+		# Set the gravity
+		# if swing_jump_gravity:
+			# parent.set_temp_gravity(swing_jump_gravity)
 
 	if sign(parent.velocity.x) != sign(jump_dir):
 		parent.velocity.x *= -1
 	
-	print("Swing Multiplier: ", swing_multi)
 
+
+
+	# Jump Velocity
+	parent.velocity.y = jump_y_vel * vertical_multi
+
+	# Jump horizontal boost
 	if parent.boostJumping or speeding_up:
 		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
 	else:
 		parent.velocity.x = parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
 
-
-	var vertical_control = 1.0
-
-	# Downward jump off rope
-	if parent.vertical_axis < 0:
-		vertical_control = -0.4
-		
-
-	# Jump Velocity
-	parent.velocity.y = parent.jump_velocity * vertical_control
 
 	# Jump SFX
 	jumping_sfx.play(0)

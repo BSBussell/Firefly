@@ -5,6 +5,7 @@ var ui_loader: UiLoader
 
 var current_path: String
 
+signal finished_loading
 
 ## If the game is currently loading a level
 var loading: bool = true
@@ -60,6 +61,8 @@ func load_level(path: String, spawn_id: String = ""):
 
 	await hide_loading(loading_screen)
 
+	emit_signal("finished_loading")
+
 	# Once we've finished loading start the timer
 	_stats.start_timer()
 
@@ -68,4 +71,23 @@ func load_level(path: String, spawn_id: String = ""):
 func reload_level():
 	load_level(current_path)
 
+func reset_game(level_path: String):
+
+	_stats.DEATHS = 0
+	_stats.reset_timer()
+	_stats.INVALID_RUN = false
+	_jar_tracker.reset_jars()
+	
+	load_level(level_path)
+
+	# Await finished loading signal
+	await finished_loading
+	
+	print("Game Reset")
+	_jar_tracker.reset_jars()
+	
+	
+
+
+	
 

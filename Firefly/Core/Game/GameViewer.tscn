@@ -26,8 +26,8 @@ start_level = ExtResource("2_gamt3")
 environment = SubResource("Environment_xxxtd")
 
 [node name="GameContainer" type="SubViewportContainer" parent="."]
-offset_right = 330.0
-offset_bottom = 190.0
+offset_right = 320.0
+offset_bottom = 180.0
 scale = Vector2(6, 6)
 script = ExtResource("3_oejcr")
 

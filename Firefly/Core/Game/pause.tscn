@@ -83,6 +83,7 @@ alignment = 0
 layout_mode = 2
 
 [node name="SettingsContainer" type="VBoxContainer" parent="VBoxContainer/Items/Top/Settings"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 20
 
@@ -241,8 +242,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_neighbor_left = NodePath("../../../SettingsButton")
-focus_neighbor_top = NodePath("../../ShowTimer/timerToggle")
-focus_neighbor_bottom = NodePath("../../AudioSettingContainer/Audio")
+focus_neighbor_top = NodePath("../../GlowModeContainer/GlowModeToggle")
+focus_neighbor_bottom = NodePath("../../ShowTimer/timerToggle")
 
 [node name="ShowTimer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
 layout_mode = 2

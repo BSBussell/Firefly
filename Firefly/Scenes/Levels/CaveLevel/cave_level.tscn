@@ -339,11 +339,21 @@ bus = &"Music"
 
 [node name="Ambience" type="AudioStreamPlayer" parent="LevelAudio"]
 stream = ExtResource("3_xkvdx")
-volume_db = -3.0
+volume_db = -2.0
 bus = &"Ambience"
 
 [node name="CaveExit" type="AudioStreamPlayer2D" parent="LevelAudio"]
-position = Vector2(276, -928)
+visible = false
+position = Vector2(-1659, -1900)
+stream = ExtResource("4_qurpt")
+volume_db = -12.0
+autoplay = true
+attenuation = 1.27456
+bus = &"Ambience"
+
+[node name="CaveExit2" type="AudioStreamPlayer2D" parent="LevelAudio"]
+visible = false
+position = Vector2(480, -1020)
 stream = ExtResource("4_qurpt")
 volume_db = -12.0
 autoplay = true
@@ -534,7 +544,7 @@ position = Vector2(-519, -1222)
 [node name="Final_Climb" type="Node2D" parent="Platforms"]
 
 [node name="cave_plat" parent="Platforms/Final_Climb" instance=ExtResource("19_f4rja")]
-position = Vector2(-709, -1335)
+position = Vector2(-695, -1335)
 
 [node name="cave_plat3" parent="Platforms/Final_Climb" instance=ExtResource("20_v46vy")]
 position = Vector2(-756, -1372)
@@ -1169,6 +1179,7 @@ libraries = {
 position = Vector2(-2, -64)
 
 [node name="CheckpointArea3" parent="CheckpointManager" node_paths=PackedStringArray("optional_target") instance=ExtResource("15_ukqlk")]
+visible = false
 position = Vector2(446, -23)
 scale = Vector2(15.195, 1)
 optional_target = NodePath("Marker2D")
@@ -1330,7 +1341,6 @@ position = Vector2(-982, -918)
 rotation = 0.785398
 
 [node name="CameraTargets" type="Node2D" parent="."]
-visible = false
 
 [node name="CameraTarget" type="Area2D" parent="CameraTargets"]
 position = Vector2(46, -401)

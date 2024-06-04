@@ -157,7 +157,7 @@ signal dead()
 @onready var starting_position = global_position
 
 # Movement State Shit
-@onready var movement_data: PlayerMovementData = movement_states[0]
+var movement_data: PlayerMovementData
 @onready var max_level: int = len(movement_states) - 1
 
 ## Movement Values
@@ -274,7 +274,11 @@ var dying: bool = false
 # I'm Being really annoying about this btw
 func _ready() -> void:
 
-	
+	if movement_states[0]:
+		movement_data = movement_states[0]
+	else:
+		printerr("No Movement Data KYS")
+
 	# I hate myself
 	calculate_properties()
 
@@ -282,6 +286,8 @@ func _ready() -> void:
 	set_standing_collider()
 
 	glow_manager.startup()
+	
+	
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)

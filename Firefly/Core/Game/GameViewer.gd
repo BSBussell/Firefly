@@ -67,16 +67,16 @@ func _input(_event: InputEvent) -> void:
 	# Handle Resets
 	if Input.is_action_just_pressed("reset") and not _loader.loading:
 		
-		_stats.DEATHS = 0
-		_stats.reset_timer()
-		_stats.INVALID_RUN = false
+
 		
-		_jar_tracker.reset_jars()
 		
 		# Reload the scene
 		get_tree().paused = false
+
+
+		await _loader.reset_game(start_level.resource_path)
+
 		
-		_loader.load_level(start_level.resource_path)
 			
 
 	## All these handle is the zooming in and out of gam

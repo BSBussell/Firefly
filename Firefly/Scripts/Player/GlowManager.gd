@@ -255,6 +255,8 @@ func change_state(level: int):
 	
 	movement_level = level
 	
+	_logger.info("Glow Manager - In Level: " + str(movement_level))
+
 	# Ok set the new movement level
 	PLAYER.movement_data = PLAYER.movement_states[movement_level]
 	

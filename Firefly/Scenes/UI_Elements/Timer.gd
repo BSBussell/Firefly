@@ -16,9 +16,7 @@ func _ready():
 func _process(delta):
 	
 	
-
-	if is_visible:
-		timer.text = _stats.get_timer_string()
+	timer.text = _stats.get_timer_string()
 
 ## Hides the Speedrun Timer
 func hide_timer():
