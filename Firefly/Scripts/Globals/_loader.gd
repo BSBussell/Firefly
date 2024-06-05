@@ -5,6 +5,11 @@ var ui_loader: UiLoader
 
 var current_path: String
 
+signal finished_loading
+
+## If the game is currently loading a level
+var loading: bool = true
+
 #@onready var loading_screen = preload("res://Core/loading_screen.tscn").instantiate()
 
 
@@ -29,7 +34,15 @@ func connect_loaders(ll: LevelLoader, ui: UiLoader):
 	
 
 func load_level(path: String, spawn_id: String = ""):
-	
+
+	loading = true
+
+	var player_level = 0
+	if _globals.ACTIVE_PLAYER:
+		player_level = _globals.ACTIVE_PLAYER.get_glow_level()
+
+	# Start the timer while the loading screen
+	_stats.stop_timer()	
 	var loading_screen = await show_loading()
 
 	current_path = path
@@ -47,9 +60,43 @@ func load_level(path: String, spawn_id: String = ""):
 	# Load new ui
 	ui_loader.setup(level)
 	
+	# Unpause 
+	get_tree().paused = false
+
+	if _globals.ACTIVE_PLAYER:
+		_globals.ACTIVE_PLAYER.glow_manager.change_state(player_level)
+
 	await hide_loading(loading_screen)
+
+	emit_signal("finished_loading")
+
+	# Once we've finished loading start the timer
+	_stats.start_timer()
+
+	loading = false
 
 func reload_level():
 	load_level(current_path)
 
+func reset_game(level_path: String):
+
+	_stats.DEATHS = 0
+	_stats.reset_timer()
+	_stats.INVALID_RUN = false
+	_jar_tracker.reset_jars()
+	
+	_globals.ACTIVE_PLAYER.glow_manager.change_state(0)
+
+	load_level(level_path)
+
+	# Await finished loading signal
+	await finished_loading
+	
+	print("Game Reset")
+	_jar_tracker.reset_jars()
+	
+	
+
+
+	
 

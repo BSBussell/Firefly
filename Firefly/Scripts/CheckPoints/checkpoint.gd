@@ -64,6 +64,3 @@ func _on_body_entered(body):
 	var player = body as Flyph
 	if player and not active:
 		activate_checkpoint(player)
-		
-	else:
-		print("Potential Enemy or something else :3")

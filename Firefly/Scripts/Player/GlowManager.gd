@@ -1,10 +1,12 @@
 class_name Glow_Manager
 extends Node
 
-@export var MAX_ENTRIES: int = 180
-@export var SPEEDOMETER_ENTRIES: int = 120
-@export var FF_ENTRIES: int = 10
-@export var SLIDE_ENTRIES: int = 10
+## The sample size for calculating the score average
+@export var SPEED_SAMPLE_SIZE: int = 5
+
+## How often we pool speed for a new average
+@export var SPEED_POLL_RATE: float = 0.2
+
 @export var MOMENTUM_TIMER: Timer
 
 @onready var PLAYER: Flyph = $".."
@@ -21,9 +23,14 @@ var movement_level: int = 0
 var max_level: int
 var score: float = 0
 
+var score_sample: SampleArray
+var poll_count: float = 0.0
+
 var auto_glow: bool = false
 
 var GLOW_ENABLED: bool = true
+
+
 
 var glow_points: float = 0
 var glow_points_max: float = 100
@@ -51,19 +58,30 @@ func startup():
 	
 	MOMENTUM_TIMER.stop()
 	
+	# Initialize our sample array
+	score_sample = SampleArray.new(SPEED_SAMPLE_SIZE)
+	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
 	
-	
+	# If we haven't enabled glow yet then we don't do anything
 	if not GLOW_ENABLED:
-		
-		
 		return
 	
 	# Update Scoring information based on movement speed, etc.
 	score = calc_score()
+	
+	if poll_count >= SPEED_POLL_RATE:
+		score_sample.add_element(score)
+		poll_count = 0
+		
+		print("Score Average: ", score_sample.get_average())
+		
+	poll_count += delta
+	
 	var new_points = score * glow_grow_rate
 	
 	# Add score to points, score only goes up if we're at max level
@@ -79,18 +97,19 @@ func _process(delta):
 			decaying = true
 			
 			# Unless the player is goated
-			if score > 3:
+			if score > 4:
 				decaying = false
 				exponential_decay = 0.0
 		
+		
 		# Otherwise we only decay when velocity is 0 for a set time
-		elif (PLAYER.velocity.x <= PLAYER.air_speed) and MOMENTUM_TIMER.is_stopped():
+		elif score_sample.get_average() <= 0.8 and MOMENTUM_TIMER.is_stopped():
 			
 			# Start timer
 			MOMENTUM_TIMER.start()
 			
 		# If we start moving then we stop the timer
-		elif PLAYER.velocity.x != 0 and not MOMENTUM_TIMER.is_stopped():
+		elif score_sample.get_average() > 0.8 and not MOMENTUM_TIMER.is_stopped():
 			MOMENTUM_TIMER.stop()
 			
 			# Reset the decay rate once the player starts moving again
@@ -105,7 +124,7 @@ func _process(delta):
 		if decaying:
 			
 			# Exonential Decay Rate
-			exponential_decay += glow_decay_rate * 0.1
+			exponential_decay += glow_decay_rate * 0.025
 			
 			glow_points = move_toward(glow_points, 0, delta * exponential_decay)
 			
@@ -120,7 +139,10 @@ func _process(delta):
 	if movement_level <= max_level:
 		if round(glow_points) >= 100 and (Input.is_action_just_pressed("Glow_Up") or auto_glow):
 			promote()
-				
+
+	# If Glow down is pressed and we're not at the bottom
+	if movement_level > 0 and Input.is_action_just_pressed("Glow_Down"):
+		demote()		
 	
 	# Update our meter
 	emit_signal("glow_meter_changed", glow_points)
@@ -186,6 +208,8 @@ func promote(starting_points: int = 20) -> bool:
 
 	if movement_level < max_level:
 		
+		print("Glow Boost ", PLAYER.movement_data.GLOW_UPGRADE_BOOST)
+		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
 		
 		change_state(movement_level + 1)
 		
@@ -193,15 +217,15 @@ func promote(starting_points: int = 20) -> bool:
 		if movement_level != max_level:
 			glow_points = starting_points
 		
-		PLAYER.give_boost(200)
+		
 		promotion_fx.emitting = true
 		
 		return true
 		
 	# Just use the boost and consume points
 	else:
-		
-		PLAYER.give_boost(250)
+		print("Glow Boost ", PLAYER.movement_data.GLOW_UPGRADE_BOOST)
+		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
 		glow_points = 10
 		return false
 
@@ -231,6 +255,8 @@ func change_state(level: int):
 	
 	movement_level = level
 	
+	_logger.info("Glow Manager - In Level: " + str(movement_level))
+
 	# Ok set the new movement level
 	PLAYER.movement_data = PLAYER.movement_states[movement_level]
 	
@@ -251,9 +277,7 @@ func change_state(level: int):
 # Timer is started when we stop moving, if we start moving again it is stopped again
 func _on_momentum_time_timeout():
 	
-	# If we still aren't moving
-	if PLAYER.velocity.x == 0:
 		
 		
-		# Start decaying our points
-		decaying = true
+	# Start decaying our points
+	decaying = true

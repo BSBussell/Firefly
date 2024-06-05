@@ -25,7 +25,7 @@ func local_ready():
 	ambience.play(0)
 	
 	# Enable Reverb Audio Filer
-	_audio.set_level_effects([0])
+	#_audio.set_level_effects([0])
 
 
 	

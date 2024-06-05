@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwh20ix2o5lnj"]
+
+[ext_resource type="AudioStream" uid="uid://bgp5c8dtonsvg" path="res://Assets/SFX/Mechanics/Plat/twig_snap.mp3" id="1_4xya2"]
+[ext_resource type="AudioStream" uid="uid://cqkuk3ovjbdfn" path="res://Assets/SFX/Mechanics/Plat/small_thin_pieces_of_wood.mp3" id="2_2ak55"]
+[ext_resource type="AudioStream" uid="uid://binoki6dtc4uu" path="res://Assets/SFX/Player/respawn.mp3" id="3_argmy"]
+
+[node name="Audio" type="Node2D"]
+
+[node name="Snap" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("1_4xya2")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="Crash" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_2ak55")
+volume_db = -5.0
+pitch_scale = 1.5
+bus = &"SFX"
+
+[node name="Pop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_argmy")
+volume_db = -10.0
+pitch_scale = 0.9
+bus = &"SFX"

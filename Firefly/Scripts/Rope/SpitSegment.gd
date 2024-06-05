@@ -4,6 +4,7 @@ class_name SpitSegment
 
 @onready var spit = $"."
 
+var root: Rope = null
 
 # Hooked up by rope
 var prev: RigidBody2D = null
@@ -32,9 +33,8 @@ func connect_signal(function: Callable):
 		print("Stupid Error: ", err)
 
 func player_grabbed():
-	print("Emitting Grabbed Signal")
+	_logger.info("Segment - Emitting Grabbed Signal")
 	emit_signal("grabbed", self)
 
 func start_cooldown(time: float) -> void:
-	
-	get_parent().start_cooldown(time)
+	root.start_cooldown(time)

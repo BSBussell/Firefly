@@ -61,6 +61,7 @@ texture_scale = 0.05
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_3smny")
+volume_db = -5.0
 max_distance = 640.0
 attenuation = 3.24901
 bus = &"SFX"

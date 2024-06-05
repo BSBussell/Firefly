@@ -19,17 +19,24 @@ var delay: float = 1.0
 func _ready():
 	
 	timer.start(delay)
-	pass # Replace with function body.
+	
 
 func _process(delta):
 	
+	_logger.info("Worm - Process Start")
+
 	if reversed:
 		point_light_2d.position.y = -8
 	else:
 		point_light_2d.position.y = -4
 
+	_logger.info("Worm - Process End")
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
+
+	_logger.info("Worm - Physics Process Start")
+
 	if active:
 		crawl(delta)
 
@@ -39,13 +46,13 @@ func _physics_process(delta):
 		else:
 			get_prev_segment()
 
+	_logger.info("Worm - Physics Process End")
+
 func setup_hunt(initial: SpitSegment, speed: float, delay: float):
 	
 	first_segment = initial
 	climb_speed = speed
 	target_segment = initial
-	
-	
 	self.delay = delay
 	
 
@@ -83,20 +90,12 @@ func reached_segment():
 func get_prev_segment():
 	if target_segment.prev == null:
 		
-		target_segment = target_segment.next
-		reversed = false
-		sprite_2d.flip_v = false
+		target_segment.root.kill_worm()
 	else:	
 		target_segment = target_segment.prev
 		
 	
 	target = target_segment.get_node("Marker2D").global_position
-
-
-var joint: DampedSpringJoint2D
-func pin_worm_to_segment():
-	# Creates
-	pass
 
 
 func _on_audio_stream_player_2d_finished():

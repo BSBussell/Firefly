@@ -21,7 +21,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 script = ExtResource("4_qwq71")
-increase_speed = 400.0
+increase_speed = 500.0
 decrease_speed = 900.0
 
 [node name="Meter" type="TextureProgressBar" parent="."]
@@ -40,7 +40,8 @@ offset_bottom = -200.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(6, 6)
-value = 100.0
+max_value = 1000.0
+value = 310.0
 allow_greater = true
 allow_lesser = true
 fill_mode = 3
@@ -78,6 +79,6 @@ bus = &"SFX"
 
 [node name="FireRumble" type="AudioStreamPlayer" parent="Meter"]
 stream = ExtResource("6_4gy3n")
-volume_db = -7.0
+volume_db = -10.0
 pitch_scale = 0.8
 bus = &"SFX"

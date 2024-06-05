@@ -1,7 +1,7 @@
 [gd_scene load_steps=115 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
-[ext_resource type="Resource" uid="uid://kn7sq1g1n6ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
+[ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
 [ext_resource type="Resource" uid="uid://csjt8cboxggev" path="res://Scenes/Player/Movement_Presets/Stage1Movement.tres" id="3_w3b7s"]
 [ext_resource type="Resource" uid="uid://dsjjsd36v17p1" path="res://Scenes/Player/Movement_Presets/Stage2Movement.tres" id="4_66rk6"]
 [ext_resource type="Texture2D" uid="uid://cvqpbp01udha2" path="res://Assets/Graphics/Player/firefly.png" id="5_63g2f"]
@@ -662,7 +662,7 @@ frame_progress = 1.0
 flip_h = true
 script = ExtResource("8_dying")
 
-[node name="Trail" type="Line2D" parent="Visuals"]
+[node name="Trail" type="Line2D" parent="Visuals" node_paths=PackedStringArray("FLYPH")]
 modulate = Color(2.5, 2.6, 1.25, 1)
 show_behind_parent = true
 z_index = -1
@@ -674,6 +674,7 @@ gradient = SubResource("Gradient_nk0tk")
 antialiased = true
 script = ExtResource("9_iifmr")
 length = 0
+FLYPH = NodePath("../..")
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
 color = Color(1, 0.980392, 0.803922, 1)
@@ -987,6 +988,7 @@ hit_from_inside = true
 [node name="LandingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("15_o0d2x")
 volume_db = -10.0
+pitch_scale = 1.5
 bus = &"SFX"
 
 [node name="JumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
@@ -1023,24 +1025,28 @@ bus = &"SFX"
 
 [node name="LightSplashSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("19_5b1pc")
+volume_db = -5.0
 bus = &"SFX"
 
 [node name="SwimmingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("20_j21pw")
-bus = &"Ambience"
+bus = &"SFX"
 
 [node name="OutOfWaterSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("21_g6yjb")
-volume_db = -3.0
+volume_db = -10.0
 bus = &"SFX"
 
 [node name="SwingingSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("22_q5uq7")
-volume_db = -5.0
+volume_db = -8.0
 pitch_scale = 2.5
+bus = &"SFX"
 
 [node name="RopeCreakSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("23_oxbt6")
+volume_db = -4.0
+bus = &"SFX"
 
 [node name="UI_FX" type="CanvasLayer" parent="."]
 
@@ -1059,7 +1065,7 @@ label_settings = SubResource("LabelSettings_iomiv")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("starting_state")]
 script = ExtResource("10_amheu")
-starting_state = NodePath("Grounded")
+starting_state = NodePath("Aerial")
 
 [node name="Grounded" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "SLIDING_STATE", "jump_buffer", "coyote_time", "post_jump_buffer")]
 script = ExtResource("28_u1lt2")
@@ -1096,14 +1102,7 @@ coyote_time = NodePath("../../Timers/CoyoteTime")
 script = ExtResource("32_qjlto")
 WALL_STATE = NodePath("../Wall")
 AERIAL_STATE = NodePath("../Aerial")
-WATER_ENTRY_COST = null
 WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
-WATER_SPEED_MULTI = null
-WATER_ACCEL_MULTI = null
-WATER_JUMP_MULTI = null
-WATER_DIVE_MULTI = null
-WATER_GRAV_MULTI = null
-MAX_FALL_MULTI = null
 
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
 script = ExtResource("33_e7xfe")
@@ -1111,6 +1110,8 @@ AERIAL_STATE = NodePath("../Aerial")
 min_swing_force = 800.0
 swing_down_accel = 1700.0
 swing_up_decel = 400.0
+max_jump_multi = 9.75
+boost_sj_rise_time = 0.29
 
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
 script = ExtResource("25_5it1v")

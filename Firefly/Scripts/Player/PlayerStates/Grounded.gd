@@ -30,7 +30,7 @@ extends PlayerState
 func enter() -> void:
 
 	if OS.is_debug_build():
-		print("Grounded State")
+		_logger.info("Grounded State")
 
 	# Reset Flags
 	parent.crouchJumping = false

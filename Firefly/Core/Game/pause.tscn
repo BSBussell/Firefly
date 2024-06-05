@@ -103,7 +103,7 @@ focus_neighbor_top = NodePath("../../../SettingsButton")
 focus_neighbor_right = NodePath("../MixerSetting/Music/MusicSlider")
 focus_neighbor_bottom = NodePath("../../FullScreenContainer/FullScreenToggle")
 theme = ExtResource("2_tdrhd")
-text = "Audio Mixer"
+text = "Mixer"
 alignment = 0
 
 [node name="MixerSetting" type="VBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer"]
@@ -243,6 +243,24 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_neighbor_left = NodePath("../../../SettingsButton")
 focus_neighbor_top = NodePath("../../GlowModeContainer/GlowModeToggle")
+focus_neighbor_bottom = NodePath("../../ShowTimer/timerToggle")
+
+[node name="ShowTimer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
+layout_mode = 2
+theme = ExtResource("2_tdrhd")
+theme_override_constants/separation = 288
+
+[node name="Label" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer"]
+layout_mode = 2
+text = "Show Timer"
+label_settings = ExtResource("2_1enlb")
+
+[node name="timerToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer" instance=ExtResource("5_6x1tv")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../Speedometer/speedometerToggle")
 focus_neighbor_bottom = NodePath("../../AudioSettingContainer/Audio")
 
 [node name="UnFolder" type="AnimationPlayer" parent="VBoxContainer/Items/Top/Settings"]
@@ -259,15 +277,17 @@ text = "Quit"
 [connection signal="pressed" from="VBoxContainer/Items/Top/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Items/Top/Settings/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/Audio" to="." method="_on_audio_pressed"]
-[connection signal="drag_ended" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music/MusicSlider" to="." method="_on_music_slider_drag_ended"]
 [connection signal="focus_entered" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music/MusicSlider" to="." method="_on_music_slider_focus_entered"]
-[connection signal="drag_ended" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX/SFXSlider" to="." method="_on_sfx_slider_drag_ended"]
-[connection signal="drag_ended" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience/AmbienceSlider" to="." method="_on_ambience_slider_drag_ended"]
+[connection signal="value_changed" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="focus_entered" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience/AmbienceSlider" to="." method="_on_ambience_slider_focus_entered"]
+[connection signal="value_changed" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience/AmbienceSlider" to="." method="_on_ambience_slider_value_changed"]
 [connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer/FullScreenToggle" to="." method="_on_full_screen_toggle_switched_off"]
 [connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer/FullScreenToggle" to="." method="_on_full_screen_toggle_switched_on"]
 [connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle" to="." method="_on_glow_mode_toggle_switched_off"]
 [connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle" to="." method="_on_glow_mode_toggle_switched_on"]
 [connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer/speedometerToggle" to="." method="_on_speedometer_toggle_switched_off"]
 [connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer/speedometerToggle" to="." method="_on_speedometer_toggle_switched_on"]
+[connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer/timerToggle" to="." method="_on_timer_toggle_switched_off"]
+[connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer/timerToggle" to="." method="_on_timer_toggle_switched_on"]
 [connection signal="pressed" from="VBoxContainer/Items/Top/QuitButton" to="." method="_on_quit_button_pressed"]

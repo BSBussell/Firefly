@@ -1,12 +1,8 @@
 extends Node2D
 class_name RopeManager
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
-
-
+# Set the worms back to their initial position
 func reset_worms():
 	
 	var ropes = []

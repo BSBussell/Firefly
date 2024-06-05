@@ -5,10 +5,10 @@
 [ext_resource type="Script" path="res://Scripts/State_Machine/StateMachine.gd" id="5_67mh8"]
 [ext_resource type="Script" path="res://Scripts/Camera/Idle.gd" id="5_mfikc"]
 [ext_resource type="Script" path="res://Scripts/Camera/Follow.gd" id="6_y5nkv"]
+[ext_resource type="Script" path="res://Scripts/Camera/Falling.gd" id="7_i3y44"]
 [ext_resource type="Script" path="res://Scripts/Camera/LookAhead.gd" id="7_pjrc4"]
-[ext_resource type="Script" path="res://Scenes/Camera/Falling.gd" id="8_71vy3"]
-[ext_resource type="Script" path="res://Scenes/Camera/Dynamic-Cam.gd" id="8_r82q3"]
-[ext_resource type="Script" path="res://Scenes/Camera/SensorResizing.gd" id="9_ku080"]
+[ext_resource type="Script" path="res://Scripts/Camera/Dynamic-Cam.gd" id="8_sq28j"]
+[ext_resource type="Script" path="res://Scripts/Camera/SensorResizing.gd" id="9_0x2ov"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mqckl"]
 size = Vector2(320, 160)
@@ -63,7 +63,7 @@ speed = 4.0
 horizontal_weight = 1.0
 
 [node name="Falling" type="Node" parent="StateMachine" node_paths=PackedStringArray("IDLE", "FOLLOW", "LOOKAHEAD")]
-script = ExtResource("8_71vy3")
+script = ExtResource("7_i3y44")
 IDLE = NodePath("../Idle")
 FOLLOW = NodePath("../Follow")
 LOOKAHEAD = NodePath("../LookAhead")
@@ -73,7 +73,7 @@ Minimum_Speed = 10.0
 acceleration = 0.75
 
 [node name="Dynamic-Cam" type="Node" parent="StateMachine"]
-script = ExtResource("8_r82q3")
+script = ExtResource("8_sq28j")
 Cursor_Color = Color(0.678431, 0.247059, 0.266667, 1)
 Maximum_Speed = Vector2(20, 20)
 BaseAcceleration = Vector2(0.6, 0.6)
@@ -83,7 +83,7 @@ wait_time = 0.5
 one_shot = true
 
 [node name="Sensor" type="Node2D" parent="."]
-script = ExtResource("9_ku080")
+script = ExtResource("9_0x2ov")
 
 [node name="Area2D" type="Area2D" parent="Sensor"]
 collision_layer = 8

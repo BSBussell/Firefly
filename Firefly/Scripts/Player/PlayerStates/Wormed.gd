@@ -14,6 +14,19 @@ extends PlayerState
 @export var grab_force_multi: float = 1.75
 @export var jump_force_multi: float = -1.75
 
+# The player should be able to do a lot regardless
+# with swinging
+## The base multiplier when jumping off a rope
+@export var swing_min: float = 3.5
+## The max multiplier when jumping off a rope at the right timing.
+@export var max_jump_multi: float = 8
+
+## Height of jumping off a rope
+@export var swing_jump_height: float = 2.0
+@export var swing_jump_rise_time: float = 0.2
+@export var boosted_sj_height: float = 2.0
+@export var boost_sj_rise_time: float = 0.3
+
 
 # Effects
 @onready var speed_particles = $"../../Particles/MegaSpeedParticles"
@@ -27,35 +40,40 @@ extends PlayerState
 @onready var rope_creak_sfx = $"../../Audio/RopeCreakSFX"
 
 
+@onready var real_swing_jump_height: float = swing_jump_height * 16
+@onready var real_bsj_height: float = boosted_sj_height * 16
+
+## The vertical velocity of the player when they swing jump
+@onready var swing_jump_velocity: float = ((-2.0 * real_swing_jump_height) / swing_jump_rise_time)
+## The gravity of the player when they swing jump
+@onready var swing_jump_gravity: float = ((-2.0 * real_swing_jump_height) / pow(swing_jump_rise_time, 2))
+
+## The vertical velocity of the player when they boost jump
+@onready var boost_sj_velocity: float = ((-2.0 * real_bsj_height) / boost_sj_rise_time)
+## The gravity of the player when they boost jump
+@onready var boost_sj_gravity: float = ((-2.0 * real_bsj_height) / pow(boost_sj_rise_time, 2))
+
 # Called on state entrance, setup
 func enter() -> void:
 	
 	
 	
 	if OS.is_debug_build():
-		print("Wormed State")
+		_logger.info("Wormed State")
 
 	# We are not speeding up on thingy
 	speeding_up = false
 
 	parent.set_standing_collider()
 
-	# Don't allow buffer a jump prior to landing on the rope
-	# Ik i suck for this, but it puts more uh, sticking-feeling
-	# to the ropes when you can't just buffer jump to get out
-	# you actually just have to jump out of them
-	#parent.consume_jump()
-	
-	#call_deferred()
+	# Make us unable to grab another rope
 	rope_detector.set_deferred("monitoring", false)
-	#rope_detector.set_collision_mask_value(9, false)	
 	
 	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 2.5), 1.0)
 	swing_force = snappedf(lerpf(min_swing_force, max_swing_force, speed_ratio), 1)
 	
-	# This is the coolest shit i've done
+	
 	# Relative position to the ropes center
-
 	var a = lerpf(min_frequency, max_frequency, swing_force/max_swing_force)
 	# This is the coolest shit i've done
 	if sign(parent.velocity.x) > 0:
@@ -68,9 +86,6 @@ func enter() -> void:
 
 	apply_rope_impulse(parent.velocity * grab_force_multi)
 
-
-	#swinging_sfx.pitch_scale = 1.75 if swinging_sfx.pitch_scale != 1.75 else 2
-	#swinging_sfx.play()
 	
 	rand_from_seed(parent.stuck_segment.global_position.x)
 	rope_creak_sfx.pitch_scale = randf_range(1, 2)
@@ -81,7 +96,7 @@ func enter() -> void:
 	parent.current_animation = parent.ANI_STATES.WALL_SLIDE
 	parent.restart_animation = true
 		
-	print("We have finished Enter")
+	_logger.info("We have finished Enter")
 
 
 	
@@ -100,12 +115,13 @@ func exit() -> void:
 	 #Wait 0.3 seconds before we can grab a rope again
 	#await get_tree().create_timer(0.2).timeout
 	
-	print("wtf")
 	rope_detector.set_deferred("monitoring", true)
 	#rope_detector.set_collision_mask_value(9, true)
 	
 	
 	rope_creak_sfx.stop()
+
+	_logger.info("Flyph - Worm Exit")
 
 	
 
@@ -113,7 +129,7 @@ func exit() -> void:
 # Processing input in this state, returns nil or new state
 func process_input(event: InputEvent) -> PlayerState:
 
-	print("Processing Input")
+	_logger.info("Processing Input")
 
 	# If its just a keyboard
 	if event is InputEventKey:
@@ -146,7 +162,7 @@ func process_input(event: InputEvent) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 
-	print("Wormed Process Physics")
+	_logger.info("Wormed Process Physics")
 
 	# Swing
 	swinging(delta, parent.horizontal_axis)
@@ -160,11 +176,11 @@ func process_physics(delta: float) -> PlayerState:
 	# Water State Change Handled by the Water Detection
 	if handle_jump(delta):
 
-		print("Finished Wormed Process Physics - Jumping")
+		_logger.info("Finished Wormed Process Physics - Jumping")
 
 		return AERIAL_STATE
 		
-	print("Finished Wormed Process Physics")
+	_logger.info("Finished Wormed Process Physics")
 
 	return null
 
@@ -173,7 +189,7 @@ func process_physics(delta: float) -> PlayerState:
 
 func process_frame(_delta):
 
-	print("Wormed Process Frame")
+	_logger.info("Wormed Process Frame")
 
 	# Direction Facing, don't update if we're walljumping up
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
@@ -205,7 +221,7 @@ func process_frame(_delta):
 	else:
 		parent.current_animation = parent.ANI_STATES.WALL_HUG
 
-	print("Finished Wormed Processing Frame")
+	_logger.info("Finished Wormed Processing Frame")
 
 ## Called when an animation ends. How we handle transitioning to different animations
 func animation_end() -> PlayerState:
@@ -249,43 +265,65 @@ func jump():
 	var jump_dir = parent.horizontal_axis
 	if jump_dir == 0:
 		jump_dir = -1 if parent.animation.flip_h else 1
-	
-	# The player should be able to do a lot regardless
-	# with swinging
-	var swing_multi = 3.5
-	var max_jump_multi = 15
+
+	var vertical_multi = 1.0
+
+	# Downward jump off rope
+	if parent.vertical_axis < 0:
+		vertical_multi = -0.4
+
+	# Base Swing Multiplier
+	var swing_multi: float = swing_min
+
+	var jump_y_vel: float = parent.jump_velocity
 	
 	# But if they time the jump right :3
-	# This isn't generally base game stuff
-	# More like silly fun zoom stuff
-	# The goal of this is to simulate the boost you might get
-	# From jumping with the ropes force
+	# The goal of this is to simulate how horizontal velocity is highest
 	if speeding_up:
 		
 		# As the players swing speed increases it gradually approaches 15
-		var t = swing_force / max_swing_force  # Normalized force value between 0 and 1
-		var exponent = 3  # Adjust this exponent to control the growth rate
-		var exponential_multi = ((max_jump_multi - swing_multi) * pow(t, exponent)) + swing_multi  # Calculate the exponential multiplier
+		# Normalized force value between 0 and 1
+			# var t = swing_force / max_swing_force
+			# var exponent = 3  # Adjust this exponent to control the growth rate
+		
+		
+			# var exponential_multi = ((max_jump_multi - swing_multi) * pow(t, exponent)) + swing_multi
+			# var exponential_multi = lerp(swing_min, max_jump_multi, swing_force/max_swing_force)
+		
+		var exponential_multi = max_jump_multi
+		swing_multi = exponential_multi
 
-		swing_multi = exponential_multi  # Apply the calculated multiplier
-		print(swing_multi)
+		print("Swing Multiplier: ", swing_multi)
+
+		parent.set_temp_gravity(boost_sj_gravity)
+
+		jump_y_vel = boost_sj_velocity
+
+		# Set the flag cuz we wanna assume zoooming has started
+		parent.boostJumping = true
+	
+	# else:
+
+		# Set the gravity
+		# if swing_jump_gravity:
+			# parent.set_temp_gravity(swing_jump_gravity)
 
 	if sign(parent.velocity.x) != sign(jump_dir):
 		parent.velocity.x *= -1
 	
-	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
 
 
-	var vertical_control = 1.0
-	#if parent.vertical_axis < 0:
-		#vertical_control = -0.4
-		
 
 	# Jump Velocity
-	parent.velocity.y = parent.jump_velocity * vertical_control
+	parent.velocity.y = jump_y_vel * vertical_multi
 
-	
-	# TODO: Water Jump :3
+	# Jump horizontal boost
+	if parent.boostJumping or speeding_up:
+		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
+	else:
+		parent.velocity.x = parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
+
+
 	# Jump SFX
 	jumping_sfx.play(0)
 	
@@ -319,11 +357,11 @@ func swinging(delta, dir):
 	parent.global_position = parent.stuck_segment.global_position - offset
 	
 	# Relative position to the ropes center
-	var relative_position = parent.global_position - parent.stuck_segment.origin
+	var relative_position = round(parent.global_position - parent.stuck_segment.origin)
 	
 	
 	# If we've moved down since last pool, and 
-	if dir and sign(dir) != sign(relative_position.x):
+	if dir and sign(dir) != sign(relative_position.x) and relative_position.x != 0:
 
 		
 		# Increase the players swing force
@@ -377,7 +415,6 @@ func swinging(delta, dir):
 		
 		# Holy Fuck my PreCalc professors would be so proud of me
 		return_force *= sin(wave_length * period)
-		print(wave_length)
 		apply_rope_force(return_force)
 	
 func apply_weight(_delta):

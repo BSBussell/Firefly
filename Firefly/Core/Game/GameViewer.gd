@@ -51,6 +51,12 @@ func _ready():
 
 	# Set the window size to be windowed
 	set_windowed_scale()
+
+	# Get zoom from config
+	res_scale = _config.get_setting("game_zoom")
+
+	# Smoothly zoom the render to the current scale
+	smoothly_zoom_render(res_scale)
 	
 	# Let us process input even when game beat
 	set_process_input(true)
@@ -59,29 +65,37 @@ func _ready():
 func _input(_event: InputEvent) -> void:
 	
 	# Handle Resets
-	if Input.is_action_just_pressed("reset"):
+	if Input.is_action_just_pressed("reset") and not _loader.loading:
 		
-		_stats.DEATHS = 0
-		_stats.TIME = 0
+
 		
-		_jar_tracker.reset_jars()
 		
 		# Reload the scene
 		get_tree().paused = false
+
+
+		await _loader.reset_game(start_level.resource_path)
+
 		
-		_loader.load_level(start_level.resource_path)
 			
 
 	## All these handle is the zooming in and out of gam
 	if Input.is_action_just_pressed("scale_inc"):
 		
 		res_scale = move_toward(res_scale, 1.4, 0.1)
+
+		# Set Config
+		_config.set_setting("game_zoom", res_scale)
+		_config.save_settings()
 		print("inc: ", res_scale)
 		smoothly_zoom_render(res_scale)
 	
 	elif Input.is_action_just_pressed("scale_dec"):
 		
 		res_scale = move_toward(res_scale, 0.5, 0.1)
+		# Set Config
+		_config.set_setting("game_zoom", res_scale)
+		_config.save_settings()
 		print("dec:", res_scale)
 		smoothly_zoom_render(res_scale)
 
@@ -142,7 +156,7 @@ func set_fullscreen_scale():
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
 	## Update Render Scaling
-	var screen_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
+	var screen_size = get_usable_screen_size()
 	
 	window_size = screen_size
 
@@ -177,12 +191,15 @@ func rescale_game_viewport(scale_factor):
 func update_aspect_ratio():
 	
 	# Find the screen size and then aspect ratio of the screen
-	var screen_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
+	var screen_size = get_usable_screen_size()
 	var aspect_ratio: float = float(screen_size.x) / float(screen_size.y)
 	
 	# Set the base aspect ratio
 	base_aspect_ratio = BASE_RENDER
 	base_aspect_ratio.y = ceil( float(BASE_RENDER.x) / aspect_ratio ) 
+
+	_logger.info(str(screen_size))
+	_logger.info(str(base_aspect_ratio))
 	
 
 ## Resizes the game to the aspect ratio of the screen
@@ -252,6 +269,8 @@ func smoothly_zoom_render(new_scale: float) :
 	
 	# Add Extra Padding to the target scale
 	target_scale += 0.15
+	
+	
 
 	# Setup the interpolation
 	interpolating_res = true
@@ -268,8 +287,26 @@ func zoom_render(new_scale: float) :
 	window_scale = snappedf(float(window_size.x) / float(game_res.x), 0.01)
 	
 	# Extra Padding
-	target_scale += 0.15
+	window_scale += 0.15
+	
+	
 	
 	# Take the scale and game res and resize viewports
 	update_gameview_res()
 	rescale_game_viewport(window_scale)
+
+
+
+## Works on Apple Silicon Macbooks :/ (this is kinda bad idk how else id do this tbh)
+func get_usable_screen_size() -> Vector2i:
+
+
+	# Find the screen size and then aspect ratio of the screen
+	var screen_size = DisplayServer.screen_get_size(DisplayServer.window_get_current_screen())
+	var aspect_ratio: float = float(screen_size.x) / float(screen_size.y)
+
+	# If the aspect ratio matches a silicon mac laptop
+	if aspect_ratio == (3456.0 / 2234.0):
+		screen_size.y -= 74
+	
+	return screen_size

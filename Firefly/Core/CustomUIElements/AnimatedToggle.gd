@@ -29,14 +29,19 @@ func refresh_focus():
 
 func _on_pressed():
 	if toggle:
-		animated_sprite_2d.play("Off")
-		toggle = false
-		emit_signal("switched_off")
+		toggle_off()
 	else:
-		animated_sprite_2d.play("On")
-		toggle = true
-		emit_signal("switched_on")
+		toggle_on()
 
+func toggle_on():
+	animated_sprite_2d.play("On")
+	toggle = true
+	emit_signal("switched_on")
+
+func toggle_off():
+	animated_sprite_2d.play("Off")
+	toggle = false
+	emit_signal("switched_off")
 
 func _on_focus_entered():
 	

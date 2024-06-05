@@ -18,21 +18,22 @@ func _process(delta):
 	
 	
 	
-	if interpolating:
-		interpolation_time += delta
-		var t = min(interpolation_time / interpolation_duration, 1.0)  # Clamp to [0, 1]
 
-		if current_brightness < goal_brightness:
-			var curve_value = curve_in.sample(t)
-			current_brightness = snappedf(lerp(current_brightness, goal_brightness, curve_value), 0.01)
-		elif current_brightness > goal_brightness:
-			var curve_value = curve_out.sample(t)
-			current_brightness = snappedf(lerp(current_brightness, goal_brightness, curve_value), 0.01)
+	interpolation_time += delta
+	var t = min(interpolation_time / interpolation_duration, 1.0)  # Clamp to [0, 1]
 
-		energy = current_brightness
+	if current_brightness < goal_brightness:
+		var curve_value = curve_in.sample(t)
+		current_brightness = snappedf(lerp(current_brightness, goal_brightness, curve_value), 0.01)
+	elif current_brightness > goal_brightness:
+		var curve_value = curve_out.sample(t)
+		current_brightness = snappedf(lerp(current_brightness, goal_brightness, curve_value), 0.01)
 
-		if t >= 1.0:
-			interpolating = false  # Stop interpolating
+	energy = current_brightness
+
+	if t >= 1.0:
+		
+		set_process(false)
 	
 
 
@@ -40,3 +41,5 @@ func set_brightness(new_brightness: float) -> void:
 	goal_brightness = new_brightness
 	interpolating = true
 	interpolation_time = 0.0  # Reset interpolation time
+	
+	set_process(true)

@@ -2,11 +2,9 @@
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_w5nry"]
 resource_name = "Reverb"
-room_size = 0.0
+room_size = 1.0
 damping = 0.0
-spread = 0.0
-dry = 0.34
-wet = 0.65
+wet = 0.1
 
 [sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_k2caj"]
 resource_name = "LowPassFilter"
@@ -43,3 +41,9 @@ bus/3/mute = false
 bus/3/bypass_fx = false
 bus/3/volume_db = 0.0
 bus/3/send = &"Master"
+bus/4/name = &"New Bus"
+bus/4/solo = false
+bus/4/mute = false
+bus/4/bypass_fx = false
+bus/4/volume_db = 0.0
+bus/4/send = &"Master"
