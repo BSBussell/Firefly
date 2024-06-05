@@ -28,11 +28,11 @@ func _process(delta):
 	
 	_logger.info("Flyph - Trail Process")
 
-	if length <= 0:
-		visible = false
-		return
-	else:
-		visible = true
+	# if length <= 0:
+	# 	visible = false
+	# 	return
+	# else:
+	# 	visible = true
 	
 	fps_adjusted_length = max(length * (Engine.get_frames_per_second() / 60), 0)
 	

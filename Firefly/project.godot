@@ -222,7 +222,6 @@ Glow_Down={
 
 [physics]
 
-2d/run_on_separate_thread=true
 2d/solver/solver_iterations=20
 
 [rendering]
