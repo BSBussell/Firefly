@@ -9,12 +9,12 @@ const BASE_UI_RENDER: Vector2i = Vector2i(1920, 1080)
 @export var start_level: PackedScene
 
 # Our loaders
-@onready var level_loader: LevelLoader = $GameContainer
-@onready var ui_loader: UiLoader = $UI
+@onready var level_loader: LevelLoader = $LevelLoader
+@onready var ui_loader: UiLoader = $UILoader
 
 # Our ViewPorts
-@onready var game_view_port = $GameContainer/GameViewPort
-@onready var ui_view_port = $UI/UIViewPort
+@onready var game_view_port = $LevelLoader/GameViewPort
+@onready var ui_view_port = $UILoader/UIViewPort
 
 ## The default resolution in the monitor's aspect ratio
 var base_aspect_ratio: Vector2i = Vector2i(320, 180)

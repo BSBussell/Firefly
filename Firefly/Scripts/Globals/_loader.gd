@@ -37,43 +37,59 @@ func load_level(path: String, spawn_id: String = ""):
 
 	loading = true
 
+	current_path = path
+
+	# Begin loading the level in the background
+	level_loader.begin_threaded_loading(path)
+
+	# Saving the player level before we unload them
 	var player_level = 0
 	if _globals.ACTIVE_PLAYER:
 		player_level = _globals.ACTIVE_PLAYER.get_glow_level()
 
-	# Start the timer while the loading screen
-	_stats.stop_timer()	
+	# Stop the timer while the loading screen is being displayed
+	_stats.stop_timer()
 	var loading_screen = await show_loading()
 
-	current_path = path
+	
 
 	# Free the level
 	level_loader.clear_current_level()
+
+	
 	# Free the Ui
 	ui_loader.reset_ui()
 	
-	# Wait one frame, ensure its all free'd
-	await get_tree().process_frame
-	
+	# Wait until level loaders "level_free" signal is emitted, if it hasn't already
+	if not level_loader.finished_cleaning():
+		await level_loader.level_free
+
 	# Load new level
-	var level = level_loader.load_level(current_path, spawn_id)
+	var level = await level_loader.load_level(current_path, spawn_id)
+
 	# Load new ui
 	ui_loader.setup(level)
-	
+
 	# Unpause 
 	get_tree().paused = false
 
+	# Restoring the players level
 	if _globals.ACTIVE_PLAYER:
 		_globals.ACTIVE_PLAYER.glow_manager.change_state(player_level)
 
-	await hide_loading(loading_screen)
+	loading = false
 
 	emit_signal("finished_loading")
+
+	await hide_loading(loading_screen)
+
+	
+
+	
 
 	# Once we've finished loading start the timer
 	_stats.start_timer()
 
-	loading = false
 
 func reload_level():
 	load_level(current_path)

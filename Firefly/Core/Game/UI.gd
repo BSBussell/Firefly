@@ -2,45 +2,32 @@
 extends Node
 class_name UiLoader
 
-const PAUSE_MENU: PackedScene = preload("res://Core/Game/pause.tscn")
-const COLLECTIBLE_COUNTER: PackedScene = preload("res://Scenes/UI_Elements/collectible_counter.tscn")
-const RESULTS: PackedScene = preload("res://Scenes/UI_Elements/results.tscn")
-const LEVEL_TITLE: PackedScene = preload("res://Scenes/UI_Elements/LevelTitle.tscn")
-
-# Corresponding instance variables
-var pause_instance: PauseMenu
-var counter_instance: JarCounter
-var results_instance: VictoryScreen
-
-
+# The level that is loaded
 var currentLevel: Level
 
+## The current active ui components, keyed by their class name
+var ui_components: Dictionary = {}
 
+## Begin setup the ui components requested by the level
 func setup(level: Level):
 	
 	level.connect_ui_loader(self)
 	load_ui(level)
 	
 
-
+## Removes all the ui components from the ui_viewport
 func reset_ui():
-	
-	
 	
 	for child in _viewports.ui_viewport.get_children():
 		child.queue_free()
 		
-	pause_instance = null
-	counter_instance = null
-	results_instance = null
-	
 	# Empty the ui_components
 	ui_components = {}
 
 
 
-var ui_components: Dictionary = {}
 
+## Load the ui components from the level
 func load_ui(context: Level) -> void:
 	
 	# Remove all existing ui
@@ -65,23 +52,25 @@ func load_ui(context: Level) -> void:
 
 
 
-	# Fuck bro, do i really wanna get the map out for this tn?
-	# Isn't that pre-mature optimizations :3
-	# Loop through the ui components
+	
+	
+	# Loop through the ui components, match dependencies and connect them where needed
 	for ui_component: UiComponent in ui_components.values():
+
 		# Loop through the dependencies
 		for dependency_name: String in ui_component.dependencies.keys():
+			
 			# Look up the dependency in the map
 			if ui_components.has(dependency_name):
 				ui_component.connect_dependency(ui_components[dependency_name])
 			else:
 				push_warning("Depdency: ", dependency_name, " could not be found!")
 		
-		# Finally add it to the ui_viewport
+		# Now that we've connected it's dependency we can add it to the ui_viewport
 		_viewports.ui_viewport.add_child(ui_component)
 		
 
-# Method to get the custom class name
+# Method to get the custom class name, black magic found within the depth of stack overflow
 func get_script_class_name(obj: Node) -> String:
 	var script_class_name = obj.get_class()
 	var script: Script = obj.get_script()

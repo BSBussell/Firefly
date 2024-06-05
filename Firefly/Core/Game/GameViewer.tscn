@@ -25,13 +25,13 @@ start_level = ExtResource("2_gamt3")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xxxtd")
 
-[node name="GameContainer" type="SubViewportContainer" parent="."]
+[node name="LevelLoader" type="SubViewportContainer" parent="."]
 offset_right = 320.0
 offset_bottom = 180.0
 scale = Vector2(6, 6)
 script = ExtResource("3_oejcr")
 
-[node name="GameViewPort" type="SubViewport" parent="GameContainer"]
+[node name="GameViewPort" type="SubViewport" parent="LevelLoader"]
 process_mode = 1
 disable_3d = true
 handle_input_locally = false
@@ -45,12 +45,12 @@ size_2d_override = Vector2i(320, 180)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 
-[node name="UI" type="SubViewportContainer" parent="."]
+[node name="UILoader" type="SubViewportContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("4_4g62g")
 
-[node name="UIViewPort" type="SubViewport" parent="UI"]
+[node name="UIViewPort" type="SubViewport" parent="UILoader"]
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1920, 1080)

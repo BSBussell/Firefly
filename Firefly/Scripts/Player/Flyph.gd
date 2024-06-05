@@ -390,7 +390,7 @@ func set_input_axis(delta: float) -> void:
 
 
 # If we are locking dir
-var lock_dir: bool = true
+var lock_dir: bool = false
 # If the lock is overwritten easily
 var soft_lock: bool = false
 var hold_dir: float = 0.0
