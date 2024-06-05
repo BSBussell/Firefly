@@ -1,5 +1,10 @@
 extends Node
 
+
+# quicksave location
+var _quicksave_location = Vector2(0, 0)
+var _quicksave_velocity = Vector2(0, 0)
+
 func _input(_event: InputEvent) -> void:
 	
 	var scale_factors = {
@@ -34,4 +39,14 @@ func _input(_event: InputEvent) -> void:
 	# Load Debug Environment
 	if Input.is_key_pressed(KEY_0) and not _loader.loading:
 		_loader.load_level("res://Scenes/Levels/DebugLevel/debug.tscn")
+		_stats.INVALID_RUN = true
+
+	if Input.is_action_just_pressed("QuickSave"):
+		_quicksave_location = _globals.ACTIVE_PLAYER.get_global_position()
+		_quicksave_velocity = _globals.ACTIVE_PLAYER.velocity
+		_stats.INVALID_RUN = true
+
+	if Input.is_action_just_pressed("QuickLoad"):
+		_globals.ACTIVE_PLAYER.global_position = _quicksave_location
+		_globals.ACTIVE_PLAYER.velocity = _quicksave_velocity
 		_stats.INVALID_RUN = true
