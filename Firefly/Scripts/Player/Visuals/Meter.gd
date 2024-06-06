@@ -10,6 +10,7 @@ class_name Meter
 @onready var particle = $Meter/Particle
 @onready var fire_lit = $Meter/FireLit
 @onready var fire_rumble = $Meter/FireRumble
+@onready var rays = $Rays
 
 
 var actual_score: float = 0
@@ -36,14 +37,18 @@ func _process(delta):
 	interpolated_score = move_toward(interpolated_score, actual_score, delta * multiplier)
 	progress_bar.value = interpolated_score
 	
+	rays.anchor_right = lerp(1.0, 1.56, (interpolated_score / progress_bar.max_value))
+	rays.anchor_bottom = lerp(1.0, 1.15, (interpolated_score / progress_bar.max_value))
+
 	if progress_bar.value >= progress_bar.max_value:
 		particle.emitting = true
-		
+		# rays.visible = true
 		if not played_sound:
 			fire_lit.play()
 			fire_rumble.play()
 			played_sound = true
 	else:
+		# rays.visible = false
 		particle.emitting = false
 		played_sound = false
 		fire_rumble.stop()
@@ -54,11 +59,12 @@ func _process(delta):
 
 	_logger.info("Meter Process End")
 
-func set_score(score):
+func set_score(score: float):
 	
-	var adjusted_score: float = (-0.01 * pow(score-100,2) )+100
-	actual_score = min((adjusted_score * 10), 1000)
-	
+	# var adjusted_score: float = (-0.01 * pow(score-100,2) )+100
+	# actual_score = min((adjusted_score * 10), 1000)
+	actual_score = score
+
 	# If we have a new score, we need to start the process function
 	set_process(true)
 

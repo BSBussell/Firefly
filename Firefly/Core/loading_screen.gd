@@ -9,7 +9,7 @@ func _ready():
 	var render_size = DisplayServer.window_get_size()
 
 	# Divide Screen size by 15
-	var triangle_size: int = render_size.x / 5
+	var triangle_size: int = render_size.x 
 
 
 	# Get the shader material attached to the ColorRect
