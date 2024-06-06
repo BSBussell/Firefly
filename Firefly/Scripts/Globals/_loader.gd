@@ -3,6 +3,7 @@ extends Node
 var level_loader: LevelLoader
 var ui_loader: UiLoader
 
+## Local path of the currently loaded level
 var current_path: String
 
 signal finished_loading
@@ -10,10 +11,8 @@ signal finished_loading
 ## If the game is currently loading a level
 var loading: bool = true
 
-#@onready var loading_screen = preload("res://Core/loading_screen.tscn").instantiate()
-
-
-func show_loading():
+## Loads and displays the loading screen
+func show_loading() -> Control:
 	var loading_screen = preload("res://Core/loading_screen.tscn").instantiate()
 	if ui_loader:
 		ui_loader.add_child(loading_screen)
@@ -23,20 +22,23 @@ func show_loading():
 		await loading_screen.animation_player.animation_finished
 	return loading_screen  # Return the instance to manage it later
 
-func hide_loading(loading_screen):
+## Hides and unloads the loading screen
+func hide_loading(loading_screen) -> void:
 	loading_screen.play_animation("load_out")
 	await loading_screen.animation_player.animation_finished
 
+## Connects the level loader and ui loader to the global loader so it can synchronize them
 func connect_loaders(ll: LevelLoader, ui: UiLoader):
 	level_loader = ll
 	ui_loader = ui
 
 	
-
+## Loads a level using a given path
 func load_level(path: String, spawn_id: String = ""):
 
 	loading = true
 
+	# Save the current level path
 	current_path = path
 
 	# Begin loading the level in the background
@@ -56,7 +58,6 @@ func load_level(path: String, spawn_id: String = ""):
 	# Free the level
 	level_loader.clear_current_level()
 
-	
 	# Free the Ui
 	ui_loader.reset_ui()
 	
@@ -70,29 +71,28 @@ func load_level(path: String, spawn_id: String = ""):
 	# Load new ui
 	ui_loader.setup(level)
 
-	# Unpause 
+	# Unpause the game if it was paused for some reason
 	get_tree().paused = false
 
 	# Restoring the players level
 	if _globals.ACTIVE_PLAYER:
 		_globals.ACTIVE_PLAYER.glow_manager.change_state(player_level)
 
+	# Set loading to false
 	loading = false
 
+	# Emit signal to notify that the level has finished loading to any listeners
 	emit_signal("finished_loading")
 
+	# Hide the loading screen
 	await hide_loading(loading_screen)
 
-	
-
-	
-
-	# Once we've finished loading start the timer
+	# Once the screen is uncovered, resume the timer
 	_stats.start_timer()
 
 
-func reload_level():
-	load_level(current_path)
+func reload_level(spawn_id: String = ""):
+	load_level(current_path, spawn_id)
 
 func reset_game(level_path: String):
 

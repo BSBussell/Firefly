@@ -379,9 +379,11 @@ metadata/_edit_lock_ = true
 process_mode = 3
 stream = ExtResource("9_l5d0m")
 volume_db = -15.0
+bus = &"Music"
 
 [node name="Ambience" type="AudioStreamPlayer" parent="LevelAudio"]
 stream = ExtResource("10_ehuoj")
+bus = &"Ambience"
 
 [node name="CaveEntrance" type="AudioStreamPlayer2D" parent="LevelAudio"]
 position = Vector2(2909, 281)
@@ -389,6 +391,7 @@ stream = ExtResource("11_iiypr")
 volume_db = -10.0
 autoplay = true
 attenuation = 4.14106
+bus = &"Ambience"
 
 [node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("12_4bqnb")]
 position = Vector2(2676, 239)

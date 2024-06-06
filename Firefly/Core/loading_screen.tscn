@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bivga0jwulfyg"]
+[gd_scene load_steps=19 format=3 uid="uid://bivga0jwulfyg"]
 
 [ext_resource type="Script" path="res://Core/loading_screen.gd" id="1_0il42"]
 [ext_resource type="Shader" path="res://Core/transition.gdshader" id="1_38x6w"]
@@ -18,13 +18,18 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 draw_center = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n2ksf"]
-bg_color = Color(1, 1, 1, 1)
+bg_color = Color(0.780392, 0.87451, 0.921569, 1)
 corner_radius_top_right = 10
+
+[sub_resource type="Curve" id="Curve_vrtev"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+metadata/_snap_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_g30c5"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0.336066, 0.8, 1)
-colors = PackedColorArray(1, 1, 0, 1, 1, 1, 1, 0.670588, 1, 1, 1, 0)
+offsets = PackedFloat32Array(0, 0.0975232, 0.336066, 0.8, 1)
+colors = PackedColorArray(1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0.670588, 1, 1, 1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e2l5o"]
 
@@ -53,6 +58,46 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_u840h"]
+resource_name = "bounce"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TextureRect:anchor_bottom")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.88, 0.86, 0.88]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextureRect:anchor_top")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.88, 0.86, 0.88]
 }
 
 [sub_resource type="Animation" id="Animation_7qpbv"]
@@ -171,46 +216,6 @@ tracks/3/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_u840h"]
-resource_name = "bounce"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = false
-tracks/0/path = NodePath("TextureRect:modulate")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("TextureRect:anchor_bottom")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5, 1.1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.88, 0.86, 0.88]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("TextureRect:anchor_top")
-tracks/2/interp = 2
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.5, 1.1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.88, 0.86, 0.88]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_70yrc"]
 _data = {
 "RESET": SubResource("Animation_4wqga"),
@@ -225,6 +230,8 @@ material = SubResource("ShaderMaterial_uth8b")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.235294, 0.2, 0.501961, 1)
@@ -235,13 +242,13 @@ texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
-anchor_right = 1.0
+anchor_right = 1.005
 anchor_bottom = 1.0
 offset_top = -50.0
 grow_horizontal = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bxd2a")
 theme_override_styles/fill = SubResource("StyleBoxFlat_n2ksf")
-value = 75.0
+value = 100.0
 show_percentage = false
 script = ExtResource("3_6k2he")
 speed = 250.0
@@ -250,9 +257,9 @@ speed = 250.0
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.95
+anchor_left = 0.925
 anchor_top = 0.88
-anchor_right = 0.95
+anchor_right = 0.925
 anchor_bottom = 0.88
 offset_left = -84.706
 offset_top = -120.0
@@ -268,6 +275,7 @@ high_dpi_scale = null
 
 [node name="FireFlies" type="CPUParticles2D" parent="TextureRect"]
 modulate = Color(6, 6, 2.5, 1)
+z_index = 1
 position = Vector2(39, 70)
 amount = 10
 speed_scale = 0.8
@@ -277,16 +285,22 @@ emission_shape = 1
 emission_sphere_radius = 49.8
 direction = Vector2(0, -1)
 gravity = Vector2(2.08165e-12, -300)
-orbit_velocity_min = -1.0
-orbit_velocity_max = 1.0
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
 damping_min = 10.0
 damping_max = 10.0
+angle_min = -40.0
+angle_max = 40.0
 scale_amount_min = 6.0
 scale_amount_max = 9.0
+scale_amount_curve = SubResource("Curve_vrtev")
 color = Color(0.890196, 0.921569, 0, 1)
 color_ramp = SubResource("Gradient_g30c5")
 
 [node name="PointLight2D" type="PointLight2D" parent="TextureRect"]
+z_index = -1
 position = Vector2(41.7061, 64.6)
 color = Color(0.890196, 0.921569, 0.34902, 1)
 energy = 0.5
