@@ -28,7 +28,7 @@ environment = SubResource("Environment_xxxtd")
 [node name="LevelLoader" type="SubViewportContainer" parent="."]
 offset_right = 320.0
 offset_bottom = 180.0
-scale = Vector2(6, 6)
+scale = Vector2(4.286, 4.286)
 script = ExtResource("3_oejcr")
 
 [node name="GameViewPort" type="SubViewport" parent="LevelLoader"]
@@ -40,8 +40,8 @@ snap_2d_vertices_to_pixel = true
 use_hdr_2d = true
 canvas_item_default_texture_filter = 0
 audio_listener_enable_2d = true
-size = Vector2i(320, 180)
-size_2d_override = Vector2i(320, 180)
+size = Vector2i(448, 252)
+size_2d_override = Vector2i(448, 252)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 

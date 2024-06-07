@@ -44,16 +44,12 @@ func load_level(path: String, spawn_id: String = ""):
 	# Begin loading the level in the background
 	level_loader.begin_threaded_loading(path)
 
-	# Saving the player level before we unload them
-	var player_level = 0
-	if _globals.ACTIVE_PLAYER:
-		player_level = _globals.ACTIVE_PLAYER.get_glow_level()
+	## Save all data before unloading the level
+	_persist.save_values()
 
 	# Stop the timer while the loading screen is being displayed
 	_stats.stop_timer()
 	var loading_screen = await show_loading()
-
-	
 
 	# Free the level
 	level_loader.clear_current_level()
@@ -74,9 +70,8 @@ func load_level(path: String, spawn_id: String = ""):
 	# Unpause the game if it was paused for some reason
 	get_tree().paused = false
 
-	# Restoring the players level
-	if _globals.ACTIVE_PLAYER:
-		_globals.ACTIVE_PLAYER.glow_manager.change_state(player_level)
+	# Load all data after loading the level
+	_persist.load_values()
 
 	# Set loading to false
 	loading = false
@@ -86,6 +81,8 @@ func load_level(path: String, spawn_id: String = ""):
 
 	# Hide the loading screen
 	await hide_loading(loading_screen)
+
+	
 
 	# Once the screen is uncovered, resume the timer
 	_stats.start_timer()
@@ -101,7 +98,7 @@ func reset_game(level_path: String):
 	_stats.INVALID_RUN = false
 	_jar_tracker.reset_jars()
 	
-	_globals.ACTIVE_PLAYER.glow_manager.change_state(0)
+	_persist.reset()
 
 	load_level(level_path)
 

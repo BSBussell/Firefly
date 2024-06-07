@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dw74c2tkogsdu"]
+[gd_scene load_steps=5 format=3 uid="uid://dw74c2tkogsdu"]
 
 [ext_resource type="Script" path="res://Scripts/Rope/SpitSegment.gd" id="1_e2fpp"]
 [ext_resource type="Texture2D" uid="uid://c54p0vejhh4nt" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit.png" id="1_q2tjy"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_yqfx0"]
+bounce = 1.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h3dnq"]
 radius = 2.0
@@ -11,6 +14,7 @@ height = 16.0
 collision_layer = 256
 collision_mask = 514
 mass = 0.75
+physics_material_override = SubResource("PhysicsMaterial_yqfx0")
 can_sleep = false
 linear_damp = 4.0
 angular_damp = 5.0

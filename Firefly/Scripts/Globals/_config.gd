@@ -15,7 +15,7 @@ var settings: Dictionary = {
 
     "fullscreen": false,
     "auto_glow": false,
-	"show_speedometer": true,
+	"show_speedometer": false,
     "show_timer": false
 }
 

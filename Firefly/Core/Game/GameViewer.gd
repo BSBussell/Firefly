@@ -20,7 +20,7 @@ const BASE_UI_RENDER: Vector2i = Vector2i(1920, 1080)
 var base_aspect_ratio: Vector2i = Vector2i(320, 180)
 
 ## The Resolution of the game scaled up from aspect ratio
-var game_res: Vector2i = Vector2i(320, 180)
+var game_res: Vector2 = Vector2(320, 180)
 
 ## Window Size
 var window_size: Vector2i = Vector2i(1920, 1080)
@@ -61,6 +61,9 @@ func _ready():
 	# Let us process input even when game beat
 	set_process_input(true)
 
+	# Hide mouse cursor
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+
 
 func _input(_event: InputEvent) -> void:
 	
@@ -80,9 +83,9 @@ func _input(_event: InputEvent) -> void:
 			
 
 	## All these handle is the zooming in and out of gam
-	if Input.is_action_just_pressed("scale_inc"):
+	if Input.is_action_pressed("scale_inc"):
 		
-		res_scale = move_toward(res_scale, 1.4, 0.1)
+		res_scale = move_toward(res_scale, 1.4, 0.075)
 
 		# Set Config
 		_config.set_setting("game_zoom", res_scale)
@@ -90,9 +93,9 @@ func _input(_event: InputEvent) -> void:
 		print("inc: ", res_scale)
 		smoothly_zoom_render(res_scale)
 	
-	elif Input.is_action_just_pressed("scale_dec"):
+	elif Input.is_action_pressed("scale_dec"):
 		
-		res_scale = move_toward(res_scale, 0.5, 0.1)
+		res_scale = move_toward(res_scale, 0.5, 0.075)
 		# Set Config
 		_config.set_setting("game_zoom", res_scale)
 		_config.save_settings()
@@ -119,6 +122,10 @@ func swap_fullscreen_mode():
 
 # Sets the window size to be the equilvant of 1080p in the current aspect ratio
 func update_window_size() -> void:
+
+	# If web build then return
+	if OS.get_name() == "HTML5":
+		return
 
 	# Convert the base_ui_render to the aspect ratio of the screen
 	window_scale = ceil(BASE_UI_RENDER.x / BASE_RENDER.x)
@@ -198,10 +205,6 @@ func update_aspect_ratio():
 	base_aspect_ratio = BASE_RENDER
 	base_aspect_ratio.y = ceil( float(BASE_RENDER.x) / aspect_ratio ) 
 
-	_logger.info(str(screen_size))
-	_logger.info(str(base_aspect_ratio))
-	
-
 ## Resizes the game to the aspect ratio of the screen
 func resize_to_aspect_ratio():
 
@@ -216,8 +219,13 @@ func resize_to_aspect_ratio():
 ## Matches the game viewports to the current game resolution
 func update_gameview_res():
 	
-	game_view_port.size = game_res
-	game_view_port.size_2d_override = game_res
+	game_view_port.size = base_aspect_ratio * 1.4
+	game_view_port.size_2d_override = base_aspect_ratio * 1.4
+
+	# adjust the viewport container to have game_res centered
+	level_loader.position.x = -((base_aspect_ratio.x * 1.4) - (game_res.x)) * window_scale/2
+	level_loader.position.y = -((base_aspect_ratio.y * 1.4) - (game_res.y)) * window_scale/2
+
 
 
 var interpolating_res: bool = false
@@ -229,8 +237,6 @@ var scale_progress: float = 1.0
 # Target values
 var target_res: Vector2i = Vector2i(320, 180)
 var target_scale: float = 1.0
-
-
 
 # Function for smoothly interpolate resolution scale increasing
 func res_interpolate(delta: float):
@@ -244,7 +250,7 @@ func res_interpolate(delta: float):
 		var float_res: Vector2 = Vector2(game_res).lerp(target_res, t)
 		
 		# Round up to the nearest integer
-		game_res = ceil(float_res)
+		game_res = float_res
 		_globals.RENDER_SIZE = game_res
 
 		window_scale = lerp(window_scale, target_scale, t)
@@ -265,13 +271,11 @@ func smoothly_zoom_render(new_scale: float) :
 	
 	# Set our target res and scale
 	target_res = base_aspect_ratio * new_scale
-	target_scale = snappedf(float(window_size.x) / float(target_res.x), 0.01)
+	target_scale = float(window_size.x) / float(target_res.x)
 	
 	# Add Extra Padding to the target scale
-	target_scale += 0.15
+	# target_scale += 0.15
 	
-	
-
 	# Setup the interpolation
 	interpolating_res = true
 	scale_progress = 0.0
@@ -284,10 +288,10 @@ func zoom_render(new_scale: float) :
 	game_res = base_aspect_ratio * new_scale
 	_globals.RENDER_SIZE = game_res
 	
-	window_scale = snappedf(float(window_size.x) / float(game_res.x), 0.01)
+	window_scale = float(window_size.x) / float(game_res.x)
 	
 	# Extra Padding
-	window_scale += 0.15
+	# window_scale += 0.15
 	
 	
 	

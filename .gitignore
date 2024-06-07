@@ -26,22 +26,8 @@ Exports/Mac/.DS_Store
 Exports/.DS_Store
 .DS_Store
 *.avi
-Firefly/addons/asset-drawer/addons/Asset_Drawer/AssetDrawerShortcut.tres
-Firefly/addons/asset-drawer/addons/Asset_Drawer/FileSystem.gd
-Firefly/addons/asset-drawer/addons/Asset_Drawer/plugin.cfg
-Firefly/addons/asset-drawer/hubimages/BottomDock.png
-Firefly/addons/asset-drawer/hubimages/BottomDock.png.import
-Firefly/addons/asset-drawer/hubimages/BottomDock2.png
-Firefly/addons/asset-drawer/hubimages/BottomDock2.png.import
-Firefly/addons/asset-drawer/hubimages/DockedDefault.png
-Firefly/addons/asset-drawer/hubimages/DockedDefault.png.import
-Firefly/addons/asset-drawer/hubimages/DockedDefault2.png
-Firefly/addons/asset-drawer/hubimages/DockedDefault2.png.import
-Firefly/addons/asset-drawer/hubimages/FloatingWindow.png
-Firefly/addons/asset-drawer/hubimages/FloatingWindow.png.import
-Firefly/addons/asset-drawer/hubimages/Tool.png
-Firefly/addons/asset-drawer/hubimages/Tool.png.import
-Firefly/addons/asset-drawer/LICENSE
-Firefly/addons/asset-drawer/Logo.png
-Firefly/addons/asset-drawer/Logo.png.import
-Firefly/addons/asset-drawer/README.md
+
+Firefly/addons/asset-drawer/*
+
+# Media Folder
+Media/*

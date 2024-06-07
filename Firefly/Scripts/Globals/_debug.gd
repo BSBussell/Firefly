@@ -4,6 +4,8 @@ extends Node
 # quicksave location
 var _quicksave_location = Vector2(0, 0)
 var _quicksave_velocity = Vector2(0, 0)
+var _quicksave_glow: int = 0
+var _quicksave_points: float = 0
 
 func _input(_event: InputEvent) -> void:
 	
@@ -44,9 +46,13 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("QuickSave"):
 		_quicksave_location = _globals.ACTIVE_PLAYER.get_global_position()
 		_quicksave_velocity = _globals.ACTIVE_PLAYER.velocity
+		_quicksave_glow = _globals.ACTIVE_PLAYER.get_glow_level()
+		_quicksave_points = _globals.ACTIVE_PLAYER.get_glow_score()
 		_stats.INVALID_RUN = true
 
 	if Input.is_action_just_pressed("QuickLoad"):
 		_globals.ACTIVE_PLAYER.global_position = _quicksave_location
 		_globals.ACTIVE_PLAYER.velocity = _quicksave_velocity
+		_globals.ACTIVE_PLAYER.glow_manager.change_state(_quicksave_glow)
+		_globals.ACTIVE_PLAYER.set_glow_score(_quicksave_points)
 		_stats.INVALID_RUN = true

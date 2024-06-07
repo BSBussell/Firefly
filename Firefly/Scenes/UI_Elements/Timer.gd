@@ -9,7 +9,8 @@ var is_visible = true
 func _ready():
 
 	timer.text = _stats.get_timer_string()
-	play_animation("show")
+	if is_visible:
+		play_animation("show")
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
