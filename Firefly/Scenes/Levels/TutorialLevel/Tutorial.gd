@@ -13,8 +13,9 @@ extends "res://Scripts/Level/Level.gd"
 # We have the player start without glow on this level
 func player_startup_logic():
 	
-	if not spawn_point_id:
-		PLAYER.disable_glow()
+	# Play the walk in script
+	if spawn_point_id:
+		PLAYER.lock_h_dir(0.2, 1.5)
 
 
 # And becasue of that we hide the gems

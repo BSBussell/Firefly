@@ -287,10 +287,35 @@ func _ready() -> void:
 
 	glow_manager.startup()
 	
-	
+	# Register the players save and load functions
+	_persist.register_persistent_class("Flyph", Callable(self, "player_save"), Callable(self, "player_load"))
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)
+
+func player_save() -> Dictionary:
+
+	var save_data: Dictionary = {}
+
+	save_data["glow_points"] = glow_manager.glow_points
+	save_data["movement_level"] = glow_manager.movement_level
+	save_data["glow_enabled"] = glow_manager.GLOW_ENABLED
+	
+
+	return save_data
+
+func player_load(save_data: Dictionary) -> void:
+
+	add_glow(save_data["glow_points"])
+	glow_manager.change_state(save_data["movement_level"])
+
+	# Handle Glow enabling / disabling
+	if save_data["glow_enabled"]:
+		enable_glow()
+	else:
+		disable_glow()
+
+	
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -390,7 +415,7 @@ func set_input_axis(delta: float) -> void:
 
 
 # If we are locking dir
-var lock_dir: bool = true
+var lock_dir: bool = false
 # If the lock is overwritten easily
 var soft_lock: bool = false
 var hold_dir: float = 0.0
@@ -823,11 +848,15 @@ func add_glow(amount: float) -> void:
 	glow_manager.add_score(amount)
 
 ## Force the glow to update score
-func force_glow_update():
+func force_glow_update() -> void:
 	glow_manager.calc_score()
 
+## Set the players glow score
+func set_glow_score(amount: float) -> void:
+	glow_manager.glow_points = amount
+
 ## Get the players current glow score
-func get_glow_score():
+func get_glow_score() -> float:
 	return glow_manager.glow_points
 
 ## Get the players current glow level

@@ -118,6 +118,9 @@ func toggle_pause():
 
 func pause():
 	
+	# Show mouse
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
 	# Make the menu visible
 	menu.visible = true
 	
@@ -138,7 +141,9 @@ func pause():
 	
 func unpause():
 	
-	
+	# Hide mouse
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+
 	# Hide menu
 	menu.visible = false
 	

@@ -43,6 +43,13 @@ script/source = "extends \"res://Scripts/Level/Level.gd\"
 @onready var shadow_filter = $\"PP + FX/ShadowFilter\"
 
 
+# We have the player start without glow on this level
+func player_startup_logic():
+	
+	# Play the walk in script
+	PLAYER.lock_h_dir(-0.3, 1.4, true)
+
+
 # And becasue of that we hide the gems
 func gem_startup_logic():
 	
@@ -379,9 +386,11 @@ metadata/_edit_lock_ = true
 process_mode = 3
 stream = ExtResource("9_l5d0m")
 volume_db = -15.0
+bus = &"Music"
 
 [node name="Ambience" type="AudioStreamPlayer" parent="LevelAudio"]
 stream = ExtResource("10_ehuoj")
+bus = &"Ambience"
 
 [node name="CaveEntrance" type="AudioStreamPlayer2D" parent="LevelAudio"]
 position = Vector2(2909, 281)
@@ -389,9 +398,10 @@ stream = ExtResource("11_iiypr")
 volume_db = -10.0
 autoplay = true
 attenuation = 4.14106
+bus = &"Ambience"
 
 [node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("12_4bqnb")]
-position = Vector2(2676, 239)
+position = Vector2(2727, 240)
 MusicPlayer = NodePath("../LevelAudio/Music")
 
 [node name="PlayerCam" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("13_n86dy")]
@@ -408,7 +418,7 @@ new_level = "res://Scenes/Levels/CaveLevel/cave_level.tscn"
 spawn_id = "cave_exit"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Events/levelChangr"]
-position = Vector2(-24.25, 38)
+position = Vector2(26, 75)
 shape = SubResource("RectangleShape2D_m7kih")
 
 [node name="ThankNote" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]

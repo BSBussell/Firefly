@@ -1,14 +1,35 @@
-[gd_scene load_steps=11 format=3 uid="uid://bivga0jwulfyg"]
+[gd_scene load_steps=19 format=3 uid="uid://bivga0jwulfyg"]
 
 [ext_resource type="Script" path="res://Core/loading_screen.gd" id="1_0il42"]
 [ext_resource type="Shader" path="res://Core/transition.gdshader" id="1_38x6w"]
 [ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="1_u6wva"]
 [ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="2_6qk3d"]
+[ext_resource type="Script" path="res://Core/ProgressBarInterpolate.gd" id="3_6k2he"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_7wtw1"]
+[ext_resource type="Script" path="res://Core/Scale.gd" id="5_wiu7h"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uth8b"]
 shader = ExtResource("1_38x6w")
 shader_parameter/progress = 1.0
-shader_parameter/diamondPixelSize = 128.0
+shader_parameter/diamondPixelSize = 1080.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxd2a"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n2ksf"]
+bg_color = Color(0.780392, 0.87451, 0.921569, 1)
+corner_radius_top_right = 10
+
+[sub_resource type="Curve" id="Curve_vrtev"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_g30c5"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.0975232, 0.336066, 0.8, 1)
+colors = PackedColorArray(1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0.670588, 1, 1, 1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e2l5o"]
 
@@ -39,6 +60,46 @@ tracks/1/keys = {
 "values": [1.0]
 }
 
+[sub_resource type="Animation" id="Animation_u840h"]
+resource_name = "bounce"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TextureRect:anchor_bottom")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.88, 0.86, 0.88]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextureRect:anchor_top")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.88, 0.86, 0.88]
+}
+
 [sub_resource type="Animation" id="Animation_7qpbv"]
 resource_name = "load_in"
 tracks/0/type = "value"
@@ -49,9 +110,9 @@ tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.8, 1),
+"transitions": PackedFloat32Array(0.8, 1.7411),
 "update": 0,
-"values": [0.0, 1.0]
+"values": [0.0, 1.25]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -63,7 +124,43 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 1.0]
+"values": [0.0, 0.96]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TextureRect:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TextureRect:anchor_bottom")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.8, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.87, 0.88]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TextureRect:anchor_top")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.8, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.87, 0.88]
 }
 
 [sub_resource type="Animation" id="Animation_plopa"]
@@ -92,7 +189,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(0.8, 1),
 "update": 0,
-"values": [1.0, 0.0]
+"values": [1.25, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -106,10 +203,23 @@ tracks/2/keys = {
 "update": 0,
 "values": [1.0, 0.0]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TextureRect:modulate")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_70yrc"]
 _data = {
 "RESET": SubResource("Animation_4wqga"),
+"bounce": SubResource("Animation_u840h"),
 "load_in": SubResource("Animation_7qpbv"),
 "load_out": SubResource("Animation_plopa")
 }
@@ -120,12 +230,84 @@ material = SubResource("ShaderMaterial_uth8b")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.235294, 0.2, 0.501961, 1)
 script = ExtResource("1_0il42")
 
+[node name="ProgressBar" type="ProgressBar" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.005
+anchor_bottom = 1.0
+offset_top = -50.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bxd2a")
+theme_override_styles/fill = SubResource("StyleBoxFlat_n2ksf")
+value = 100.0
+show_percentage = false
+script = ExtResource("3_6k2he")
+speed = 250.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.925
+anchor_top = 0.88
+anchor_right = 0.925
+anchor_bottom = 0.88
+offset_left = -84.706
+offset_top = -120.0
+offset_bottom = 1.85966e-05
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_6qk3d")
+expand_mode = 1
+stretch_mode = 4
+flip_h = true
+script = ExtResource("5_wiu7h")
+high_dpi_scale = null
+
+[node name="FireFlies" type="CPUParticles2D" parent="TextureRect"]
+modulate = Color(6, 6, 2.5, 1)
+z_index = 1
+position = Vector2(39, 70)
+amount = 10
+speed_scale = 0.8
+randomness = 1.0
+local_coords = true
+emission_shape = 1
+emission_sphere_radius = 49.8
+direction = Vector2(0, -1)
+gravity = Vector2(2.08165e-12, -300)
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+damping_min = 10.0
+damping_max = 10.0
+angle_min = -40.0
+angle_max = 40.0
+scale_amount_min = 6.0
+scale_amount_max = 9.0
+scale_amount_curve = SubResource("Curve_vrtev")
+color = Color(0.890196, 0.921569, 0, 1)
+color_ramp = SubResource("Gradient_g30c5")
+
+[node name="PointLight2D" type="PointLight2D" parent="TextureRect"]
+z_index = -1
+position = Vector2(41.7061, 64.6)
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.5
+texture = ExtResource("4_7wtw1")
+
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -134,6 +316,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -650.0
 offset_top = -120.0
+offset_right = -120.0
 offset_bottom = -50.0
 grow_horizontal = 0
 grow_vertical = 0
@@ -146,14 +329,9 @@ text = "Loading..."
 label_settings = ExtResource("1_u6wva")
 horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
-visible = false
-texture_filter = 1
-layout_mode = 2
-texture = ExtResource("2_6qk3d")
-expand_mode = 3
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_70yrc")
 }
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

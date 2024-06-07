@@ -28,7 +28,7 @@ var poll_count: float = 0.0
 
 var auto_glow: bool = false
 
-var GLOW_ENABLED: bool = true
+var GLOW_ENABLED: bool = false
 
 
 
