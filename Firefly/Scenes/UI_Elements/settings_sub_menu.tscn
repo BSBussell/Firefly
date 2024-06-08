@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpiiunr2hn7c4"]
+
+[ext_resource type="Shader" path="res://Core/Game/wavy_sidebar.gdshader" id="1_cp0lk"]
+[ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="2_gt2tp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_18l0x"]
+shader = ExtResource("1_cp0lk")
+shader_parameter/progress = 0.1
+shader_parameter/waveFrequency1 = 3.5
+shader_parameter/waveFrequency2 = 5.5
+shader_parameter/waveAmplitude1 = 0.021
+shader_parameter/waveAmplitude2 = 0.009
+shader_parameter/waveSpeed1 = 0.06
+shader_parameter/waveSpeed2 = 0.07
+shader_parameter/noiseScale = 3.96
+shader_parameter/noiseSpeed = 0.5
+
+[node name="SettingsSubMenu" type="ColorRect"]
+z_index = -1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.207843, 0.4, 0.2, 1)
+
+[node name="PauseLinger" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_18l0x")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.2, 0.501961, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.1
+anchor_right = 0.15
+anchor_bottom = 0.1
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Settings"
+label_settings = ExtResource("2_gt2tp")

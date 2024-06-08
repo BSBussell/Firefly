@@ -1,6 +1,9 @@
 extends UiComponent
 class_name PauseMenu
 
+# AnimationPlayer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+
 # Settings Container
 @onready var settings_container = $VBoxContainer/Items/Top/Settings/SettingsContainer
 
@@ -36,6 +39,18 @@ func _ready():
 	game_timer = get_dependency("GameTimer", true)
 
 	load_configs()
+
+	# Calculate screen size
+	var render_size = DisplayServer.window_get_size()
+
+	# Divide Screen size by 15
+	var triangle_size: int = render_size.x 
+
+
+	# Get the shader material attached to the ColorRect
+	print(triangle_size)
+	var color_rect: ColorRect = $"."
+	color_rect.material.set("shader_parameter/diamondPixelSize", triangle_size)
 
 
 func define_dependencies() -> void:
@@ -122,7 +137,7 @@ func pause():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 	# Make the menu visible
-	menu.visible = true
+	animation_player.play("load_in")
 	
 	# Set resume button to be out focus
 	resume_button.grab_focus()
@@ -145,11 +160,15 @@ func unpause():
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 	# Hide menu
-	menu.visible = false
+	animation_player.play("load_out")
 	
 	# Unpause engine
 	get_tree().paused = false
 	
+	# Remove focus from pause menu
+	resume_button.grab_focus()
+	resume_button.release_focus()
+
 	# Set flag
 	paused = false
 	

@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://mohrwc5amu2o"]
+[gd_scene load_steps=14 format=3 uid="uid://mohrwc5amu2o"]
 
 [ext_resource type="Script" path="res://Scripts/Pause/pause.gd" id="1_7kahw"]
 [ext_resource type="LabelSettings" uid="uid://k52u7c7on45i" path="res://UI_Theme/HeaderText.tres" id="1_apw1f"]
+[ext_resource type="Material" uid="uid://dr186ojia5ugu" path="res://Assets/Materials/pause_wobble.tres" id="1_qnrtv"]
 [ext_resource type="LabelSettings" uid="uid://4yd1xq3pf4m6" path="res://UI_Theme/selectFont.tres" id="2_1enlb"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="2_tdrhd"]
 [ext_resource type="PackedScene" uid="uid://xwwdv0rc1i5s" path="res://Core/CustomUIElements/AnimatedToggle.tscn" id="5_6x1tv"]
+[ext_resource type="PackedScene" uid="uid://dpiiunr2hn7c4" path="res://Scenes/UI_Elements/settings_sub_menu.tscn" id="7_dxgjy"]
 
 [sub_resource type="Animation" id="Animation_5tj8j"]
 resource_name = "UnFold"
@@ -14,8 +16,303 @@ _data = {
 "UnFold": SubResource("Animation_5tj8j")
 }
 
+[sub_resource type="Animation" id="Animation_at4w6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.318]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:anchor_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Fade:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.235294, 0.2, 0.501961, 0.435294)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:material:shader_parameter/waveAmplitude1")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.021]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:material:shader_parameter/waveAmplitude2")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.009]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/noiseScale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.96]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:material:shader_parameter/noiseSpeed")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_e3cwu"]
+resource_name = "load_in"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.133972),
+"update": 0,
+"values": [-0.01, 0.35]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:anchor_left")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.108819),
+"update": 0,
+"values": [-0.3, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Fade:color")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.108),
+"update": 0,
+"values": [Color(0.235294, 0.2, 0.501961, 0), Color(0.235294, 0.2, 0.501961, 0.435294)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:material:shader_parameter/waveAmplitude1")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.0, 0.021]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/waveAmplitude2")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.0, 0.009]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = false
+tracks/6/path = NodePath(".:material:shader_parameter/noiseScale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.0, 3.96]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:material:shader_parameter/noiseSpeed")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(5.25),
+"update": 1,
+"values": [0.5]
+}
+
+[sub_resource type="Animation" id="Animation_c2is2"]
+resource_name = "load_out"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.35, 2.08165e-12]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:anchor_left")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.27803),
+"update": 0,
+"values": [0.0, -0.3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Fade:color")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.27),
+"update": 0,
+"values": [Color(0.235294, 0.2, 0.501961, 0.435294), Color(0.235294, 0.2, 0.501961, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:material:shader_parameter/waveAmplitude1")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.021, 0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/waveAmplitude2")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.009, 0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = false
+tracks/6/path = NodePath(".:material:shader_parameter/noiseScale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [3.96, 0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:material:shader_parameter/noiseSpeed")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(5.25),
+"update": 1,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mvfig"]
+_data = {
+"RESET": SubResource("Animation_at4w6"),
+"load_in": SubResource("Animation_e3cwu"),
+"load_out": SubResource("Animation_c2is2")
+}
+
 [node name="PauseMenu" type="ColorRect"]
 z_index = 1000
+material = ExtResource("1_qnrtv")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -23,13 +320,24 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
-color = Color(0.219608, 0.184314, 0.466667, 0.592157)
+color = Color(0.219608, 0.184314, 0.466667, 1)
 script = ExtResource("1_7kahw")
+
+[node name="Fade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.2, 0.501961, 0.435294)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 100.0
 offset_top = -275.0
@@ -107,7 +415,6 @@ text = "Mixer"
 alignment = 0
 
 [node name="MixerSetting" type="VBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer"]
-visible = false
 layout_mode = 2
 
 [node name="Padding2" type="Control" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting"]
@@ -273,6 +580,19 @@ layout_mode = 2
 size_flags_horizontal = 0
 theme = ExtResource("2_tdrhd")
 text = "Quit"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mvfig")
+}
+
+[node name="SettingsSubMenu" parent="." instance=ExtResource("7_dxgjy")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [connection signal="pressed" from="VBoxContainer/Items/Top/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Items/Top/Settings/SettingsButton" to="." method="_on_settings_button_pressed"]
