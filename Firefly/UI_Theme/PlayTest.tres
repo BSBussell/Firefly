@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://dtqfsbjdbbwas"]
 
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_ht7w3"]
 
@@ -12,11 +12,46 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ugbje"]
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_1i0tc"]
+color = Color(0.890196, 0.921569, 0.34902, 1)
+grow_begin = 0.0
+thickness = 5
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_qhc66"]
+color = Color(0.835294, 0.615686, 0.160784, 1)
+thickness = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vuypm"]
+bg_color = Color(0.890196, 0.921569, 0.34902, 1)
+border_color = Color(0.890196, 0.921569, 0.34902, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_novrq"]
+bg_color = Color(0.890196, 0.921569, 0.34902, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 1
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_fo5ix"]
+grow_begin = -5.0
+thickness = 10
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_7rppv"]
+color = Color(0.890196, 0.921569, 0.34902, 1)
+thickness = 100
+
 [resource]
 default_font = ExtResource("1_ht7w3")
+Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_focus_color = Color(0.890196, 0.921569, 0.34902, 1)
 Button/colors/font_hover_color = Color(0.890196, 0.921569, 0.34902, 1)
-Button/font_sizes/font_size = 32
+Button/font_sizes/font_size = 50
 Button/fonts/font = ExtResource("1_ht7w3")
 Button/styles/disabled = SubResource("StyleBoxEmpty_jkirc")
 Button/styles/focus = SubResource("StyleBoxEmpty_3ioor")
@@ -24,3 +59,9 @@ Button/styles/hover = SubResource("StyleBoxEmpty_bogsa")
 Button/styles/normal = SubResource("StyleBoxEmpty_nrjkd")
 Button/styles/pressed = SubResource("StyleBoxEmpty_ugbje")
 HBoxContainer/constants/separation = 150
+HScrollBar/styles/grabber = SubResource("StyleBoxLine_1i0tc")
+HScrollBar/styles/scroll = SubResource("StyleBoxLine_qhc66")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_vuypm")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_novrq")
+HSlider/styles/slider = SubResource("StyleBoxLine_fo5ix")
+VScrollBar/styles/grabber = SubResource("StyleBoxLine_7rppv")

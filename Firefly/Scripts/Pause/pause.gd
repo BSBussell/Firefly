@@ -216,11 +216,13 @@ func _on_resume_button_pressed():
 
 # Reveal Settings Hierarchy
 func _on_settings_button_pressed():
-	if not settings_container.visible:
-		settings_container.visible = true
+	print("settings")
+	animation_player.play("show_settings")
+	# if not settings_container.visible:
+	# 	settings_container.visible = true
 		
-	else:
-		settings_container.visible = false
+	# else:
+	# 	settings_container.visible = false
 
 
 

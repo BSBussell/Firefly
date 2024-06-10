@@ -1,10 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://mohrwc5amu2o"]
+[gd_scene load_steps=15 format=3 uid="uid://mohrwc5amu2o"]
 
 [ext_resource type="Script" path="res://Scripts/Pause/pause.gd" id="1_7kahw"]
 [ext_resource type="LabelSettings" uid="uid://k52u7c7on45i" path="res://UI_Theme/HeaderText.tres" id="1_apw1f"]
 [ext_resource type="Material" uid="uid://dr186ojia5ugu" path="res://Assets/Materials/pause_wobble.tres" id="1_qnrtv"]
-[ext_resource type="LabelSettings" uid="uid://4yd1xq3pf4m6" path="res://UI_Theme/selectFont.tres" id="2_1enlb"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="2_tdrhd"]
+[ext_resource type="LabelSettings" uid="uid://bofwbwm2acyhx" path="res://UI_Theme/setting_cats.tres" id="5_5yoes"]
 [ext_resource type="PackedScene" uid="uid://xwwdv0rc1i5s" path="res://Core/CustomUIElements/AnimatedToggle.tscn" id="5_6x1tv"]
 [ext_resource type="PackedScene" uid="uid://dpiiunr2hn7c4" path="res://Scenes/UI_Elements/settings_sub_menu.tscn" id="7_dxgjy"]
 
@@ -101,6 +101,18 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("VBoxContainer:anchor_right")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
 }
 
 [sub_resource type="Animation" id="Animation_e3cwu"]
@@ -303,11 +315,77 @@ tracks/7/keys = {
 "values": [0.0]
 }
 
+[sub_resource type="Animation" id="Animation_do4ea"]
+resource_name = "show_settings"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.35, 0.1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:anchor_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.162451),
+"update": 0,
+"values": [0.0, -0.25]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer:anchor_right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SettingsSubMenu")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"show_settings"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SettingsSubMenu:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mvfig"]
 _data = {
 "RESET": SubResource("Animation_at4w6"),
 "load_in": SubResource("Animation_e3cwu"),
-"load_out": SubResource("Animation_c2is2")
+"load_out": SubResource("Animation_c2is2"),
+"show_settings": SubResource("Animation_do4ea")
 }
 
 [node name="PauseMenu" type="ColorRect"]
@@ -432,7 +510,7 @@ theme_override_constants/separation = 332
 layout_mode = 2
 theme = ExtResource("2_tdrhd")
 text = "Music"
-label_settings = ExtResource("2_1enlb")
+label_settings = ExtResource("5_5yoes")
 
 [node name="MusicSlider" type="HSlider" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music"]
 modulate = Color(0.890196, 0.921569, 0.34902, 1)
@@ -457,7 +535,7 @@ theme_override_constants/separation = 385
 layout_mode = 2
 theme = ExtResource("2_tdrhd")
 text = "SFX"
-label_settings = ExtResource("2_1enlb")
+label_settings = ExtResource("5_5yoes")
 
 [node name="SFXSlider" type="HSlider" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX"]
 modulate = Color(0.890196, 0.921569, 0.34902, 1)
@@ -483,7 +561,7 @@ theme_override_constants/separation = 232
 layout_mode = 2
 theme = ExtResource("2_tdrhd")
 text = "Ambience"
-label_settings = ExtResource("2_1enlb")
+label_settings = ExtResource("5_5yoes")
 
 [node name="AmbienceSlider" type="HSlider" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience"]
 modulate = Color(0.890196, 0.921569, 0.34902, 1)
@@ -508,7 +586,7 @@ theme_override_constants/separation = 300
 layout_mode = 2
 theme = ExtResource("2_tdrhd")
 text = "Fullscreen"
-label_settings = ExtResource("2_1enlb")
+label_settings = ExtResource("5_5yoes")
 
 [node name="FullScreenToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer" instance=ExtResource("5_6x1tv")]
 layout_mode = 2
@@ -526,7 +604,7 @@ theme_override_constants/separation = 176
 [node name="Label" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer"]
 layout_mode = 2
 text = "Auto Glow Mode"
-label_settings = ExtResource("2_1enlb")
+label_settings = ExtResource("5_5yoes")
 
 [node name="GlowModeToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer" instance=ExtResource("5_6x1tv")]
 layout_mode = 2
@@ -544,7 +622,7 @@ theme_override_constants/separation = 92
 [node name="Label" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer"]
 layout_mode = 2
 text = "Show Speedometer"
-label_settings = ExtResource("2_1enlb")
+label_settings = ExtResource("5_5yoes")
 
 [node name="speedometerToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer" instance=ExtResource("5_6x1tv")]
 layout_mode = 2
@@ -562,7 +640,7 @@ theme_override_constants/separation = 288
 [node name="Label" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer"]
 layout_mode = 2
 text = "Show Timer"
-label_settings = ExtResource("2_1enlb")
+label_settings = ExtResource("5_5yoes")
 
 [node name="timerToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer" instance=ExtResource("5_6x1tv")]
 layout_mode = 2
@@ -591,12 +669,7 @@ speed_scale = 2.0
 
 [node name="SettingsSubMenu" parent="." instance=ExtResource("7_dxgjy")]
 visible = false
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
+layout_mode = 1
 
 [connection signal="pressed" from="VBoxContainer/Items/Top/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Items/Top/Settings/SettingsButton" to="." method="_on_settings_button_pressed"]
