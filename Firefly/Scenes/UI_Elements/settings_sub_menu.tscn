@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dpiiunr2hn7c4"]
+[gd_scene load_steps=7 format=3 uid="uid://dpiiunr2hn7c4"]
 
 [ext_resource type="Shader" path="res://Core/Game/wavy_sidebar.gdshader" id="1_cp0lk"]
 [ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="2_gt2tp"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="3_ruqkj"]
+[ext_resource type="LabelSettings" uid="uid://4yd1xq3pf4m6" path="res://UI_Theme/selectFont.tres" id="4_1thpu"]
+[ext_resource type="PackedScene" uid="uid://xwwdv0rc1i5s" path="res://Core/CustomUIElements/AnimatedToggle.tscn" id="5_rahv4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_18l0x"]
 shader = ExtResource("1_cp0lk")
@@ -45,3 +48,184 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "Settings"
 label_settings = ExtResource("2_gt2tp")
+
+[node name="SettingsContainer" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 0
+theme_override_constants/separation = 20
+
+[node name="Padding" type="Control" parent="SettingsContainer"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+
+[node name="AudioSettingContainer" type="HBoxContainer" parent="SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = -250
+
+[node name="Audio" type="Button" parent="SettingsContainer/AudioSettingContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../../SettingsButton")
+focus_neighbor_right = NodePath("../MixerSetting/Music/MusicSlider")
+focus_neighbor_bottom = NodePath("../../FullScreenContainer/FullScreenToggle")
+theme = ExtResource("3_ruqkj")
+text = "Mixer"
+alignment = 0
+
+[node name="MixerSetting" type="VBoxContainer" parent="SettingsContainer/AudioSettingContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Padding2" type="Control" parent="SettingsContainer/AudioSettingContainer/MixerSetting"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+
+[node name="Music" type="HBoxContainer" parent="SettingsContainer/AudioSettingContainer/MixerSetting"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+theme_override_constants/separation = 332
+
+[node name="MusicLabel" type="Label" parent="SettingsContainer/AudioSettingContainer/MixerSetting/Music"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+text = "Music"
+label_settings = ExtResource("4_1thpu")
+
+[node name="MusicSlider" type="HSlider" parent="SettingsContainer/AudioSettingContainer/MixerSetting/Music"]
+modulate = Color(0.890196, 0.921569, 0.34902, 1)
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../Audio")
+focus_neighbor_top = NodePath("../../../Audio")
+focus_neighbor_bottom = NodePath("../../SFX/SFXSlider")
+theme = ExtResource("3_ruqkj")
+max_value = 1.0
+step = 0.1
+value = 0.5
+scrollable = false
+
+[node name="SFX" type="HBoxContainer" parent="SettingsContainer/AudioSettingContainer/MixerSetting"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+theme_override_constants/separation = 385
+
+[node name="FullScreen" type="Label" parent="SettingsContainer/AudioSettingContainer/MixerSetting/SFX"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+text = "SFX"
+label_settings = ExtResource("4_1thpu")
+
+[node name="SFXSlider" type="HSlider" parent="SettingsContainer/AudioSettingContainer/MixerSetting/SFX"]
+modulate = Color(0.890196, 0.921569, 0.34902, 1)
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../Audio")
+focus_neighbor_top = NodePath("../../Music/MusicSlider")
+focus_neighbor_bottom = NodePath("../../Ambience/AmbienceSlider")
+theme = ExtResource("3_ruqkj")
+max_value = 1.0
+step = 0.1
+value = 0.5
+scrollable = false
+
+[node name="Ambience" type="HBoxContainer" parent="SettingsContainer/AudioSettingContainer/MixerSetting"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+theme_override_constants/separation = 232
+
+[node name="FullScreen" type="Label" parent="SettingsContainer/AudioSettingContainer/MixerSetting/Ambience"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+text = "Ambience"
+label_settings = ExtResource("4_1thpu")
+
+[node name="AmbienceSlider" type="HSlider" parent="SettingsContainer/AudioSettingContainer/MixerSetting/Ambience"]
+modulate = Color(0.890196, 0.921569, 0.34902, 1)
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../Audio")
+focus_neighbor_top = NodePath("../../SFX/SFXSlider")
+focus_neighbor_bottom = NodePath("../../../../FullScreenContainer/FullScreenToggle")
+theme = ExtResource("3_ruqkj")
+max_value = 1.0
+step = 0.1
+value = 0.5
+scrollable = false
+
+[node name="FullScreenContainer" type="HBoxContainer" parent="SettingsContainer"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+theme_override_constants/separation = 300
+
+[node name="FullScreen" type="Label" parent="SettingsContainer/FullScreenContainer"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+text = "Fullscreen"
+label_settings = ExtResource("4_1thpu")
+
+[node name="FullScreenToggle" parent="SettingsContainer/FullScreenContainer" instance=ExtResource("5_rahv4")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../AudioSettingContainer/Audio")
+focus_neighbor_bottom = NodePath("../../GlowModeContainer/GlowModeToggle")
+
+[node name="GlowModeContainer" type="HBoxContainer" parent="SettingsContainer"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+theme_override_constants/separation = 176
+
+[node name="Label" type="Label" parent="SettingsContainer/GlowModeContainer"]
+layout_mode = 2
+text = "Auto Glow Mode"
+label_settings = ExtResource("4_1thpu")
+
+[node name="GlowModeToggle" parent="SettingsContainer/GlowModeContainer" instance=ExtResource("5_rahv4")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../FullScreenContainer/FullScreenToggle")
+focus_neighbor_bottom = NodePath("../../Speedometer/speedometerToggle")
+
+[node name="Speedometer" type="HBoxContainer" parent="SettingsContainer"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+theme_override_constants/separation = 92
+
+[node name="Label" type="Label" parent="SettingsContainer/Speedometer"]
+layout_mode = 2
+text = "Show Speedometer"
+label_settings = ExtResource("4_1thpu")
+
+[node name="speedometerToggle" parent="SettingsContainer/Speedometer" instance=ExtResource("5_rahv4")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../GlowModeContainer/GlowModeToggle")
+focus_neighbor_bottom = NodePath("../../ShowTimer/timerToggle")
+
+[node name="ShowTimer" type="HBoxContainer" parent="SettingsContainer"]
+layout_mode = 2
+theme = ExtResource("3_ruqkj")
+theme_override_constants/separation = 288
+
+[node name="Label" type="Label" parent="SettingsContainer/ShowTimer"]
+layout_mode = 2
+text = "Show Timer"
+label_settings = ExtResource("4_1thpu")
+
+[node name="timerToggle" parent="SettingsContainer/ShowTimer" instance=ExtResource("5_rahv4")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../../../SettingsButton")
+focus_neighbor_top = NodePath("../../Speedometer/speedometerToggle")
+focus_neighbor_bottom = NodePath("../../AudioSettingContainer/Audio")

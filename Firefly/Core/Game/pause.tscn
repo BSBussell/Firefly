@@ -152,7 +152,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 0.108),
 "update": 0,
-"values": [Color(0.235294, 0.2, 0.501961, 0), Color(0.235294, 0.2, 0.501961, 0.435294)]
+"values": [Color(0.235294, 0.2, 0.501961, 0), Color(0.235294, 0.2, 0.501961, 0.745098)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -252,7 +252,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 5.27),
 "update": 0,
-"values": [Color(0.235294, 0.2, 0.501961, 0.435294), Color(0.235294, 0.2, 0.501961, 0)]
+"values": [Color(0.235294, 0.2, 0.501961, 0.745098), Color(0.235294, 0.2, 0.501961, 0)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -324,6 +324,8 @@ color = Color(0.219608, 0.184314, 0.466667, 1)
 script = ExtResource("1_7kahw")
 
 [node name="Fade" type="ColorRect" parent="."]
+z_index = -1
+z_as_relative = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -585,8 +587,10 @@ text = "Quit"
 libraries = {
 "": SubResource("AnimationLibrary_mvfig")
 }
+speed_scale = 2.0
 
 [node name="SettingsSubMenu" parent="." instance=ExtResource("7_dxgjy")]
+visible = false
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0

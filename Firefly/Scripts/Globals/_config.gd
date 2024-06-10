@@ -7,6 +7,7 @@ const CONFIG_FILE: String = "user://config.json"
 var settings: Dictionary = {
     "game_zoom": 1.0,
 
+    "master_volume": 1.0,
 	"mixer_settings": {
         "sfx": 1.0,
         "music": 1.0,
