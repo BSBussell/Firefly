@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4emyp3fdhl7t"]
+
+[ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/bool_setting.gd" id="1_1yv7h"]
+[ext_resource type="LabelSettings" uid="uid://4yd1xq3pf4m6" path="res://UI_Theme/selectFont.tres" id="1_ag502"]
+[ext_resource type="PackedScene" uid="uid://xwwdv0rc1i5s" path="res://Core/CustomUIElements/AnimatedToggle.tscn" id="2_l08fw"]
+
+[node name="Bool" type="HBoxContainer"]
+offset_right = 894.0
+offset_bottom = 98.0
+size_flags_vertical = 3
+script = ExtResource("1_1yv7h")
+
+[node name="SettingName" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+text = "Auto Glow Mode "
+label_settings = ExtResource("1_ag502")
+vertical_alignment = 1
+
+[node name="AnimatedToggle" parent="." instance=ExtResource("2_l08fw")]
+layout_mode = 2
+size_flags_vertical = 4
+
+[connection signal="switched_off" from="AnimatedToggle" to="." method="_on_animated_toggle_switched_off"]
+[connection signal="switched_on" from="AnimatedToggle" to="." method="_on_animated_toggle_switched_on"]

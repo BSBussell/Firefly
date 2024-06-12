@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3gg0nmjq7om5"]
+
+[ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/slider_setting.gd" id="1_wox52"]
+[ext_resource type="LabelSettings" uid="uid://4yd1xq3pf4m6" path="res://UI_Theme/selectFont.tres" id="2_oary4"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="3_evh35"]
+
+[node name="Slider" type="HBoxContainer"]
+offset_right = 894.0
+offset_bottom = 98.0
+size_flags_vertical = 3
+script = ExtResource("1_wox52")
+
+[node name="SettingName" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+text = "Auto Glow Mode "
+label_settings = ExtResource("2_oary4")
+vertical_alignment = 1
+
+[node name="HSlider" type="HSlider" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.5
+theme = ExtResource("3_evh35")
+value = 50.0
+
+[connection signal="value_changed" from="HSlider" to="." method="_on_h_slider_value_changed"]

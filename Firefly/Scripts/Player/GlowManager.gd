@@ -131,18 +131,17 @@ func _process(delta):
 			# If the number of points is 0 then we demote
 			if round(glow_points) == 0:
 				demote()
-					
 		
 		
-			
 	# Upgrading is the glow up is pressed and score is peaked
+	auto_glow = _config.get_setting("auto_glow")
 	if movement_level <= max_level:
 		if round(glow_points) >= 100 and (Input.is_action_just_pressed("Glow_Up") or auto_glow):
 			promote()
 
 	# If Glow down is pressed and we're not at the bottom
 	if movement_level > 0 and Input.is_action_just_pressed("Glow_Down"):
-		demote()		
+		demote()
 	
 	# Update our meter
 	emit_signal("glow_meter_changed", glow_points)

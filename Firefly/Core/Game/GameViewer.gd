@@ -48,9 +48,17 @@ func _ready():
 	
 	# Load our level
 	_loader.load_level(start_level.resource_path)
+	
+	# Connect Config change function
+	_config.connect_to_config_changed(Callable(self, "config_changed"))
+
+	set_windowed_scale()
 
 	# Set the window size to be windowed
-	set_windowed_scale()
+	# Full Screen Check
+	if _config.get_setting("fullscreen"):
+		set_fullscreen_scale()
+		
 
 	# Get zoom from config
 	res_scale = _config.get_setting("game_zoom")
@@ -314,3 +322,16 @@ func get_usable_screen_size() -> Vector2i:
 		screen_size.y -= 74
 	
 	return screen_size
+	
+func config_changed():
+	if _config.get_setting("fullscreen"):
+		set_fullscreen_scale()
+	else:
+		set_windowed_scale()
+	
+	if _config.get_setting("vsync"):
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+	else:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+
+

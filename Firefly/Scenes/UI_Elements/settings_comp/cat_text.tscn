@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dp2w4ordjbpnj"]
+
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="1_4okqh"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/cat_text.gd" id="2_os3xt"]
+
+[node name="Cat_Text" type="Button"]
+focus_neighbor_right = NodePath("../Cat_Text2")
+theme = ExtResource("1_4okqh")
+theme_type_variation = &"Active_Header"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Game Settings"
+script = ExtResource("2_os3xt")
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]

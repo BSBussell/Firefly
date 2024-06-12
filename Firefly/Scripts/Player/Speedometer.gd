@@ -9,6 +9,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	
-	text = "%d" % flyph.velocity.x
-	pass
+	if _config.get_setting("show_speedometer"):
+		visible = true
+		text = "%d" % flyph.velocity.x
+	else:
+		visible = false

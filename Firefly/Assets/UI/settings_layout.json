@@ -1,77 +1,93 @@
 
 {
-    "Game_Settings": {
-
-        "auto_glow": {
-            "label": "Auto Glow",
-            "description": "Automatically trigger glow while playing",
-            "type": "boolean",
-            "config_key": "auto_glow",
-        },
-	    "show_speedometer": {
-            "label": "Show Speedometer",
-            "description": "Show speedometer while playing",
-            "type": "boolean",
-            "config_key": "show_speedometer",
-        },
-        "show_timer": {
-            "label": "Speed Run Timer",
-            "description": "Show speed run timer while playing",
-            "type": "boolean",
-            "config_key": "show_timer",
-        }
-
-    },
-    "Audio_Settings": {
-        "volume": {
-            "label": "Volume",
-            "description": "Adjust the volume of the game",
-            "type": "range",
-            "config_key": "mixer_settings",
-            "sub_config_key": "volume",
-            
-            "min": 0,
-            "max": 100,
-            "step": 1
-        },
-        "--": {
-            "Label": "",
-            "description": "",
-            "type": "separator",
-        }
-        "music_volume": {
-            "label": "Music Volume",
-            "description": "Adjust the volume of the music",
-            "type": "range",
-            "config_key": "mixer_settings",
-            "sub_config_key": "music",
-            
-            "min": 0,
-            "max": 100,
-            "step": 1
-        },
-        "sfx_volume": {
-            "label": "SFX Volume",
-            "description": "Adjust the volume of the sound effects",
-            "type": "range",
-            "config_key": "mixer_settings",
-            "sub_config_key": "sfx",
-            
-            "min": 0,
-            "max": 100,
-            "step": 1
-        }
-        "ambience_volume": {
-            "label": "Ambience Volume",
-            "description": "Adjust the volume of the ambience",
-            "type": "range",
-            "config_key": "mixer_settings",
-            "sub_config_key": "ambience",
-            
-            "min": 0,
-            "max": 100,
-            "step": 1
-        }
-    }
-
+	"Game_Settings": {
+		"text": "Game",
+		"id": 0,
+		"items": {
+			"auto_glow": {
+				"label": "Auto Glow",
+				"description": "Automatically trigger glow while playing",
+				"type": "boolean",
+				"config_key": "auto_glow",
+			},
+			"input_assists": {
+				"label": "Input Assists",
+				"description": "Assist with some inputs, such as upward wallhop climbs.",
+				"type": "boolean",
+				"config_key": "input_assists",
+			},
+			"show_speedometer": {
+				"label": "Show Speedometer",
+				"description": "Show speedometer while playing",
+				"type": "boolean",
+				"config_key": "show_speedometer",
+			},
+			"show_timer": {
+				"label": "Speed Run Timer",
+				"description": "Show speed run timer while playing",
+				"type": "boolean",
+				"config_key": "show_timer",
+			}
+		}
+	},
+	"Graphic_Settings": {
+		"text": "Graphics",
+		"id": 1,
+		"items": {
+			"fullscreen": {
+				"label": "Full Screen",
+				"description": "make game big",
+				"type": "boolean",
+				"config_key": "fullscreen"
+			},
+			"vsync": {
+				"label": "V-Sync Enabled",
+				"description": "sync game refresh rate with monitor",
+				"type": "boolean",
+				"config_key": "vsync"
+			}
+		}
+	},
+	"Audio_Settings": {
+		"text": "Audio",
+		"id": 2,
+		"items": {
+			"Volume": {
+				"label": "Volume",
+				"description": "Control the Volume of the game",
+				"type": "slider",
+				"config_key": "master_vol",
+				"min": -15,
+				"max": 6,
+				"step": 1
+		 	},
+			"Music": {
+				"label": "Music Vol.",
+				"description": "Control the Volume of the Music",
+				"type": "slider",
+				"config_key": "music",
+				"min": -15,
+				"max": 6,
+				"step": 1
+		 	},
+			"SFX": {
+				"label": "SFX Vol.",
+				"description": "Control the Volume of the SFX",
+				"type": "slider",
+				"config_key": "sfx",
+				"min": -15,
+				"max": 6,
+				"step": 1
+		 	},
+			"Ambience": {
+				"label": "Ambience Vol.",
+				"description": "Control the Volume of the Ambience",
+				"type": "slider",
+				"config_key": "ambience",
+				"min": -15,
+				"max": 10,
+				"step": 1
+		 	}
+		}
+	}
 }

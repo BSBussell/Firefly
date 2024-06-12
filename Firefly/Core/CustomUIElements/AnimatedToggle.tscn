@@ -73,11 +73,10 @@ animations = [{
 "speed": 45.0
 }]
 
-[node name="Control" type="Container"]
+[node name="button" type="Button"]
 custom_minimum_size = Vector2(160, 80)
-offset_right = 160.0
-offset_bottom = 80.0
-focus_mode = 2
+theme = ExtResource("1_mn8y5")
+flat = true
 script = ExtResource("2_jt658")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -90,13 +89,6 @@ animation = &"Off"
 frame = 3
 frame_progress = 1.0
 
-[node name="button" type="Button" parent="."]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_mn8y5")
-flat = true
-
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
-[connection signal="focus_exited" from="button" to="." method="_on_button_focus_exited"]
-[connection signal="pressed" from="button" to="." method="_on_pressed"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

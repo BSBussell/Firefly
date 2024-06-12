@@ -1,4 +1,4 @@
-
+   
 class_name Flyph
 extends CharacterBody2D
 

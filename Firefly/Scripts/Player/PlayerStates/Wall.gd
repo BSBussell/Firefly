@@ -267,7 +267,8 @@ func upward_walljump(jump_dir: float) -> void:
 
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
 	
-	parent.lock_h_dir(-jump_dir, 0.2, true)
+	if _config.get_setting("input_assists"):
+		parent.lock_h_dir(-jump_dir, 0.2, true)
 	
 	
 
@@ -317,6 +318,7 @@ func away_walljump(jump_dir: float) -> void:
 	var facing: bool = (jump_dir < 0)
 
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
+	
 	
 	parent.lock_h_dir(jump_dir, 0.2, true)
 	

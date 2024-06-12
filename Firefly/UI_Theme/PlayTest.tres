@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=13 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://dtqfsbjdbbwas"]
 
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_ht7w3"]
 
@@ -42,6 +42,21 @@ corner_detail = 1
 grow_begin = -5.0
 thickness = 10
 
+[sub_resource type="FontVariation" id="FontVariation_w02q8"]
+base_font = ExtResource("1_ht7w3")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vc2dj"]
+bg_color = Color(0.490196, 0.439216, 0.741176, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.235294, 0.2, 0.501961, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_7rppv"]
 color = Color(0.890196, 0.921569, 0.34902, 1)
 thickness = 100
@@ -49,8 +64,21 @@ thickness = 100
 [resource]
 default_font = ExtResource("1_ht7w3")
 Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 Button/colors/font_focus_color = Color(0.890196, 0.921569, 0.34902, 1)
 Button/colors/font_hover_color = Color(0.890196, 0.921569, 0.34902, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
 Button/fonts/font = ExtResource("1_ht7w3")
 Button/styles/disabled = SubResource("StyleBoxEmpty_jkirc")
@@ -64,4 +92,9 @@ HScrollBar/styles/scroll = SubResource("StyleBoxLine_qhc66")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_vuypm")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_novrq")
 HSlider/styles/slider = SubResource("StyleBoxLine_fo5ix")
+OptionButton/constants/arrow_margin = 2
+OptionButton/constants/modulate_arrow = 13
+OptionButton/constants/outline_size = 5
+OptionButton/fonts/font = SubResource("FontVariation_w02q8")
+OptionButton/styles/normal = SubResource("StyleBoxFlat_vc2dj")
 VScrollBar/styles/grabber = SubResource("StyleBoxLine_7rppv")

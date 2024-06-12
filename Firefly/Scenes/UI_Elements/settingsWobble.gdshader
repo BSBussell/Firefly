@@ -61,5 +61,5 @@ void fragment() {
     vec4 finalColor = vec4(originalColor.rgb, originalColor.a * fill);
 
     // Set the final color
-    COLOR.a = finalColor.a;
+    COLOR.a = finalColor.a * COLOR.a;
 }
