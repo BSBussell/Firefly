@@ -3,6 +3,8 @@ class_name SliderSetting
 
 @onready var label: Label = $SettingName
 @onready var animated_toggle: AnimatedToggle = $AnimatedToggle 
+@onready var press = $Press
+@onready var focus = $Focus
 
 
 
@@ -24,8 +26,8 @@ func setup_element():
 	# Set the toggle state
 	if _config.get_setting(setting_json["config_key"]):
 		animated_toggle.toggle_on()
-	else:
-		animated_toggle.toggle_off()
+	#else:
+		#animated_toggle.toggle_off()
 
 func pass_json(json):
 	setting_json = json
@@ -36,6 +38,8 @@ func _on_animated_toggle_switched_on():
 
 	if setting_json:
 		_config.set_setting(setting_json["config_key"], true)
+		
+	#press.play(0)
 
 # Handle the setting being toggled off
 func _on_animated_toggle_switched_off():
@@ -67,3 +71,7 @@ func get_focus_obj() -> Control:
 	return animated_toggle
 
 	
+
+
+func _on_animated_toggle_focus_entered():
+	focus.play(0.0)

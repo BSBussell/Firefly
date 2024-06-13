@@ -608,6 +608,7 @@ floor_constant_speed = true
 floor_max_angle = 1.55334
 floor_snap_length = 7.0
 script = ExtResource("1_ikygr")
+is_actor = true
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 GROUNDED_STATE = NodePath("StateMachine/Grounded")
 AERIAL_STATE = NodePath("StateMachine/Aerial")
@@ -1140,7 +1141,6 @@ wait_time = 0.05
 one_shot = true
 
 [node name="Debug" type="Node2D" parent="."]
-visible = false
 
 [node name="Speedometer" type="Label" parent="Debug"]
 offset_left = -10.0

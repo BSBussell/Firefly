@@ -48,6 +48,7 @@ func toggle_off():
 func _on_focus_entered():
 	
 	animated_sprite_2d.modulate = "#FFFFFF"
+	animated_sprite_2d.scale = Vector2(25, 25)
 
 
 
@@ -55,4 +56,5 @@ func _on_focus_entered():
 func _on_focus_exited():
 	
 	# Set the sprite back to looking lame asf
-	animated_sprite_2d.modulate = "#8f8f8f"
+	animated_sprite_2d.modulate = "#dadada"
+	animated_sprite_2d.scale = Vector2(20, 20)

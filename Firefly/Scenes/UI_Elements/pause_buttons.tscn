@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bfr6itpdlgpsr"]
+
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="1_l8bhh"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/pause_buttons.gd" id="2_gwb1e"]
+[ext_resource type="AudioStream" uid="uid://dvrqu1quotelj" path="res://Assets/SFX/UI/zapsplat_foley_bottle_glass_beer_knock_over_road_002_103732.mp3" id="3_vbyoa"]
+[ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="3_w11k4"]
+
+[node name="pause_button" type="Button" node_paths=PackedStringArray("focus", "press")]
+size_flags_horizontal = 0
+theme = ExtResource("1_l8bhh")
+text = "Resume"
+script = ExtResource("2_gwb1e")
+focus = NodePath("Focus")
+press = NodePath("Press")
+
+[node name="Press" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_vbyoa")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="Focus" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_w11k4")
+volume_db = -10.0
+bus = &"SFX"
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

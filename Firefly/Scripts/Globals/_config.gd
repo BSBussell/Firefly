@@ -14,7 +14,6 @@ var settings: Dictionary = {
 # Gameplay
 	
 	"auto_glow": false,
-	"input_assists": false,
 	"show_speedometer": false,
 	"show_timer": false,
 	
@@ -28,8 +27,12 @@ var settings: Dictionary = {
 	"master_vol": 0.0,
 	"sfx": 1.0,
 	"music": 0.0,
-	"ambience": -1.0
+	"ambience": -1.0,
 
+# Helpers
+	"input_assist": true,
+	"slide_assist": false,
+	"inf_jump": false
 }
 
 # Called when the node is added to the scene

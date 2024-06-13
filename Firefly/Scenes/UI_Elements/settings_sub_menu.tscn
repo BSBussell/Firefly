@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dpiiunr2hn7c4"]
+[gd_scene load_steps=20 format=3 uid="uid://dpiiunr2hn7c4"]
 
 [ext_resource type="Script" path="res://Scenes/UI_Elements/settings_menu.gd" id="1_2yfve"]
 [ext_resource type="Shader" path="res://Core/Game/wavy_sidebar.gdshader" id="1_cp0lk"]
@@ -6,8 +6,10 @@
 [ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="2_gt2tp"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="3_ruqkj"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/CategoryContainer.gd" id="6_5m2g1"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/pause_buttons.gd" id="6_vsv8n"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/settings_list.gd" id="7_cvkcl"]
 [ext_resource type="PackedScene" uid="uid://b4emyp3fdhl7t" path="res://Scenes/UI_Elements/settings_comp/bool_setting.tscn" id="7_eb0w4"]
+[ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="7_hwkrn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_18l0x"]
 shader = ExtResource("1_cp0lk")
@@ -166,6 +168,18 @@ tracks/9/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [2.08165e-12]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("SettingsWobble2:anchor_left")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
 [sub_resource type="Animation" id="Animation_oad6j"]
@@ -346,6 +360,18 @@ tracks/7/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SettingsWobble2:anchor_left")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.5, 0.0]
+}
 
 [sub_resource type="Animation" id="Animation_11g7d"]
 resource_name = "settings_out"
@@ -445,6 +471,18 @@ tracks/7/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SettingsWobble2:anchor_left")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.0, 0.5]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_t4yat"]
 _data = {
@@ -520,12 +558,21 @@ anchor_top = 0.25
 anchor_right = 1.0
 anchor_bottom = 0.3
 
-[node name="BackButton" type="Button" parent="TopBar"]
+[node name="BackButton" type="Button" parent="TopBar" node_paths=PackedStringArray("focus")]
 layout_mode = 2
 size_flags_vertical = 0
 focus_neighbor_left = NodePath(".")
+focus_neighbor_bottom = NodePath("\"\"")
 theme = ExtResource("3_ruqkj")
 text = "< | "
+script = ExtResource("6_vsv8n")
+disable_press_sfx = true
+focus = NodePath("Focus")
+
+[node name="Focus" type="AudioStreamPlayer" parent="TopBar/BackButton"]
+stream = ExtResource("7_hwkrn")
+volume_db = -10.0
+bus = &"SFX"
 
 [node name="SettingCategories" type="ScrollContainer" parent="TopBar"]
 layout_mode = 2
@@ -582,4 +629,5 @@ libraries = {
 }
 speed_scale = 2.0
 
+[connection signal="focus_entered" from="TopBar/BackButton" to="TopBar/BackButton" method="_on_focus_entered"]
 [connection signal="pressed" from="TopBar/BackButton" to="." method="_on_button_pressed"]

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=15 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=18 format=3 uid="uid://dtqfsbjdbbwas"]
 
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_ht7w3"]
 
@@ -21,26 +21,25 @@ thickness = 5
 color = Color(0.835294, 0.615686, 0.160784, 1)
 thickness = 5
 
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_b6f74"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ppoty"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_u0knq"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vuypm"]
-bg_color = Color(0.890196, 0.921569, 0.34902, 1)
+bg_color = Color(0.870588, 0.709804, 0.227451, 1)
 border_color = Color(0.890196, 0.921569, 0.34902, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
 corner_detail = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_novrq"]
 bg_color = Color(0.890196, 0.921569, 0.34902, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+border_color = Color(0.360784, 0.364706, 0.678431, 1)
 corner_detail = 1
 
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_fo5ix"]
-grow_begin = -5.0
-thickness = 10
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_0qwdj"]
+color = Color(0.741176, 0.407843, 0.0980392, 1)
+thickness = 17
 
 [sub_resource type="FontVariation" id="FontVariation_w02q8"]
 base_font = ExtResource("1_ht7w3")
@@ -86,12 +85,16 @@ Button/styles/focus = SubResource("StyleBoxEmpty_3ioor")
 Button/styles/hover = SubResource("StyleBoxEmpty_bogsa")
 Button/styles/normal = SubResource("StyleBoxEmpty_nrjkd")
 Button/styles/pressed = SubResource("StyleBoxEmpty_ugbje")
+CheckButton/icons/checked = null
 HBoxContainer/constants/separation = 150
 HScrollBar/styles/grabber = SubResource("StyleBoxLine_1i0tc")
 HScrollBar/styles/scroll = SubResource("StyleBoxLine_qhc66")
+HSlider/icons/grabber = SubResource("PlaceholderTexture2D_b6f74")
+HSlider/icons/grabber_disabled = SubResource("PlaceholderTexture2D_ppoty")
+HSlider/icons/grabber_highlight = SubResource("PlaceholderTexture2D_u0knq")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_vuypm")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_novrq")
-HSlider/styles/slider = SubResource("StyleBoxLine_fo5ix")
+HSlider/styles/slider = SubResource("StyleBoxLine_0qwdj")
 OptionButton/constants/arrow_margin = 2
 OptionButton/constants/modulate_arrow = 13
 OptionButton/constants/outline_size = 5

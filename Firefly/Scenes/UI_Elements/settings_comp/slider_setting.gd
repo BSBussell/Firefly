@@ -5,6 +5,7 @@ class_name BoolSetting
 @onready var h_slider: HSlider = $HSlider
 
 
+@onready var focus = $Focus
 
 
 #"Volume": {
@@ -73,3 +74,14 @@ func _on_h_slider_value_changed(value):
 	if setting_json:
 		_config.set_setting(setting_json["config_key"], value)
 		print(value)
+
+
+func _on_h_slider_focus_entered():
+	focus.play(0.0)
+	var style_box: StyleBoxLine = h_slider.get_theme_stylebox("slider").duplicate()
+	style_box.set("thickness", 25)
+	h_slider.add_theme_stylebox_override("slider", style_box)
+
+
+func _on_h_slider_focus_exited():
+	h_slider.remove_theme_stylebox_override("slider")

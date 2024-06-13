@@ -246,10 +246,18 @@ func animation_end() -> PlayerState:
 func handle_coyote(_delta):
 
 	# If we are able to do a coyote jump
-	if coyote_time.time_left > 0.0 and not parent.launched:
+	if coyote_time.time_left > 0.0 and not parent.launched or _config.get_setting("inf_jump"):
+
+		
 
 		# If the player has buffered a jump
 		if parent.attempt_jump():
+			
+			shopped = false
+			
+			# If we have used inf jump make the run invalid, sorry
+			if _config.get_setting("inf_jump"):
+				_stats.INVALID_RUN = true
 
 			# Update Animation State if we aren't holding crawl still
 			if (parent.current_animation != parent.ANI_STATES.CRAWL):

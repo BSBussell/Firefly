@@ -46,8 +46,10 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="UILoader" type="SubViewportContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("4_4g62g")
 
 [node name="UIViewPort" type="SubViewport" parent="UILoader"]

@@ -49,6 +49,10 @@ enum WALLJUMPS {
 
 signal dead()
 
+
+@export var is_actor: bool = false
+
+
 ## Editor Variables
 @export_category("Movement Resource")
 @export var movement_states: Array[PlayerMovementData]
@@ -321,7 +325,7 @@ func player_load(save_data: Dictionary) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 
 	# Log if a jump is pressed
-	if Input.is_action_just_pressed("Jump"):
+	if Input.is_action_just_pressed("Jump") and not is_actor:
 		jump_buffer = base_jump_buffer
 
 	
@@ -373,14 +377,18 @@ func attempt_post_jump() -> bool:
 		return true
 	return false
 
+func animated_jump() -> void:
+	jump_buffer = base_jump_buffer
 
 # This is handled here
 func set_input_axis(delta: float) -> void:
 	
 	# Ok for some reason my joystick is giving like 0.9998 which when holding left, which apparently
 	# is enough for my player to move considerably slower than like i want them to... so built in UCF???
-	horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
-	vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
+	# If we aren't an actor take user input
+	if not is_actor:
+		horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
+		vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
 
 	if horizontal_axis == 0.5:
 		horizontal_axis = 1.0
@@ -1113,12 +1121,6 @@ func set_respawn_point(point: Vector2):
 
 
 ## Debug Methods:
-# These are just some methods that are used for debugging purposes
-func show_speedometer():
-	debug.visible = true
-
-func hide_speedometer():
-	debug.visible = false
 
 
 ## Event Based State Changes

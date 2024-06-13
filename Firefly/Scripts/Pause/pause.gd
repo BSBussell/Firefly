@@ -9,7 +9,7 @@ class_name PauseMenu
 
 # Buttons
 @onready var resume_button = $VBoxContainer/Items/Top/ResumeButton
-@onready var mixer_setting = $VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting
+
 
 # Sliders
 @onready var menu = $"."
@@ -96,9 +96,11 @@ func pause():
 	
 	# Yeah i have no idea whats goin on here
 	await get_tree().create_timer(0.1).timeout
+	
+	resume_button.silence()
 	resume_button.grab_focus()
 	
-	_audio.enable_underwater_fx()
+	#_audio.enable_underwater_fx()
 	
 	
 func unpause():
@@ -115,6 +117,7 @@ func unpause():
 	get_tree().paused = false
 	
 	# Remove focus from pause menu
+	resume_button.silence()
 	resume_button.grab_focus()
 	resume_button.release_focus()
 
@@ -125,8 +128,8 @@ func unpause():
 	if counter:
 		counter.hide_counter(0.1)
 		
-	if not _globals.ACTIVE_PLAYER.underWater:
-		_audio.disable_underwater_fx()
+	#if not _globals.ACTIVE_PLAYER.underWater:
+		#_audio.disable_underwater_fx()
 
 # Returns true if another ui element is up
 func conflict() -> bool:
@@ -143,21 +146,6 @@ func conflict() -> bool:
 func _on_resume_button_pressed():
 	unpause()
 
-# Reveal Settings Hierarchy
-func _on_settings_button_pressed():
-	print("settings")
-	animation_player.play("show_settings")
-
-
-
-	
-
-	
-
-func _on_quit_button_pressed():
-	_config.save_settings()
-	get_tree().quit()
-
 
 
 func _on_settings_sub_menu_settings_closed():
@@ -165,5 +153,15 @@ func _on_settings_sub_menu_settings_closed():
 	animation_player.play("hide_settings")
 
 
-func _on_resume_button_focus_exited():
-	print("wtf")
+
+func _on_settings_pressed():
+	animation_player.play("show_settings")
+	
+	
+
+
+func _on_quit_pressed():
+	_config.save_settings()
+	animation_player.play("quit")
+	await animation_player.animation_finished
+	get_tree().quit()

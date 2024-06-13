@@ -1,10 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://mohrwc5amu2o"]
+[gd_scene load_steps=16 format=3 uid="uid://mohrwc5amu2o"]
 
 [ext_resource type="Script" path="res://Scripts/Pause/pause.gd" id="1_7kahw"]
 [ext_resource type="LabelSettings" uid="uid://k52u7c7on45i" path="res://UI_Theme/HeaderText.tres" id="1_apw1f"]
 [ext_resource type="Material" uid="uid://dr186ojia5ugu" path="res://Assets/Materials/pause_wobble.tres" id="1_qnrtv"]
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="2_tdrhd"]
+[ext_resource type="PackedScene" uid="uid://bfr6itpdlgpsr" path="res://Scenes/UI_Elements/pause_buttons.tscn" id="4_k1kj3"]
+[ext_resource type="AudioStream" uid="uid://dpjkcsm43a70s" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_003_75058.mp3" id="6_uplw2"]
+[ext_resource type="AudioStream" uid="uid://cnuerb00ea5jy" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_002_75057.mp3" id="7_5m4rs"]
 [ext_resource type="PackedScene" uid="uid://dpiiunr2hn7c4" path="res://Scenes/UI_Elements/settings_sub_menu.tscn" id="7_dxgjy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rdird"]
 
 [sub_resource type="Animation" id="Animation_at4w6"]
 length = 0.001
@@ -143,6 +147,20 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.5]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Audio/SettingsClose")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_e3cwu"]
 resource_name = "load_in"
@@ -242,6 +260,20 @@ tracks/7/keys = {
 "transitions": PackedFloat32Array(5.25),
 "update": 1,
 "values": [0.5]
+}
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Audio/PauseOpen")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_c2is2"]
@@ -343,6 +375,62 @@ tracks/7/keys = {
 "update": 1,
 "values": [0.0]
 }
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Audio/PauseClose")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_6ntyg"]
+resource_name = "quit"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.35, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Audio/PauseClose")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_do4ea"]
 resource_name = "show_settings"
@@ -408,6 +496,20 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Audio/SettingsOpen")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mvfig"]
 _data = {
@@ -415,6 +517,7 @@ _data = {
 "hide_settings": SubResource("Animation_j423v"),
 "load_in": SubResource("Animation_e3cwu"),
 "load_out": SubResource("Animation_c2is2"),
+"quit": SubResource("Animation_6ntyg"),
 "show_settings": SubResource("Animation_do4ea")
 }
 
@@ -434,6 +537,7 @@ script = ExtResource("1_7kahw")
 [node name="Fade" type="ColorRect" parent="."]
 z_index = -1
 z_as_relative = false
+material = SubResource("ShaderMaterial_rdird")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -473,29 +577,21 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_constants/separation = 20
 
-[node name="ResumeButton" type="Button" parent="VBoxContainer/Items/Top"]
+[node name="ResumeButton" parent="VBoxContainer/Items/Top" instance=ExtResource("4_k1kj3")]
 layout_mode = 2
-size_flags_horizontal = 0
-focus_neighbor_top = NodePath("\"\"")
-focus_neighbor_bottom = NodePath("../SettingsButton")
-theme = ExtResource("2_tdrhd")
-text = "Resume"
+focus_neighbor_bottom = NodePath("../Settings")
 
-[node name="SettingsButton" type="Button" parent="VBoxContainer/Items/Top"]
+[node name="Settings" parent="VBoxContainer/Items/Top" instance=ExtResource("4_k1kj3")]
 layout_mode = 2
-size_flags_vertical = 0
 focus_neighbor_top = NodePath("../ResumeButton")
-focus_neighbor_bottom = NodePath("../QuitButton")
-theme = ExtResource("2_tdrhd")
+focus_neighbor_bottom = NodePath("../Quit")
 text = "Settings"
-alignment = 0
 
-[node name="QuitButton" type="Button" parent="VBoxContainer/Items/Top"]
+[node name="Quit" parent="VBoxContainer/Items/Top" instance=ExtResource("4_k1kj3")]
 layout_mode = 2
-size_flags_horizontal = 0
-focus_neighbor_top = NodePath("../SettingsButton")
-theme = ExtResource("2_tdrhd")
+focus_neighbor_top = NodePath("../Settings")
 text = "Quit"
+disable_press_sfx = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -507,8 +603,29 @@ speed_scale = 2.0
 visible = false
 layout_mode = 1
 
-[connection signal="focus_exited" from="VBoxContainer/Items/Top/ResumeButton" to="." method="_on_resume_button_focus_exited"]
+[node name="Audio" type="Node" parent="."]
+
+[node name="PauseOpen" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_uplw2")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="PauseClose" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("7_5m4rs")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="SettingsOpen" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_uplw2")
+volume_db = -10.0
+pitch_scale = 1.2
+
+[node name="SettingsClose" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("7_5m4rs")
+volume_db = -10.0
+pitch_scale = 1.2
+
 [connection signal="pressed" from="VBoxContainer/Items/Top/ResumeButton" to="." method="_on_resume_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/Items/Top/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/Items/Top/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Items/Top/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="VBoxContainer/Items/Top/Quit" to="." method="_on_quit_pressed"]
 [connection signal="settings_closed" from="SettingsSubMenu" to="." method="_on_settings_sub_menu_settings_closed"]

@@ -4,7 +4,7 @@
 
 [resource]
 shader = ExtResource("1_a4xft")
-shader_parameter/progress = 1.318
+shader_parameter/progress = 0.35
 shader_parameter/waveFrequency1 = 3.5
 shader_parameter/waveFrequency2 = 5.5
 shader_parameter/waveAmplitude1 = 0.021
@@ -12,4 +12,4 @@ shader_parameter/waveAmplitude2 = 0.009
 shader_parameter/waveSpeed1 = 0.06
 shader_parameter/waveSpeed2 = 0.07
 shader_parameter/noiseScale = 3.96
-shader_parameter/noiseSpeed = 0.0
+shader_parameter/noiseSpeed = 0.5

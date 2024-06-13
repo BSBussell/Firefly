@@ -10,12 +10,6 @@
 				"type": "boolean",
 				"config_key": "auto_glow",
 			},
-			"input_assists": {
-				"label": "Input Assists",
-				"description": "Assist with some inputs, such as upward wallhop climbs.",
-				"type": "boolean",
-				"config_key": "input_assists",
-			},
 			"show_speedometer": {
 				"label": "Show Speedometer",
 				"description": "Show speedometer while playing",
@@ -59,7 +53,7 @@
 				"config_key": "master_vol",
 				"min": -15,
 				"max": 6,
-				"step": 1
+				"step": 0.5
 		 	},
 			"Music": {
 				"label": "Music Vol.",
@@ -68,7 +62,7 @@
 				"config_key": "music",
 				"min": -15,
 				"max": 6,
-				"step": 1
+				"step": 0.5
 		 	},
 			"SFX": {
 				"label": "SFX Vol.",
@@ -77,7 +71,7 @@
 				"config_key": "sfx",
 				"min": -15,
 				"max": 6,
-				"step": 1
+				"step": 0.5
 		 	},
 			"Ambience": {
 				"label": "Ambience Vol.",
@@ -86,8 +80,32 @@
 				"config_key": "ambience",
 				"min": -15,
 				"max": 10,
-				"step": 1
+				"step": 0.5
 		 	}
+		}
+	},
+	"Assist_Settings": {
+		"text": "Helpers",
+		"id": 3,
+		"items": {
+			"input_assists": {
+				"label": "Input Helpers",
+				"description": "Assist with some inputs, such as upward wallhop climbs.",
+				"type": "boolean",
+				"config_key": "input_assists",
+			},
+			"slide_assist": {
+				"label": "Slide Boost Helper",
+				"description": "Sigificantly simplies a slide boost into just jumping out of a slide.",
+				"type": "boolean",
+				"config_key": "slide_assist"
+			},
+			"inf_jump": {
+				"label": "Infinite Jumps",
+				"description": "Jump, and then again, and then again, and then...",
+				"type": "boolean",
+				"config_key": "inf_jump"
+			}
 		}
 	}
 }

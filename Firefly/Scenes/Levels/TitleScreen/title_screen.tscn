@@ -1,0 +1,332 @@
+[gd_scene load_steps=30 format=3 uid="uid://bxpfadjfys05l"]
+
+[ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/Deep_Forest_Resource/bg_sky_4.png" id="1_nnlyf"]
+[ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="1_x8o00"]
+[ext_resource type="Texture2D" uid="uid://f4xhpem7fo4b" path="res://Assets/Graphics/Deep_Forest_Resource/bg_mountains_3.png" id="2_l635b"]
+[ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Core/Game/pause.tscn" id="2_m02wd"]
+[ext_resource type="Texture2D" uid="uid://8nctejfx4eoj" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_2.png" id="3_0dvwb"]
+[ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/collectible_counter.tscn" id="3_7p2gx"]
+[ext_resource type="Texture2D" uid="uid://pux5vi5jthqm" path="res://Assets/Graphics/Deep_Forest_Resource/bg_godlight.png" id="4_k5dd6"]
+[ext_resource type="PackedScene" uid="uid://bkeka0x5vwxx7" path="res://Scenes/UI_Elements/results.tscn" id="4_olpyo"]
+[ext_resource type="PackedScene" uid="uid://d0s632u2p275n" path="res://Core/CustomUIElements/upgrade_star.tscn" id="5_625ch"]
+[ext_resource type="Texture2D" uid="uid://b1yvkgf4mxi26" path="res://Assets/Graphics/Deep_Forest_Resource/bg_treeline_1.png" id="5_m4lqk"]
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="6_l80cy"]
+[ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="6_nlli1"]
+[ext_resource type="PackedScene" uid="uid://doyxghug75km3" path="res://Scenes/UI_Elements/Timer.tscn" id="7_i1ad3"]
+[ext_resource type="Texture2D" uid="uid://b1fmfctkk6alf" path="res://Assets/Graphics/Particles/leaf.png" id="7_xa1ik"]
+[ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="8_pg4rs"]
+[ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="9_l5d0m"]
+[ext_resource type="AudioStream" uid="uid://cu2e2bu6ld7xt" path="res://Assets/SFX/ambience/forest_ambience_b.mp3" id="10_ehuoj"]
+[ext_resource type="AudioStream" uid="uid://cc71beoeqyxis" path="res://Assets/SFX/ambience/CaveEntrance.wav" id="11_iiypr"]
+[ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="12_4bqnb"]
+[ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="17_2jocm"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="19_yl7uk"]
+[ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="20_ecmjs"]
+
+[sub_resource type="GDScript" id="GDScript_0jk77"]
+script/source = "extends \"res://Scripts/Level/Level.gd\"
+
+
+
+@onready var music = $LevelAudio/Music
+@onready var ambience = $LevelAudio/Ambience
+@onready var moonlight = $\"PP + FX/Moonlight\"
+@onready var shadow_filter = $\"PP + FX/ShadowFilter\"
+
+
+# We have the player start without glow on this level
+func player_startup_logic():
+	
+	# Play the walk in script
+	PLAYER.lock_h_dir(-0.3, 1.4, true)
+
+
+# And becasue of that we hide the gems
+func gem_startup_logic():
+	
+	gem_manager.hide_gems()
+
+func local_ready():
+
+	music.play(0)
+	ambience.play(0)
+	
+	moonlight.visible = true
+	shadow_filter.visible = true
+	
+	_audio.set_level_effects([])
+"
+
+[sub_resource type="Curve" id="Curve_qfi4m"]
+min_value = -0.5
+max_value = 0.5
+_data = [Vector2(0, -0.5), 0.0, 0.0, 0, 0, Vector2(1, 0.5), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_ddh3k"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.333333, 0.666667, 0.777778)
+colors = PackedColorArray(0, 0, 0, 1, 0.977813, 0.977813, 0.977813, 0.0221871, 0, 0, 0, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 9
+
+[sub_resource type="Gradient" id="Gradient_ng1fs"]
+offsets = PackedFloat32Array(0.907378, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="Curve" id="Curve_ynah8"]
+min_value = -500.0
+max_value = 500.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.01), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_jx7nb"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.972, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ja5pb"]
+resource_local_to_scene = true
+shader = ExtResource("20_ecmjs")
+shader_parameter/angle = 0.46
+shader_parameter/position = 0.3
+shader_parameter/spread = 0.003
+shader_parameter/cutoff = -0.293
+shader_parameter/falloff = 0.323
+shader_parameter/edge_fade = 0.628
+shader_parameter/speed = 3.0
+shader_parameter/ray1_density = 8.0
+shader_parameter/ray2_density = 30.0
+shader_parameter/ray2_intensity = 0.3
+shader_parameter/color = Color(0.211765, 0.772549, 0.956863, 0.25098)
+shader_parameter/hdr = true
+shader_parameter/seed = -108.54
+
+[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager")]
+script = SubResource("GDScript_0jk77")
+Text = "- FireFly Meadow -"
+PLAYER = NodePath("Flyph")
+jar_manager = NodePath("JarManager")
+ui_components = Array[PackedScene]([ExtResource("6_nlli1"), ExtResource("1_x8o00"), ExtResource("5_625ch"), ExtResource("2_m02wd"), ExtResource("3_7p2gx"), ExtResource("4_olpyo"), ExtResource("7_i1ad3")])
+id = 2
+
+[node name="PP + FX" type="Node" parent="."]
+
+[node name="Moonlight" type="DirectionalLight2D" parent="PP + FX"]
+rotation = -0.698132
+color = Color(0.780392, 0.87451, 0.921569, 1)
+energy = 0.4
+range_layer_min = -101
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 0.0235294)
+shadow_filter = 1
+shadow_filter_smooth = 1.0
+height = 1.0
+metadata/_edit_lock_ = true
+
+[node name="ShadowFilter" type="CanvasModulate" parent="PP + FX"]
+visible = false
+color = Color(0.235294, 0.2, 0.501961, 1)
+metadata/_edit_lock_ = true
+
+[node name="Parallax" type="ParallaxBackground" parent="."]
+scroll_base_offset = Vector2(0, 7.55)
+scroll_base_scale = Vector2(1, 0.6)
+
+[node name="Sky" type="ParallaxLayer" parent="Parallax"]
+motion_scale = Vector2(0, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="sky_sprite" type="Sprite2D" parent="Parallax/Sky"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("1_nnlyf")
+
+[node name="Mountains" type="ParallaxLayer" parent="Parallax"]
+motion_scale = Vector2(0.3, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="mtns_sprite" type="Sprite2D" parent="Parallax/Mountains"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("2_l635b")
+
+[node name="Far Trees" type="ParallaxLayer" parent="Parallax"]
+position = Vector2(0, -1)
+motion_scale = Vector2(0.6, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="tree_far_sprite" type="Sprite2D" parent="Parallax/Far Trees"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("3_0dvwb")
+
+[node name="Godrays" type="ParallaxLayer" parent="Parallax"]
+motion_scale = Vector2(0.7, 0.5)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="GodRays" type="Sprite2D" parent="Parallax/Godrays"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("4_k5dd6")
+
+[node name="Close Trees" type="ParallaxLayer" parent="Parallax"]
+visible = false
+motion_scale = Vector2(0.8, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="close_trees" type="Sprite2D" parent="Parallax/Close Trees"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("5_m4lqk")
+metadata/_edit_lock_ = true
+
+[node name="BKGParticles" type="ParallaxLayer" parent="Parallax"]
+motion_mirroring = Vector2(320, 0)
+
+[node name="FireFlyParticles" type="CPUParticles2D" parent="Parallax/BKGParticles"]
+modulate = Color(20, 19, 1, 1)
+position = Vector2(204, 61)
+amount = 50
+lifetime = 2.15
+speed_scale = 0.75
+randomness = 0.84
+local_coords = true
+emission_shape = 3
+emission_rect_extents = Vector2(320, 180)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 31.37
+initial_velocity_max = 31.37
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_qfi4m")
+scale_amount_max = 3.0
+color = Color(0.890196, 0.921569, 0.34902, 1)
+color_ramp = SubResource("Gradient_ddh3k")
+
+[node name="Close Trees2" type="ParallaxLayer" parent="Parallax"]
+motion_scale = Vector2(0.8, 0)
+motion_mirroring = Vector2(1024, 0)
+metadata/_edit_lock_ = true
+
+[node name="close_trees" type="Sprite2D" parent="Parallax/Close Trees2"]
+position = Vector2(266.605, 34.82)
+scale = Vector2(2, 2)
+texture = ExtResource("5_m4lqk")
+metadata/_edit_lock_ = true
+
+[node name="Light Filter2" type="CanvasModulate" parent="Parallax"]
+color = Color(0.235294, 0.2, 0.501961, 1)
+metadata/_edit_lock_ = true
+
+[node name="Particles" type="Node" parent="."]
+
+[node name="CaveEntranceParticle" type="CPUParticles2D" parent="Particles"]
+position = Vector2(3037, 391)
+amount = 50
+lifetime = 5.0
+preprocess = 5.0
+texture = ExtResource("6_l80cy")
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(-1, -1)
+gravity = Vector2(0, -10)
+initial_velocity_min = 40.0
+initial_velocity_max = 60.0
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+radial_accel_min = -2.5
+radial_accel_max = 2.5
+tangential_accel_min = -0.5
+tangential_accel_max = 0.5
+scale_amount_min = 0.1
+scale_amount_max = 0.2
+color_ramp = SubResource("Gradient_ng1fs")
+
+[node name="LeafVillage" type="CPUParticles2D" parent="Particles"]
+z_index = 1
+position = Vector2(1256, -528)
+amount = 250
+lifetime = 25.0
+preprocess = 100.0
+texture = ExtResource("7_xa1ik")
+emission_shape = 3
+emission_rect_extents = Vector2(1500, 1)
+gravity = Vector2(0, 5)
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+orbit_velocity_min = -0.02
+orbit_velocity_max = 0.02
+orbit_velocity_curve = SubResource("Curve_ynah8")
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.8
+scale_amount_max = 0.9
+scale_amount_curve = SubResource("Curve_jx7nb")
+
+[node name="Level" parent="." instance=ExtResource("8_pg4rs")]
+position = Vector2(1, 0)
+layer_0/tile_data = PackedInt32Array(-1, 327680, 268435459, -65536, 131072, 2, -65535, 131072, 2, -65534, 131072, 2, -65533, 131072, 2, -131071, 131072, 1, -131072, 131072, 1, -65537, 131072, 1, -2, 327680, 3, -3, 131072, 2, 65533, 131072, 2, 65534, 131072, 2, 131070, 327680, 3, 131071, 131072, 2, 65536, 131072, 2, 65537, 131072, 2, 65538, 327680, 3, 2, 131072, 2, 3, 131072, 2, 4, 131072, 2, -65531, 131072, 2, -65530, 327680, 3, -65532, 131072, 2, 1, 327680, 268435459, 0, 131072, 2, 65535, 131072, 2, 65539, 131072, 2, 5, 131072, 2, 6, 131072, 2, 65541, 131072, 2, 65540, 131072, 2, -131068, 131072, 1, -131069, 131072, 1, -131070, 131072, 1, -65539, 131072, 1, -65538, 131072, 1, 131069, 327680, 268435459, 131068, 131072, 2, 65532, 131072, 2, 65531, 131072, 2, -5, 131072, 2, -4, 131072, 2, -65540, 131072, 1, -65541, 131072, 1, -6, 131072, 2, 65530, 131072, 2, 131067, 131072, 2, 196604, 131072, 2, 196603, 131072, 2, 131066, 131072, 2, 65529, 131072, 2, -7, 131072, 2, -8, 327680, 268435459, -65544, 131072, 1, -65543, 131072, 1, -65542, 131072, 1, 65528, 327680, 3, 131065, 131072, 2, 196602, 327680, 268435459, 262139, 131072, 2, 262140, 131072, 2, 327676, 131072, 2, 327677, 327680, 268435459, 393213, 327680, 268435459, 262142, 131072, 2, 262143, 131072, 2, 196607, 131072, 2, 131072, 131072, 2, 131073, 131072, 2, 196606, 131072, 2, 196605, 131072, 2, 262141, 131072, 2, 393214, 327680, 268435459, 327679, 131072, 2, 196608, 131072, 2, 196609, 131072, 2, 131074, 131072, 2, 131075, 131072, 2, 327678, 131072, 2, 393215, 327680, 268435459, 262144, 131072, 2, 262145, 131072, 2, 262146, 131072, 2, 196610, 131072, 2, 196611, 131072, 2, 131076, 131072, 2, -131067, 131072, 1, -131066, 131072, 1, -131065, 131072, 1, -65529, 327680, 3, -65528, 131072, 2, 8, 131072, 2, 7, 131072, 2, 65543, 131072, 2, 65542, 131072, 2, 131078, 131072, 2, 131077, 131072, 2, 196613, 65536, 6, 196612, 131072, 2, 262148, 65536, 6, 262147, 131072, 2, 327683, 327680, 268435459, 327682, 327680, 268435459, 327681, 131072, 2, 327680, 327680, 3, 196614, 131072, 3, -131064, 131072, 1, -131063, 196608, 1, -65527, 196608, 2, 9, 196608, 2, 65545, 196608, 3, 65544, 65536, 6, 131080, 196608, 3, 131079, 65536, 6, 196615, 196608, 3, 262149, 196608, 3, 327684, 196608, 2, 393220, 196608, 3, 393219, 65536, 6, 458755, 196608, 3, 458754, 131072, 3, 458753, 131072, 3, 458752, 131072, 3, 524287, 131072, 3, 458751, 131072, 2, 458750, 131072, 2, 393216, 131072, 2, 393217, 131072, 2, 393218, 327680, 268435459, 524286, 131072, 3, 524285, 131072, 3, 524284, 131072, 3, 458747, 131072, 2, 458746, 131072, 2, 393210, 131072, 2, 393209, 131072, 2, 327673, 131072, 2, 262137, 131072, 2, 262136, 131072, 2, 196600, 327680, 268435459, 196599, 131072, 2, 131063, 131072, 2, 65527, 131072, 2, 131064, 131072, 2, 196601, 131072, 2, 262138, 327680, 3, 327674, 131072, 2, 327675, 131072, 2, 393211, 131072, 2, 393212, 327680, 3, 458748, 131072, 2, 458749, 131072, 2, 327672, 131072, 2, 131062, 131072, 2, 65526, 131072, 2, -10, 327680, 268435459, -65546, 131072, 1, -9, 131072, 2, -65545, 131072, 1, -65547, 131072, 1, -65548, 131072, 1, -65549, 131072, 1, -65550, 131072, 1, -14, 131072, 2, 65522, 131072, 2, 65523, 131072, 2, 131060, 131072, 2, 131061, 131072, 2, 65525, 131072, 2, -11, 131072, 2, -12, 131072, 2, 65524, 131072, 2, 196597, 327680, 3, 196598, 327680, 268435459, 262134, 131072, 2, 262135, 131072, 2, 327671, 327680, 3, 393208, 131072, 2, 524283, 131072, 3, 524282, 131072, 3, 524281, 65536, 3, 458745, 131072, 6, 458744, 131072, 3, 458743, 131072, 3, 393207, 131072, 2, 393206, 131072, 2, 327670, 131072, 2, 327669, 131072, 2, 262133, 131072, 2, 262132, 131072, 2, 196596, 131072, 2, 196595, 131072, 2, 131059, 131072, 2, -15, 131072, 2, -65551, 131072, 1, -65552, 131072, 1, -13, 131072, 2, 65521, 131072, 2, 131057, 131072, 2, 131058, 131072, 2, 196594, 131072, 2, 262131, 131072, 2, 262130, 131072, 2, 65520, 131072, 2, -16, 327680, 268435459, 131056, 131072, 2, 131055, 131072, 2, 196591, 327680, 268435459, 262127, 131072, 2, 262126, 131072, 7, 327662, 131072, 3, 327663, 131072, 6, 327664, 327680, 3, 262128, 131072, 2, 196592, 327680, 3, 196593, 131072, 2, 262129, 131072, 2, 327666, 131072, 2, 327667, 131072, 2, 327668, 131072, 2, 393204, 131072, 3, 393205, 131072, 6, 458742, 131072, 3, 458741, 65536, 3, 393203, 131072, 3, 393202, 131072, 3, 393201, 131072, 3, 327665, 131072, 2, 65519, 327680, 268435459, -17, 131072, 2, -65554, 65536, 1, -18, 65536, 2, 65518, 65536, 2, 131054, 65536, 2, 196590, 65536, 2, 262125, 65536, 1, 327661, 65536, 3, 393199, 65536, 3, 393200, 131072, 3, -65553, 131072, 1)
+metadata/_edit_lock_ = true
+
+[node name="LevelAudio" type="Node" parent="."]
+
+[node name="Music" type="AudioStreamPlayer" parent="LevelAudio"]
+process_mode = 3
+stream = ExtResource("9_l5d0m")
+volume_db = -15.0
+bus = &"Music"
+
+[node name="Ambience" type="AudioStreamPlayer" parent="LevelAudio"]
+stream = ExtResource("10_ehuoj")
+bus = &"Ambience"
+
+[node name="CaveEntrance" type="AudioStreamPlayer2D" parent="LevelAudio"]
+position = Vector2(2909, 281)
+stream = ExtResource("11_iiypr")
+volume_db = -10.0
+autoplay = true
+attenuation = 4.14106
+bus = &"Ambience"
+
+[node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("12_4bqnb")]
+position = Vector2(1, -34)
+MusicPlayer = NodePath("../LevelAudio/Music")
+
+[node name="Camera" type="Camera2D" parent="."]
+offset = Vector2(0, -25)
+process_callback = 0
+limit_smoothed = true
+position_smoothing_speed = 7.0
+drag_left_margin = 0.25
+drag_top_margin = 0.4
+drag_right_margin = 0.25
+drag_bottom_margin = 0.25
+editor_draw_drag_margin = true
+
+[node name="JarManager" type="Node2D" parent="."]
+position = Vector2(1, 0)
+script = ExtResource("17_2jocm")
+
+[node name="Lights" type="Node2D" parent="."]
+position = Vector2(63, 159)
+
+[node name="PointLight2D" type="PointLight2D" parent="Lights"]
+position = Vector2(2866.02, 171.284)
+scale = Vector2(1.42987, 1.50222)
+color = Color(0.211765, 0.772549, 0.956863, 1)
+texture = ExtResource("19_yl7uk")
+
+[node name="OutRays" type="ColorRect" parent="Lights"]
+material = SubResource("ShaderMaterial_ja5pb")
+offset_left = 3038.0
+offset_top = 158.0
+offset_right = 3254.0
+offset_bottom = 504.0
+rotation = -0.933751
+scale = Vector2(-1, -1)
