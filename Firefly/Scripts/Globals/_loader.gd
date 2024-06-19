@@ -80,14 +80,12 @@ func load_level(path: String, spawn_id: String = ""):
 
 	# Emit signal to notify that the level has finished loading to any listeners
 	emit_signal("finished_loading")
-
+	
+	# Once the screen is uncovered, resume the timer
+	_stats.start_timer()
 	# Hide the loading screen
 	await hide_loading(loading_screen)
 
-	
-
-	# Once the screen is uncovered, resume the timer
-	_stats.start_timer()
 
 
 func reload_level(spawn_id: String = ""):

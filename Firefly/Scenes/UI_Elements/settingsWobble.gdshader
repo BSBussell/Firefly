@@ -1,16 +1,47 @@
 shader_type canvas_item;
 
-// Fill value
+/// Fill value
+/// Controls the progress of the fill effect.
 uniform float progress;
 
-// Wave parameters
+/// Wave Frequency 1
+/// Controls the frequency of the first wave.
 uniform float waveFrequency1 : hint_range(0.0, 10.0) = 3.0;
+
+/// Wave Frequency 2
+/// Controls the frequency of the second wave.
 uniform float waveFrequency2 : hint_range(0.0, 10.0) = 5.0;
+
+/// Wave Amplitude 1
+/// Controls the amplitude (height) of the first wave.
 uniform float waveAmplitude1 : hint_range(0.0, 0.5) = 0.05;
+
+/// Wave Amplitude 2
+/// Controls the amplitude (height) of the second wave.
 uniform float waveAmplitude2 : hint_range(0.0, 0.5) = 0.02;
+
+/// Wave Speed 1
+/// Controls the speed of the first wave.
 uniform float waveSpeed1 : hint_range(0.0, 10.0) = 2.0;
+
+/// Wave Speed 2
+/// Controls the speed of the second wave.
 uniform float waveSpeed2 : hint_range(0.0, 10.0) = 3.0;
+
+/// Wave Length 1
+/// Controls the wavelength of the first wave.
+uniform float waveLength1 : hint_range(0.1, 10.0) = 1.0;
+
+/// Wave Length 2
+/// Controls the wavelength of the second wave.
+uniform float waveLength2 : hint_range(0.1, 10.0) = 1.0;
+
+/// Noise Scale
+/// Controls the scale of the noise added to the wave effect.
 uniform float noiseScale : hint_range(0.0, 10.0) = 1.0;
+
+/// Noise Speed
+/// Controls the speed of the noise animation.
 uniform float noiseSpeed : hint_range(0.0, 10.0) = 1.0;
 
 float rand(vec2 co) {
@@ -37,9 +68,9 @@ void fragment() {
     // Create a step function to control the fill progress
     float fillProgress = smoothstep(0.0, 1.0, progress);
 
-    // Use sine waves to create a wavy effect
-    float waveOffset1 = (sin((TIME * waveSpeed1 + uv.y) * waveFrequency1) * waveAmplitude1) + waveAmplitude1;
-    float waveOffset2 = (cos((TIME * waveSpeed2 + uv.y) * waveFrequency2) * waveAmplitude2) + waveAmplitude2;
+    // Use sine waves to create a wavy effect, incorporating wavelength
+    float waveOffset1 = (sin((TIME * waveSpeed1 + uv.y / waveLength1) * waveFrequency1) * waveAmplitude1) + waveAmplitude1;
+    float waveOffset2 = (cos((TIME * waveSpeed2 + uv.y / waveLength2) * waveFrequency2) * waveAmplitude2) + waveAmplitude2;
 
     // Add noise to the wave effect
     float noiseValue = noise(uv * noiseScale + vec2(TIME * noiseSpeed));

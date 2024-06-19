@@ -200,7 +200,7 @@ shader_parameter/seed = -108.54
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = ExtResource("1_pdcac")
-Text = "- FireFly -"
+Text = "- Wild Woodlands -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")

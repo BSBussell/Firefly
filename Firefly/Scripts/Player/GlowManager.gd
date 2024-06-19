@@ -170,7 +170,7 @@ func calc_speed() -> float:
 		
 	# If we're walljumping just give full points
 	if PLAYER.wallJumping or PLAYER.launched:
-		new_speed += 1.2
+		new_speed += 0.5
 	
 	return new_speed
 	
@@ -190,7 +190,7 @@ func calc_score():
 		spd_score = 1 + surplus
 	
 	
-	return spd_score - 1
+	return max(spd_score - 1, 0)
 
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
 # 	Player's momentum value

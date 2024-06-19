@@ -19,6 +19,9 @@ func _ready():
 	# Grab its focus
 	resume.silence()
 	resume.grab_focus()
+	
+	if _loader.connect("finished_loading", Callable(self, "on_load")) != OK:
+		print("hmm")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -45,3 +48,7 @@ func _on_quit_pressed():
 	animation_player.play("StartGame")
 	await animation_player.animation_finished    
 	get_tree().quit()
+
+func on_load():
+	await get_tree().create_timer(1).timeout
+	animation_player.play("on_load")

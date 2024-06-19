@@ -1,70 +1,66 @@
-[gd_scene load_steps=16 format=3 uid="uid://xwwdv0rc1i5s"]
+[gd_scene load_steps=15 format=3 uid="uid://xwwdv0rc1i5s"]
 
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="1_mn8y5"]
 [ext_resource type="Script" path="res://Core/CustomUIElements/AnimatedToggle.gd" id="2_jt658"]
 [ext_resource type="Texture2D" uid="uid://7yylyepo2oi" path="res://Assets/Graphics/UI/toggle.png" id="3_gu7n5"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_bb8k8"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xhla4"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(48, 0, 8, 4)
+region = Rect2(35, 0, 7, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6g836"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_6u4ie"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(56, 0, 8, 4)
+region = Rect2(42, 0, 7, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_445ug"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_3kksm"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(64, 0, 8, 4)
+region = Rect2(49, 0, 7, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hata7"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_f011o"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(72, 0, 8, 4)
+region = Rect2(56, 0, 7, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tewjh"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xi0t"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(80, 0, 8, 4)
+region = Rect2(63, 0, 7, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_u2ftc"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7bt8"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(0, 0, 8, 4)
+region = Rect2(0, 0, 7, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_oworr"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_nov6c"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(8, 0, 8, 4)
+region = Rect2(7, 0, 7, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ubxpy"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_j0bqp"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(16, 0, 8, 4)
+region = Rect2(14, 0, 7, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jk6no"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ex0aj"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(24, 0, 8, 4)
+region = Rect2(21, 0, 7, 4)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_b1db5"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_snqf4"]
 atlas = ExtResource("3_gu7n5")
-region = Rect2(32, 0, 8, 4)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tm0il"]
-atlas = ExtResource("3_gu7n5")
-region = Rect2(40, 0, 8, 4)
+region = Rect2(28, 0, 7, 4)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nni16"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_bb8k8")
+"texture": SubResource("AtlasTexture_xhla4")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_6g836")
+"texture": SubResource("AtlasTexture_6u4ie")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_445ug")
+"texture": SubResource("AtlasTexture_3kksm")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_hata7")
+"texture": SubResource("AtlasTexture_f011o")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_tewjh")
+"texture": SubResource("AtlasTexture_5xi0t")
 }],
 "loop": false,
 "name": &"Off",
@@ -72,22 +68,19 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_u2ftc")
+"texture": SubResource("AtlasTexture_r7bt8")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_oworr")
+"texture": SubResource("AtlasTexture_nov6c")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ubxpy")
+"texture": SubResource("AtlasTexture_j0bqp")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jk6no")
+"texture": SubResource("AtlasTexture_ex0aj")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_b1db5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tm0il")
+"texture": SubResource("AtlasTexture_snqf4")
 }],
 "loop": false,
 "name": &"On",
@@ -95,7 +88,7 @@ animations = [{
 }]
 
 [node name="button" type="Button"]
-custom_minimum_size = Vector2(200, 100)
+custom_minimum_size = Vector2(175, 100)
 theme = ExtResource("1_mn8y5")
 flat = true
 script = ExtResource("2_jt658")
@@ -103,8 +96,8 @@ script = ExtResource("2_jt658")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 modulate = Color(0.856067, 0.856067, 0.856067, 1)
 texture_filter = 1
-position = Vector2(100, 50)
-scale = Vector2(20, 20)
+position = Vector2(88, 50)
+scale = Vector2(25, 25)
 sprite_frames = SubResource("SpriteFrames_nni16")
 animation = &"On"
 

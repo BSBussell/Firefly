@@ -1,53 +1,44 @@
 [gd_scene load_steps=20 format=3 uid="uid://dpiiunr2hn7c4"]
 
 [ext_resource type="Script" path="res://Scenes/UI_Elements/settings_menu.gd" id="1_2yfve"]
-[ext_resource type="Shader" path="res://Core/Game/wavy_sidebar.gdshader" id="1_cp0lk"]
 [ext_resource type="Shader" path="res://Scenes/UI_Elements/settingsWobble.gdshader" id="2_c2wmv"]
 [ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="2_gt2tp"]
+[ext_resource type="Material" uid="uid://dr186ojia5ugu" path="res://Assets/Materials/pause_wobble.tres" id="2_pnv2b"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="3_ruqkj"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/CategoryContainer.gd" id="6_5m2g1"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/pause_buttons.gd" id="6_vsv8n"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/settings_list.gd" id="7_cvkcl"]
 [ext_resource type="PackedScene" uid="uid://b4emyp3fdhl7t" path="res://Scenes/UI_Elements/settings_comp/bool_setting.tscn" id="7_eb0w4"]
 [ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="7_hwkrn"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_18l0x"]
-shader = ExtResource("1_cp0lk")
-shader_parameter/progress = 0.1
-shader_parameter/waveFrequency1 = 3.5
-shader_parameter/waveFrequency2 = 5.5
-shader_parameter/waveAmplitude1 = 0.021
-shader_parameter/waveAmplitude2 = 0.009
-shader_parameter/waveSpeed1 = 0.06
-shader_parameter/waveSpeed2 = 0.07
-shader_parameter/waveLength1 = 1.0
-shader_parameter/waveLength2 = 1.0
-shader_parameter/noiseScale = 3.96
-shader_parameter/noiseSpeed = 0.5
+[ext_resource type="PackedScene" uid="uid://b3gg0nmjq7om5" path="res://Scenes/UI_Elements/settings_comp/slider_setting.tscn" id="11_0u8nr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4tdq2"]
 shader = ExtResource("2_c2wmv")
 shader_parameter/progress = 2.08165e-12
 shader_parameter/waveFrequency1 = 3.5
 shader_parameter/waveFrequency2 = 5.5
-shader_parameter/waveAmplitude1 = 0.021
-shader_parameter/waveAmplitude2 = 0.009
-shader_parameter/waveSpeed1 = 0.06
-shader_parameter/waveSpeed2 = 0.07
+shader_parameter/waveAmplitude1 = 0.007
+shader_parameter/waveAmplitude2 = 0.008
+shader_parameter/waveSpeed1 = 0.053
+shader_parameter/waveSpeed2 = 0.15
+shader_parameter/waveLength1 = 1.0
+shader_parameter/waveLength2 = 1.0
 shader_parameter/noiseScale = 3.0
-shader_parameter/noiseSpeed = 0.55
+shader_parameter/noiseSpeed = 1.02
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nr6up"]
 shader = ExtResource("2_c2wmv")
 shader_parameter/progress = 2.08165e-12
-shader_parameter/waveFrequency1 = 5.212
+shader_parameter/waveFrequency1 = 3.5
 shader_parameter/waveFrequency2 = 5.5
-shader_parameter/waveAmplitude1 = 0.003
-shader_parameter/waveAmplitude2 = 0.008
-shader_parameter/waveSpeed1 = 0.06
-shader_parameter/waveSpeed2 = 0.07
-shader_parameter/noiseScale = 3.0
-shader_parameter/noiseSpeed = 0.55
+shader_parameter/waveAmplitude1 = 0.01
+shader_parameter/waveAmplitude2 = 0.002
+shader_parameter/waveSpeed1 = 0.02
+shader_parameter/waveSpeed2 = 0.05
+shader_parameter/waveLength1 = 0.5
+shader_parameter/waveLength2 = 0.5
+shader_parameter/noiseScale = 3.479
+shader_parameter/noiseSpeed = 1.02
 
 [sub_resource type="Animation" id="Animation_msaqv"]
 length = 0.001
@@ -508,7 +499,7 @@ script = ExtResource("1_2yfve")
 
 [node name="PauseLinger" type="ColorRect" parent="."]
 visible = false
-material = SubResource("ShaderMaterial_18l0x")
+material = ExtResource("2_pnv2b")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -532,7 +523,6 @@ color = Color(0.235294, 0.2, 0.501961, 1)
 material = SubResource("ShaderMaterial_nr6up")
 layout_mode = 1
 anchors_preset = -1
-anchor_top = -0.2
 anchor_right = 2.0
 anchor_bottom = 1.0
 mouse_filter = 1
@@ -608,6 +598,9 @@ theme_override_constants/separation = 30
 script = ExtResource("7_cvkcl")
 
 [node name="Bool" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
+layout_mode = 2
+
+[node name="Slider" parent="SectionSettings/Items" instance=ExtResource("11_0u8nr")]
 layout_mode = 2
 
 [node name="Bool2" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
