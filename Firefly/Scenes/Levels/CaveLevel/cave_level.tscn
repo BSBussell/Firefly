@@ -555,10 +555,10 @@ position = Vector2(-965, -1418)
 [node name="Return" type="Node2D" parent="Platforms"]
 
 [node name="cave_plat" parent="Platforms/Return" instance=ExtResource("19_f4rja")]
-position = Vector2(-812, -977)
+position = Vector2(-807, -978)
 
 [node name="plat_3" parent="Platforms/Return" instance=ExtResource("18_38knx")]
-position = Vector2(-914, -952)
+position = Vector2(-902, -952)
 
 [node name="cave_plat3" parent="Platforms/Return" instance=ExtResource("19_f4rja")]
 position = Vector2(-785, -840)

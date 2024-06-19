@@ -10,7 +10,6 @@ var ui_components: Dictionary = {}
 
 ## Begin setup the ui components requested by the level
 func setup(level: Level):
-	
 	level.connect_ui_loader(self)
 	load_ui(level)
 	

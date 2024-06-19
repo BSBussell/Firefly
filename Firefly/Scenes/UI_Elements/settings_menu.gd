@@ -31,7 +31,7 @@ func show_settings():
 	category_container.base_category.grab_focus()
 	setting_categories.scroll_horizontal = 0
 	
-
+  
 func close_settings():
 	print("close settings")
 	settings_on_screen = false

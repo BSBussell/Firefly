@@ -87,7 +87,7 @@ func _input(_event: InputEvent) -> void:
 		get_tree().paused = false
 
 
-		await _loader.reset_game(start_level.resource_path)
+		await _loader.reset_game(NodePath("res://Scenes/Levels/TutorialLevel/tutorial.tscn"))
 
 		
 			
@@ -101,7 +101,7 @@ func _input(_event: InputEvent) -> void:
 		#_config.set_setting("game_zoom", res_scale)
 		
 		print("inc: ", res_scale)
-		smoothly_zoom_render(res_scale)   
+		smoothly_zoom_render(res_scale)     
 	
 	elif Input.is_action_pressed("scale_dec"):
 		

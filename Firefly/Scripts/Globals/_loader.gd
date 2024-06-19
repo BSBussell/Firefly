@@ -11,6 +11,8 @@ signal finished_loading
 ## If the game is currently loading a level
 var loading: bool = true
 
+var title_screen: NodePath = NodePath("res://Scenes/Levels/TitleScreen/title_screen.tscn")
+
 ## Loads and displays the loading screen
 func show_loading() -> Control:
 	var loading_screen = preload("res://Core/loading_screen.tscn").instantiate()
@@ -90,6 +92,12 @@ func load_level(path: String, spawn_id: String = ""):
 
 func reload_level(spawn_id: String = ""):
 	load_level(current_path, spawn_id)
+	
+func return_to_title():
+	await load_level(title_screen)
+	
+	# Don't run clock on title screen
+	_stats.stop_timer()
 
 func reset_game(level_path: String):
 

@@ -33,15 +33,15 @@ float noise(vec2 st) {
 void fragment() {
     vec2 uv = UV;
 
-    // Calculate the distance from the left edge to create a smooth fill effect
-    float sdf = uv.x;
+    // Calculate the distance from the bottom edge to create a smooth fill effect
+    float sdf = 1.0 - uv.y;  // Invert to fill from bottom to top
 
     // Create a step function to control the fill progress
     float fillProgress = smoothstep(0.0, 1.0, progress);
 
     // Use sine waves to create a wavy effect, incorporating wavelength
-    float waveOffset1 = (sin((TIME * waveSpeed1 + uv.y / waveLength1) * waveFrequency1) * waveAmplitude1) + waveAmplitude1;
-    float waveOffset2 = (cos((TIME * waveSpeed2 + uv.y / waveLength2) * waveFrequency2) * waveAmplitude2) + waveAmplitude2;
+    float waveOffset1 = (sin((TIME * waveSpeed1 + uv.x / waveLength1) * waveFrequency1) * waveAmplitude1) + waveAmplitude1;
+    float waveOffset2 = (cos((TIME * waveSpeed2 + uv.x / waveLength2) * waveFrequency2) * waveAmplitude2) + waveAmplitude2;
 
     // Add noise to the wave effect
     float noiseValue = noise(uv * noiseScale + vec2(TIME * noiseSpeed));
@@ -49,6 +49,9 @@ void fragment() {
 
     // Calculate the fill threshold including the wave effect
     float threshold = fillProgress + waveOffset1 + waveOffset2 + noiseOffset;
+
+    // Ensure the wave doesn't extend too far below the initial progress
+    threshold = max(threshold, fillProgress);
 
     // Determine the fill based on the threshold
     float fill = step(sdf, threshold);

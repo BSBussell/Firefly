@@ -341,7 +341,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			calculate_properties()
 
 	# Pass The Input to the State Machine
-	if not dying:
+	if not dying and not is_actor:
 		StateMachine.process_input(event)
 
 

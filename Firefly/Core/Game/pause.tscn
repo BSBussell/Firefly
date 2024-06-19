@@ -531,10 +531,11 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
-color = Color(0.219608, 0.184314, 0.466667, 1)
+color = Color(0.235294, 0.2, 0.501961, 1)
 script = ExtResource("1_7kahw")
 
 [node name="Fade" type="ColorRect" parent="."]
+visible = false
 z_index = -1
 z_as_relative = false
 material = SubResource("ShaderMaterial_rdird")
@@ -597,7 +598,7 @@ disable_press_sfx = true
 libraries = {
 "": SubResource("AnimationLibrary_mvfig")
 }
-speed_scale = 2.0
+speed_scale = 2.5
 
 [node name="SettingsSubMenu" parent="." instance=ExtResource("7_dxgjy")]
 visible = false

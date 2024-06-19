@@ -164,4 +164,9 @@ func _on_quit_pressed():
 	_config.save_settings()
 	animation_player.play("quit")
 	await animation_player.animation_finished
-	get_tree().quit()
+	#get_tree().quit()
+	_loader.return_to_title()    
+
+
+func _on_title_screen_pressed():
+	pass

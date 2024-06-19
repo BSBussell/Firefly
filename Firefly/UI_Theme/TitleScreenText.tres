@@ -1,0 +1,12 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://2pp6iweqnvh"]
+
+[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_ku5jb"]
+
+[resource]
+font = ExtResource("1_ku5jb")
+font_size = 128
+font_color = Color(0.890196, 0.921569, 0.34902, 1)
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 0.392157)
+shadow_offset = Vector2(2, 2)
