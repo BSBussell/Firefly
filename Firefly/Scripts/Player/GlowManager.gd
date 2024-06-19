@@ -144,7 +144,10 @@ func _process(delta):
 		demote()
 	
 	# Update our meter
-	emit_signal("glow_meter_changed", glow_points)
+	var glow_meter_percengate: int = glow_points
+	if _config.get_setting("auto_glow"):
+		glow_meter_percengate = (glow_points + (100 * movement_level)) / (100 * max_level) * 100
+	emit_signal("glow_meter_changed", glow_meter_percengate)
 	
 
 
