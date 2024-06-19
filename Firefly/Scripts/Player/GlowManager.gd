@@ -134,7 +134,7 @@ func _process(delta):
 		
 		
 	# Upgrading is the glow up is pressed and score is peaked
-	auto_glow = _config.get_setting("auto_glow")
+	auto_glow = _config.get_setting("auto_glow") and movement_level < max_level
 	if movement_level <= max_level:
 		if round(glow_points) >= 100 and (Input.is_action_just_pressed("Glow_Up") or auto_glow):
 			promote()
