@@ -9,6 +9,7 @@ var is_visible = true
 func _ready():
 
 	timer.text = _stats.get_timer_string()
+
 	if is_visible:
 		play_animation("show")
 	
@@ -17,6 +18,12 @@ func _ready():
 func _process(delta):
 	
 	
+	# Check if config is set to show the timer
+	if _config.get_setting("show_timer") and not is_visible:
+		show_timer()
+	elif not _config.get_setting("show_timer") and is_visible:
+		hide_timer()
+		
 	timer.text = _stats.get_timer_string()
 
 ## Hides the Speedrun Timer

@@ -40,7 +40,7 @@ var glow_decay_rate: float = 5
 var decaying = false
 var exponential_decay: float = 0.0
 
-var surplus_multiplier: float = 2.0
+var surplus_multiplier: float = 3.5
 
 
 var meter = null
@@ -131,21 +131,23 @@ func _process(delta):
 			# If the number of points is 0 then we demote
 			if round(glow_points) == 0:
 				demote()
-					
 		
 		
-			
 	# Upgrading is the glow up is pressed and score is peaked
+	auto_glow = _config.get_setting("auto_glow") and movement_level < max_level
 	if movement_level <= max_level:
 		if round(glow_points) >= 100 and (Input.is_action_just_pressed("Glow_Up") or auto_glow):
 			promote()
 
 	# If Glow down is pressed and we're not at the bottom
 	if movement_level > 0 and Input.is_action_just_pressed("Glow_Down"):
-		demote()		
+		demote()
 	
 	# Update our meter
-	emit_signal("glow_meter_changed", glow_points)
+	var glow_meter_percengate: int = glow_points
+	if _config.get_setting("auto_glow"):
+		glow_meter_percengate = (glow_points + (100 * movement_level)) / (100 * max_level) * 100
+	emit_signal("glow_meter_changed", glow_meter_percengate)
 	
 
 
@@ -154,17 +156,23 @@ func calc_speed() -> float:
 	
 	
 	
-	# If we're walljumping just give full points
-	if PLAYER.wallJumping and (PLAYER.current_wj == PLAYER.WALLJUMPS.UPWARD or PLAYER.current_wj == PLAYER.WALLJUMPS.DOWNWARD):
-		return 1.0
+	
 	
 	var new_speed: float = 0.0
 	new_speed = abs(PLAYER.velocity.x)
 	
 	if PLAYER.is_on_floor():
-		return new_speed / PLAYER.air_speed
+		new_speed /= (PLAYER.air_speed * 0.9)
 	else:
-		return new_speed / PLAYER.speed
+		new_speed /= (PLAYER.speed * 0.9)
+		
+	new_speed += (abs(PLAYER.velocity.x) / PLAYER.movement_data.MAX_FF_SPEED) * 0.1
+		
+	# If we're walljumping just give full points
+	if PLAYER.wallJumping or PLAYER.launched:
+		new_speed += 0.5
+	
+	return new_speed
 	
 # This is its own function so it can easily be changed
 func calc_score():
@@ -182,7 +190,7 @@ func calc_score():
 		spd_score = 1 + surplus
 	
 	
-	return spd_score
+	return max(spd_score - 1, 0)
 
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
 # 	Player's momentum value

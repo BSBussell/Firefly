@@ -345,8 +345,8 @@ func boost_jump() -> void:
 
 
 	## Flags
-	# Set crouch jump to true if we aren't jumping off a hill
-	if not slidingDown:
+	# Set crouch jump to true if we aren't sliding down a hill
+	if not slidingDown and not _config.get_setting("slide_assist"):
 		parent.crouchJumping = true
 
 	# Set boostJumping Flag
@@ -397,9 +397,14 @@ func boost_jump() -> void:
 func can_boost_jump() -> bool:
 
 	# Ok so first we make sure the we've jumped within the window.
+	var slide_time_check: bool = (crouch_jump_window.time_left == 0 )
+	
+	
 	# Then make sure the player is moving faster than some multiple of their default speed
-
-	return (crouch_jump_window.time_left == 0 ) and abs(parent.velocity.x) > abs(parent.speed) * parent.movement_data.BOOST_JUMP_THRES
+	var slide_speed_check: bool = abs(parent.velocity.x) > abs(parent.speed) * parent.movement_data.BOOST_JUMP_THRES
+	
+	#if _config.get_set 
+	return slide_time_check and slide_speed_check
 
 ## Returns if speed is fast enough for sliding
 func at_slide_thres() -> bool:

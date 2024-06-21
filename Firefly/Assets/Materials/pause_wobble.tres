@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dr186ojia5ugu"]
+
+[ext_resource type="Shader" path="res://Core/Game/wavy_sidebar.gdshader" id="1_a4xft"]
+
+[resource]
+shader = ExtResource("1_a4xft")
+shader_parameter/progress = 1.318
+shader_parameter/waveFrequency1 = 3.5
+shader_parameter/waveFrequency2 = 5.5
+shader_parameter/waveAmplitude1 = 0.021
+shader_parameter/waveAmplitude2 = 0.009
+shader_parameter/waveSpeed1 = 0.5
+shader_parameter/waveSpeed2 = 0.07
+shader_parameter/waveLength1 = 2.63
+shader_parameter/waveLength2 = 5.298
+shader_parameter/noiseScale = 3.96
+shader_parameter/noiseSpeed = 0.0

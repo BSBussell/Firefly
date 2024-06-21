@@ -21,7 +21,7 @@ func _process(delta) -> void:
 		emit_signal("level_free")
 		set_process(false)
 
-
+ 
 func begin_threaded_loading(level_path: String) -> void:
 	ResourceLoader.load_threaded_request(level_path)
 

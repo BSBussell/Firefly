@@ -1,21 +1,553 @@
-[gd_scene load_steps=8 format=3 uid="uid://mohrwc5amu2o"]
+[gd_scene load_steps=16 format=3 uid="uid://mohrwc5amu2o"]
 
 [ext_resource type="Script" path="res://Scripts/Pause/pause.gd" id="1_7kahw"]
 [ext_resource type="LabelSettings" uid="uid://k52u7c7on45i" path="res://UI_Theme/HeaderText.tres" id="1_apw1f"]
-[ext_resource type="LabelSettings" uid="uid://4yd1xq3pf4m6" path="res://UI_Theme/selectFont.tres" id="2_1enlb"]
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="2_tdrhd"]
-[ext_resource type="PackedScene" uid="uid://xwwdv0rc1i5s" path="res://Core/CustomUIElements/AnimatedToggle.tscn" id="5_6x1tv"]
+[ext_resource type="Material" uid="uid://dr186ojia5ugu" path="res://Assets/Materials/pause_wobble.tres" id="1_qnrtv"]
+[ext_resource type="PackedScene" uid="uid://bfr6itpdlgpsr" path="res://Scenes/UI_Elements/pause_buttons.tscn" id="4_k1kj3"]
+[ext_resource type="AudioStream" uid="uid://dpjkcsm43a70s" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_003_75058.mp3" id="6_uplw2"]
+[ext_resource type="AudioStream" uid="uid://cnuerb00ea5jy" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_002_75057.mp3" id="7_5m4rs"]
+[ext_resource type="PackedScene" uid="uid://dpiiunr2hn7c4" path="res://Scenes/UI_Elements/settings_sub_menu.tscn" id="7_dxgjy"]
 
-[sub_resource type="Animation" id="Animation_5tj8j"]
-resource_name = "UnFold"
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rdird"]
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_iw36x"]
+[sub_resource type="Animation" id="Animation_at4w6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.318]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:anchor_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Fade:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.235294, 0.2, 0.501961, 0.435294)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:material:shader_parameter/waveAmplitude1")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.021]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:material:shader_parameter/waveAmplitude2")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.009]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/noiseScale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [3.96]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:material:shader_parameter/noiseSpeed")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("VBoxContainer:anchor_right")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath(".:anchor_right")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_j423v"]
+resource_name = "hide_settings"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.1, 0.35]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:anchor_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [-0.25, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer:anchor_right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Audio/SettingsClose")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_e3cwu"]
+resource_name = "load_in"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.133972),
+"update": 0,
+"values": [-0.01, 0.35]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:anchor_left")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.108819),
+"update": 0,
+"values": [-0.3, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Fade:color")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 0.108),
+"update": 0,
+"values": [Color(0.235294, 0.2, 0.501961, 0), Color(0.235294, 0.2, 0.501961, 0.745098)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:material:shader_parameter/waveAmplitude1")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.0, 0.021]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/waveAmplitude2")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.0, 0.009]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = false
+tracks/6/path = NodePath(".:material:shader_parameter/noiseScale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.0, 3.96]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:material:shader_parameter/noiseSpeed")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(5.25),
+"update": 1,
+"values": [0.5]
+}
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Audio/PauseOpen")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_c2is2"]
+resource_name = "load_out"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.35, 2.08165e-12]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:anchor_left")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.27803),
+"update": 0,
+"values": [0.0, -0.3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Fade:color")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.27),
+"update": 0,
+"values": [Color(0.235294, 0.2, 0.501961, 0.745098), Color(0.235294, 0.2, 0.501961, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:material:shader_parameter/waveAmplitude1")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.021, 0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".:material:shader_parameter/waveAmplitude2")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [0.009, 0.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = false
+tracks/6/path = NodePath(".:material:shader_parameter/noiseScale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 5.25),
+"update": 0,
+"values": [3.96, 0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:material:shader_parameter/noiseSpeed")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(5.25),
+"update": 1,
+"values": [0.0]
+}
+tracks/8/type = "method"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Audio/PauseClose")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_6ntyg"]
+resource_name = "quit"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.35, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Audio/PauseClose")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:anchor_right")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.7),
+"transitions": PackedFloat32Array(5),
+"update": 0,
+"values": [1.2]
+}
+
+[sub_resource type="Animation" id="Animation_do4ea"]
+resource_name = "show_settings"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.35, 0.1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:anchor_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.162451),
+"update": 0,
+"values": [0.0, -0.25]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer:anchor_right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.5]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SettingsSubMenu")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"show_settings"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SettingsSubMenu:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Audio/SettingsOpen")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mvfig"]
 _data = {
-"UnFold": SubResource("Animation_5tj8j")
+"RESET": SubResource("Animation_at4w6"),
+"hide_settings": SubResource("Animation_j423v"),
+"load_in": SubResource("Animation_e3cwu"),
+"load_out": SubResource("Animation_c2is2"),
+"quit": SubResource("Animation_6ntyg"),
+"show_settings": SubResource("Animation_do4ea")
 }
 
 [node name="PauseMenu" type="ColorRect"]
 z_index = 1000
+material = ExtResource("1_qnrtv")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -23,13 +555,27 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
-color = Color(0.219608, 0.184314, 0.466667, 0.592157)
+color = Color(0.235294, 0.2, 0.501961, 1)
 script = ExtResource("1_7kahw")
+
+[node name="Fade" type="ColorRect" parent="."]
+z_index = -1
+z_as_relative = false
+material = SubResource("ShaderMaterial_rdird")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.2, 0.501961, 0.435294)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 100.0
 offset_top = -275.0
@@ -55,239 +601,55 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_constants/separation = 20
 
-[node name="ResumeButton" type="Button" parent="VBoxContainer/Items/Top"]
+[node name="ResumeButton" parent="VBoxContainer/Items/Top" instance=ExtResource("4_k1kj3")]
 layout_mode = 2
-size_flags_horizontal = 0
-focus_neighbor_top = NodePath("../QuitButton")
-focus_neighbor_bottom = NodePath("../Settings/SettingsButton")
-theme = ExtResource("2_tdrhd")
-text = "Resume"
+focus_neighbor_bottom = NodePath("../Settings")
 
-[node name="Settings" type="HBoxContainer" parent="VBoxContainer/Items/Top"]
+[node name="Settings" parent="VBoxContainer/Items/Top" instance=ExtResource("4_k1kj3")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 100
-
-[node name="SettingsButton" type="Button" parent="VBoxContainer/Items/Top/Settings"]
-layout_mode = 2
-size_flags_vertical = 0
-focus_neighbor_top = NodePath("../../ResumeButton")
-focus_neighbor_right = NodePath("../SettingsContainer/AudioSettingContainer/Audio")
-focus_neighbor_bottom = NodePath("../../QuitButton")
-theme = ExtResource("2_tdrhd")
+focus_neighbor_top = NodePath("../ResumeButton")
+focus_neighbor_bottom = NodePath("../Quit")
 text = "Settings"
-alignment = 0
 
-[node name="Control" type="Control" parent="VBoxContainer/Items/Top/Settings"]
+[node name="Quit" parent="VBoxContainer/Items/Top" instance=ExtResource("4_k1kj3")]
 layout_mode = 2
-
-[node name="SettingsContainer" type="VBoxContainer" parent="VBoxContainer/Items/Top/Settings"]
-visible = false
-layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="Padding" type="Control" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
-custom_minimum_size = Vector2(0, 56)
-layout_mode = 2
-
-[node name="AudioSettingContainer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
-layout_mode = 2
-theme_override_constants/separation = -250
-
-[node name="Audio" type="Button" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer"]
-layout_mode = 2
-size_flags_vertical = 0
-focus_neighbor_left = NodePath("../../../SettingsButton")
-focus_neighbor_top = NodePath("../../../SettingsButton")
-focus_neighbor_right = NodePath("../MixerSetting/Music/MusicSlider")
-focus_neighbor_bottom = NodePath("../../FullScreenContainer/FullScreenToggle")
-theme = ExtResource("2_tdrhd")
-text = "Mixer"
-alignment = 0
-
-[node name="MixerSetting" type="VBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer"]
-visible = false
-layout_mode = 2
-
-[node name="Padding2" type="Control" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting"]
-custom_minimum_size = Vector2(0, 56)
-layout_mode = 2
-
-[node name="Music" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-theme_override_constants/separation = 332
-
-[node name="MusicLabel" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-text = "Music"
-label_settings = ExtResource("2_1enlb")
-
-[node name="MusicSlider" type="HSlider" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music"]
-modulate = Color(0.890196, 0.921569, 0.34902, 1)
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-size_flags_vertical = 4
-focus_neighbor_left = NodePath("../../../Audio")
-focus_neighbor_top = NodePath("../../../Audio")
-focus_neighbor_bottom = NodePath("../../SFX/SFXSlider")
-theme = ExtResource("2_tdrhd")
-max_value = 1.0
-step = 0.1
-value = 0.5
-scrollable = false
-
-[node name="SFX" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-theme_override_constants/separation = 385
-
-[node name="FullScreen" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-text = "SFX"
-label_settings = ExtResource("2_1enlb")
-
-[node name="SFXSlider" type="HSlider" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX"]
-modulate = Color(0.890196, 0.921569, 0.34902, 1)
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_neighbor_left = NodePath("../../../Audio")
-focus_neighbor_top = NodePath("../../Music/MusicSlider")
-focus_neighbor_bottom = NodePath("../../Ambience/AmbienceSlider")
-theme = ExtResource("2_tdrhd")
-max_value = 1.0
-step = 0.1
-value = 0.5
-scrollable = false
-
-[node name="Ambience" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-theme_override_constants/separation = 232
-
-[node name="FullScreen" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-text = "Ambience"
-label_settings = ExtResource("2_1enlb")
-
-[node name="AmbienceSlider" type="HSlider" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience"]
-modulate = Color(0.890196, 0.921569, 0.34902, 1)
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-size_flags_vertical = 4
-focus_neighbor_left = NodePath("../../../Audio")
-focus_neighbor_top = NodePath("../../SFX/SFXSlider")
-focus_neighbor_bottom = NodePath("../../../../FullScreenContainer/FullScreenToggle")
-theme = ExtResource("2_tdrhd")
-max_value = 1.0
-step = 0.1
-value = 0.5
-scrollable = false
-
-[node name="FullScreenContainer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-theme_override_constants/separation = 300
-
-[node name="FullScreen" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-text = "Fullscreen"
-label_settings = ExtResource("2_1enlb")
-
-[node name="FullScreenToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer" instance=ExtResource("5_6x1tv")]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_neighbor_left = NodePath("../../../SettingsButton")
-focus_neighbor_top = NodePath("../../AudioSettingContainer/Audio")
-focus_neighbor_bottom = NodePath("../../GlowModeContainer/GlowModeToggle")
-
-[node name="GlowModeContainer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-theme_override_constants/separation = 176
-
-[node name="Label" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer"]
-layout_mode = 2
-text = "Auto Glow Mode"
-label_settings = ExtResource("2_1enlb")
-
-[node name="GlowModeToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer" instance=ExtResource("5_6x1tv")]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_neighbor_left = NodePath("../../../SettingsButton")
-focus_neighbor_top = NodePath("../../FullScreenContainer/FullScreenToggle")
-focus_neighbor_bottom = NodePath("../../Speedometer/speedometerToggle")
-
-[node name="Speedometer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-theme_override_constants/separation = 92
-
-[node name="Label" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer"]
-layout_mode = 2
-text = "Show Speedometer"
-label_settings = ExtResource("2_1enlb")
-
-[node name="speedometerToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer" instance=ExtResource("5_6x1tv")]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_neighbor_left = NodePath("../../../SettingsButton")
-focus_neighbor_top = NodePath("../../GlowModeContainer/GlowModeToggle")
-focus_neighbor_bottom = NodePath("../../ShowTimer/timerToggle")
-
-[node name="ShowTimer" type="HBoxContainer" parent="VBoxContainer/Items/Top/Settings/SettingsContainer"]
-layout_mode = 2
-theme = ExtResource("2_tdrhd")
-theme_override_constants/separation = 288
-
-[node name="Label" type="Label" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer"]
-layout_mode = 2
-text = "Show Timer"
-label_settings = ExtResource("2_1enlb")
-
-[node name="timerToggle" parent="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer" instance=ExtResource("5_6x1tv")]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_neighbor_left = NodePath("../../../SettingsButton")
-focus_neighbor_top = NodePath("../../Speedometer/speedometerToggle")
-focus_neighbor_bottom = NodePath("../../AudioSettingContainer/Audio")
-
-[node name="UnFolder" type="AnimationPlayer" parent="VBoxContainer/Items/Top/Settings"]
-libraries = {
-"": SubResource("AnimationLibrary_iw36x")
-}
-
-[node name="QuitButton" type="Button" parent="VBoxContainer/Items/Top"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme = ExtResource("2_tdrhd")
+focus_neighbor_top = NodePath("../Settings")
 text = "Quit"
+disable_press_sfx = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_mvfig")
+}
+speed_scale = 2.5
+
+[node name="SettingsSubMenu" parent="." instance=ExtResource("7_dxgjy")]
+visible = false
+layout_mode = 1
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="PauseOpen" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_uplw2")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="PauseClose" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("7_5m4rs")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="SettingsOpen" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_uplw2")
+volume_db = -10.0
+pitch_scale = 1.2
+
+[node name="SettingsClose" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("7_5m4rs")
+volume_db = -10.0
+pitch_scale = 1.2
 
 [connection signal="pressed" from="VBoxContainer/Items/Top/ResumeButton" to="." method="_on_resume_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/Items/Top/Settings/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/Audio" to="." method="_on_audio_pressed"]
-[connection signal="focus_entered" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music/MusicSlider" to="." method="_on_music_slider_focus_entered"]
-[connection signal="value_changed" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Music/MusicSlider" to="." method="_on_music_slider_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/SFX/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
-[connection signal="focus_entered" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience/AmbienceSlider" to="." method="_on_ambience_slider_focus_entered"]
-[connection signal="value_changed" from="VBoxContainer/Items/Top/Settings/SettingsContainer/AudioSettingContainer/MixerSetting/Ambience/AmbienceSlider" to="." method="_on_ambience_slider_value_changed"]
-[connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer/FullScreenToggle" to="." method="_on_full_screen_toggle_switched_off"]
-[connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/FullScreenContainer/FullScreenToggle" to="." method="_on_full_screen_toggle_switched_on"]
-[connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle" to="." method="_on_glow_mode_toggle_switched_off"]
-[connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/GlowModeContainer/GlowModeToggle" to="." method="_on_glow_mode_toggle_switched_on"]
-[connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer/speedometerToggle" to="." method="_on_speedometer_toggle_switched_off"]
-[connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/Speedometer/speedometerToggle" to="." method="_on_speedometer_toggle_switched_on"]
-[connection signal="switched_off" from="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer/timerToggle" to="." method="_on_timer_toggle_switched_off"]
-[connection signal="switched_on" from="VBoxContainer/Items/Top/Settings/SettingsContainer/ShowTimer/timerToggle" to="." method="_on_timer_toggle_switched_on"]
-[connection signal="pressed" from="VBoxContainer/Items/Top/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Items/Top/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="VBoxContainer/Items/Top/Quit" to="." method="_on_quit_pressed"]
+[connection signal="settings_closed" from="SettingsSubMenu" to="." method="_on_settings_sub_menu_settings_closed"]

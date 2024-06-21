@@ -7,10 +7,18 @@ var INVALID_RUN: bool = false
 
 var run_timer: bool = false
 
+func _ready():
+	
+	_persist.register_persistent_class("stats", Callable(self, "save_time"), Callable(self, "load_time"))
+	_persist.load_values()
+
 func _process(delta):
 	# If the game isn't paused increase the timer
 	if not get_tree().paused and run_timer:
-		TIME += delta
+		
+		# If there is an active player who isn't an actor
+		if _globals.ACTIVE_PLAYER and not _globals.ACTIVE_PLAYER.is_actor:
+			TIME += delta
 
 ## Returns Time as a String in MM:SS:MS
 func get_timer_string() -> String:
@@ -35,8 +43,6 @@ func get_timer_string() -> String:
 
 
 func reset_timer() -> void:
-
-	run_timer = 0
 	TIME = 0
 
 func stop_timer() -> void:
@@ -44,3 +50,12 @@ func stop_timer() -> void:
 
 func start_timer() -> void:
 	run_timer = true
+	
+	
+func save_time() -> Dictionary:
+	
+	return {"Time": TIME}
+	
+func load_time(time: Dictionary) -> void:
+	
+	TIME = time.get("Time")

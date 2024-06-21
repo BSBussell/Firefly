@@ -19,6 +19,7 @@ extends PlayerState
 
 
 var cache_airdrift
+var pre_wall_vel: float = 0.0
 
 # Called on state entrance, setup
 func enter() -> void:
@@ -28,6 +29,8 @@ func enter() -> void:
 
 	parent.animation.flip_h = 1 if parent.get_wall_normal().x > 0 else 0
 
+	# Store the velocity we had before we hit the wall
+	pre_wall_vel = parent.prev_velocity_x
 	
 	#if not parent.jumping:
 	parent.current_animation = parent.ANI_STATES.WALL_HUG
@@ -50,6 +53,8 @@ func exit() -> void:
 	
 	# Turn Off the Dust
 	wall_slide_dust.emitting = false
+
+	pre_wall_vel = 0.0
 	
 	sliding_sfx.stop()
 
@@ -262,7 +267,8 @@ func upward_walljump(jump_dir: float) -> void:
 
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
 	
-	parent.lock_h_dir(-jump_dir, 0.2, true)
+	if _config.get_setting("input_assists"):
+		parent.lock_h_dir(-jump_dir, 0.2, true)
 	
 	
 
@@ -313,6 +319,7 @@ func away_walljump(jump_dir: float) -> void:
 
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
 	
+	
 	parent.lock_h_dir(jump_dir, 0.2, true)
 	
 
@@ -331,7 +338,10 @@ func general_walljump(walljump_type: int, disable_drift: bool, jump_velocity: Ve
 	
 	
 	# Preserve the velocity we had before the jump, with a multiplier (ususally 0)
-	parent.velocity.x =  parent.prev_velocity_x * -velocity_multi 
+	if pre_wall_vel != 0:
+		parent.velocity.x = pre_wall_vel * -velocity_multi
+	else:
+		parent.velocity.x =  parent.prev_velocity_x * -velocity_multi 
 	
 	# Add walljump velocity
 	parent.velocity.x += jump_velocity.x * jump_dir

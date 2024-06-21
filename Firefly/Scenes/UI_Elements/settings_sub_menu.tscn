@@ -1,0 +1,628 @@
+[gd_scene load_steps=20 format=3 uid="uid://dpiiunr2hn7c4"]
+
+[ext_resource type="Script" path="res://Scenes/UI_Elements/settings_menu.gd" id="1_2yfve"]
+[ext_resource type="Shader" path="res://Scenes/UI_Elements/settingsWobble.gdshader" id="2_c2wmv"]
+[ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="2_gt2tp"]
+[ext_resource type="Material" uid="uid://dr186ojia5ugu" path="res://Assets/Materials/pause_wobble.tres" id="2_pnv2b"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="3_ruqkj"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/CategoryContainer.gd" id="6_5m2g1"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/pause_buttons.gd" id="6_vsv8n"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/settings_list.gd" id="7_cvkcl"]
+[ext_resource type="PackedScene" uid="uid://b4emyp3fdhl7t" path="res://Scenes/UI_Elements/settings_comp/bool_setting.tscn" id="7_eb0w4"]
+[ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="7_hwkrn"]
+[ext_resource type="PackedScene" uid="uid://b3gg0nmjq7om5" path="res://Scenes/UI_Elements/settings_comp/slider_setting.tscn" id="11_0u8nr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4tdq2"]
+shader = ExtResource("2_c2wmv")
+shader_parameter/progress = 2.08165e-12
+shader_parameter/waveFrequency1 = 3.5
+shader_parameter/waveFrequency2 = 5.5
+shader_parameter/waveAmplitude1 = 0.007
+shader_parameter/waveAmplitude2 = 0.008
+shader_parameter/waveSpeed1 = 0.053
+shader_parameter/waveSpeed2 = 0.15
+shader_parameter/waveLength1 = 1.0
+shader_parameter/waveLength2 = 1.0
+shader_parameter/noiseScale = 3.0
+shader_parameter/noiseSpeed = 1.02
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nr6up"]
+shader = ExtResource("2_c2wmv")
+shader_parameter/progress = 2.08165e-12
+shader_parameter/waveFrequency1 = 3.5
+shader_parameter/waveFrequency2 = 5.5
+shader_parameter/waveAmplitude1 = 0.01
+shader_parameter/waveAmplitude2 = 0.002
+shader_parameter/waveSpeed1 = 0.02
+shader_parameter/waveSpeed2 = 0.05
+shader_parameter/waveLength1 = 0.5
+shader_parameter/waveLength2 = 0.5
+shader_parameter/noiseScale = 3.479
+shader_parameter/noiseSpeed = 1.02
+
+[sub_resource type="Animation" id="Animation_msaqv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SettingsWobble:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.08165e-12]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Header:anchor_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Header:anchor_right")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TopBar:anchor_left")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TopBar:anchor_right")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SectionSettings:anchor_left")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SectionSettings:anchor_right")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("SectionSettings:anchor_top")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.4]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SectionSettings:anchor_bottom")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("SettingsWobble2:material:shader_parameter/progress")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.08165e-12]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("SettingsWobble2:anchor_left")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_oad6j"]
+resource_name = "setting_hide"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("SectionSettings:anchor_top")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.4, 1.1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("SectionSettings:anchor_bottom")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.95, 1.1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath("SettingsWobble2:material:shader_parameter/progress")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [2.08165e-12, 0.65]
+}
+
+[sub_resource type="Animation" id="Animation_e5p7n"]
+resource_name = "setting_reveal"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath("SectionSettings:anchor_top")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [1.1, 0.4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("SectionSettings:anchor_bottom")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [1.1, 0.95]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath("SettingsWobble2:material:shader_parameter/progress")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.65, 2.08165e-12]
+}
+
+[sub_resource type="Animation" id="Animation_khyu4"]
+resource_name = "settings_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SettingsWobble:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [2.08165e-12, 0.7]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Header:anchor_left")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [1.0, 0.25]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Header:anchor_right")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [1.0, 0.25]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TopBar:anchor_left")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [1.0, 0.25]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TopBar:anchor_right")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [1.0, 0.95]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SectionSettings:anchor_left")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [1.0, 0.34]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SectionSettings:anchor_right")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [1.0, 0.95]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SettingsWobble2:anchor_left")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.5, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_11g7d"]
+resource_name = "settings_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SettingsWobble:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.7, 2.08165e-12]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Header:anchor_left")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [0.25, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Header:anchor_right")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [0.25, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TopBar:anchor_left")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [0.25, 1.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("TopBar:anchor_right")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [0.95, 1.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SectionSettings:anchor_left")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [0.34, 1.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("SectionSettings:anchor_right")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 0.1),
+"update": 0,
+"values": [0.95, 1.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.6),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("SettingsWobble2:anchor_left")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 5),
+"update": 0,
+"values": [0.0, 0.5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_t4yat"]
+_data = {
+"RESET": SubResource("Animation_msaqv"),
+"setting_hide": SubResource("Animation_oad6j"),
+"setting_reveal": SubResource("Animation_e5p7n"),
+"settings_in": SubResource("Animation_khyu4"),
+"settings_out": SubResource("Animation_11g7d")
+}
+
+[node name="SettingsSubMenu" type="Control"]
+z_index = -1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_2yfve")
+
+[node name="PauseLinger" type="ColorRect" parent="."]
+visible = false
+material = ExtResource("2_pnv2b")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.235294, 0.2, 0.501961, 1)
+
+[node name="SettingsWobble" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_4tdq2")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.0
+anchor_bottom = 1.0
+offset_right = 9.15527e-05
+mouse_filter = 1
+color = Color(0.235294, 0.2, 0.501961, 1)
+
+[node name="SettingsWobble2" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_nr6up")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.0
+anchor_bottom = 1.0
+mouse_filter = 1
+color = Color(0.490196, 0.439216, 0.741176, 1)
+
+[node name="Header" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 0.1
+offset_top = -4.0
+offset_right = 480.0
+offset_bottom = 116.0
+text = "Settings"
+label_settings = ExtResource("2_gt2tp")
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(2.08165e-12, 120)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.25
+anchor_right = 1.0
+anchor_bottom = 0.3
+
+[node name="BackButton" type="Button" parent="TopBar" node_paths=PackedStringArray("focus")]
+layout_mode = 2
+size_flags_vertical = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_bottom = NodePath("\"\"")
+theme = ExtResource("3_ruqkj")
+text = "< | "
+script = ExtResource("6_vsv8n")
+disable_press_sfx = true
+focus = NodePath("Focus")
+
+[node name="Focus" type="AudioStreamPlayer" parent="TopBar/BackButton"]
+stream = ExtResource("7_hwkrn")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="SettingCategories" type="ScrollContainer" parent="TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 13
+theme = ExtResource("3_ruqkj")
+follow_focus = true
+
+[node name="CategoryContainer" type="HBoxContainer" parent="TopBar/SettingCategories" node_paths=PackedStringArray("setting_list")]
+layout_mode = 2
+theme_override_constants/separation = 20
+script = ExtResource("6_5m2g1")
+setting_list = NodePath("../../../SectionSettings/Items")
+
+[node name="SectionSettings" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.4
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 2
+theme = ExtResource("3_ruqkj")
+follow_focus = true
+horizontal_scroll_mode = 0
+
+[node name="Items" type="VBoxContainer" parent="SectionSettings"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+script = ExtResource("7_cvkcl")
+
+[node name="Bool" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
+layout_mode = 2
+
+[node name="Slider" parent="SectionSettings/Items" instance=ExtResource("11_0u8nr")]
+layout_mode = 2
+
+[node name="Bool2" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
+layout_mode = 2
+
+[node name="Bool3" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
+layout_mode = 2
+
+[node name="Bool4" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
+layout_mode = 2
+
+[node name="Bool5" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
+layout_mode = 2
+
+[node name="Bool6" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
+layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_t4yat")
+}
+speed_scale = 2.5
+
+[connection signal="focus_entered" from="TopBar/BackButton" to="TopBar/BackButton" method="_on_focus_entered"]
+[connection signal="pressed" from="TopBar/BackButton" to="." method="_on_button_pressed"]

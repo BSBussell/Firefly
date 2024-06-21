@@ -48,9 +48,14 @@ func _ready():
 	
 	# Load our level
 	_loader.load_level(start_level.resource_path)
+	
+	# Connect Config change function
+	_config.connect_to_config_changed(Callable(self, "config_changed"))
 
-	# Set the window size to be windowed
 	set_windowed_scale()
+
+	
+		
 
 	# Get zoom from config
 	res_scale = _config.get_setting("game_zoom")
@@ -63,6 +68,11 @@ func _ready():
 
 	# Hide mouse cursor
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	
+	# Set the window size to be windowed
+	# Full Screen Check
+	#if _config.get_setting("fullscreen"):
+		#set_fullscreen_scale()
 
 
 func _input(_event: InputEvent) -> void:
@@ -77,7 +87,7 @@ func _input(_event: InputEvent) -> void:
 		get_tree().paused = false
 
 
-		await _loader.reset_game(start_level.resource_path)
+		await _loader.reset_game(NodePath("res://Scenes/Levels/TutorialLevel/tutorial.tscn"))
 
 		
 			
@@ -85,20 +95,20 @@ func _input(_event: InputEvent) -> void:
 	## All these handle is the zooming in and out of gam
 	if Input.is_action_pressed("scale_inc"):
 		
-		res_scale = move_toward(res_scale, 1.4, 0.075)
+		res_scale = move_toward(res_scale, 1.4, 0.05)
 
 		# Set Config
-		_config.set_setting("game_zoom", res_scale)
-		_config.save_settings()
+		#_config.set_setting("game_zoom", res_scale)
+		
 		print("inc: ", res_scale)
-		smoothly_zoom_render(res_scale)
+		smoothly_zoom_render(res_scale)     
 	
 	elif Input.is_action_pressed("scale_dec"):
 		
-		res_scale = move_toward(res_scale, 0.5, 0.075)
+		res_scale = move_toward(res_scale, 0.5, 0.05)
 		# Set Config
-		_config.set_setting("game_zoom", res_scale)
-		_config.save_settings()
+		
+		
 		print("dec:", res_scale)
 		smoothly_zoom_render(res_scale)
 
@@ -249,8 +259,8 @@ func res_interpolate(delta: float):
 		# Interpolate the goal resolution
 		var float_res: Vector2 = Vector2(game_res).lerp(target_res, t)
 		
-		# Round up to the nearest integer
-		game_res = float_res
+		
+		game_res = game_res.lerp(target_res, t)
 		_globals.RENDER_SIZE = game_res
 
 		window_scale = lerp(window_scale, target_scale, t)
@@ -260,6 +270,7 @@ func res_interpolate(delta: float):
 
 		if t >= 1.0:
 			interpolating_res = false  # Stop interpolating_res
+			_config.set_setting("game_zoom", res_scale)
 
 func _process(delta):
 	
@@ -314,3 +325,16 @@ func get_usable_screen_size() -> Vector2i:
 		screen_size.y -= 74
 	
 	return screen_size
+	
+func config_changed():
+	if _config.get_setting("fullscreen") and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN:
+		set_fullscreen_scale()
+	elif  not _config.get_setting("fullscreen") and DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+		set_windowed_scale()
+	
+	if _config.get_setting("vsync"):
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+	else:
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+
+

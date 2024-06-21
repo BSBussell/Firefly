@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dp2w4ordjbpnj"]
+
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="1_4okqh"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/cat_text.gd" id="2_os3xt"]
+[ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="3_lntvc"]
+
+[node name="Cat_Text" type="Button"]
+focus_neighbor_right = NodePath("../Cat_Text2")
+theme = ExtResource("1_4okqh")
+theme_type_variation = &"Active_Header"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Game Settings"
+script = ExtResource("2_os3xt")
+
+[node name="Focus" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_lntvc")
+volume_db = -10.0
+pitch_scale = 0.9
+bus = &"SFX"
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]

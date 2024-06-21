@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=7 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
-[ext_resource type="PackedScene" uid="uid://cbgoqx8kcalop" path="res://Scenes/Levels/TutorialLevel/tutorial.tscn" id="2_gamt3"]
+[ext_resource type="PackedScene" uid="uid://bxpfadjfys05l" path="res://Scenes/Levels/TitleScreen/title_screen.tscn" id="2_4xtrt"]
 [ext_resource type="Script" path="res://Core/Game/LevelLoader.gd" id="3_oejcr"]
 [ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="4_5xpk0"]
 
 [sub_resource type="Environment" id="Environment_xxxtd"]
 background_mode = 3
@@ -20,7 +21,7 @@ adjustment_enabled = true
 [node name="GameViewer" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_42j4d")
-start_level = ExtResource("2_gamt3")
+start_level = ExtResource("2_4xtrt")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xxxtd")
@@ -46,8 +47,11 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="UILoader" type="SubViewportContainer" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("4_5xpk0")
 script = ExtResource("4_4g62g")
 
 [node name="UIViewPort" type="SubViewport" parent="UILoader"]

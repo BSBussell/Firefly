@@ -58,7 +58,7 @@ func enter() -> void:
 		# Squish
 		if jump_buffer.time_left == 0 and not parent.launched:
 			
-			var squish_dur = snappedf(lerpf(0.5, 1.3, abs(parent.prev_velocity_y) / parent.movement_data.MAX_FALL_SPEED), 0.01)
+			var squish_dur = snappedf(lerpf(0.5, 0.8, abs(parent.prev_velocity_y) / parent.movement_data.MAX_FALL_SPEED), 0.01)
 			
 			parent.squish_node.squish(calc_landing_squish(), squish_dur)
 
