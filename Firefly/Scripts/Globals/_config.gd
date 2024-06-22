@@ -7,7 +7,7 @@ signal config_changed
 const CONFIG_FILE: String = "user://config.json"
 
 # Game settings
-var settings: Dictionary = {
+var def_settings: Dictionary = {
 	
 
 	
@@ -35,6 +35,8 @@ var settings: Dictionary = {
 	"inf_jump": false
 }
 
+var settings: Dictionary = def_settings
+
 # Called when the node is added to the scene
 func _ready() -> void:
 	load_settings()
@@ -49,8 +51,14 @@ func load_settings() -> void:
 		if error == OK:
 			settings = json.data
 		file.close()
+		ensure_def_keys_exist()
 	else:
 		save_settings()  # Save default settings if config file doesn't exist
+
+func ensure_def_keys_exist():
+	def_settings.merge(settings, true)
+	settings = def_settings
+
 
 # Save current settings to the configuration file
 func save_settings() -> void:
