@@ -26,12 +26,13 @@ size_flags_vertical = 4
 
 [node name="Press" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_xyavt")
-volume_db = -10.0
+volume_db = -12.0
 bus = &"SFX"
 
 [node name="Focus" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_dbgw0")
-volume_db = -10.0
+volume_db = -12.0
+pitch_scale = 2.0
 bus = &"SFX"
 
 [connection signal="focus_entered" from="AnimatedToggle" to="." method="_on_animated_toggle_focus_entered"]
