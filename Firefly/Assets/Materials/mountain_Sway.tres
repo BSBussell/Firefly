@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://co8r8u5adqmo5"]
+
+[ext_resource type="Shader" path="res://Core/wind.gdshader" id="1_aymmk"]
+
+[resource]
+shader = ExtResource("1_aymmk")
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.05
+shader_parameter/maxStrength = 0.1
+shader_parameter/strengthScale = 100.0
+shader_parameter/interval = 4.21
+shader_parameter/detail = 2.0
+shader_parameter/distortion = 1.0
+shader_parameter/heightOffset = 0.0
+shader_parameter/offset = 0.0

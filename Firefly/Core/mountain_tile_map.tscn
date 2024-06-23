@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://b5trsegh656lp"]
+[gd_scene load_steps=10 format=3 uid="uid://b5trsegh656lp"]
 
+[ext_resource type="Material" uid="uid://co8r8u5adqmo5" path="res://Assets/Materials/mountain_Sway.tres" id="1_5xegu"]
 [ext_resource type="Texture2D" uid="uid://c53fjuqaqmhnj" path="res://Assets/Graphics/TileMaps/Mountain/Tileset.png" id="1_tjhrr"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_xy53w"]
@@ -800,6 +801,7 @@ texture = ExtResource("1_tjhrr")
 1:9/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 1:9/0/physics_layer_2/angular_velocity = 0.0
 15:9/0 = 0
+15:9/0/material = ExtResource("1_5xegu")
 15:9/0/probability = 0.3
 15:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 15:9/0/physics_layer_0/angular_velocity = 0.0
@@ -813,6 +815,7 @@ texture = ExtResource("1_tjhrr")
 "type": -1
 }
 16:9/0 = 0
+16:9/0/material = ExtResource("1_5xegu")
 16:9/0/probability = 0.3
 16:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 16:9/0/physics_layer_0/angular_velocity = 0.0
@@ -826,6 +829,7 @@ texture = ExtResource("1_tjhrr")
 "type": -1
 }
 17:9/0 = 0
+17:9/0/material = ExtResource("1_5xegu")
 17:9/0/probability = 0.3
 17:9/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 17:9/0/physics_layer_0/angular_velocity = 0.0
@@ -880,6 +884,7 @@ texture = ExtResource("1_tjhrr")
 "type": -1
 }
 15:11/0 = 0
+15:11/0/material = ExtResource("1_5xegu")
 15:11/0/probability = 0.1
 15:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 15:11/0/physics_layer_0/angular_velocity = 0.0
@@ -893,6 +898,7 @@ texture = ExtResource("1_tjhrr")
 "type": -1
 }
 16:11/0 = 0
+16:11/0/material = ExtResource("1_5xegu")
 16:11/0/probability = 0.1
 16:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 16:11/0/physics_layer_0/angular_velocity = 0.0
@@ -906,6 +912,7 @@ texture = ExtResource("1_tjhrr")
 "type": -1
 }
 17:11/0 = 0
+17:11/0/material = ExtResource("1_5xegu")
 17:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 17:11/0/physics_layer_0/angular_velocity = 0.0
 17:11/0/physics_layer_1/linear_velocity = Vector2(0, 0)
@@ -918,6 +925,7 @@ texture = ExtResource("1_tjhrr")
 "type": -1
 }
 18:11/0 = 0
+18:11/0/material = ExtResource("1_5xegu")
 18:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 18:11/0/physics_layer_0/angular_velocity = 0.0
 18:11/0/physics_layer_1/linear_velocity = Vector2(0, 0)
@@ -1999,8 +2007,8 @@ metadata/_better_terrain = {
 tile_set = SubResource("TileSet_18in2")
 format = 2
 layer_0/name = "Foreground"
+layer_0/z_index = 1
 layer_1/name = "Background"
-layer_1/modulate = Color(0.854902, 0.854902, 0.854902, 1)
 layer_1/z_index = -1
 layer_1/tile_data = PackedInt32Array()
 layer_2/name = "Wall"
