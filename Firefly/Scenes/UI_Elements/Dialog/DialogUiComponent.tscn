@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://cu5uu6ykpiam"]
+
+[ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.gd" id="1_7ojih"]
+[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_47tp2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_g8wcd"]
+font = ExtResource("1_47tp2")
+font_size = 32
+shadow_color = Color(0, 0, 0, 0.721569)
+
+[node name="DialogUiComponent" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7ojih")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.3
+grow_horizontal = 2
+text = "Hey Bestie! We Cookin!"
+label_settings = SubResource("LabelSettings_g8wcd")
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -117,6 +117,9 @@ func connect_to_win(function: Callable):
 	if error != OK:
 		print("Failure Connecting Win Signal: ", error)
 
+func get_ui_component(comp_name: String):
+	return ui_loader.get_component(comp_name)
+
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():

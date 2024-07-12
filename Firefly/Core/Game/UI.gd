@@ -69,6 +69,12 @@ func load_ui(context: Level) -> void:
 		_viewports.ui_viewport.add_child(ui_component)
 		
 
+## Method for grabbing components
+func get_component(comp_key: String):
+	if ui_components.has(comp_key):
+		return ui_components[comp_key]
+	return null
+
 # Method to get the custom class name, black magic found within the depth of stack overflow
 func get_script_class_name(obj: Node) -> String:
 	var script_class_name = obj.get_class()

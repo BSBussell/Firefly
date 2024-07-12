@@ -1,8 +1,9 @@
-[gd_scene load_steps=25 format=3 uid="uid://b8k3u2ibutssg"]
+[gd_scene load_steps=28 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Core/Game/pause.tscn" id="1_iqxgk"]
 [ext_resource type="Texture2D" uid="uid://d3hoov6c28cd2" path="res://Assets/Graphics/TileMaps/Mountain/Parallax/Pixel Mountains & Hills - Parallax pack/240x135px/Parallax Backgrounds 240x135px/PixelMountain04/PixelMountain04_layer03.png" id="2_8hfap"]
+[ext_resource type="PackedScene" uid="uid://cu5uu6ykpiam" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.tscn" id="2_gu43t"]
 [ext_resource type="Texture2D" uid="uid://was4ciof14c" path="res://Assets/Graphics/TileMaps/Mountain/clouds.png" id="2_qxdu3"]
 [ext_resource type="Texture2D" uid="uid://c66evvqlagh3c" path="res://Assets/Graphics/TileMaps/Mountain/Parallax/Pixel Mountains & Hills - Parallax pack/240x135px/Parallax Backgrounds 240x135px/PixelMountain04/PixelMountain04_layer04.png" id="2_yex0a"]
 [ext_resource type="PackedScene" uid="uid://dol5r7ahavfoy" path="res://Scenes/Levels/MountainLevel/Starticles.tscn" id="3_hd06y"]
@@ -20,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://cr8tolestavv5" path="res://Assets/Graphics/TileMaps/Mountain/clouds/cloud2.png" id="12_0uhhk"]
 [ext_resource type="Texture2D" uid="uid://c6306n7eqda36" path="res://Assets/Graphics/TileMaps/Mountain/clouds/cloud3.png" id="13_w637h"]
 [ext_resource type="Script" path="res://Scripts/Level/ChangeLevel.gd" id="15_8p7he"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/DialogAreaA.gd" id="20_fwqwe"]
 
 [sub_resource type="GDScript" id="GDScript_0jk77"]
 script/source = "extends Level 
@@ -49,6 +51,9 @@ colors = PackedColorArray(0, 0, 0, 1, 0.977813, 0.977813, 0.977813, 0.0221871, 0
 metadata/_snap_enabled = true
 metadata/_snap_count = 9
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rvlin"]
+size = Vector2(86, 70)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w5fqu"]
 size = Vector2(144.75, 138)
 
@@ -56,7 +61,7 @@ size = Vector2(144.75, 138)
 script = SubResource("GDScript_0jk77")
 Text = "- Foggy Mountains -"
 PLAYER = NodePath("Flyph")
-ui_components = Array[PackedScene]([ExtResource("1_iqxgk")])
+ui_components = Array[PackedScene]([ExtResource("1_iqxgk"), ExtResource("2_gu43t")])
 
 [node name="PP + FX" type="Node2D" parent="."]
 
@@ -434,7 +439,15 @@ position = Vector2(96, 150)
 Player = NodePath("../Flyph")
 
 [node name="Events" type="Node2D" parent="."]
-visible = false
+
+[node name="DialogueArea2D" type="Area2D" parent="Events" node_paths=PackedStringArray("level")]
+position = Vector2(220, -541)
+script = ExtResource("20_fwqwe")
+level = NodePath("../..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/DialogueArea2D"]
+position = Vector2(27, -10)
+shape = SubResource("RectangleShape2D_rvlin")
 
 [node name="CheckPoints" type="Node2D" parent="."]
 visible = false
@@ -455,4 +468,6 @@ spawn_id = "cave_exit"
 position = Vector2(63.625, 56)
 shape = SubResource("RectangleShape2D_w5fqu")
 
+[connection signal="body_entered" from="Events/DialogueArea2D" to="Events/DialogueArea2D" method="_on_body_entered"]
+[connection signal="body_exited" from="Events/DialogueArea2D" to="Events/DialogueArea2D" method="_on_body_exited"]
 [connection signal="area_entered" from="Loading/levelChangr" to="Loading/levelChangr" method="_on_area_entered"]

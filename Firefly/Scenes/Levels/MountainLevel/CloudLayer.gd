@@ -7,4 +7,4 @@ func _process(delta):
 	dst -= scroll_speed * delta
 	set_scroll_offset(Vector2(dst,0))
 	
-	
+	  
