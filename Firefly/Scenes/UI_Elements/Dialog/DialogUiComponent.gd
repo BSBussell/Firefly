@@ -2,21 +2,24 @@ extends UiComponent
 class_name DialogueUiComponent
 
 # Child node for displaying the dialogue text
-@onready var text_box: Label = $Label
+@onready var text_box: RichTextLabel = $Label
+@onready var animation_player = $AnimationPlayer
+@onready var animated_sprite_2d = $SpriteAnchor/AnimatedSprite2D
+@onready var hoverAnim = $SpriteAnchor/hoverAnim
+
+var current_dialog: Array[String]
+var current_loc: int = 0
+var dialogue_up: bool = false
 
 # Called when the node enters the scene tree
 func _ready() -> void:
 	
 	# Initially hide the dialogue box
-	text_box.hide()
+	animation_player.play("hide_bubble")
 	
 	# Disable process loop while hidden
 	set_process(false)
-
-# Only enabled while the textbox is visible
-func _process(delta):
-	if text_box.visible and Input.is_action_just_pressed("interact"):
-		finish_dialogue()
+	
 
 ## Connect Dialogue Signals to the Components Functions
 func connect_to_func(init_sig: Signal, end_sig: Signal):
@@ -25,26 +28,88 @@ func connect_to_func(init_sig: Signal, end_sig: Signal):
 	init_sig.connect(Callable(self, "initiate_dialogue"))
 	end_sig.connect(Callable(self, "finish_dialogue"))
 
+# Only enabled while the textbox is visible
+func _process(delta):
+	if text_box.visible and Input.is_action_just_pressed("interact"):
+		
+		current_loc += 1
+		if current_loc >= current_dialog.size():
+			finish_dialogue()
+		else:
+			next_dialogue()
+
+
 
 
 # Initiates Dialogue by setting text_bo
-func initiate_dialogue(text: String) -> void:
+func initiate_dialogue(text: DialogueData, repeat: bool) -> void:
 	
+	dialogue_up = true
+	
+	current_dialog = text.initial_dialogue if not repeat else text.follow_up_dialogue
+	current_loc = 0
 	
 	# Set the dialogue text, for smoother visuals replace with animation
-	text_box.text = text
+	set_text(current_dialog[current_loc])
 	
 	# Show the dialogue box
-	text_box.show()
+	#text_box.show()
+	
+	# Play Animations
+	hoverAnim.play("hover")
+	animation_player.play("show_bubble")
+	await animation_player.animation_finished
+	animation_player.play("show_text")
+	await animation_player.animation_finished
+	
+	
 	
 	# Enable Process Loop to look for button Presses
 	set_process(true)
+	
+	
 
+
+func next_dialogue():
+	
+	# Clear Text Animation
+	animation_player.play("wipe_text")
+	
+	# Set the dialogue text, for smoother visuals replace with animation
+	set_text(current_dialog[current_loc])
+	
+	
+	# Roate the diamond 
+	animated_sprite_2d.play("rotate")
+	
+	# Show the text
+	animation_player.play("show_text")
+	
+	# Wait for animation to finish
+	#await animation_player.animation_finished
+	
 
 func finish_dialogue() -> void:
 	
+	if not dialogue_up:
+		return
+		
+	dialogue_up = false
+	
 	# For smoother visuals replace with animation
-	text_box.hide()
+	hoverAnim.stop()
+	animation_player.play("wipe_text")
 	
 	# Disable Process Loop for efficiency
 	set_process(false)
+	
+	animation_player.play("hide_bubble")
+	
+	#text_box.hide()
+
+
+# Just a wrapper to make adding the centers ez
+func set_text(text: String):
+	
+	text = "[center]" + text + "[/center]"
+	text_box.text = text

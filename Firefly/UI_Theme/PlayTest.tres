@@ -100,4 +100,6 @@ OptionButton/constants/modulate_arrow = 13
 OptionButton/constants/outline_size = 5
 OptionButton/fonts/font = SubResource("FontVariation_w02q8")
 OptionButton/styles/normal = SubResource("StyleBoxFlat_vc2dj")
+RichTextLabel/font_sizes/normal_font_size = 32
+RichTextLabel/fonts/normal_font = ExtResource("1_ht7w3")
 VScrollBar/styles/grabber = SubResource("StyleBoxLine_7rppv")
