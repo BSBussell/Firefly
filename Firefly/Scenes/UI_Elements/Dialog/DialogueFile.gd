@@ -9,3 +9,5 @@ extends Resource
 ## The second thing that will be said
 @export var follow_up_dialogue: Array[String] = ["Summarize what was said above but exasperated"]
 
+## If finishing this dialogue should cause victory
+@export var victory_dialogue: bool = false

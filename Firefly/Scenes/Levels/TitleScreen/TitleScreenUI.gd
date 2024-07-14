@@ -16,12 +16,15 @@ func _ready():
 	# Show Mouse
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
-	# Grab its focus
-	resume.silence()
-	resume.grab_focus()
+	
 	
 	if _loader.connect("finished_loading", Callable(self, "on_load")) != OK:
 		print("hmm")
+		
+	# Grab its focus
+	await animation_player.animation_finished
+	resume.silence()
+	resume.grab_focus()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -39,7 +42,9 @@ func _on_settings_sub_menu_settings_closed():
 
 
 func _on_start_pressed():
+	resume.disabled = true
 	animation_player.play("StartGame")
+	resume.release_focus()
 	await animation_player.animation_finished
 	_loader.load_level(start_level.resource_path)
 

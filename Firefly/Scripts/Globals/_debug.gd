@@ -40,7 +40,7 @@ func _input(_event: InputEvent) -> void:
 		
 	# Load Debug Environment
 	if Input.is_key_pressed(KEY_0) and not _loader.loading:
-		_loader.load_level("res://Scenes/Levels/DebugLevel/debug.tscn")
+		_loader.load_level("res://Scenes/Levels/MountainLevel/mountain.tscn")
 		_stats.INVALID_RUN = true
 
 	if Input.is_action_just_pressed("QuickSave"):

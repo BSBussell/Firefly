@@ -7,7 +7,8 @@ class_name DialogueUiComponent
 @onready var animated_sprite_2d = $SpriteAnchor/AnimatedSprite2D
 @onready var hoverAnim = $SpriteAnchor/hoverAnim
 
-var current_dialog: Array[String]
+var current_dialogue
+var current_dialogue_arr: Array[String]
 var current_loc: int = 0
 var dialogue_up: bool = false
 
@@ -33,7 +34,7 @@ func _process(delta):
 	if text_box.visible and Input.is_action_just_pressed("interact"):
 		
 		current_loc += 1
-		if current_loc >= current_dialog.size():
+		if current_loc >= current_dialogue_arr.size():
 			finish_dialogue()
 		else:
 			next_dialogue()
@@ -46,11 +47,12 @@ func initiate_dialogue(text: DialogueData, repeat: bool) -> void:
 	
 	dialogue_up = true
 	
-	current_dialog = text.initial_dialogue if not repeat else text.follow_up_dialogue
+	current_dialogue = text
+	current_dialogue_arr = text.initial_dialogue if not repeat else text.follow_up_dialogue
 	current_loc = 0
 	
 	# Set the dialogue text, for smoother visuals replace with animation
-	set_text(current_dialog[current_loc])
+	set_text(current_dialogue_arr[current_loc])
 	
 	# Show the dialogue box
 	#text_box.show()
@@ -76,7 +78,7 @@ func next_dialogue():
 	animation_player.play("wipe_text")
 	
 	# Set the dialogue text, for smoother visuals replace with animation
-	set_text(current_dialog[current_loc])
+	set_text(current_dialogue_arr[current_loc])
 	
 	
 	# Roate the diamond 
@@ -105,7 +107,8 @@ func finish_dialogue() -> void:
 	
 	animation_player.play("hide_bubble")
 	
-	#text_box.hide()
+	if current_dialogue.victory_dialogue:
+		context.emit_win_signal()
 
 
 # Just a wrapper to make adding the centers ez
