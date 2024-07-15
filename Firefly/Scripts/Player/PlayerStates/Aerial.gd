@@ -1,6 +1,7 @@
 extends PlayerState
 
 @export_subgroup("TRANSITIONAL STATES")
+@export var GLIDE_STATE: PlayerState = null
 @export var WALL_STATE: PlayerState = null
 @export var GROUNDED_STATE: PlayerState = null
 @export var SLIDING_STATE: PlayerState = null
@@ -121,9 +122,18 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 		parent.set_standing_collider()
 
+
+	# If we press jump again then we play the gliding state
+	if Input.is_action_just_pressed("Jump") and can_glide():
+		return GLIDE_STATE
+
 	_logger.info("Aerial State Input End")
 
 	return null
+
+# We can glide if we cant coyote jump nemore or if we cant wall jump
+func can_glide() -> bool:
+	return coyote_time.time_left <= 0.0 and not (left_wj_grace.is_colliding() or right_wj_grace.is_colliding())
 
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:

@@ -62,7 +62,8 @@ enabled=PackedStringArray("res://addons/Asset_Drawer/plugin.cfg", "res://addons/
 
 folder_colors={
 "res://Scenes/Levels/": "pink",
-"res://Scripts/Globals/": "red"
+"res://Scripts/Globals/": "red",
+"res://Scripts/Player/": "yellow"
 }
 
 [input]

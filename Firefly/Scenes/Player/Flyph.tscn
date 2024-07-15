@@ -1,4 +1,4 @@
-[gd_scene load_steps=115 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=116 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
 [ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -34,6 +34,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Sliding.gd" id="31_f37eu"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Water-ed.gd" id="32_qjlto"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Wormed.gd" id="33_e7xfe"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Gliding.gd" id="33_hf8q0"]
 [ext_resource type="Script" path="res://Scripts/Player/Speedometer.gd" id="36_btfxn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vnjo"]
@@ -1075,8 +1076,9 @@ jump_buffer = NodePath("../../Timers/JumpBuffer")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
 
-[node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "coyote_time", "jump_buffer")]
+[node name="Aerial" type="Node" parent="StateMachine" node_paths=PackedStringArray("GLIDE_STATE", "WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "coyote_time", "jump_buffer")]
 script = ExtResource("29_yqxc8")
+GLIDE_STATE = NodePath("../Gliding")
 WALL_STATE = NodePath("../Wall")
 GROUNDED_STATE = NodePath("../Grounded")
 SLIDING_STATE = NodePath("../Sliding")
@@ -1112,6 +1114,13 @@ swing_down_accel = 1700.0
 swing_up_decel = 400.0
 max_jump_multi = 9.75
 boost_sj_rise_time = 0.29
+
+[node name="Gliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE")]
+script = ExtResource("33_hf8q0")
+AERIAL_STATE = NodePath("../Aerial")
+WALL_STATE = NodePath("../Wall")
+GROUNDED_STATE = NodePath("../Grounded")
+SLIDING_STATE = NodePath("../Sliding")
 
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
 script = ExtResource("25_5it1v")
