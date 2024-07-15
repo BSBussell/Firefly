@@ -244,6 +244,7 @@ var aerial: bool = false 				# Set every time the player leaves the ground, and 
 var fastFalling: bool = false			# Set when the player begins fast falling, reset on any state change
 var airDriftDisabled: bool = false		# If air drift is disabled by an action this is set to true. Will be reset when falling
 var turningAround: bool = false			# If the player is experiencing a change in direction
+var has_glided: bool = false			# If the player has glided throughout their jump
 var underWater: bool = false
 
 

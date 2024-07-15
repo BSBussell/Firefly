@@ -7,13 +7,38 @@ class_name Gliding
 @export var GROUNDED_STATE: PlayerState = null
 @export var SLIDING_STATE: PlayerState = null
 
+@export var wing_line: trail = null
+
+@export_subgroup("Temp Knobs")
+@export var glide_y_boost: float = -200
+@export var glide_x_boost: float = 80
+@export var reverse_boost: float = -0.6
+
+@export var accel: float = 1000
+
+@export var grav_speed: float = 100
+@export var grav_accel: float = 500
+
 # Called on state entrance, setup
 func enter() -> void:
 	print("holy shit mom im flying")
+	
+	wing_line.length = 6
+	
+	if not parent.has_glided:
+		parent.velocity.y = glide_y_boost
+		if sign(parent.horizontal_axis) == sign(parent.velocity.x):
+			parent.velocity.x += glide_x_boost * sign(parent.horizontal_axis)
+		else:
+			parent.velocity.x *= reverse_boost
+			parent.velocity.x += (glide_x_boost * sign(parent.horizontal_axis))
+		parent.has_glided = true
 	pass
 
 # Called before exiting the state, cleanup
 func exit() -> void:
+	
+	wing_line.length = 3
 	print("mom save me")
 	pass
 
@@ -23,6 +48,12 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 # Processing Frames in this state, returns nil or new state
 func process_frame(_delta: float) -> PlayerState:
+	
+	if sign(parent.velocity.x) > 0:
+		parent.animation.flip_h = false
+	else:
+		parent.animation.flip_h = true
+	
 	return null
 
 # Processing Physics in this state, returns nil or new state
@@ -76,8 +107,8 @@ func state_status() -> PlayerState:
 	
 func apply_gravity(delta: float) -> void:
 	
-	var max_fall_speed: float = 20
-	parent.velocity.y = move_toward(parent.velocity.y, max_fall_speed, -AERIAL_STATE.get_gravity() * delta)
+	var max_fall_speed: float = grav_speed
+	parent.velocity.y = move_toward(parent.velocity.y, max_fall_speed, grav_accel * delta)
 
 ## Addes Acceleration when the player holds a direction
 func apply_acceleration(delta, direction) -> void:
@@ -94,6 +125,6 @@ func apply_acceleration(delta, direction) -> void:
 
 		# Speed ourselves up
 		else:
-			airAccel = 90
+			airAccel = accel
 
 		parent.velocity.x  = move_toward(parent.velocity.x, parent.air_speed*direction, airAccel * delta)

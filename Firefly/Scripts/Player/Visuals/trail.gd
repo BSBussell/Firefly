@@ -1,6 +1,7 @@
 ## TODO: Fix the trail getting longer/shorter the lower the fps
 
 extends Line2D
+class_name trail
 
 @export var length: int = 10
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=116 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=118 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
 [ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -12,8 +12,12 @@
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="8_shld8"]
 [ext_resource type="PackedScene" uid="uid://ba3c7whb0dsjn" path="res://Scenes/Player/particles/slideDust.tscn" id="9_c4aqh"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/trail.gd" id="9_iifmr"]
+[ext_resource type="Curve" uid="uid://dsn462gni0cjg" path="res://Scenes/Player/wing_curve.tres" id="9_nu0vd"]
+[ext_resource type="Curve" uid="uid://dxg3q5altlgru" path="res://Scenes/Player/wing_curve_r.tres" id="9_trj8i"]
+[ext_resource type="Gradient" uid="uid://cla4sqpvj3lsh" path="res://Scenes/Player/wing_gradient.tres" id="10_7do8e"]
 [ext_resource type="Script" path="res://Scripts/Player/Player State Machine/PlayerStateMachine.gd" id="10_amheu"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="10_nb4h7"]
+[ext_resource type="Gradient" uid="uid://c5mb4h8y8aitq" path="res://Scenes/Player/wing_gradient_r.tres" id="10_suvti"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/PlayerSpotlight.gd" id="11_aonwn"]
 [ext_resource type="AudioStream" uid="uid://dabydr3n6ho76" path="res://Assets/SFX/Player/jump_1.mp3" id="12_m3poj"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="13_xelg6"]
@@ -529,15 +533,6 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="Curve" id="Curve_w5yy1"]
-_data = [Vector2(0, 0), 0.0, -0.703651, 0, 0, Vector2(1, 1), -0.36911, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Gradient" id="Gradient_nk0tk"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0.7, 0.9, 1)
-colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0.34902, 1, 1, 1, 0.670588, 1)
-
 [sub_resource type="Curve" id="Curve_grp02"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
 point_count = 2
@@ -669,12 +664,26 @@ show_behind_parent = true
 z_index = -1
 position = Vector2(0, -13)
 width = 6.0
-width_curve = SubResource("Curve_w5yy1")
+width_curve = ExtResource("9_nu0vd")
 default_color = Color(0.960784, 0.898039, 0, 1)
-gradient = SubResource("Gradient_nk0tk")
+gradient = ExtResource("10_7do8e")
 antialiased = true
 script = ExtResource("9_iifmr")
 length = 0
+FLYPH = NodePath("../..")
+
+[node name="Wings" type="Line2D" parent="Visuals" node_paths=PackedStringArray("FLYPH")]
+modulate = Color(2.5, 2.6, 1.25, 1)
+show_behind_parent = true
+z_index = -1
+position = Vector2(0, -13)
+width = 6.0
+width_curve = ExtResource("9_trj8i")
+default_color = Color(0.211765, 0.772549, 0.956863, 1)
+gradient = ExtResource("10_suvti")
+antialiased = true
+script = ExtResource("9_iifmr")
+length = 5
 FLYPH = NodePath("../..")
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
@@ -1115,12 +1124,13 @@ swing_up_decel = 400.0
 max_jump_multi = 9.75
 boost_sj_rise_time = 0.29
 
-[node name="Gliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE")]
+[node name="Gliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "wing_line")]
 script = ExtResource("33_hf8q0")
 AERIAL_STATE = NodePath("../Aerial")
 WALL_STATE = NodePath("../Wall")
 GROUNDED_STATE = NodePath("../Grounded")
 SLIDING_STATE = NodePath("../Sliding")
+wing_line = NodePath("../../Visuals/Wings")
 
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
 script = ExtResource("25_5it1v")

@@ -63,7 +63,6 @@ func enter() -> void:
 	top_right.enabled = true
 	top_left.enabled = true
 
-	
 
 	slide_fall = parent.current_animation == parent.ANI_STATES.CRAWL
 
