@@ -36,6 +36,7 @@ func enter() -> void:
 	parent.crouchJumping = false
 	parent.wallJumping = false
 	parent.has_glided = false
+	parent.fastFalling = false
 
 	# Setup the proper colliders for this state :3
 	parent.set_standing_collider()

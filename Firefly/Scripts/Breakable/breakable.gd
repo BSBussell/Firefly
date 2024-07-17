@@ -70,7 +70,7 @@ func _on_player_detection_body_entered(body):
 		set_physics_process(true)
 
 
-func _on_player_detection_body_exited(body):
+func _on_player_detection_body_exited(_body):
 	
 	if KILL_ON_EXIT and not break_time.is_stopped():
 		break_time.stop()

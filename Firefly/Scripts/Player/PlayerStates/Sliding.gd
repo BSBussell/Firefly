@@ -43,6 +43,7 @@ func enter() -> void:
 	
 	# Reset Glided Flag so we can reglide
 	parent.has_glided = false
+	parent.fastFalling = false
 
 	# Change to the sliding collider
 	parent.set_crouch_collider()

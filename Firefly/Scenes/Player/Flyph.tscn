@@ -1,4 +1,4 @@
-[gd_scene load_steps=118 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=120 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
 [ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -33,6 +33,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
 [ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Grounded.gd" id="28_u1lt2"]
+[ext_resource type="AudioStream" uid="uid://boqdipngdont3" path="res://Assets/SFX/Player/flap.mp3" id="29_0m3rd"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Aerial.gd" id="29_yqxc8"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Wall.gd" id="30_24240"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Sliding.gd" id="31_f37eu"]
@@ -533,6 +534,11 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="Gradient" id="Gradient_pbrmy"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.696864, 0.9, 1)
+colors = PackedColorArray(0.0475428, 0.257512, 0.456694, 1, 0.890196, 0.921569, 0.34902, 1, 1, 1, 0.670588, 1)
+
 [sub_resource type="Curve" id="Curve_grp02"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
 point_count = 2
@@ -653,17 +659,34 @@ position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
 animation = &"falling"
 autoplay = "idle"
-frame = 4
-frame_progress = 1.0
 flip_h = true
 script = ExtResource("8_dying")
+
+[node name="Wings2" type="Line2D" parent="Visuals" node_paths=PackedStringArray("FLYPH")]
+modulate = Color(2.5, 2.6, 1.25, 1)
+show_behind_parent = true
+z_index = -1
+position = Vector2(0, -7)
+width = 5.0
+width_curve = ExtResource("9_trj8i")
+default_color = Color(0.0235294, 0.172549, 0.317647, 1)
+gradient = SubResource("Gradient_pbrmy")
+begin_cap_mode = 1
+end_cap_mode = 1
+antialiased = true
+script = ExtResource("9_iifmr")
+length = 6
+FLYPH = NodePath("../..")
+offset = Vector2(0, -8)
+obey_gravity = true
+gravity_strength = 2500.0
 
 [node name="Trail" type="Line2D" parent="Visuals" node_paths=PackedStringArray("FLYPH")]
 modulate = Color(2.5, 2.6, 1.25, 1)
 show_behind_parent = true
 z_index = -1
 position = Vector2(0, -13)
-width = 6.0
+width = 7.0
 width_curve = ExtResource("9_nu0vd")
 default_color = Color(0.960784, 0.898039, 0, 1)
 gradient = ExtResource("10_7do8e")
@@ -671,20 +694,26 @@ antialiased = true
 script = ExtResource("9_iifmr")
 length = 0
 FLYPH = NodePath("../..")
+offset = Vector2(0, -7)
 
 [node name="Wings" type="Line2D" parent="Visuals" node_paths=PackedStringArray("FLYPH")]
 modulate = Color(2.5, 2.6, 1.25, 1)
 show_behind_parent = true
 z_index = -1
 position = Vector2(0, -13)
-width = 6.0
+width = 7.0
 width_curve = ExtResource("9_trj8i")
 default_color = Color(0.211765, 0.772549, 0.956863, 1)
 gradient = ExtResource("10_suvti")
+begin_cap_mode = 1
+end_cap_mode = 1
 antialiased = true
 script = ExtResource("9_iifmr")
-length = 5
+length = 7
 FLYPH = NodePath("../..")
+offset = Vector2(0, -11)
+obey_gravity = true
+gravity_strength = 1500.0
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
 color = Color(1, 0.980392, 0.803922, 1)
@@ -1058,6 +1087,11 @@ stream = ExtResource("23_oxbt6")
 volume_db = -4.0
 bus = &"SFX"
 
+[node name="FlapSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("29_0m3rd")
+pitch_scale = 0.5
+bus = &"SFX"
+
 [node name="UI_FX" type="CanvasLayer" parent="."]
 
 [node name="debug info" type="Label" parent="UI_FX"]
@@ -1124,13 +1158,14 @@ swing_up_decel = 400.0
 max_jump_multi = 9.75
 boost_sj_rise_time = 0.29
 
-[node name="Gliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "wing_line")]
+[node name="Gliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE", "wing_line", "wing_2")]
 script = ExtResource("33_hf8q0")
 AERIAL_STATE = NodePath("../Aerial")
 WALL_STATE = NodePath("../Wall")
 GROUNDED_STATE = NodePath("../Grounded")
 SLIDING_STATE = NodePath("../Sliding")
 wing_line = NodePath("../../Visuals/Wings")
+wing_2 = NodePath("../../Visuals/Wings2")
 
 [node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("MOMENTUM_TIMER")]
 script = ExtResource("25_5it1v")

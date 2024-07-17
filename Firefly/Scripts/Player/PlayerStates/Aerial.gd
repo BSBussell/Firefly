@@ -92,7 +92,7 @@ func exit() -> void:
 	# If we're fast falling set the speed scale back and reset the flags
 	if (parent.fastFalling):
 
-		parent.fastFalling = false
+		#parent.fastFalling = false
 		parent.animation.speed_scale = 1.0
 
 	_logger.info("Exiting Aerial State")
