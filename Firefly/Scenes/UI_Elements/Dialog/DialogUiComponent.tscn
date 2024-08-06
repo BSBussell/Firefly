@@ -239,7 +239,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 0.1]
+"values": [0.0, 0.05]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -280,6 +280,7 @@ tracks/7/keys = {
 
 [sub_resource type="Animation" id="Animation_re62h"]
 resource_name = "show_text"
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -287,7 +288,7 @@ tracks/0/path = NodePath("Label:visible_ratio")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -302,7 +303,7 @@ tracks/0/path = NodePath("Label:visible_ratio")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(0.999999, 1),
 "update": 0,
 "values": [1.0, 0.0]
@@ -393,7 +394,6 @@ mouse_filter = 1
 script = ExtResource("1_7ojih")
 
 [node name="Label" type="RichTextLabel" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -425,7 +425,7 @@ speed_scale = 3.0
 [node name="SpriteAnchor" type="Control" parent="."]
 layout_mode = 1
 anchor_left = 0.5
-anchor_top = 0.357643
+anchor_top = 0.35
 anchor_right = 0.5
 anchor_bottom = 0.394444
 offset_left = -20.0
@@ -436,7 +436,7 @@ grow_horizontal = 2
 mouse_filter = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteAnchor"]
-modulate = Color(1, 1, 1, 0)
+modulate = Color(100, 100, 0, 1)
 texture_filter = 1
 position = Vector2(-1, 2.72528)
 scale = Vector2(5, 5)

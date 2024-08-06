@@ -3,9 +3,9 @@ class_name trail
 
 @export var length: int = 10
 @export var FLYPH: Flyph
+@export var wing: Line2D
 @export var offset: Vector2 = Vector2(0, -10)
-@export var obey_gravity: bool = false  # New export variable to toggle gravity effect
-@export var gravity_strength: float = 9.8  # Gravity strength, tweak as needed
+var max_distance: float = 0.2
 
 # Color values
 @onready var current_color: Color = modulate
@@ -29,16 +29,11 @@ func _process(delta):
 	global_position = Vector2(0, 0)
 	global_rotation = 0
 
-	point = FLYPH.global_position + offset
+
+	var wing_offset: Vector2 = Vector2(0,10)
+	point = FLYPH.global_position + wing.get_point_position(5) - wing_offset
 	add_point(point)
 	points_velocity.append(Vector2())  # Initialize velocity for the new point
-
-	# Handle the gravity effect
-	if obey_gravity:
-		for i in range(get_point_count()):
-			points_velocity[i] += Vector2(0, gravity_strength * delta)  # Apply gravity
-			var new_point = get_point_position(i) + points_velocity[i] * delta
-			set_point_position(i, new_point)
 
 	# Maintain the trail length
 	while get_point_count() > fps_adjusted_length:

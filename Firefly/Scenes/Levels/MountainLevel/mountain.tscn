@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://b8k3u2ibutssg"]
+[gd_scene load_steps=43 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Core/Game/pause.tscn" id="1_iqxgk"]
@@ -29,9 +29,10 @@
 [ext_resource type="Script" path="res://Scripts/Level/ChangeLevel.gd" id="15_8p7he"]
 [ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="20_e2f7v"]
 [ext_resource type="PackedScene" uid="uid://d2r3fdnd3npfh" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="20_r20go"]
-[ext_resource type="Resource" uid="uid://dfmf8y4rvrrxc" path="res://Scenes/Levels/MountainLevel/RD_Thanks.tres" id="21_vpau7"]
 [ext_resource type="Texture2D" uid="uid://dradkaxdcmqy6" path="res://Assets/Graphics/TileMaps/Mountain/sign.png" id="22_wysd2"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="27_ubtw2"]
+[ext_resource type="Script" path="res://Scenes/Levels/MountainLevel/give_glide.gd" id="27_vcrks"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/DialogueFile.gd" id="28_eycno"]
 [ext_resource type="PackedScene" uid="uid://b5syfsbo715ra" path="res://Scenes/Collectibles/BlueJar.tscn" id="32_oig70"]
 
 [sub_resource type="GDScript" id="GDScript_0jk77"]
@@ -76,6 +77,13 @@ shader_parameter/ray2_intensity = 0.123
 shader_parameter/color = Color(0.780392, 0.87451, 0.921569, 0.478431)
 shader_parameter/hdr = true
 shader_parameter/seed = 6.855
+
+[sub_resource type="Resource" id="Resource_lmj7n"]
+script = ExtResource("28_eycno")
+identifier = "change_this"
+initial_dialogue = Array[String](["[color=yellow]Woah![/color] Congrats on making it this far! And [color=yellow]Thanks for Playing![/color]", "If you'd like to try testing out a new mechanic, try pressing the '[color=yellow]jump button[/color]' in mid-air. It'll let you [color=yellow]flap your wings[/color] just a little bit to gain some extra height.", "And from there if you [color=yellow]hold[/color] the '[color=yellow]jump button[/color]' you should catch the wind and [color=yellow]glide[/color] to further distances. But keep in mind the increased [color=yellow]air resistance[/color] is probably gonna slow you down, so be mindful of that if you're trying to maintain your speed.", "Your wings are still pretty weak after the [color=yellow]accident[/color], so you can't fly forever, but I bet the faster you're [color=yellow]falling[/color] the more you'll gain from [color=yellow]flapping your wings[/color]!", "If you'd like to [color=yellow]reset[/color] the game from the very beginning and try to [color=yellow]decrease[/color] your [color=yellow]clear time[/color], try pressing the '[color=yellow]delete button[/color]' in order to go back to the beginning and [color=yellow]erase[/color] any progress.", "And once again, THANK YOU FOR PLAYING [right]~B[/right]"])
+follow_up_dialogue = Array[String]([])
+victory_dialogue = false
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rvlin"]
 size = Vector2(86, 70)
@@ -160,11 +168,12 @@ color = Color(0.182661, 0.06634, 0.351956, 1)
 metadata/_edit_lock_ = true
 
 [node name="MountainLayer" type="ParallaxBackground" parent="."]
+scroll_base_offset = Vector2(2.08165e-12, 50)
 scroll_base_scale = Vector2(0.1, 0.2)
 scroll_ignore_camera_zoom = true
 
 [node name="Mountains_1" type="ParallaxLayer" parent="MountainLayer"]
-motion_scale = Vector2(1, 0.25)
+motion_scale = Vector2(0.4, 0.25)
 motion_offset = Vector2(0, 135)
 motion_mirroring = Vector2(960, 0)
 metadata/_edit_lock_ = true
@@ -174,7 +183,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("2_8hfap")
 
 [node name="Mountains_2" type="ParallaxLayer" parent="MountainLayer"]
-motion_scale = Vector2(1, 0.25)
+motion_scale = Vector2(0.5, 0.25)
 motion_offset = Vector2(0, 135)
 motion_mirroring = Vector2(960, 0)
 metadata/_edit_lock_ = true
@@ -210,7 +219,7 @@ color_ramp = SubResource("Gradient_ddh3k")
 
 [node name="Mountains_3" type="ParallaxLayer" parent="MountainLayer"]
 visible = false
-motion_scale = Vector2(1.1, 0.25)
+motion_scale = Vector2(0.6, 0.25)
 motion_offset = Vector2(0, 135)
 motion_mirroring = Vector2(960, 0)
 metadata/_edit_lock_ = true
@@ -246,7 +255,7 @@ color_ramp = SubResource("Gradient_ddh3k")
 
 [node name="Mountains_4" type="ParallaxLayer" parent="MountainLayer"]
 visible = false
-motion_scale = Vector2(1.25, 0.25)
+motion_scale = Vector2(0.8, 0.25)
 motion_offset = Vector2(0, 135)
 motion_mirroring = Vector2(960, 0)
 metadata/_edit_lock_ = true
@@ -488,8 +497,9 @@ texture = ExtResource("4_a2277")
 [node name="DialogueArea" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("20_r20go")]
 position = Vector2(527, -561)
 collision_mask = 1
+script = ExtResource("27_vcrks")
 level = NodePath("../..")
-dialogue = ExtResource("21_vpau7")
+dialogue = SubResource("Resource_lmj7n")
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
@@ -559,4 +569,5 @@ shape = SubResource("RectangleShape2D_w5fqu")
 
 [connection signal="body_entered" from="Events/DialogueArea" to="Events/DialogueArea" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/DialogueArea" to="Events/DialogueArea" method="_on_body_exited"]
+[connection signal="finish_dialogue" from="Events/DialogueArea" to="Events/DialogueArea" method="_on_finish_dialogue"]
 [connection signal="area_entered" from="Loading/levelChangr" to="Loading/levelChangr" method="_on_area_entered"]

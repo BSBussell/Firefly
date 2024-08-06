@@ -129,9 +129,12 @@ func spring_jump() -> void:
 	var leniancy_blend: float = abs(flyph.velocity.x)/flyph.air_speed
 	var leniancy: float = lerpf(leniancy_min, leniancy_max, leniancy_blend)
 	
+	var space_bar_check: bool = (flyph.attempt_post_jump() or flyph.attempt_jump(leniancy)) and not flyph.wallJumping
+	var ff_check: bool = flyph.fastFalling or flyph.fastFell or flyph.boostJumping
+	
 	# Check if player is boosting upward by pressing a on the spring
 	# This is ordered intentionally to not consume a jump if the player is already jumping
-	if (flyph.attempt_post_jump() or flyph.attempt_jump(leniancy)) and not flyph.wallJumping:
+	if ff_check:
 		
 		# Needed in order to prevent double jump inputs
 		flyph.consume_jump()

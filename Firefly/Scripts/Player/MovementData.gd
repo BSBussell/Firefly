@@ -118,6 +118,8 @@ extends Resource
 @export var BRIGHTNESS: float = 0.8
 ## How much we modulate the player's color by
 @export var GLOW: Color = Color(1.0, 1.0, 1.0)
+## Wing length
+@export var WING_LENGTH: float = 10
 
 @export_group("Threshold")
 ## How Quickly the Glow Meter will fill

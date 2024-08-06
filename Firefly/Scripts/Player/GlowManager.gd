@@ -190,7 +190,7 @@ func calc_score():
 		spd_score = 1 + surplus
 	
 	
-	return max(spd_score - 1, 0)
+	return max(spd_score-0.25, 0)
 
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
 # 	Player's momentum value

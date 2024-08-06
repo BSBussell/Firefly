@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://rlrtgfd0qf8k"]
+[gd_scene load_steps=15 format=3 uid="uid://rlrtgfd0qf8k"]
 
 [ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="1_m3sud"]
 [ext_resource type="Script" path="res://Scripts/Collectibles/FlyJar.gd" id="1_thq2o"]
@@ -120,6 +120,11 @@ _data = {
 interpolation_mode = 2
 offsets = PackedFloat32Array(0.336066, 0.8, 1)
 colors = PackedColorArray(1, 1, 0, 1, 1, 1, 1, 0.670588, 1, 1, 1, 0)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_buqjn"]
+diffuse_texture = ExtResource("1_m3sud")
+specular_color = Color(0.890196, 0.921569, 0.34902, 1)
+specular_shininess = 0.9
 
 [sub_resource type="Animation" id="Animation_1h70t"]
 resource_name = "Grab"
@@ -403,16 +408,17 @@ color_ramp = SubResource("Gradient_a3cyy")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1.5, 1.5, 1, 1)
 position = Vector2(0, 3.23576)
-texture = ExtResource("1_m3sud")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_df1wb")
-}
+texture = SubResource("CanvasTexture_buqjn")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(0.5, 0.5)
 color = Color(0.890196, 0.921569, 0.34902, 1)
 texture = ExtResource("3_sikls")
+height = 25.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_df1wb")
+}
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

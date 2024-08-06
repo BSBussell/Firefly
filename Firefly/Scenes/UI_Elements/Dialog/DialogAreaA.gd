@@ -36,6 +36,8 @@ func _ready():
 	else:
 		printerr("DialogueUiComponent not found in Level!")
 		
+	level.PLAYER.dead.connect(Callable(self, "_stop_dialogue"))
+		
 	# Disable the Process Loop until Player Enters the Area
 	set_process(false)
 	

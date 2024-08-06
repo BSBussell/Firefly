@@ -7,8 +7,6 @@ class_name Gliding
 @export var GROUNDED_STATE: PlayerState = null
 @export var SLIDING_STATE: PlayerState = null
 
-@export var wing_line: trail = null
-@export var wing_2: trail = null
 
 @export_subgroup("Temp Knobs")
 @export var glide_y_boost: float = -200
@@ -32,17 +30,11 @@ var glide_speed: float = 0.0
 func enter() -> void:
 	print("holy shit mom im flying")
 	
-	# Show the proto-wing visual
-	wing_line.length = 7
-	wing_2.length = 5
-	wing_line.gravity_strength = -500
-
-	wing_line.obey_gravity = false
 	
 	
 	parent.current_animation = parent.ANI_STATES.FALLING
 	parent.restart_animation = true
-	parent.spawn_jump_dust()
+	
 	
 	
 	if not parent.has_glided:
@@ -65,6 +57,8 @@ func enter() -> void:
 	
 		flap_sfx.pitch_scale = randf_range(1.0, 1.3)
 		flap_sfx.play()
+		
+		parent.spawn_jump_dust()
 	
 	# If you have glided already this jump, then only enable another boost if we're falling at a certain speed
 	elif (parent.velocity.y / parent.movement_data.MAX_FF_SPEED) >= 0.45:
@@ -85,6 +79,8 @@ func enter() -> void:
 		
 		flap_sfx.pitch_scale = randf_range(1.0, 1.3)
 		flap_sfx.play()
+		
+		parent.spawn_jump_dust() 
 	
 	# Reset fastFalling Flag
 	parent.fastFalling = false
@@ -94,16 +90,25 @@ func enter() -> void:
 # Called before exiting the state, cleanup
 func exit() -> void:
 	
-	# Hide the proto-wing visual
-	wing_line.length = 5
-	wing_line.gravity_strength = 1500
-	wing_2.length = 4
 	
-	wing_line.obey_gravity = true
 	pass
 
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
+	
+	# Check if jump is realeased
+	if Input.is_action_just_released("Jump") or Input.is_action_just_pressed("Down"):
+		
+		# Set Fast Fall Flags
+		if Input.is_action_just_pressed("Down"):
+			parent.fastFalling = true
+			parent.animation.speed_scale = 2.0
+			if parent.temp_gravity_active:
+				parent.temp_gravity_active = false
+				parent.velocity.y = max(parent.jump_velocity * 0.5, parent.velocity.y)
+		
+		return AERIAL_STATE
+		   
 	return null
 
 # Processing Frames in this state, returns nil or new state
@@ -152,17 +157,18 @@ func state_status() -> PlayerState:
 			return SLIDING_STATE
 
 		# We just land otherwise
-		else:
-			return GROUNDED_STATE
+		return GROUNDED_STATE
+		
+	# If we're launched get us out of gliding	
+	if parent.launched:
+		return AERIAL_STATE
 	
 	elif parent.is_on_wall_only():
 
 		_logger.info("Flyph Aerial State -> Wall State")
 		return WALL_STATE
 		
-	# Check if jump is realeased
-	elif Input.is_action_just_released("Jump") or Input.is_action_just_pressed("Down"):
-		return AERIAL_STATE
+	
 	
 	return null
 	

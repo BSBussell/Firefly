@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://cbgoqx8kcalop"]
+[gd_scene load_steps=62 format=3 uid="uid://cbgoqx8kcalop"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/Tutorial.gd" id="1_pdcac"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_us1rr"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="7_yf0gu"]
 [ext_resource type="Texture2D" uid="uid://b1fmfctkk6alf" path="res://Assets/Graphics/Particles/leaf.png" id="8_ff3cn"]
 [ext_resource type="PackedScene" uid="uid://doyxghug75km3" path="res://Scenes/UI_Elements/Timer.tscn" id="8_uxlyn"]
+[ext_resource type="PackedScene" uid="uid://cu5uu6ykpiam" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.tscn" id="9_l61ka"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/TileMaps/Deep_Forest_Resource/bg_sky_4.png" id="9_lb22h"]
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="9_n6462"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="10_7tga5"]
@@ -23,8 +24,6 @@
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="14_rlc3w"]
 [ext_resource type="Script" path="res://Scripts/Events/reveal_text_event.gd" id="16_xdq1v"]
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="17_2knxy"]
-[ext_resource type="Script" path="res://Scripts/Events/Guide_Tut2.gd" id="18_xljo3"]
-[ext_resource type="Script" path="res://Scripts/Events/text_add_score.gd" id="19_img1u"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="20_pt55a"]
 [ext_resource type="PackedScene" uid="uid://dtblwt5hi5l4c" path="res://Scenes/Checkpoint/checkpoint.tscn" id="21_41qdo"]
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/Spring/spring.tscn" id="21_jydlm"]
@@ -33,11 +32,17 @@
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="24_re622"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="25_pmv25"]
 [ext_resource type="PackedScene" uid="uid://b5syfsbo715ra" path="res://Scenes/Collectibles/BlueJar.tscn" id="26_uyh54"]
+[ext_resource type="PackedScene" uid="uid://d2r3fdnd3npfh" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="26_vi2mq"]
+[ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/GlowTutorial.gd" id="27_s6n8v"]
 [ext_resource type="Script" path="res://Scenes/Camera/CameraTriggers/CameraTarget.gd" id="27_y6ox2"]
+[ext_resource type="Resource" uid="uid://b2xstp1kvx5vo" path="res://Assets/DialogueData/GlowSign.tres" id="28_jstyy"]
 [ext_resource type="Script" path="res://Scripts/Level/ChangeLevel.gd" id="28_rysps"]
 [ext_resource type="PackedScene" uid="uid://bn0ibiwauibvx" path="res://Scenes/Enemies/walking_enemy.tscn" id="29_dubhh"]
+[ext_resource type="Texture2D" uid="uid://co0mh2m065aja" path="res://Assets/Graphics/TileMaps/Forest_Tile_Set_Extended/Forest_Sign.png" id="30_bbc3m"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="30_sxkh0"]
 [ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="31_6tkka"]
+[ext_resource type="Resource" uid="uid://b7venstdw8jlv" path="res://Assets/DialogueData/SlideBoost.tres" id="31_aqm4y"]
+[ext_resource type="Resource" uid="uid://rbrlqtl2lbly" path="res://Assets/DialogueData/SpringBoost.tres" id="31_oyrcj"]
 [ext_resource type="PackedScene" uid="uid://cqmn1d67osiw6" path="res://Core/spawn_point.tscn" id="32_wpwx5"]
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
@@ -160,17 +165,8 @@ size = Vector2(269, 114)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vloxt"]
 size = Vector2(101.708, 163.333)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2sfmh"]
-size = Vector2(122.875, 121)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xjwnh"]
-size = Vector2(155, 77)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_asml6"]
-size = Vector2(436, 279.5)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_62rpp"]
-size = Vector2(119.25, 77)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_08e63"]
+size = Vector2(86, 70)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rfep0"]
 size = Vector2(43, 68.5)
@@ -204,11 +200,10 @@ Text = "- Wild Woodlands -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
-ui_components = Array[PackedScene]([ExtResource("4_uy0kn"), ExtResource("2_us1rr"), ExtResource("3_iiuvo"), ExtResource("6_8gtqn"), ExtResource("5_xontx"), ExtResource("7_0unlf"), ExtResource("8_uxlyn")])
+ui_components = Array[PackedScene]([ExtResource("4_uy0kn"), ExtResource("2_us1rr"), ExtResource("3_iiuvo"), ExtResource("6_8gtqn"), ExtResource("5_xontx"), ExtResource("7_0unlf"), ExtResource("8_uxlyn"), ExtResource("9_l61ka")])
 win_condition = 1
 
 [node name="Lighting" type="Node2D" parent="."]
-visible = false
 
 [node name="Moonlight" type="DirectionalLight2D" parent="Lighting"]
 rotation = -0.698132
@@ -561,7 +556,7 @@ offset_right = 78.0
 offset_bottom = -21.0
 scale = Vector2(2, 2)
 text = "Press Down Mid Air
-To Quickly Fall"
+To Fast Fall!"
 label_settings = SubResource("LabelSettings_8boug")
 horizontal_alignment = 1
 
@@ -570,36 +565,7 @@ libraries = {
 "": SubResource("AnimationLibrary_7vltr")
 }
 
-[node name="Momentum_Tut" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
-z_index = -1
-position = Vector2(643, -207)
-scale = Vector2(0.75, 0.75)
-collision_layer = 4
-collision_mask = 4
-script = ExtResource("16_xdq1v")
-Text = NodePath("../Crouch_Tut/Label")
-one_shot = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Momentum_Tut"]
-position = Vector2(78.75, 28)
-shape = SubResource("RectangleShape2D_2bp1o")
-
-[node name="Label" type="Label" parent="Events/Momentum_Tut"]
-visible = false
-offset_left = -57.0
-offset_top = -68.0
-offset_right = 130.0
-offset_bottom = -21.0
-scale = Vector2(2, 2)
-text = "Use Your Momentum!"
-label_settings = SubResource("LabelSettings_8boug")
-
-[node name="Nice!" type="AnimationPlayer" parent="Events/Momentum_Tut"]
-libraries = {
-"": SubResource("AnimationLibrary_7vltr")
-}
-
-[node name="Guide_Tut" type="Area2D" parent="Events" node_paths=PackedStringArray("Text", "dependent")]
+[node name="Guide_Tut" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
 visible = false
 z_index = -1
 position = Vector2(21, 109)
@@ -607,7 +573,6 @@ collision_layer = 4
 collision_mask = 4
 script = ExtResource("16_xdq1v")
 Text = NodePath("../Crouch_Tut/Label")
-dependent = NodePath("../Momentum_Tut")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Guide_Tut"]
 position = Vector2(152.909, 13.9228)
@@ -629,161 +594,90 @@ libraries = {
 "": SubResource("AnimationLibrary_7vltr")
 }
 
-[node name="Activate_Glow" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
-z_index = -1
-position = Vector2(-160, -152)
-collision_layer = 4
-collision_mask = 4
-script = ExtResource("18_xljo3")
-Text = NodePath("Label")
-one_shot = false
+[node name="GlowSign" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
+position = Vector2(-95, -93)
+collision_mask = 1
+script = ExtResource("27_s6n8v")
+level = NodePath("../..")
+dialogue = ExtResource("28_jstyy")
+talk_target = NodePath("Marker2D")
+blend_priority = -1
+blend_override = 0.3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Activate_Glow"]
-position = Vector2(81, 67)
-scale = Vector2(0.8, 0.8)
-shape = SubResource("RectangleShape2D_2sfmh")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/GlowSign"]
+position = Vector2(-7, 5)
+shape = SubResource("RectangleShape2D_08e63")
 
-[node name="Label" type="Label" parent="Events/Activate_Glow"]
-visible = false
-offset_left = -57.0
-offset_top = -68.0
-offset_right = 130.0
-offset_bottom = -21.0
-scale = Vector2(2, 2)
-text = "As you Play You'll 
-fill your Meter"
-label_settings = SubResource("LabelSettings_8boug")
+[node name="Marker2D" type="Marker2D" parent="Events/GlowSign"]
+position = Vector2(-9, -4)
 
-[node name="Nice!" type="AnimationPlayer" parent="Events/Activate_Glow"]
-libraries = {
-"": SubResource("AnimationLibrary_7vltr")
-}
+[node name="Sprite2D" type="Sprite2D" parent="Events/GlowSign"]
+z_index = -50
+position = Vector2(-8.10001, 9)
+texture = ExtResource("30_bbc3m")
 
-[node name="Glow_Tut_2" type="Area2D" parent="Events"]
-z_index = -1
-position = Vector2(-702, -158)
-scale = Vector2(0.5, 0.5)
-collision_layer = 4
-collision_mask = 4
-script = ExtResource("16_xdq1v")
-one_shot = false
+[node name="SlideBoost" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
+position = Vector2(-1139, -49)
+collision_mask = 1
+level = NodePath("../..")
+dialogue = ExtResource("31_aqm4y")
+talk_target = NodePath("Marker2D")
+blend_priority = -1
+blend_override = 0.3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Glow_Tut_2"]
-position = Vector2(110.5, 40)
-shape = SubResource("RectangleShape2D_2bp1o")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/SlideBoost"]
+position = Vector2(-7, 5)
+shape = SubResource("RectangleShape2D_08e63")
 
-[node name="Label" type="Label" parent="Events/Glow_Tut_2"]
-visible = false
-offset_left = -57.0
-offset_top = -68.0
-offset_right = 314.0
-offset_bottom = -21.0
-scale = Vector2(2, 2)
-text = "When the meter is filled,
-press the Right Bumper
-to increase your Glow!"
-label_settings = SubResource("LabelSettings_8boug")
+[node name="Marker2D" type="Marker2D" parent="Events/SlideBoost"]
+position = Vector2(-9, -4)
 
-[node name="Nice!" type="AnimationPlayer" parent="Events/Glow_Tut_2"]
-libraries = {
-"": SubResource("AnimationLibrary_7vltr")
-}
+[node name="Sprite2D" type="Sprite2D" parent="Events/SlideBoost"]
+z_index = -50
+position = Vector2(-8.10001, 9)
+texture = ExtResource("30_bbc3m")
 
-[node name="Glow_Tut_3_ENABLEGLOW" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
-z_index = -1
-position = Vector2(-1277, -278)
-scale = Vector2(0.5, 0.5)
-collision_layer = 4
-collision_mask = 4
-script = ExtResource("19_img1u")
-Text = NodePath("Label")
-score_thres = 3.0
-one_shot = false
+[node name="SpringLaunch" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
+position = Vector2(-1128, -241)
+collision_mask = 1
+level = NodePath("../..")
+dialogue = ExtResource("31_oyrcj")
+talk_target = NodePath("../SlideBoost/Marker2D")
+blend_priority = -1
+blend_override = 0.3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Glow_Tut_3_ENABLEGLOW"]
-position = Vector2(110, 38)
-shape = SubResource("RectangleShape2D_xjwnh")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/SpringLaunch"]
+position = Vector2(-7, 5)
+shape = SubResource("RectangleShape2D_08e63")
 
-[node name="Label" type="Label" parent="Events/Glow_Tut_3_ENABLEGLOW"]
-visible = false
-offset_left = -57.0
-offset_top = -68.0
-offset_right = 151.0
-offset_bottom = -21.0
-scale = Vector2(2, 2)
-text = "Time your jump with 
-the spring for extra height!"
-label_settings = SubResource("LabelSettings_8boug")
+[node name="Marker2D" type="Marker2D" parent="Events/SpringLaunch"]
+position = Vector2(-9, -4)
 
-[node name="Nice!" type="AnimationPlayer" parent="Events/Glow_Tut_3_ENABLEGLOW"]
-libraries = {
-"": SubResource("AnimationLibrary_7vltr")
-}
+[node name="Sprite2D" type="Sprite2D" parent="Events/SpringLaunch"]
+z_index = -50
+position = Vector2(-8.10001, 9)
+texture = ExtResource("30_bbc3m")
 
-[node name="Glow_Tut_4" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
-z_index = -1
-position = Vector2(-1231, -57)
-scale = Vector2(0.5, 0.5)
-collision_layer = 4
-collision_mask = 4
-script = ExtResource("19_img1u")
-Text = NodePath("Label")
-score_thres = 3.0
-score_amount = 0.9
-score_duration = 45.0
-update = true
+[node name="SpringLaunch2" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
+position = Vector2(-2279, -905)
+collision_mask = 1
+level = NodePath("../..")
+dialogue = ExtResource("31_oyrcj")
+talk_target = NodePath("../SlideBoost/Marker2D")
+blend_priority = -1
+blend_override = 0.3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Glow_Tut_4"]
-position = Vector2(197, 24)
-shape = SubResource("RectangleShape2D_asml6")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/SpringLaunch2"]
+position = Vector2(-7, 5)
+shape = SubResource("RectangleShape2D_08e63")
 
-[node name="Label" type="Label" parent="Events/Glow_Tut_4"]
-visible = false
-offset_left = -57.0
-offset_top = -68.0
-offset_right = 145.0
-offset_bottom = -21.0
-scale = Vector2(2, 2)
-text = "Jump while sliding downhill 
-to boost your jump!"
-label_settings = SubResource("LabelSettings_8boug")
+[node name="Marker2D" type="Marker2D" parent="Events/SpringLaunch2"]
+position = Vector2(-9, -4)
 
-[node name="Nice!" type="AnimationPlayer" parent="Events/Glow_Tut_4"]
-libraries = {
-"": SubResource("AnimationLibrary_7vltr")
-}
-
-[node name="Glow_Tut_3B" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
-z_index = -1
-position = Vector2(-661, -394)
-scale = Vector2(0.5, 0.5)
-collision_layer = 4
-collision_mask = 4
-script = ExtResource("19_img1u")
-Text = NodePath("Label")
-score_thres = 3.0
-one_shot = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Glow_Tut_3B"]
-position = Vector2(-51.625, 50)
-shape = SubResource("RectangleShape2D_62rpp")
-
-[node name="Label" type="Label" parent="Events/Glow_Tut_3B"]
-visible = false
-offset_left = -57.0
-offset_top = -68.0
-offset_right = 130.0
-offset_bottom = -21.0
-scale = Vector2(2, 2)
-text = "When Glowing
-You Can Jump
-Higher"
-label_settings = SubResource("LabelSettings_8boug")
-
-[node name="Nice!" type="AnimationPlayer" parent="Events/Glow_Tut_3B"]
-libraries = {
-"": SubResource("AnimationLibrary_7vltr")
-}
+[node name="Sprite2D" type="Sprite2D" parent="Events/SpringLaunch2"]
+z_index = -50
+position = Vector2(-8.10001, 9)
+texture = ExtResource("30_bbc3m")
 
 [node name="CheckpointManager" parent="." instance=ExtResource("20_pt55a")]
 
@@ -983,6 +877,7 @@ blend_override = 0.25
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CameraTargets/CameraTarget5"]
 position = Vector2(-76, -109)
 shape = SubResource("RectangleShape2D_rfep0")
+disabled = true
 
 [node name="CameraTarget6" type="Area2D" parent="CameraTargets"]
 position = Vector2(-3032, -131)
@@ -1054,18 +949,18 @@ id = "cave"
 [connection signal="body_exited" from="Events/UP_WJ_Tut" to="Events/UP_WJ_Tut" method="_on_body_exited"]
 [connection signal="body_entered" from="Events/FF_Tut" to="Events/FF_Tut" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/FF_Tut" to="Events/FF_Tut" method="_on_body_exited"]
-[connection signal="body_entered" from="Events/Momentum_Tut" to="Events/Momentum_Tut" method="_on_body_entered"]
-[connection signal="body_exited" from="Events/Momentum_Tut" to="Events/Momentum_Tut" method="_on_body_exited"]
 [connection signal="body_entered" from="Events/Guide_Tut" to="Events/Guide_Tut" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/Guide_Tut" to="Events/Guide_Tut" method="_on_body_exited"]
-[connection signal="body_entered" from="Events/Activate_Glow" to="Events/Activate_Glow" method="_on_body_entered"]
-[connection signal="body_exited" from="Events/Activate_Glow" to="Events/Activate_Glow" method="_on_body_exited"]
-[connection signal="body_entered" from="Events/Glow_Tut_2" to="Events/Glow_Tut_2" method="_on_body_entered"]
-[connection signal="body_exited" from="Events/Glow_Tut_2" to="Events/Glow_Tut_2" method="_on_body_exited"]
-[connection signal="body_entered" from="Events/Glow_Tut_3_ENABLEGLOW" to="Events/Glow_Tut_3_ENABLEGLOW" method="_on_body_entered"]
-[connection signal="body_exited" from="Events/Glow_Tut_3_ENABLEGLOW" to="Events/Glow_Tut_3_ENABLEGLOW" method="_on_body_exited"]
-[connection signal="body_entered" from="Events/Glow_Tut_4" to="Events/Glow_Tut_4" method="_on_body_entered"]
-[connection signal="body_exited" from="Events/Glow_Tut_4" to="Events/Glow_Tut_4" method="_on_body_exited"]
-[connection signal="body_entered" from="Events/Glow_Tut_3B" to="Events/Glow_Tut_3B" method="_on_body_entered"]
-[connection signal="body_exited" from="Events/Glow_Tut_3B" to="Events/Glow_Tut_3B" method="_on_body_exited"]
+[connection signal="body_entered" from="Events/GlowSign" to="Events/GlowSign" method="_on_body_entered"]
+[connection signal="body_exited" from="Events/GlowSign" to="Events/GlowSign" method="_on_body_exited"]
+[connection signal="finish_dialogue" from="Events/GlowSign" to="Events/GlowSign" method="_on_finish_dialogue"]
+[connection signal="body_entered" from="Events/SlideBoost" to="Events/SlideBoost" method="_on_body_entered"]
+[connection signal="body_exited" from="Events/SlideBoost" to="Events/SlideBoost" method="_on_body_exited"]
+[connection signal="finish_dialogue" from="Events/SlideBoost" to="Events/SlideBoost" method="_on_finish_dialogue"]
+[connection signal="body_entered" from="Events/SpringLaunch" to="Events/SpringLaunch" method="_on_body_entered"]
+[connection signal="body_exited" from="Events/SpringLaunch" to="Events/SpringLaunch" method="_on_body_exited"]
+[connection signal="finish_dialogue" from="Events/SpringLaunch" to="Events/SpringLaunch" method="_on_finish_dialogue"]
+[connection signal="body_entered" from="Events/SpringLaunch2" to="Events/SpringLaunch2" method="_on_body_entered"]
+[connection signal="body_exited" from="Events/SpringLaunch2" to="Events/SpringLaunch2" method="_on_body_exited"]
+[connection signal="finish_dialogue" from="Events/SpringLaunch2" to="Events/SpringLaunch2" method="_on_finish_dialogue"]
 [connection signal="area_entered" from="LoadingZones/levelChangr" to="LoadingZones/levelChangr" method="_on_area_entered"]

@@ -54,6 +54,8 @@ func enter() -> void:
 	ticks = 0
 	min_fall_speed = 0.0
 	parent.aerial = true
+	
+	parent.fastFell = false
 
 	# Enabling the appropriate Raycasts
 	right_wj_grace.enabled = true
@@ -132,7 +134,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 # We can glide if we cant coyote jump nemore or if we cant wall jump
 func can_glide() -> bool:
-	return coyote_time.time_left <= 0.0 and not (left_wj_grace.is_colliding() or right_wj_grace.is_colliding())
+	return coyote_time.time_left <= 0.0 and not (left_wj_grace.is_colliding() or right_wj_grace.is_colliding()) and not parent.launched and parent.   can_glide
 
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
