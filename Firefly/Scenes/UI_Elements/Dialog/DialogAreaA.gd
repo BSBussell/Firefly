@@ -86,7 +86,7 @@ func _start_dialogue() -> void:
 ## Emits the Stop Dialogue signal to be listened to by the Dialogue Component
 func _stop_dialogue() -> void:
 	
-	in_dialogue = false
-	
 	# Signal to the DialogueUiComponent to end Dialogue
 	emit_signal("finish_dialogue")
+	
+	in_dialogue = false
