@@ -310,7 +310,7 @@ texture = ExtResource("1_tjhrr")
 3: [0],
 4: [0],
 7: [0],
-"symmetry": 0,
+"symmetry": 4,
 "type": 3
 }
 21:3/0 = 0
@@ -327,7 +327,7 @@ texture = ExtResource("1_tjhrr")
 4: [0],
 7: [0],
 8: [0],
-"symmetry": 0,
+"symmetry": 4,
 "type": 3
 }
 22:3/0 = 0
@@ -352,7 +352,7 @@ texture = ExtResource("1_tjhrr")
 4: [0],
 7: [0],
 8: [0],
-"symmetry": 0,
+"symmetry": 5,
 "type": 3
 }
 24:3/0 = 0
@@ -368,7 +368,7 @@ texture = ExtResource("1_tjhrr")
 4: [0],
 7: [0],
 8: [0],
-"symmetry": 0,
+"symmetry": 5,
 "type": 3
 }
 1:4/0 = 0
@@ -601,7 +601,7 @@ texture = ExtResource("1_tjhrr")
 8: [0],
 12: [3, 0],
 15: [0],
-"symmetry": 0,
+"symmetry": 4,
 "type": 3
 }
 21:4/0 = 0
@@ -647,7 +647,7 @@ texture = ExtResource("1_tjhrr")
 8: [0],
 11: [0],
 12: [3, 0],
-"symmetry": 0,
+"symmetry": 5,
 "type": 3
 }
 10:5/0 = 0
@@ -2009,7 +2009,6 @@ format = 2
 layer_0/name = "Foreground"
 layer_0/z_index = 1
 layer_1/name = "Water"
-layer_1/z_index = 1
 layer_1/tile_data = PackedInt32Array()
 layer_2/name = "Background"
 layer_2/z_index = -1
@@ -2019,5 +2018,5 @@ layer_3/z_index = -3
 layer_3/tile_data = PackedInt32Array()
 layer_4/name = "Wall"
 layer_4/modulate = Color(0.47451, 0.47451, 0.47451, 1)
-layer_4/z_index = -2
+layer_4/z_index = -50
 layer_4/tile_data = PackedInt32Array()
