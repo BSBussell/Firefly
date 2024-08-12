@@ -200,7 +200,7 @@ metadata/_snap_enabled = true
 [sub_resource type="Gradient" id="Gradient_lb2wv"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[node name="mtn_plat_1" type="Node2D" node_paths=PackedStringArray("sprite_2d", "break_time", "respawn_time", "collider")]
+[node name="mtn_plat_1x" type="Node2D" node_paths=PackedStringArray("sprite_2d", "break_time", "respawn_time", "collider")]
 script = ExtResource("1_ookxf")
 sprite_2d = NodePath("Sprite2D")
 break_time = NodePath("Timer/BreakTime")

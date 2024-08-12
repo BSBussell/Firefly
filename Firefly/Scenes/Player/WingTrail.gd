@@ -162,7 +162,7 @@ func aerial_falling_wings(delta) -> Vector2:
 func gliding_wings(delta) -> Vector2:
 
 	# Woo!
-	var max_extension: float = -8 if seed == 0 else -6.2
+	var max_extension: float = -8.0 if seed == 0 else -6.2
 	
 	local_smoothing = smoothing * 5
 	
@@ -173,7 +173,7 @@ func gliding_wings(delta) -> Vector2:
 func flapping_wings(delta) -> Vector2:
 
 	# Woo!
-	var max_extension: float = -8 if seed == 0 else -6.2
+	var max_extension: float = -8.0 if seed == 0 else -6.2
 	
 	local_smoothing = smoothing * 5
 	

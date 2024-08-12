@@ -87,7 +87,7 @@ func enter() -> void:
 	apply_rope_impulse(parent.velocity * grab_force_multi)
 
 	
-	rand_from_seed(parent.stuck_segment.global_position.x)
+	rand_from_seed(int(parent.stuck_segment.global_position.x))
 	rope_creak_sfx.pitch_scale = randf_range(1, 2)
 	rope_creak_sfx.play()
 

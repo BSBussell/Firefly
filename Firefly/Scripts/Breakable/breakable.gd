@@ -31,7 +31,7 @@ var plat_pitch: float = 1.0
 func _ready():
 	
 	rng = RandomNumberGenerator.new()
-	rng.seed = position.x + position.y
+	rng.seed = int(position.x + position.y)
 	plat_pitch = rng.randf_range(0.75, 1.5)
 	snap.pitch_scale = plat_pitch
 	
@@ -42,7 +42,7 @@ func _ready():
 	pass
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	if flyph and flyph.is_on_floor():
 		

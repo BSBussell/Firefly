@@ -141,7 +141,13 @@ func _process(delta):
 
 	# If Glow down is pressed and we're not at the bottom
 	if movement_level > 0 and Input.is_action_just_pressed("Glow_Down"):
+		
+		var saved_points: int = glow_points
+		
 		demote()
+		# Ok just a little exploit pre-fixing, if the player is below 30% on the score thing,
+		# dont enable them to easily get glow again. Just to prevent an "off and on again" meta when low on points
+		glow_points = 100 if saved_points > 30 else 0
 	
 	# Update our meter
 	var glow_meter_percengate: int = glow_points

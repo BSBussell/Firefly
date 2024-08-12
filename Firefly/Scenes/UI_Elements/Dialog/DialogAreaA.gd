@@ -65,7 +65,7 @@ func _on_body_exited(body: Node2D) -> void:
 		hover.play("hide")
 
 ## The Process Loop, only running when the player enters
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("interact"):
 		
 		if dialogue_ui.dialogue_up: return
