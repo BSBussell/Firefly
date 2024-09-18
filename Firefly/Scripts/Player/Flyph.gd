@@ -104,7 +104,7 @@ signal dead()
 
 # Visual Nodes
 @onready var animation: AnimatedSprite2D = $Visuals/SquishCenter/AnimatedSprite2D
-@onready var squish_node: Node2D = $Visuals/SquishCenter
+@onready var squish_node: SquishNode = $Visuals/SquishCenter
 @onready var spotlight: PointLight2D = $Visuals/Spotlight
 @onready var light: PointLight2D = $Visuals/Spotlight
 @onready var trail: Line2D = $Visuals/Trail

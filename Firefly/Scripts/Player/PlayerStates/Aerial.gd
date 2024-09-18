@@ -238,6 +238,8 @@ func process_frame(_delta):
 		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
 	else:
 		speed_particles.emitting = false
+		
+	
 
 	_logger.info("Aerial State Frame End")
 

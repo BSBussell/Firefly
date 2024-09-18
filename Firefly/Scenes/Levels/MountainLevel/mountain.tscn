@@ -497,7 +497,9 @@ bus = &"Ambience"
 
 [node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("9_2ctjn")]
 position = Vector2(71, 33)
+is_actor = null
 MusicPlayer = NodePath("../LevelAudio/Music")
+jump_squash = null
 
 [node name="PlayerCam" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("10_chrda")]
 visible = false

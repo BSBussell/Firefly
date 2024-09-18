@@ -74,10 +74,15 @@ func enter() -> void:
 		
 		glide_speed = parent.air_speed
 	
+		# Audio FX
 		flap_sfx.pitch_scale = randf_range(1.0, 1.3)
 		flap_sfx.play()
 		
+		# Particle FX
 		parent.spawn_jump_dust()
+		
+		# Squish FX
+		parent.squish_node.squish(Vector2(0.7,1.3))
 	
 	# If you have glided already this jump, then only enable another boost if we're falling at a certain speed
 	elif (parent.velocity.y / parent.movement_data.MAX_FF_SPEED) >= 0.45:
@@ -100,6 +105,9 @@ func enter() -> void:
 		flap_sfx.play()
 		
 		parent.spawn_jump_dust() 
+		
+				# Squish FX
+		parent.squish_node.squish(Vector2(0.7,1.3))
 	
 	# Reset fastFalling Flag
 	parent.fastFalling = false
@@ -109,7 +117,8 @@ func enter() -> void:
 # Called before exiting the state, cleanup
 func exit() -> void:
 	
-	
+	# Reset their rotation
+	parent.squish_node.rotation = 0
 	pass
 
 # Processing input in this state, returns nil or new state
@@ -131,12 +140,15 @@ func process_input(_event: InputEvent) -> PlayerState:
 	return null
 
 # Processing Frames in this state, returns nil or new state
-func process_frame(_delta: float) -> PlayerState:
+func process_frame(delta: float) -> PlayerState:
 	
 	if sign(parent.velocity.x) > 0:
 		parent.animation.flip_h = false
 	else:
 		parent.animation.flip_h = true
+		
+	# Smoothly rotate the sprite based on input direction
+	rotate_with_dir(delta)
 	
 	return null
 
@@ -155,6 +167,27 @@ func process_physics(delta: float) -> PlayerState:
 func animation_end() -> PlayerState:
 	return null
 
+func rotate_with_dir(delta: float) -> void:
+	
+	# Define the target rotation based on the horizontal axis input
+	var target_rotation_degrees: float = 0
+
+	if parent.horizontal_axis > 0:
+		# Holding right
+		target_rotation_degrees = 4.5
+		
+	elif parent.horizontal_axis < 0:
+		# Holding left
+		target_rotation_degrees = -4.5
+
+	# Smoothly rotate into the held direction
+	parent.squish_node.rotation = lerp_angle(
+		parent.squish_node.rotation, 
+		deg_to_rad(target_rotation_degrees), 
+		10 * delta
+	)
+	
+	
 	
 func apply_gravity(delta: float) -> void:
 	
