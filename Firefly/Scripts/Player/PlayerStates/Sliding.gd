@@ -425,12 +425,14 @@ func can_boost_jump() -> bool:
 	# Ok so first we make sure the we've jumped within the window.
 	var slide_time_check: bool = (crouch_jump_window.time_left == 0 )
 	
-	
 	# Then make sure the player is moving faster than some multiple of their default speed
 	var slide_speed_check: bool = abs(parent.velocity.x) > abs(parent.speed) * parent.movement_data.BOOST_JUMP_THRES
 	
-	#if _config.get_set 
-	return slide_time_check and slide_speed_check
+	# Make sure we aren't slide jumping up a hill
+	var on_hill: bool = parent.get_floor_normal().x != 0
+	var not_up_hill: bool = not on_hill or sign(parent.get_floor_normal().x) == sign(parent.velocity.x)
+	
+	return slide_time_check and slide_speed_check and with_hill
 
 ## Returns if speed is fast enough for sliding
 func at_slide_thres() -> bool:
