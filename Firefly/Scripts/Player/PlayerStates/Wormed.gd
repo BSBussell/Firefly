@@ -29,7 +29,7 @@ extends PlayerState
 
 
 # Effects
-@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
+@onready var speed_particles = $"../../Particles/SpeedParticles"
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 

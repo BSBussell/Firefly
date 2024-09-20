@@ -14,7 +14,6 @@ extends PlayerState
 # Particle Effects
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
 @onready var slide_dust = $"../../Particles/SlideDust"
-@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 
 # Sound Effects
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
@@ -80,10 +79,16 @@ func enter() -> void:
 		# Set our current animation state
 		parent.current_animation = parent.ANI_STATES.CROUCH
 
+		
+		# If we're sliding do a subtle squish
+		if at_slide_thres():
+			parent.squish_node.squish(Vector2(1.25,0.75))
+			
 		# Otherwise just do the normal crouch squash
-		parent.squish_node.squish(parent.crouch_squash)
-
-	# This might be silly b/c i can't control it lol
+		else:
+			parent.squish_node.squish(parent.crouch_squash)
+  
+	# This might be silly b/c i can't control it lol  
 	parent.floor_constant_speed = false
 
 	# If we're moving :3
@@ -93,19 +98,8 @@ func enter() -> void:
 		sliding_sfx.play(0)
 
 	# If we're at sliding speed
-	if at_slide_thres(): #and AERIAL_STATE.have_stand_room():
-
-		parent.current_animation = parent.ANI_STATES.SLIDE_PREP
+	if at_slide_thres(): parent.current_animation = parent.ANI_STATES.SLIDE_PREP
 	
-		
-	## Slide Values ReCalculated
-	#if parent.velocity.x >= parent.speed:
-		#parent.slide_distance = parent.movement_data.SLIDE_DISTANCE * parent.TILE_SIZE
-		#parent.slide_friction = (parent.velocity.x * parent.velocity.x) / (2 * parent.slide_distance)
-	#else:
-		#parent.slide_distance = (parent.movement_data.SLIDE_DISTANCE * 1.5) * parent.TILE_SIZE
-		#parent.slide_friction = (parent.speed * parent.speed) / (2 * parent.slide_distance)
-
 	# Start our timer
 	crouch_jump_window.start()
 
@@ -153,14 +147,6 @@ func update_facing(direction: float) -> void:
 
 ## Updates the visual effects and audio
 func update_effects() -> void:
-
-	# "Speed Particles"
-	if abs(parent.velocity.x) > parent.speed:
-		speed_particles.emitting = true
-		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
-	else:
-		speed_particles.emitting = false
-
 
 	# Stop fx when we stop moving
 	if abs(parent.velocity.x) <= 50:
@@ -301,10 +287,12 @@ func apply_friction(delta, _direction):
 		# Apply Friction as usual
 		var friction = parent.slide_friction
 		
-		# If we're moving faster than air speed, then we use dynamic friction
-		if abs(parent.velocity.x)  > parent.air_speed: #and (crouch_jump_window.time_left == 0 ):
+		# If we're moving faster than air speed, then we use dynamic friction to cap slide distance
+		if abs(parent.velocity.x)  > parent.air_speed:
 				
-			var slide_distance = (parent.movement_data.SLIDE_DISTANCE) * parent.TILE_SIZE
+			# This is actually really silly, because this is recalculated each frame to a diff val
+			# Which means its not perfect. will have to test better if this is good enough
+			var slide_distance = (parent.movement_data.MAX_SLIDE_DISTANCE) * parent.TILE_SIZE
 			friction = (parent.velocity.x * parent.velocity.x) / (2 * slide_distance)
 			
 			
@@ -432,7 +420,7 @@ func can_boost_jump() -> bool:
 	var on_hill: bool = parent.get_floor_normal().x != 0
 	var not_up_hill: bool = not on_hill or sign(parent.get_floor_normal().x) == sign(parent.velocity.x)
 	
-	return slide_time_check and slide_speed_check and with_hill
+	return slide_time_check and slide_speed_check and not_up_hill
 
 ## Returns if speed is fast enough for sliding
 func at_slide_thres() -> bool:

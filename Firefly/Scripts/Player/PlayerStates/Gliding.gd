@@ -106,7 +106,7 @@ func enter() -> void:
 		
 		parent.spawn_jump_dust() 
 		
-				# Squish FX
+		# Squish FX
 		parent.squish_node.squish(Vector2(0.7,1.3))
 	
 	# Reset fastFalling Flag

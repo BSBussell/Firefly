@@ -119,7 +119,6 @@ signal dead()
 @onready var wet = $Particles/Wet
 @onready var slide_dust = $Particles/SlideDust
 @onready var dash_dust = $Particles/DashDust
-@onready var mega_speed_particles = $Particles/MegaSpeedParticles
 
 # Particle Spawners
 @onready var jump_dust_spawner = $Particles/JumpDustSpawner
@@ -979,11 +978,6 @@ func calculate_properties():
 
 	# Visual: Setting Glow and such
 	light.set_brightness(movement_data.BRIGHTNESS)
-	
-	# The glow is leftover from when I was experimenting with using fancier rendering systems, and decided
-	# it hurt performance too much.
-	#trail.set_glow(movement_data.GLOW)
-	#animation.set_glow(movement_data.GLOW)
 
 
 
@@ -1072,7 +1066,6 @@ func kill():
 	
 	slide_dust.emitting = false
 	dash_dust.emitting = false
-	mega_speed_particles.emitting = false
 
 	# Disable SFX
 	run_sfx.stop()
@@ -1081,7 +1074,7 @@ func kill():
 	
 	dying = true
 	
-	if StateMachine.current_state == WORMED_STATE:
+	if StateMachine.current_state == WORMED_STATE or StateMachine.current_state == GLIDING_STATE:
 		StateMachine.change_state(AERIAL_STATE)
 
 	$Physics/HazardDetector.set_collision_mask_value(5, false)

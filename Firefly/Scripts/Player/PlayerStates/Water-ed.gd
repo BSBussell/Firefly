@@ -35,7 +35,6 @@ extends PlayerState
 @onready var stand_room_right = $"../../Raycasts/Colliders/Stand_Room_Right"
 
 # Effects
-@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 @onready var wet = $"../../Particles/Wet"
@@ -134,9 +133,6 @@ func exit() -> void:
 	top_right.enabled = false
 	top_left.enabled = false
 
-	# And any potentially on particles
-	speed_particles.emitting = false
-
 
 	# If we're fast falling set the speed scale back and reset the flags
 	if (parent.fastFalling):
@@ -225,13 +221,6 @@ func process_frame(_delta):
 		elif parent.velocity.x > 0 and parent.animation.flip_h:
 			parent.animation.flip_h = false
 			parent.squish_node.squish(parent.turn_around_squash)
-
-	# Speed Particle Emission
-	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active:
-		speed_particles.emitting = true
-		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
-	else:
-		speed_particles.emitting = false
 
 	
 

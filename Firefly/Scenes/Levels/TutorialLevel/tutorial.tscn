@@ -200,7 +200,7 @@ Text = "- Wild Woodlands -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
-ui_components = Array[PackedScene]([ExtResource("4_uy0kn"), ExtResource("2_us1rr"), ExtResource("3_iiuvo"), ExtResource("6_8gtqn"), ExtResource("5_xontx"), ExtResource("7_0unlf"), ExtResource("8_uxlyn"), ExtResource("9_l61ka")])
+ui_components = Array[PackedScene]([ExtResource("4_uy0kn"), ExtResource("2_us1rr"), ExtResource("9_l61ka"), ExtResource("3_iiuvo"), ExtResource("6_8gtqn"), ExtResource("5_xontx"), ExtResource("7_0unlf"), ExtResource("8_uxlyn")])
 win_condition = 1
 
 [node name="Lighting" type="Node2D" parent="."]
@@ -376,9 +376,7 @@ bus = &"Ambience"
 
 [node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("13_otwob")]
 position = Vector2(150, 155)
-is_actor = null
 MusicPlayer = NodePath("../LevelAudio/Music")
-jump_squash = null
 
 [node name="CameraTarget" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("14_rlc3w")]
 visible = false
