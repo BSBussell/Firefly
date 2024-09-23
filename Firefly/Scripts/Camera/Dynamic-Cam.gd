@@ -76,7 +76,7 @@ func move_camera(delta):
 
 var multi_target_smoothing: float = 0.0
 var smoothing_factor_2: float = 0.0
-var dict_hash: int = 0.0
+var dict_hash: int = 0
 var settled: bool = true
 var current_grouping_offset: Vector2 = Vector2.ZERO
 func calculate_target_position(delta: float) -> Vector2:
@@ -218,7 +218,7 @@ func get_targets_offset(base_target: Vector2, targets_center: Vector2) -> Vector
 	multi_target_smoothing = move_toward(multi_target_smoothing, blend_max, 0.01)
 	
 	# Smoothly transition the offset towards the new center
-	var current_grouping_position: Vector2
+	var current_grouping_position: Vector2 = Vector2.ZERO
 	current_grouping_position.x = _gerblesh.lerpi(base_target.x, targets_center.x, multi_target_smoothing)
 	current_grouping_position.y = _gerblesh.lerpi(base_target.y, targets_center.y, multi_target_smoothing)
 

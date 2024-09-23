@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://fdtkndaa0lce"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TitleScreen/TitleScreenUI.gd" id="1_st8au"]
-[ext_resource type="PackedScene" uid="uid://cbgoqx8kcalop" path="res://Scenes/Levels/TutorialLevel/tutorial.tscn" id="2_e7c4p"]
+[ext_resource type="PackedScene" uid="uid://cbgoqx8kcalop" path="res://Scenes/Levels/TutorialLevel/tutorial.tscn" id="2_fvuap"]
 [ext_resource type="Material" uid="uid://dphpmxni7m8ge" path="res://Assets/Materials/TitleScreenMaterial.tres" id="3_4yce8"]
 [ext_resource type="Shader" path="res://Core/wind.gdshader" id="4_cf7gw"]
 [ext_resource type="LabelSettings" uid="uid://2pp6iweqnvh" path="res://UI_Theme/TitleScreenText.tres" id="4_qcs3o"]
@@ -348,7 +348,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_st8au")
-start_level = ExtResource("2_e7c4p")
+start_level = ExtResource("2_fvuap")
 
 [node name="Fade" type="ColorRect" parent="."]
 layout_mode = 1

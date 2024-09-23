@@ -4,10 +4,12 @@ extends Node
 var current_level_fx: Array
 
 func _ready():
-	update_sliders()
+	
 	
 	# Update sliders when config is changed
 	_config.connect_to_config_changed(Callable(self, "update_sliders"))
+	_config.load_settings()
+	update_sliders()
 
 ## Set the fx_id's for the active effects for this level
 func set_level_effects(fx_idx: Array):
@@ -50,8 +52,6 @@ func update_sliders():
 	var sfx: float = _config.get_setting("sfx")
 	var ambience: float = _config.get_setting("ambience")
 
-	
-		
 	# Set the volume
 	AudioServer.set_bus_volume_db(0, master)
 	AudioServer.set_bus_volume_db(1, music)

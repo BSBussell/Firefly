@@ -15,12 +15,13 @@ press = NodePath("Press")
 
 [node name="Press" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_vbyoa")
-volume_db = -10.0
+volume_db = -12.0
 bus = &"SFX"
 
 [node name="Focus" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_w11k4")
-volume_db = -10.0
+volume_db = -12.0
+pitch_scale = 2.5
 bus = &"SFX"
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]

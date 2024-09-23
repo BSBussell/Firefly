@@ -1303,7 +1303,7 @@ texture = ExtResource("14_td5wl")
 [node name="Meadow" type="Area2D" parent="LoadingZones"]
 position = Vector2(-1491, -1830)
 script = ExtResource("13_8cde2")
-new_level = "res://Scenes/Levels/DebugLevel/debug.tscn"
+new_level = "res://Scenes/Levels/MountainLevel/mountain.tscn"
 spawn_id = "cave_exit"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LoadingZones/Meadow"]

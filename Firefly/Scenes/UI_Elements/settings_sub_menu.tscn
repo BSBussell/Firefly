@@ -563,7 +563,8 @@ focus = NodePath("Focus")
 
 [node name="Focus" type="AudioStreamPlayer" parent="TopBar/BackButton"]
 stream = ExtResource("7_hwkrn")
-volume_db = -10.0
+volume_db = -12.0
+pitch_scale = 2.0
 bus = &"SFX"
 
 [node name="SettingCategories" type="ScrollContainer" parent="TopBar"]

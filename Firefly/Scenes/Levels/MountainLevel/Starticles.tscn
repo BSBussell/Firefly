@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://dol5r7ahavfoy"]
+
+[ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="1_0y0nb"]
+
+[sub_resource type="Curve" id="Curve_jka55"]
+_data = [Vector2(0.0093801, 0.00397336), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 0), 0.549799, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[node name="RedStars" type="CPUParticles2D"]
+position = Vector2(0, -63)
+amount = 2
+lifetime = 2.0
+randomness = 0.42
+texture = ExtResource("1_0y0nb")
+emission_shape = 3
+emission_rect_extents = Vector2(224, 63)
+gravity = Vector2(0, 0)
+angle_max = 45.0
+scale_amount_min = 0.1
+scale_amount_max = 0.2
+scale_amount_curve = SubResource("Curve_jka55")
+color = Color(1, 0.309804, 0.411765, 1)

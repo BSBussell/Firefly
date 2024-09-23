@@ -1,6 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://g8ao8gttp7rc"]
+[gd_scene load_steps=9 format=3 uid="uid://g8ao8gttp7rc"]
 
-[ext_resource type="Texture2D" uid="uid://c0brl8lhu5xu8" path="res://Assets/Graphics/Cave_Tile_Set/cave_2.png" id="1_evea0"]
+[ext_resource type="Texture2D" uid="uid://c0brl8lhu5xu8" path="res://Assets/Graphics/TileMaps/Cave_Tile_Set/cave_2.png" id="1_evea0"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_k2fpx"]
 
@@ -11,8 +11,12 @@
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_jslrp"]
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
+[sub_resource type="CanvasTexture" id="CanvasTexture_as1jo"]
+diffuse_texture = ExtResource("1_evea0")
+texture_filter = 1
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ii55k"]
-texture = ExtResource("1_evea0")
+texture = SubResource("CanvasTexture_as1jo")
 15:2/0 = 0
 15:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 15:2/0/physics_layer_0/angular_velocity = 0.0

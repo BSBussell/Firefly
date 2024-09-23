@@ -63,6 +63,7 @@ signal dead()
 @export var AERIAL_STATE: PlayerState
 @export var SLIDING_STATE: PlayerState
 @export var WALL_STATE: PlayerState
+@export var GLIDING_STATE: PlayerState
 @export var WATERED_STATE: PlayerState
 @export var WORMED_STATE: PlayerState
 
@@ -86,7 +87,7 @@ signal dead()
 
 # Our State Machine
 # This is where most of the players movement logic is stored
-@onready var StateMachine = $StateMachine
+@onready var StateMachine: PlayerStateMachine = $StateMachine
 
 # Glow Mechanic
 @onready var glow_manager: Glow_Manager = $GlowManager
@@ -103,10 +104,13 @@ signal dead()
 
 # Visual Nodes
 @onready var animation: AnimatedSprite2D = $Visuals/SquishCenter/AnimatedSprite2D
-@onready var squish_node: Node2D = $Visuals/SquishCenter
+@onready var squish_node: SquishNode = $Visuals/SquishCenter
 @onready var spotlight: PointLight2D = $Visuals/Spotlight
 @onready var light: PointLight2D = $Visuals/Spotlight
 @onready var trail: Line2D = $Visuals/Trail
+@onready var back_wing: Line2D = $Visuals/SquishCenter/WingBody/BackWing
+@onready var front_wing: Line2D = $Visuals/SquishCenter/WingBody/FrontWing
+
 
 # Particles
 @onready var glow_aura = $Particles/GlowAura
@@ -115,7 +119,6 @@ signal dead()
 @onready var wet = $Particles/Wet
 @onready var slide_dust = $Particles/SlideDust
 @onready var dash_dust = $Particles/DashDust
-@onready var mega_speed_particles = $Particles/MegaSpeedParticles
 
 # Particle Spawners
 @onready var jump_dust_spawner = $Particles/JumpDustSpawner
@@ -244,7 +247,9 @@ var aerial: bool = false 				# Set every time the player leaves the ground, and 
 var fastFalling: bool = false			# Set when the player begins fast falling, reset on any state change
 var airDriftDisabled: bool = false		# If air drift is disabled by an action this is set to true. Will be reset when falling
 var turningAround: bool = false			# If the player is experiencing a change in direction
-var underWater: bool = false
+var has_glided: bool = false			# If the player has glided throughout their jump
+var underWater: bool = false			# If the player is underwater
+var fastFell: bool = false 				# If the player fastfell in the prev jump
 
 
 # Jump Flags
@@ -274,6 +279,8 @@ var horizontal_axis: float = 0
 var dying: bool = false
 
 
+# Persistent Data:
+var can_glide: bool = false
 
 # I'm Being really annoying about this btw
 func _ready() -> void:
@@ -304,6 +311,7 @@ func player_save() -> Dictionary:
 	save_data["glow_points"] = glow_manager.glow_points
 	save_data["movement_level"] = glow_manager.movement_level
 	save_data["glow_enabled"] = glow_manager.GLOW_ENABLED
+	save_data["can_glide"] = can_glide
 	
 
 	return save_data
@@ -318,6 +326,11 @@ func player_load(save_data: Dictionary) -> void:
 		enable_glow()
 	else:
 		disable_glow()
+	
+	if save_data.has("can_glide"):	
+		can_glide = save_data["can_glide"]
+	else:
+		can_glide = false
 
 	
 
@@ -959,10 +972,12 @@ func calculate_properties():
 	trail.length = movement_data.TRAIL_LENGTH
 	run_threshold = movement_data.RUN_THRESHOLD * TILE_SIZE
 
+	front_wing.set_wing_length(movement_data.WING_LENGTH+1)
+	back_wing.set_wing_length(movement_data.WING_LENGTH)
+	
+
 	# Visual: Setting Glow and such
 	light.set_brightness(movement_data.BRIGHTNESS)
-	trail.set_glow(movement_data.GLOW)
-	animation.set_glow(movement_data.GLOW)
 
 
 
@@ -997,6 +1012,12 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	jumping = false
 	crouchJumping = false
 	boostJumping = false
+	
+	fastFalling = false
+	fastFell = false
+	
+	# Enable gliding out of this
+	has_glided = false
 
 	# If a custom gravity is given, set it
 	if gravity != -1:
@@ -1036,7 +1057,7 @@ func kill():
 	squish_node.squish(Vector2(0.5, 0.5))
 
 	# Hide Sprite
-	animation.visible = false
+	squish_node.visible = false
 	
 	# Turn off particles
 	glow_aura.emitting = false
@@ -1045,7 +1066,6 @@ func kill():
 	
 	slide_dust.emitting = false
 	dash_dust.emitting = false
-	mega_speed_particles.emitting = false
 
 	# Disable SFX
 	run_sfx.stop()
@@ -1054,7 +1074,7 @@ func kill():
 	
 	dying = true
 	
-	if StateMachine.current_state == WORMED_STATE:
+	if StateMachine.current_state == WORMED_STATE or StateMachine.current_state == GLIDING_STATE:
 		StateMachine.change_state(AERIAL_STATE)
 
 	$Physics/HazardDetector.set_collision_mask_value(5, false)
@@ -1091,7 +1111,7 @@ func kill():
 	glow_manager.GLOW_ENABLED = true
 
 	# Make Flyph Visible, then immediately squash them
-	animation.visible = true
+	squish_node.visible = true
 	squish_node.squish(death_squash)
 
 	# Update, the stats

@@ -1,4 +1,5 @@
 extends Node
+class_name PlayerStateMachine
 
 @export var starting_state: PlayerState
 

@@ -17,7 +17,6 @@ extends PlayerState
 @onready var dash_dust = $"../../Particles/DashDust"
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
-@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 
 # Sound Effects
 @onready var landing_sfx = $"../../Audio/LandingSFX"
@@ -35,6 +34,10 @@ func enter() -> void:
 	# Reset Flags
 	parent.crouchJumping = false
 	parent.wallJumping = false
+	parent.has_glided = false
+	
+	parent.fastFell = parent.fastFalling
+	parent.fastFalling = false
 
 	# Setup the proper colliders for this state :3
 	parent.set_standing_collider()
@@ -106,7 +109,6 @@ func process_frame(_delta):
 	# Do all our Visual Updates
 	update_facing(parent.velocity.x)
 	update_run_effects(parent.horizontal_axis)
-	update_speed_particles()
 
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
@@ -205,16 +207,6 @@ func update_run_effects(direction: float) -> void:
 	# If we're not walking go to runnings
 	if parent.current_animation != parent.ANI_STATES.RUNNING:
 		dash_dust.emitting = false
-
-## Draws or hides the speed particles based on the player's speed
-func update_speed_particles():
-	if abs(parent.velocity.x) > parent.speed:
-		speed_particles.emitting = true
-
-		# Direction of particles based on player facing direction
-		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
-	else:
-		speed_particles.emitting = false
 
 # Our logic for making the player jumping
 func jump_logic(_delta):

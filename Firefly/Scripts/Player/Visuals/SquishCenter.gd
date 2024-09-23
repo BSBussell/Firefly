@@ -1,4 +1,5 @@
 extends Node2D
+class_name SquishNode
 
 @export var base_rebound_speed: float = 0.5
 @export var bounce_curve: Curve

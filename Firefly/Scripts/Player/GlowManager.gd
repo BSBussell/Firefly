@@ -4,9 +4,10 @@ extends Node
 ## The sample size for calculating the score average
 @export var SPEED_SAMPLE_SIZE: int = 5
 
+@export var GLOW_PARTICLES: CPUParticles2D
+
 ## How often we pool speed for a new average
 @export var SPEED_POLL_RATE: float = 0.2
-
 @export var MOMENTUM_TIMER: Timer
 
 @onready var PLAYER: Flyph = $".."
@@ -14,29 +15,44 @@ extends Node
 
 @onready var glow_aura = $"../Particles/GlowAura"
 @onready var promotion_fx = $"../Particles/PromotionFx"
+@onready var spotlight = $"../Visuals/Spotlight"
 
 signal glow_meter_changed(new_value: float)
 signal glow_promote()
 
-# Players Movement Score
-var movement_level: int = 0
-var max_level: int
-var score: float = 0
-
-var score_sample: SampleArray
-var poll_count: float = 0.0
-
-var auto_glow: bool = false
-
+# If The player has unlocked glow yet/can glow
 var GLOW_ENABLED: bool = false
 
+# Players Movement Level
+var movement_level: int = 0
+var max_level: int
+
+# The players score
+var score: float = 0
+
+# Array of scores
+var score_sample: SampleArray
+
+# Timer Specifying how often to poll for speed
+var poll_count: float = 0.0
+
+# If promotions/demotions are automated
+var auto_glow: bool = false
 
 
+
+
+# The number of points they've gained. If they reach max they can promotion
 var glow_points: float = 0
 var glow_points_max: float = 100
+
+# The rate that they gain points
 var glow_grow_rate: float = 5
+
+# The rate that they lose points
 var glow_decay_rate: float = 5
 
+# I hate this
 var decaying = false
 var exponential_decay: float = 0.0
 
@@ -44,6 +60,10 @@ var surplus_multiplier: float = 3.5
 
 
 var meter = null
+
+
+# Used for visuals
+var prev_glow_points: float = 0.0
 
 
 
@@ -71,14 +91,67 @@ func _process(delta):
 	if not GLOW_ENABLED:
 		return
 	
+	# Always enable glow_point growth
+	grow_points(delta)
+	
+	
+	# If we're at the max level and not goated then we just begin to decay
+	if movement_level == max_level and score <= 4:
+		decay_points(delta)
+	
+	
+	# Otherwise we only decay when the score average is below 1.0
+	elif score_sample.get_average() <= 1.0:
+		
+		decay_points(delta)
+		
+		
+	# Upgrading is the glow up is pressed and score is peaked
+	auto_glow = _config.get_setting("auto_glow") and movement_level < max_level
+	
+	
+	# If we haven't maxed out yet
+	if movement_level <= max_level:
+		
+		# If we've reached 100 and trigged glow up (either thorugh button or auto glow does it)
+		if round(glow_points) >= 100 and (Input.is_action_just_pressed("Glow_Up") or auto_glow):
+			promote()
+
+	# If Glow down is pressed and we're not at the bottom
+	if movement_level > 0 and Input.is_action_just_pressed("Glow_Down"):
+		
+		var saved_points: int = glow_points
+		
+		demote()
+		
+		# Ok just a little exploit pre-fixing, if the player is below 30% on the score thing,
+		# dont enable them to easily get glow again. Just to prevent an "off and on again" meta when low on points
+		glow_points = 100 if saved_points > 30 else glow_points
+	
+	
+	glow_point_visual()
+	
+	# Update our meter
+	var glow_meter_percentage: int = glow_points
+	
+	# In auto glow mode, the meter measures how close to max speed we are
+	if _config.get_setting("auto_glow"):
+		glow_meter_percentage = (glow_points + (100 * movement_level)) / (100 * max_level) * 100
+		
+		
+	# Signal to the meter to change its visual
+	emit_signal("glow_meter_changed", glow_meter_percentage)
+	
+
+func grow_points(delta: float) -> void:
+	
 	# Update Scoring information based on movement speed, etc.
 	score = calc_score()
 	
+	# Update Average
 	if poll_count >= SPEED_POLL_RATE:
 		score_sample.add_element(score)
 		poll_count = 0
-		
-		print("Score Average: ", score_sample.get_average())
 		
 	poll_count += delta
 	
@@ -87,68 +160,58 @@ func _process(delta):
 	# Add score to points, score only goes up if we're at max level
 	glow_points = move_toward(glow_points, glow_points_max, delta * new_points) # Adjust for time incase someone is using a potato
 	
-	
-	# Point Decay
-	if movement_level > 0:
-		
-		# If we're at the max level then we just begin to decay
-		if movement_level == max_level:
-			
-			decaying = true
-			
-			# Unless the player is goated
-			if score > 4:
-				decaying = false
-				exponential_decay = 0.0
-		
-		
-		# Otherwise we only decay when velocity is 0 for a set time
-		elif score_sample.get_average() <= 0.8 and MOMENTUM_TIMER.is_stopped():
-			
-			# Start timer
-			MOMENTUM_TIMER.start()
-			
-		# If we start moving then we stop the timer
-		elif score_sample.get_average() > 0.8 and not MOMENTUM_TIMER.is_stopped():
-			MOMENTUM_TIMER.stop()
-			
-			# Reset the decay rate once the player starts moving again
-			decaying = false
-			exponential_decay = 0.0
-			
-			
-		
-		
-		
-		# Actual Decay happens here
-		if decaying:
-			
-			# Exonential Decay Rate
-			exponential_decay += glow_decay_rate * 0.025
-			
-			glow_points = move_toward(glow_points, 0, delta * exponential_decay)
-			
-			# If the number of points is 0 then we demote
-			if round(glow_points) == 0:
-				demote()
-		
-		
-	# Upgrading is the glow up is pressed and score is peaked
-	auto_glow = _config.get_setting("auto_glow") and movement_level < max_level
-	if movement_level <= max_level:
-		if round(glow_points) >= 100 and (Input.is_action_just_pressed("Glow_Up") or auto_glow):
-			promote()
 
-	# If Glow down is pressed and we're not at the bottom
-	if movement_level > 0 and Input.is_action_just_pressed("Glow_Down"):
+func decay_points(delta: float) -> void:
+	
+	# Exonential Decay Rate
+	exponential_decay = glow_decay_rate
+	
+	# Decrease the glow points
+	glow_points = move_toward(glow_points, 0, delta * exponential_decay)
+	
+	# If the number of points is 0 then we demote
+	if round(glow_points) == 0 and abs(PLAYER.velocity.x) <= 20:
 		demote()
+
+
+func glow_point_visual() -> void:
 	
-	# Update our meter
-	var glow_meter_percengate: int = glow_points
-	if _config.get_setting("auto_glow"):
-		glow_meter_percengate = (glow_points + (100 * movement_level)) / (100 * max_level) * 100
-	emit_signal("glow_meter_changed", glow_meter_percengate)
 	
+	## GLOW PARTICLES
+	# Base form just use the speed average to give visuals
+	var base_speed: bool = movement_level == 0 and score_sample.get_pop() > 1.0
+	
+	# Otherforms, check if the number of glow points is increasing from the prev
+	var point_growth: bool = movement_level > 0 and (prev_glow_points < glow_points or glow_points == glow_points_max)
+	
+	if base_speed or point_growth:
+		
+		GLOW_PARTICLES.emitting = true
+		GLOW_PARTICLES.direction.x = 1 if (PLAYER.animation.flip_h) else -1
+			
+	else:
+		
+		GLOW_PARTICLES.emitting = false
+	
+	prev_glow_points = glow_points
+	
+	
+	## FLICKERING
+	# If we are at risk of demotion
+	if glow_points <= 20 and movement_level > 0:
+	
+		if not spotlight.flickering:
+			spotlight.set_flicker(PLAYER.movement_data.BRIGHTNESS, PLAYER.movement_data.BRIGHTNESS - 0.3, 0.09)
+	
+	else:
+		if spotlight.flickering:
+			spotlight.set_brightness(PLAYER.movement_data.BRIGHTNESS)
+	
+	## If we can power up, emit the "Glow Aura"
+	if glow_points == 100:
+		glow_aura.emitting = true
+	elif movement_level != max_level:
+		glow_aura.emitting = false
 
 
 # Returns the current speed normalized to "expected" max speeds.
@@ -190,7 +253,7 @@ func calc_score():
 		spd_score = 1 + surplus
 	
 	
-	return max(spd_score - 1, 0)
+	return max(spd_score-0.25, 0)
 
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
 # 	Player's momentum value
@@ -210,7 +273,7 @@ func reset_glow():
 
 # How we should be accessing change_state() 99% of the time unless in debug
 # Returns whether or not we promoted
-func promote(starting_points: int = 20) -> bool:
+func promote(starting_points: int = 50) -> bool:
 
 	emit_signal("glow_promote")
 
@@ -244,7 +307,7 @@ func demote() -> bool:
 		change_state(movement_level - 1)
 		
 		# Reset points and reset decay
-		glow_points = 20
+		glow_points = 50
 		exponential_decay = 0
 			
 		return true

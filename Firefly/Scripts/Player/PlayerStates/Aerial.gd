@@ -1,6 +1,7 @@
 extends PlayerState
 
 @export_subgroup("TRANSITIONAL STATES")
+@export var GLIDE_STATE: PlayerState = null
 @export var WALL_STATE: PlayerState = null
 @export var GROUNDED_STATE: PlayerState = null
 @export var SLIDING_STATE: PlayerState = null
@@ -25,7 +26,6 @@ extends PlayerState
 @onready var stand_room_right = $"../../Raycasts/Colliders/Stand_Room_Right"
 
 # Effects
-@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 
@@ -53,6 +53,8 @@ func enter() -> void:
 	ticks = 0
 	min_fall_speed = 0.0
 	parent.aerial = true
+	
+	parent.fastFell = false
 
 	# Enabling the appropriate Raycasts
 	right_wj_grace.enabled = true
@@ -62,7 +64,6 @@ func enter() -> void:
 	top_right.enabled = true
 	top_left.enabled = true
 
-	
 
 	slide_fall = parent.current_animation == parent.ANI_STATES.CRAWL
 
@@ -86,13 +87,13 @@ func exit() -> void:
 	top_left.enabled = false
 
 	# And any potentially on particles
-	speed_particles.emitting = false
+	#speed_particles.emitting = false
 
 
 	# If we're fast falling set the speed scale back and reset the flags
 	if (parent.fastFalling):
 
-		parent.fastFalling = false
+		#parent.fastFalling = false
 		parent.animation.speed_scale = 1.0
 
 	_logger.info("Exiting Aerial State")
@@ -121,9 +122,18 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 		parent.set_standing_collider()
 
+
+	# If we press jump again then we play the gliding state
+	if Input.is_action_just_pressed("Jump") and can_glide():
+		return GLIDE_STATE
+
 	_logger.info("Aerial State Input End")
 
 	return null
+
+# We can glide if we cant coyote jump nemore or if we cant wall jump
+func can_glide() -> bool:
+	return coyote_time.time_left <= 0.0 and not (left_wj_grace.is_colliding() or right_wj_grace.is_colliding()) and not parent.launched and parent.   can_glide
 
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
@@ -220,13 +230,7 @@ func process_frame(_delta):
 		elif parent.velocity.x > 0 and parent.animation.flip_h:
 			parent.animation.flip_h = false
 			parent.squish_node.squish(parent.turn_around_squash)
-
-	# Speed Particle Emission
-	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active:
-		speed_particles.emitting = true
-		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
-	else:
-		speed_particles.emitting = false
+			
 
 	_logger.info("Aerial State Frame End")
 

@@ -14,7 +14,6 @@ extends PlayerState
 # Particle Effects
 @onready var landing_dust = $"../../Particles/LandingDustSpawner"
 @onready var slide_dust = $"../../Particles/SlideDust"
-@onready var speed_particles = $"../../Particles/MegaSpeedParticles"
 
 # Sound Effects
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
@@ -40,6 +39,11 @@ func enter() -> void:
 	# Reset the sliding flags
 	slidingDown = false
 	jumpExit = false
+	
+	# Reset Glided Flag so we can reglide
+	parent.has_glided = false
+	parent.fastFell = parent.fastFalling
+	parent.fastFalling = false
 
 	# Change to the sliding collider
 	parent.set_crouch_collider()
@@ -75,10 +79,16 @@ func enter() -> void:
 		# Set our current animation state
 		parent.current_animation = parent.ANI_STATES.CROUCH
 
+		
+		# If we're sliding do a subtle squish
+		if at_slide_thres():
+			parent.squish_node.squish(Vector2(1.25,0.75))
+			
 		# Otherwise just do the normal crouch squash
-		parent.squish_node.squish(parent.crouch_squash)
-
-	# This might be silly b/c i can't control it lol
+		else:
+			parent.squish_node.squish(parent.crouch_squash)
+  
+	# This might be silly b/c i can't control it lol  
 	parent.floor_constant_speed = false
 
 	# If we're moving :3
@@ -88,11 +98,8 @@ func enter() -> void:
 		sliding_sfx.play(0)
 
 	# If we're at sliding speed
-	if at_slide_thres(): #and AERIAL_STATE.have_stand_room():
-
-		parent.current_animation = parent.ANI_STATES.SLIDE_PREP
-
-
+	if at_slide_thres(): parent.current_animation = parent.ANI_STATES.SLIDE_PREP
+	
 	# Start our timer
 	crouch_jump_window.start()
 
@@ -140,14 +147,6 @@ func update_facing(direction: float) -> void:
 
 ## Updates the visual effects and audio
 func update_effects() -> void:
-
-	# "Speed Particles"
-	if abs(parent.velocity.x) > parent.speed:
-		speed_particles.emitting = true
-		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
-	else:
-		speed_particles.emitting = false
-
 
 	# Stop fx when we stop moving
 	if abs(parent.velocity.x) <= 50:
@@ -265,18 +264,9 @@ func apply_friction(delta, _direction):
 
 	parent.turningAround = false
 
-	# if we're on level ground
-	if parent.get_floor_normal() == Vector2.UP:
 
-		# Apply Friction as usual
-		var friction = parent.slide_friction
-
-		# Begin slowing down the player
-		parent.velocity.x = move_toward(parent.velocity.x, 0, friction * delta)
-
-	# Sliding Downhill
-	else:
-
+	if slide_downhill():
+		
 		# Get the hill direction
 		var dir = sign(parent.get_floor_normal().x)
 		parent.animation.flip_h = dir <= 0 # Flip the sprite based on slide dir
@@ -290,6 +280,30 @@ func apply_friction(delta, _direction):
 
 		# Push player down the hill
 		parent.velocity.x = move_toward(parent.velocity.x, speed, accel*delta)
+
+	# if we're on level ground
+	else:
+
+		# Apply Friction as usual
+		var friction = parent.slide_friction
+		
+		# If we're moving faster than air speed, then we use dynamic friction to cap slide distance
+		if abs(parent.velocity.x)  > parent.air_speed:
+				
+			# This is actually really silly, because this is recalculated each frame to a diff val
+			# Which means its not perfect. will have to test better if this is good enough
+			var slide_distance = (parent.movement_data.MAX_SLIDE_DISTANCE) * parent.TILE_SIZE
+			friction = (parent.velocity.x * parent.velocity.x) / (2 * slide_distance)
+			
+			
+			
+
+		# Begin slowing down the player
+		parent.velocity.x = move_toward(parent.velocity.x, 0, friction * delta)
+
+	
+
+		
 
 
 ## Handles how we jump
@@ -399,12 +413,14 @@ func can_boost_jump() -> bool:
 	# Ok so first we make sure the we've jumped within the window.
 	var slide_time_check: bool = (crouch_jump_window.time_left == 0 )
 	
-	
 	# Then make sure the player is moving faster than some multiple of their default speed
 	var slide_speed_check: bool = abs(parent.velocity.x) > abs(parent.speed) * parent.movement_data.BOOST_JUMP_THRES
 	
-	#if _config.get_set 
-	return slide_time_check and slide_speed_check
+	# Make sure we aren't slide jumping up a hill
+	var on_hill: bool = parent.get_floor_normal().x != 0
+	var not_up_hill: bool = not on_hill or sign(parent.get_floor_normal().x) == sign(parent.velocity.x)
+	
+	return slide_time_check and slide_speed_check and not_up_hill
 
 ## Returns if speed is fast enough for sliding
 func at_slide_thres() -> bool:
@@ -413,6 +429,18 @@ func at_slide_thres() -> bool:
 ## Returns if we're in a slide animation, taking advantage of enums lol
 func in_slide_animation() -> bool:
 	return parent.current_animation >= parent.ANI_STATES.SLIDE_PREP and parent.current_animation <= parent.ANI_STATES.SLIDE_END
+
+# Returns true if we are on a hill and not holding into it, or if the hill is too steep
+func slide_downhill() -> bool:
+	
+	var on_hill: bool = parent.get_floor_normal() != Vector2.UP
+	var steep_hill: bool = on_steep_ground()
+	
+	var hill_dir: int = -sign(parent.get_floor_normal().x)
+	var holding_into_hill: bool = hill_dir == sign(parent.horizontal_axis)
+	
+	return (on_hill and not holding_into_hill) or steep_hill
+	
 
 ## Returns if we are standing on ground deemed "too steep" for walking
 func on_steep_ground() -> bool:

@@ -55,6 +55,8 @@ func load_level(path: String, spawn_id: String = ""):
 
 	# Free the level
 	level_loader.clear_current_level()
+	_globals.ACTIVE_PLAYER = null
+	_globals.ACTIVE_LEVEL = null
 
 	# Free the Ui
 	ui_loader.reset_ui()

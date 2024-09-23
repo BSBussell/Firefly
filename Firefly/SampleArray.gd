@@ -24,6 +24,11 @@ func get_average() -> float:
 	if elements.size() == 0:
 		return 0.0  # Avoid division by zero
 	return snappedf(total / elements.size(), 0.01)
-
+	 
 func get_elements() -> PackedFloat32Array:
 	return elements
+
+func get_pop() -> float:
+	if elements.size() == 0:
+		return 0.0  # Return 0.0 if there are no elements
+	return elements[elements.size() - 1]
