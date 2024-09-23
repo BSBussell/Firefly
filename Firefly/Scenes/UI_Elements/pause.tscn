@@ -145,7 +145,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 0.1),
 "update": 0,
-"values": [-0.25, 0.0]
+"values": [-0.3, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -480,7 +480,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 0.162451),
 "update": 0,
-"values": [0.0, -0.25]
+"values": [0.0, -0.3]
 }
 tracks/2/type = "value"
 tracks/2/imported = false

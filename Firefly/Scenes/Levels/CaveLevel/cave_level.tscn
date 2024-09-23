@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://c8d4kjqyrog77" path="res://Assets/SFX/ambience/creepyCave_near_forest.mp3" id="3_xkvdx"]
 [ext_resource type="Material" uid="uid://dknfr3m14nn24" path="res://Assets/Materials/WaterDistortion.tres" id="4_6ko4m"]
 [ext_resource type="PackedScene" uid="uid://g8ao8gttp7rc" path="res://Core/cave_tile_map.tscn" id="4_eg551"]
-[ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Core/Game/pause.tscn" id="4_moxw1"]
+[ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="4_moxw1"]
 [ext_resource type="AudioStream" uid="uid://cc71beoeqyxis" path="res://Assets/SFX/ambience/CaveEntrance.wav" id="4_qurpt"]
 [ext_resource type="PackedScene" uid="uid://bkeka0x5vwxx7" path="res://Scenes/UI_Elements/results.tscn" id="5_by1im"]
 [ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="6_pkwh7"]

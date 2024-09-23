@@ -1,7 +1,7 @@
 [gd_scene load_steps=53 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
-[ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Core/Game/pause.tscn" id="1_iqxgk"]
+[ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="1_iqxgk"]
 [ext_resource type="Texture2D" uid="uid://d3hoov6c28cd2" path="res://Assets/Graphics/TileMaps/Mountain/Parallax/Pixel Mountains & Hills - Parallax pack/240x135px/Parallax Backgrounds 240x135px/PixelMountain04/PixelMountain04_layer03.png" id="2_8hfap"]
 [ext_resource type="PackedScene" uid="uid://cu5uu6ykpiam" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.tscn" id="2_gu43t"]
 [ext_resource type="Texture2D" uid="uid://was4ciof14c" path="res://Assets/Graphics/TileMaps/Mountain/clouds.png" id="2_qxdu3"]

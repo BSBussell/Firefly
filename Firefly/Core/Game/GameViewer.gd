@@ -21,7 +21,7 @@ var base_aspect_ratio: Vector2i = Vector2i(320, 180)
 
 ## The Resolution of the game scaled up from aspect ratio
 var game_res: Vector2 = Vector2(320, 180)
-
+ 
 ## Window Size
 var window_size: Vector2i = Vector2i(1920, 1080)
 

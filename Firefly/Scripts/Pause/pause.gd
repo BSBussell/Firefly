@@ -40,6 +40,7 @@ func _ready():
 	var color_rect: ColorRect = $"."
 	color_rect.material.set("shader_parameter/diamondPixelSize", triangle_size)
 	
+	animation_player.play("RESET")
 	
 
 
