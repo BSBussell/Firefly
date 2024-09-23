@@ -8,7 +8,6 @@
 
 [sub_resource type="Environment" id="Environment_xxxtd"]
 background_mode = 3
-tonemap_mode = 2
 tonemap_white = 1.2
 glow_levels/1 = 0.18
 glow_levels/2 = 0.39
@@ -16,7 +15,6 @@ glow_levels/3 = 0.0
 glow_levels/5 = 0.74
 glow_levels/7 = 0.26
 glow_blend_mode = 0
-adjustment_enabled = true
 
 [node name="GameViewer" type="Node2D"]
 process_mode = 3
