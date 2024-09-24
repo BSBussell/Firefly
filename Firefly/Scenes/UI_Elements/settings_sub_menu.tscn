@@ -607,18 +607,6 @@ layout_mode = 2
 [node name="Bool2" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
 layout_mode = 2
 
-[node name="Bool3" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
-layout_mode = 2
-
-[node name="Bool4" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
-layout_mode = 2
-
-[node name="Bool5" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
-layout_mode = 2
-
-[node name="Bool6" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
-layout_mode = 2
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_t4yat")

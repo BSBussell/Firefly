@@ -54,18 +54,12 @@ func _ready():
 
 	set_windowed_scale()
 
-	
-		
-
 	# Get zoom from config
 	res_scale = _config.get_setting("game_zoom")
 
 	# Smoothly zoom the render to the current scale
 	smoothly_zoom_render(res_scale)
 	
-	# Let us process input even when game beat
-	set_process_input(true)
-
 	# Hide mouse cursor
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	
@@ -80,13 +74,8 @@ func _input(_event: InputEvent) -> void:
 	# Handle Resets
 	if Input.is_action_just_pressed("reset") and not _loader.loading:
 		
-
-		
-		
 		# Reload the scene
 		get_tree().paused = false
-
-
 		await _loader.reset_game(NodePath("res://Scenes/Levels/TutorialLevel/tutorial.tscn"))
 
 		
@@ -96,20 +85,11 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_pressed("scale_inc"):
 		
 		res_scale = move_toward(res_scale, 1.4, 0.05)
-
-		# Set Config
-		#_config.set_setting("game_zoom", res_scale)
-		
-		print("inc: ", res_scale)
 		smoothly_zoom_render(res_scale)     
 	
 	elif Input.is_action_pressed("scale_dec"):
 		
 		res_scale = move_toward(res_scale, 0.5, 0.05)
-		# Set Config
-		
-		
-		print("dec:", res_scale)
 		smoothly_zoom_render(res_scale)
 
 
@@ -131,22 +111,26 @@ func swap_fullscreen_mode():
 		
 
 # Sets the window size to be the equilvant of 1080p in the current aspect ratio
-func update_window_size() -> void:
+func update_window_size(win_scale: float = -1) -> void:
 
 	# If web build then return
 	if OS.get_name() == "HTML5":
 		return
 
 	# Convert the base_ui_render to the aspect ratio of the screen
-	window_scale = ceil(BASE_UI_RENDER.x / BASE_RENDER.x)
+	if win_scale != -1: window_scale = win_scale
+	else: window_scale = ceil(BASE_UI_RENDER.x / BASE_RENDER.x)
+	
 
 	# Multiply the aspect ratio by the default scale
 	window_size = base_aspect_ratio * window_scale
+	
+	print(window_size)
 
 	# Set the window size
 	DisplayServer.window_set_size(window_size)
 
-func set_windowed_scale() -> void:
+func set_windowed_scale(win_scale: float = -1) -> void:
 
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)	
 
@@ -154,7 +138,7 @@ func set_windowed_scale() -> void:
 	update_aspect_ratio()
 
 	# Updates the window size based on the aspect ratio
-	update_window_size()
+	update_window_size(win_scale)
 
 	# zoom_render in order to set the render resolution
 	zoom_render(res_scale)
@@ -327,10 +311,21 @@ func get_usable_screen_size() -> Vector2i:
 	return screen_size
 	
 func config_changed():
+	
+	#if window_scale != _config.get_setting("resolution") + 4:
+			#set_windowed_scale(_config.get_setting("resolution") + 4)
+			
+	
 	if _config.get_setting("fullscreen") and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN:
 		set_fullscreen_scale()
-	elif  not _config.get_setting("fullscreen") and DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		set_windowed_scale()
+		
+	elif (not _config.get_setting("fullscreen") and DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN):
+		set_windowed_scale(_config.get_setting("resolution") + 4)
+	
+	elif (window_scale != _config.get_setting("resolution") + 4) and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN: 
+		set_windowed_scale(_config.get_setting("resolution") + 4)
+		
+		
 	
 	if _config.get_setting("vsync"):
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)

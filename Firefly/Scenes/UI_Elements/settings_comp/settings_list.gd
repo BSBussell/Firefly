@@ -4,6 +4,8 @@ class_name SettingsMenu
 # Preload individual components
 var BOOL_TOGGLE: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/bool_setting.tscn")
 var SLIDER: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/slider_setting.tscn")
+var CHOICE: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/choice_setting.tscn")
+
 
 @onready var animation_player = $"../../AnimationPlayer"
 
@@ -83,6 +85,13 @@ func populate_setting(setting_list: Dictionary, current_cat: Button):
 
 			add_child(setting_node)
 			print("Settting_Node")
+			
+		elif setting_list[setting]["type"] == "choice":
+			
+			setting_node = CHOICE.instantiate()
+			setting_node.pass_json(setting_list[setting])
+			
+			add_child(setting_node)
  
 		# Configure up and down focus
 		if prev:

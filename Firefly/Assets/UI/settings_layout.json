@@ -34,6 +34,13 @@
 				"type": "boolean",
 				"config_key": "fullscreen"
 			},
+			"resolution": {
+				"label": "Resolution Scale",
+				 "description": "Select your resolution",
+				 "type": "choice",
+				 "config_key": "resolution",
+				 "options": ["1x", "2x", "3x", "4x", "5x", "6x"]
+			},
 			"vsync": {
 				"label": "V-Sync Enabled",
 				"description": "sync game refresh rate with monitor",

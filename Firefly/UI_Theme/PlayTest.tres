@@ -1,6 +1,7 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=21 format=3 uid="uid://dtqfsbjdbbwas"]
 
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_ht7w3"]
+[ext_resource type="StyleBox" uid="uid://ba6n0xamrag6i" path="res://UI_Theme/option_Style.tres" id="2_whtca"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkirc"]
 
@@ -44,17 +45,24 @@ thickness = 17
 [sub_resource type="FontVariation" id="FontVariation_w02q8"]
 base_font = ExtResource("1_ht7w3")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vc2dj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35d5h"]
 bg_color = Color(0.490196, 0.439216, 0.741176, 1)
-border_width_left = 10
-border_width_top = 10
-border_width_right = 10
-border_width_bottom = 10
 border_color = Color(0.235294, 0.2, 0.501961, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_detail = 2
+shadow_offset = Vector2(2.08165e-12, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h362d"]
+bg_color = Color(0.490196, 0.439216, 0.741176, 1)
+border_color = Color(0.235294, 0.2, 0.501961, 1)
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+corner_detail = 2
+shadow_offset = Vector2(2.08165e-12, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_lpqex"]
+color = Color(0.890196, 0.921569, 0.34902, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_7rppv"]
 color = Color(0.890196, 0.921569, 0.34902, 1)
@@ -99,7 +107,17 @@ OptionButton/constants/arrow_margin = 2
 OptionButton/constants/modulate_arrow = 13
 OptionButton/constants/outline_size = 5
 OptionButton/fonts/font = SubResource("FontVariation_w02q8")
-OptionButton/styles/normal = SubResource("StyleBoxFlat_vc2dj")
+OptionButton/styles/disabled = ExtResource("2_whtca")
+OptionButton/styles/disabled_mirrored = ExtResource("2_whtca")
+OptionButton/styles/focus = ExtResource("2_whtca")
+OptionButton/styles/hover = ExtResource("2_whtca")
+OptionButton/styles/hover_mirrored = ExtResource("2_whtca")
+OptionButton/styles/normal = ExtResource("2_whtca")
+OptionButton/styles/normal_mirrored = ExtResource("2_whtca")
+OptionButton/styles/pressed = SubResource("StyleBoxFlat_35d5h")
+OptionButton/styles/pressed_mirrored = ExtResource("2_whtca")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_h362d")
+PopupMenu/styles/separator = SubResource("StyleBoxLine_lpqex")
 RichTextLabel/font_sizes/normal_font_size = 32
 RichTextLabel/fonts/normal_font = ExtResource("1_ht7w3")
 VScrollBar/styles/grabber = SubResource("StyleBoxLine_7rppv")
