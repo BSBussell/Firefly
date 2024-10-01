@@ -16,6 +16,9 @@ const BASE_UI_RENDER: Vector2i = Vector2i(1920, 1080)
 @onready var game_view_port = $LevelLoader/GameViewPort
 @onready var ui_view_port = $UILoader/UIViewPort
 
+# Our Theme Node
+@onready var global_themer = $UILoader/UIViewPort/GlobalThemer
+
 ## The default resolution in the monitor's aspect ratio
 var base_aspect_ratio: Vector2i = Vector2i(320, 180)
 
@@ -148,9 +151,14 @@ func set_windowed_scale(win_scale: float = -1) -> void:
 
 	# Update the viewports using the window scale
 	set_viewports_scale(window_scale)
+	
+	# Update Theme
+	update_brimblo()
 
 	# Set the window size to the target window size
 	DisplayServer.window_set_size(window_size)
+		
+		
 		
 func set_fullscreen_scale():
 	
@@ -160,6 +168,9 @@ func set_fullscreen_scale():
 	var screen_size = get_usable_screen_size()
 	
 	window_size = screen_size
+	
+	# Update Theme
+	update_brimblo()
 
 	# Update Rendering size for various aspect ratios
 	update_aspect_ratio()
@@ -220,6 +231,17 @@ func update_gameview_res():
 	level_loader.position.x = -((base_aspect_ratio.x * 1.4) - (game_res.x)) * window_scale/2
 	level_loader.position.y = -((base_aspect_ratio.y * 1.4) - (game_res.y)) * window_scale/2
 
+
+## Updates a themes font sizes for the window res
+func update_brimblo():
+	
+	global_themer.scale_theme(window_size)
+	#if window_size.x < 1600:
+		#global_themer.theme = preload("res://UI_Theme/Brimblo_Low_PPI.tres")
+	#else:
+		#global_themer.theme = preload("res://UI_Theme/Brimblo.tres")
+
+	pass
 
 
 var interpolating_res: bool = false
@@ -315,15 +337,21 @@ func config_changed():
 	#if window_scale != _config.get_setting("resolution") + 4:
 			#set_windowed_scale(_config.get_setting("resolution") + 4)
 			
+	# if you have a worse screen just get fucked ig
+	var win_scale_min: int = 3
 	
 	if _config.get_setting("fullscreen") and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN:
+		
 		set_fullscreen_scale()
 		
 	elif (not _config.get_setting("fullscreen") and DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN):
-		set_windowed_scale(_config.get_setting("resolution") + 4)
+		
+		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
 	
-	elif (window_scale != _config.get_setting("resolution") + 4) and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN: 
-		set_windowed_scale(_config.get_setting("resolution") + 4)
+	elif (window_scale != _config.get_setting("resolution") + win_scale_min) and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN: 
+		
+		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
+		
 		
 		
 	

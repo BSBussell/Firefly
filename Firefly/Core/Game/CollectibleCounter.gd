@@ -75,13 +75,13 @@ func _on_hide_timer_timeout():
 ## Ensures that on animation playing we don't teleport pos
 func play_show():
 	
-	var current_pos = COUNTER.offset_right  
+	var current_pos = COUNTER.anchor_left  
 	COUNTER_ANIMATOR.get_animation("Show").track_set_key_value(0, 0, current_pos)
 	COUNTER_ANIMATOR.play("Show")
 	
 ## Ensures that on animation playing we don't teleport pos
 func play_hide():
-	var current_pos = COUNTER.offset_right
+	var current_pos = COUNTER.anchor_left
 	COUNTER_ANIMATOR.get_animation("Hide").track_set_key_value(0, 0, current_pos)
 	COUNTER_ANIMATOR.play("Hide")
 	

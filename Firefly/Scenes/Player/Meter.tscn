@@ -6,9 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_51lu5"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/Meter.gd" id="4_qwq71"]
 [ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="5_kq1cm"]
-[ext_resource type="Script" path="res://Core/Scale.gd" id="5_vgors"]
 [ext_resource type="AudioStream" uid="uid://dltcpm20f25wk" path="res://Assets/SFX/Player/Glow/fire_lit.mp3" id="5_xvpry"]
 [ext_resource type="AudioStream" uid="uid://b6ju3ueut1ptt" path="res://Assets/SFX/Player/Glow/fire_rumble.mp3" id="6_4gy3n"]
+[ext_resource type="Script" path="res://Scripts/CustomThemeing/ThemedTextureProgressBar.gd" id="7_q70ty"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_syw0g"]
 resource_local_to_scene = true
@@ -68,18 +68,24 @@ grow_vertical = 2
 rotation = 1.5708
 scale = Vector2(-1, 1)
 
-[node name="Meter" type="TextureProgressBar" parent="."]
-z_index = 100
-texture_filter = 1
+[node name="Container" type="Container" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.898958
-anchor_top = 0.81
-anchor_right = 0.915625
-anchor_bottom = 0.815
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -227.0
+offset_top = -267.0
+offset_right = -21.0
+offset_bottom = -15.0
 grow_horizontal = 0
 grow_vertical = 0
-scale = Vector2(6, 6)
+
+[node name="Meter" type="TextureProgressBar" parent="Container"]
+z_index = 100
+texture_filter = 1
+layout_mode = 2
 value = 25.0
 allow_greater = true
 allow_lesser = true
@@ -88,11 +94,10 @@ texture_under = ExtResource("1_s86km")
 texture_over = ExtResource("2_eg2ve")
 texture_progress = ExtResource("3_rr7kc")
 tint_progress = Color(1.8, 1.8, 1, 1)
-script = ExtResource("5_vgors")
-high_dpi_scale = Vector2(10, 10)
+script = ExtResource("7_q70ty")
 metadata/_edit_use_anchors_ = true
 
-[node name="Particle" type="CPUParticles2D" parent="Meter"]
+[node name="Particle" type="CPUParticles2D" parent="Container/Meter"]
 modulate = Color(1.8, 1.8, 1, 1)
 z_index = -1
 position = Vector2(15.8333, 30.5)
@@ -114,12 +119,12 @@ scale_amount_max = 2.0
 color = Color(0.960784, 0.898039, 0, 1)
 color_ramp = SubResource("Gradient_8qie6")
 
-[node name="FireLit" type="AudioStreamPlayer" parent="Meter"]
+[node name="FireLit" type="AudioStreamPlayer" parent="Container/Meter"]
 stream = ExtResource("5_xvpry")
 volume_db = -10.0
 bus = &"SFX"
 
-[node name="FireRumble" type="AudioStreamPlayer" parent="Meter"]
+[node name="FireRumble" type="AudioStreamPlayer" parent="Container/Meter"]
 stream = ExtResource("6_4gy3n")
 volume_db = -10.0
 pitch_scale = 0.8

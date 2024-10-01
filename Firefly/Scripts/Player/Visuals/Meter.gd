@@ -6,10 +6,10 @@ class_name Meter
 @export var decrease_speed: float = 20
 
 
-@onready var progress_bar = $Meter
-@onready var particle = $Meter/Particle
-@onready var fire_lit = $Meter/FireLit
-@onready var fire_rumble = $Meter/FireRumble
+@onready var progress_bar = $Container/Meter
+@onready var particle = $Container/Meter/Particle
+@onready var fire_lit = $Container/Meter/FireLit
+@onready var fire_rumble = $Container/Meter/FireRumble
 @onready var rays = $Rays
 
 

@@ -1,14 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://5tciyrj8bdij"]
+[gd_scene load_steps=4 format=3 uid="uid://5tciyrj8bdij"]
 
 [ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/choice_setting.gd" id="1_rc5we"]
-[ext_resource type="LabelSettings" uid="uid://4yd1xq3pf4m6" path="res://UI_Theme/selectFont.tres" id="2_kx88o"]
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="3_k0qpu"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="2_ywr6t"]
 [ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="4_jocy5"]
 
 [node name="Slider" type="HBoxContainer"]
 offset_right = 760.0
 offset_bottom = 98.0
 size_flags_vertical = 3
+theme_override_constants/separation = 0
 script = ExtResource("1_rc5we")
 
 [node name="SettingName" type="Label" parent="."]
@@ -16,18 +16,18 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 text = "Resolution:"
-label_settings = ExtResource("2_kx88o")
 vertical_alignment = 1
 
 [node name="Control" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 14
+theme_override_constants/separation = 5
+alignment = 2
 
 [node name="Left" type="Button" parent="Control"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-theme = ExtResource("3_k0qpu")
 text = "<"
 alignment = 2
 
@@ -35,21 +35,19 @@ alignment = 2
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-theme = ExtResource("3_k0qpu")
 text = "1x"
 
 [node name="Right" type="Button" parent="Control"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-theme = ExtResource("3_k0qpu")
 text = ">"
 alignment = 0
 
 [node name="OptionButton" type="OptionButton" parent="."]
 visible = false
 layout_mode = 2
-theme = ExtResource("3_k0qpu")
+theme = ExtResource("2_ywr6t")
 item_count = 4
 selected = 0
 popup/item_0/text = "  1x  "

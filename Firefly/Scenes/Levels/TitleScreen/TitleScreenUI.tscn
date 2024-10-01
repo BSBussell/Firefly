@@ -373,6 +373,7 @@ mouse_filter = 1
 color = Color(0.235294, 0.2, 0.501961, 1)
 
 [node name="TitleText" type="Label" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_vmqk0")
 layout_mode = 1
 anchors_preset = -1
@@ -390,6 +391,22 @@ horizontal_alignment = 1
 visible_characters = 0
 visible_ratio = 0.0
 
+[node name="TitleText2" type="Label" parent="."]
+material = SubResource("ShaderMaterial_vmqk0")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.25
+anchor_right = 0.5
+anchor_bottom = 0.25
+offset_left = -408.0
+offset_right = 408.0
+offset_bottom = 240.0
+grow_horizontal = 2
+theme_type_variation = &"HeaderLarge"
+text = "FireFly"
+horizontal_alignment = 1
+
 [node name="ItemsContainer" type="HBoxContainer" parent="."]
 clip_contents = true
 layout_mode = 1
@@ -404,16 +421,19 @@ grow_vertical = 0
 [node name="Start" parent="ItemsContainer" instance=ExtResource("5_lxaax")]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = null
 text = "Start"
 
 [node name="Settings" parent="ItemsContainer" instance=ExtResource("5_lxaax")]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = null
 text = "Settings"
 
 [node name="Quit" parent="ItemsContainer" instance=ExtResource("5_lxaax")]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = null
 text = "Quit"
 
 [node name="SettingsSubMenu" parent="." instance=ExtResource("7_u4ssm")]

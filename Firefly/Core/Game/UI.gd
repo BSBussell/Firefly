@@ -1,6 +1,9 @@
 # UIScript.gd
-extends Node
+extends Control
 class_name UiLoader
+
+@onready var global_themer = $UIViewPort/GlobalThemer
+
 
 # The level that is loaded
 var currentLevel: Level
@@ -17,7 +20,7 @@ func setup(level: Level):
 ## Removes all the ui components from the ui_viewport
 func reset_ui():
 	
-	for child in _viewports.ui_viewport.get_children():
+	for child in global_themer.get_children():
 		child.queue_free()
 		
 	# Empty the ui_components
@@ -65,8 +68,9 @@ func load_ui(context: Level) -> void:
 			else:
 				push_warning("Depdency: ", dependency_name, " could not be found!")
 		
-		# Now that we've connected it's dependency we can add it to the ui_viewport
-		_viewports.ui_viewport.add_child(ui_component)
+		# Now that we've connected it's dependency we can add it to the themer
+		global_themer.add_child(ui_component)
+		
 		
 
 ## Method for grabbing components

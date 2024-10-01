@@ -31,4 +31,4 @@ func _on_focus_entered():
 	
 	focus.play(0  )
 	add_theme_color_override("font_color", "d59d29")
-	add_theme_font_size_override("font_size", 57)
+	#add_theme_font_size_override("font_size", 57)

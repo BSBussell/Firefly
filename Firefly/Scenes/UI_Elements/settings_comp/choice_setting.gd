@@ -133,7 +133,7 @@ func update_display():
 	
 ## Save the config
 func save():
-	_config.set_setting(setting_json["config_key"], selected)
+	_config.set_setting(setting_json["config_key"], selected)  
 
 
 func _on_right_pressed():

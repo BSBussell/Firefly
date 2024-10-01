@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bkeka0x5vwxx7"]
 
 [ext_resource type="Script" path="res://Core/Game/Results.gd" id="1_cunm8"]
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="2_wux1v"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="2_wux1v"]
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="3_wf4fc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_fors3"]
