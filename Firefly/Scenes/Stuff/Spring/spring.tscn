@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://52vkpp5l5cdo"]
+[gd_scene load_steps=22 format=3 uid="uid://52vkpp5l5cdo"]
 
 [ext_resource type="Script" path="res://Scripts/Spring/Spring.gd" id="1_bfd0d"]
 [ext_resource type="Texture2D" uid="uid://bvuqk1tkrparx" path="res://Assets/Graphics/Mechanics/spring.png" id="2_fj4jj"]
 [ext_resource type="AudioStream" uid="uid://b8jpn4y1xn7h3" path="res://Assets/SFX/Mechanics/metalSpring.mp3" id="3_454p6"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_uwhrc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ui63l"]
 atlas = ExtResource("2_fj4jj")
@@ -138,6 +139,11 @@ sprite_frames = SubResource("SpriteFrames_btwcb")
 animation = &"bounce"
 frame = 13
 frame_progress = 1.0
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.3
+texture = ExtResource("3_uwhrc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)

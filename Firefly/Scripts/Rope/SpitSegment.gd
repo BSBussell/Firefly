@@ -3,6 +3,7 @@ class_name SpitSegment
 # :3
 
 @onready var spit = $"."
+@onready var spotlight = $PointLight2D
 
 var root: Rope = null
 
@@ -16,6 +17,12 @@ var origin: Vector2 = Vector2.ZERO
 
 signal grabbed(segment)
 
+
+var is_decor: bool = false
+
+func _ready():
+	if is_decor:
+		dim()
 # Connects the joint to the top of the spit
 func connect_top(joint: PinJoint2D):
 	joint.node_b = spit.get_path()
@@ -38,3 +45,12 @@ func player_grabbed():
 
 func start_cooldown(time: float) -> void:
 	root.start_cooldown(time)
+
+func set_decor() -> void:
+	is_decor = true
+
+func dim() -> void:
+	if spotlight:
+		spotlight.enabled = false
+		spotlight.queue_free()
+	
