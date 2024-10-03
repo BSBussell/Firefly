@@ -7,7 +7,7 @@ class_name BoolSetting
 
 @onready var focus = $Focus
 
-
+## Example Slider Dict:
 #"Volume": {
 #     "label": "Volume",
 #     "description": "Control the Volume of the game",
