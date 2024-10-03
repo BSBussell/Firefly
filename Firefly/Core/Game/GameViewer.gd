@@ -57,7 +57,7 @@ func _ready():
 	# Connect Config change function
 	_config.connect_to_config_changed(Callable(self, "config_changed"))
 
-	set_windowed_scale()
+	config_changed()
 
 	# Get zoom from config
 	res_scale = _config.get_setting("game_zoom")

@@ -24,6 +24,9 @@ func scale_theme(resolution: Vector2):
 	scale_elem_constant_by("AnimatedToggle", "hover_scale", scale_factor)
 	scale_elem_constant_by("AnimatedToggle", "scale", scale_factor)
 	
+	# UI_Jar
+	scale_elem_constant_by("UI_Jar", "scale", scale_factor)
+	
 	# TextureProgressMeter
 	scale_elem_constant_by("TextureProgressBar", "scale", scale_factor)
 	

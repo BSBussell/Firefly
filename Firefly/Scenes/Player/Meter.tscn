@@ -161,6 +161,7 @@ scale = Vector2(4, 4)
 color = Color(0.890196, 0.921569, 0.34902, 1)
 energy = 0.0
 blend_mode = 1
+range_z_min = 100
 range_z_max = 101
 texture = ExtResource("4_51lu5")
 
@@ -169,4 +170,6 @@ position = Vector2(-46, -6)
 scale = Vector2(4, 4)
 color = Color(0.890196, 0.921569, 0.34902, 1)
 energy = 0.3
+range_z_min = 100
+range_z_max = 101
 texture = ExtResource("4_51lu5")

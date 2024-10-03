@@ -4,7 +4,7 @@ extends TextureProgressBar
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	_config.connect_to_config_changed(Callable(self, "config_changed"))
+	_viewports.viewer.connect_to_res_changed(Callable(self, "config_changed"))
 	config_changed()
 
 

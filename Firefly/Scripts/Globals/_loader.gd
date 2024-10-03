@@ -16,8 +16,8 @@ var title_screen: NodePath = NodePath("res://Scenes/Levels/TitleScreen/title_scr
 ## Loads and displays the loading screen
 func show_loading() -> Control:
 	var loading_screen = preload("res://Core/loading_screen.tscn").instantiate()
-	if ui_loader:
-		ui_loader.add_child(loading_screen)
+	if _viewports.ui_viewport:
+		_viewports.ui_viewport.add_child(loading_screen)
 		loading_screen.play_animation("load_in")
 		
 		# Wait for the animation to finish before continuing 
