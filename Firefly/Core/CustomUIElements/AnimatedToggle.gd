@@ -81,8 +81,6 @@ func toggle_off():
 
 func _on_focus_entered():
 	
-	_apply_theme()
-	
 	animated_sprite_2d.modulate = theme_hover_mod
 	set_theme_scale(hover_Scale)
 	#animated_sprite_2d.scale = Vector2(hover_Scale, hover_Scale)
@@ -92,7 +90,7 @@ func _on_focus_entered():
 
 func _on_focus_exited():
 	
-	_apply_theme()
+	
 	
 	# Set the sprite back to looking lame asf
 	animated_sprite_2d.modulate = theme_mod
@@ -101,9 +99,13 @@ func _on_focus_exited():
 	
 func config_changed():
 	
-	#if animated_sprite_2d.scale.x == base_Scale:
-	_apply_theme()
-	set_theme_scale(base_Scale)
-	#else:
-		#_apply_theme()
-		#set_theme_scale(hover_Scale)
+	# For some reason it takes awhile for the theme to update after its been changed in parent i can't tell you why
+	await get_tree().create_timer(0.001).timeout
+	if animated_sprite_2d.scale.x == base_Scale:
+	
+		
+		_apply_theme()
+		set_theme_scale(base_Scale)
+	else:
+		_apply_theme()
+		set_theme_scale(hover_Scale)

@@ -280,14 +280,14 @@ script = ExtResource("3_6k2he")
 speed = 250.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
-modulate = Color(1, 1, 1, 0.827846)
+modulate = Color(1, 1, 1, 0.995075)
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.96
-anchor_top = 0.863904
+anchor_top = 0.860004
 anchor_right = 0.96
-anchor_bottom = 0.863904
+anchor_bottom = 0.860004
 offset_left = 0.479973
 offset_top = -0.280029
 offset_right = 12.48

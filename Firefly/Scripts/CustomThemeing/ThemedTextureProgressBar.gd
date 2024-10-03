@@ -14,5 +14,8 @@ func _process(delta):
 
 # get_theme_constant("scale", "TextureProgressBar")
 func config_changed():
+	
+	# For some reason it takes awhile for the theme to update after its been changed in parent idk
+	await get_tree().create_timer(0.001).timeout
 	var theme_scale: float = get_theme_constant("scale", "TextureProgressBar")
 	self.scale = Vector2(theme_scale, theme_scale)
