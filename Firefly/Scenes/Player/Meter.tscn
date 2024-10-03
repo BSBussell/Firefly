@@ -13,19 +13,19 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_syw0g"]
 resource_local_to_scene = true
 shader = ExtResource("5_kq1cm")
-shader_parameter/angle = -0.34
-shader_parameter/position = -0.48
-shader_parameter/spread = 1.0
-shader_parameter/cutoff = -0.147
-shader_parameter/falloff = 0.911
-shader_parameter/edge_fade = 0.445
-shader_parameter/speed = 10.0
-shader_parameter/ray1_density = 8.21
+shader_parameter/angle = 0.27
+shader_parameter/position = 0.23
+shader_parameter/spread = 0.489
+shader_parameter/cutoff = -0.112
+shader_parameter/falloff = 0.351
+shader_parameter/edge_fade = 0.895
+shader_parameter/speed = 5.0
+shader_parameter/ray1_density = 5.0
 shader_parameter/ray2_density = 10.0
 shader_parameter/ray2_intensity = 1.0
 shader_parameter/color = Color(1, 1, 0, 1)
 shader_parameter/hdr = true
-shader_parameter/seed = -113.8
+shader_parameter/seed = 1248.0
 
 [sub_resource type="Gradient" id="Gradient_8qie6"]
 offsets = PackedFloat32Array(0, 0.104167, 0.885417, 1)
@@ -53,40 +53,36 @@ increase_speed = 50.0
 decrease_speed = 90.0
 
 [node name="Rays" type="ColorRect" parent="."]
-visible = false
+z_index = 101
 material = SubResource("ShaderMaterial_syw0g")
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.56
-anchor_bottom = 1.15
+anchor_left = 0.91
+anchor_top = 0.97
+anchor_right = 1.0
+anchor_bottom = 1.25
 offset_right = 6.10352e-05
 offset_bottom = 5.14984e-05
 grow_horizontal = 0
 grow_vertical = 2
-rotation = 1.5708
-scale = Vector2(-1, 1)
+scale = Vector2(1, -1)
 
-[node name="Container" type="Container" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -227.0
-offset_top = -267.0
-offset_right = -21.0
-offset_bottom = -15.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="Meter" type="TextureProgressBar" parent="Container"]
+[node name="Meter" type="TextureProgressBar" parent="."]
 z_index = 100
 texture_filter = 1
-layout_mode = 2
-value = 25.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.98
+anchor_top = 0.97
+anchor_right = 0.98
+anchor_bottom = 0.97
+offset_left = -12.0
+offset_top = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(8, 8)
+pivot_offset = Vector2(12, 32)
+value = 100.0
 allow_greater = true
 allow_lesser = true
 fill_mode = 3
@@ -97,10 +93,10 @@ tint_progress = Color(1.8, 1.8, 1, 1)
 script = ExtResource("7_q70ty")
 metadata/_edit_use_anchors_ = true
 
-[node name="Particle" type="CPUParticles2D" parent="Container/Meter"]
+[node name="Particle" type="CPUParticles2D" parent="Meter"]
 modulate = Color(1.8, 1.8, 1, 1)
 z_index = -1
-position = Vector2(15.8333, 30.5)
+position = Vector2(6.09999, 30.5)
 amount = 16
 lifetime = 1.1
 local_coords = true
@@ -119,12 +115,12 @@ scale_amount_max = 2.0
 color = Color(0.960784, 0.898039, 0, 1)
 color_ramp = SubResource("Gradient_8qie6")
 
-[node name="FireLit" type="AudioStreamPlayer" parent="Container/Meter"]
+[node name="FireLit" type="AudioStreamPlayer" parent="Meter"]
 stream = ExtResource("5_xvpry")
 volume_db = -10.0
 bus = &"SFX"
 
-[node name="FireRumble" type="AudioStreamPlayer" parent="Container/Meter"]
+[node name="FireRumble" type="AudioStreamPlayer" parent="Meter"]
 stream = ExtResource("6_4gy3n")
 volume_db = -10.0
 pitch_scale = 0.8
@@ -159,8 +155,18 @@ offset_top = -40.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="PointLight2D" type="PointLight2D" parent="Control"]
-visible = false
+[node name="Darkening" type="PointLight2D" parent="Control"]
+position = Vector2(-46, -219)
 scale = Vector2(4, 4)
-color = Color(1, 1, 0, 1)
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.0
+blend_mode = 1
+range_z_max = 101
+texture = ExtResource("4_51lu5")
+
+[node name="Brighten" type="PointLight2D" parent="Control"]
+position = Vector2(-46, -6)
+scale = Vector2(4, 4)
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.3
 texture = ExtResource("4_51lu5")

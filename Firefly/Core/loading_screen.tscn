@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="2_6qk3d"]
 [ext_resource type="Script" path="res://Core/ProgressBarInterpolate.gd" id="3_6k2he"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_7wtw1"]
-[ext_resource type="Script" path="res://Core/Scale.gd" id="5_wiu7h"]
+[ext_resource type="Script" path="res://Core/LoadingFlyJar.gd" id="5_hvb03"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uth8b"]
 shader = ExtResource("1_38x6w")
@@ -266,10 +266,9 @@ script = ExtResource("1_0il42")
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 1.0
+anchor_top = 0.95
 anchor_right = 1.005
 anchor_bottom = 1.0
-offset_top = -50.0
 grow_horizontal = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bxd2a")
 theme_override_styles/fill = SubResource("StyleBoxFlat_n2ksf")
@@ -283,26 +282,29 @@ modulate = Color(1, 1, 1, 0)
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.925
-anchor_top = 0.88
-anchor_right = 0.925
-anchor_bottom = 0.88
-offset_left = -84.706
-offset_top = -120.0
-offset_bottom = 1.85966e-05
-grow_horizontal = 2
-grow_vertical = 2
+anchor_left = 0.96
+anchor_top = 0.87
+anchor_right = 0.96
+anchor_bottom = 0.87
+offset_left = 0.479973
+offset_top = -0.280029
+offset_right = 12.48
+offset_bottom = 16.72
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(10, 10)
+pivot_offset = Vector2(12, 17)
 texture = ExtResource("2_6qk3d")
 expand_mode = 1
 stretch_mode = 4
 flip_h = true
-script = ExtResource("5_wiu7h")
-high_dpi_scale = null
+script = ExtResource("5_hvb03")
 
 [node name="FireFlies" type="CPUParticles2D" parent="TextureRect"]
 modulate = Color(6, 6, 2.5, 1)
 z_index = 1
-position = Vector2(39, 70)
+position = Vector2(6.33386, 14.035)
+scale = Vector2(0.1, 0.1)
 amount = 10
 speed_scale = 0.8
 randomness = 1.0
@@ -327,7 +329,8 @@ color_ramp = SubResource("Gradient_g30c5")
 
 [node name="PointLight2D" type="PointLight2D" parent="TextureRect"]
 z_index = -1
-position = Vector2(41.7061, 64.6)
+position = Vector2(6, 9.135)
+scale = Vector2(0.1, 0.1)
 color = Color(0.890196, 0.921569, 0.34902, 1)
 energy = 0.5
 texture = ExtResource("4_7wtw1")

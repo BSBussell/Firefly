@@ -20,6 +20,8 @@ class_name BoolSetting
 
 func setup_element():
 	
+	set_thickness(h_slider.get_theme_constant("thickness", "HSlider"))
+	
 	label.text = setting_json["label"]
 	
 	# Set the toggle tooltip
@@ -73,15 +75,19 @@ func get_focus_obj() -> Control:
 func _on_h_slider_value_changed(value):
 	if setting_json:
 		_config.set_setting(setting_json["config_key"], value)
-		print(value)
 
 
 func _on_h_slider_focus_entered():
 	focus.play(0.0)
-	var style_box: StyleBoxLine = h_slider.get_theme_stylebox("slider").duplicate()
-	style_box.set("thickness", 25)
-	h_slider.add_theme_stylebox_override("slider", style_box)
+	set_thickness(h_slider.get_theme_constant("focused_thickness", "HSlider"))
 
 
 func _on_h_slider_focus_exited():
+	set_thickness(h_slider.get_theme_constant("thickness", "HSlider"))
+	
+func set_thickness(thickness: int):
 	h_slider.remove_theme_stylebox_override("slider")
+	var style_box: StyleBoxLine = h_slider.get_theme_stylebox("slider").duplicate()
+	style_box.set("thickness", thickness)
+	h_slider.add_theme_stylebox_override("slider", style_box)
+	

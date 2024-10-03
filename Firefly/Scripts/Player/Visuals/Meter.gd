@@ -6,11 +6,13 @@ class_name Meter
 @export var decrease_speed: float = 20
 
 
-@onready var progress_bar = $Container/Meter
-@onready var particle = $Container/Meter/Particle
-@onready var fire_lit = $Container/Meter/FireLit
-@onready var fire_rumble = $Container/Meter/FireRumble
+@onready var progress_bar = $Meter
+@onready var particle = $Meter/Particle
+@onready var fire_lit = $Meter/FireLit
+@onready var fire_rumble = $Meter/FireRumble
 @onready var rays = $Rays
+@onready var brighten = $Control/Brighten
+@onready var darkening = $Control/Darkening
 
 
 var actual_score: float = 0
@@ -35,11 +37,20 @@ func _process(delta):
 		multiplier = increase_speed
 	
 	interpolated_score = move_toward(interpolated_score, actual_score, delta * multiplier)
+	
 	progress_bar.value = interpolated_score
 	
-	rays.anchor_right = lerp(1.0, 1.56, (interpolated_score / progress_bar.max_value))
-	rays.anchor_bottom = lerp(1.0, 1.15, (interpolated_score / progress_bar.max_value))
-
+	var weight: float = interpolated_score/progress_bar.max_value
+	
+	# Setup lights
+	brighten.energy = lerpf(0, 0.3, weight)
+	darkening.energy = lerpf(1.0, 0.0, weight)
+	
+	# Interpolate godrays
+	var color = rays.material.get_shader_parameter("color")
+	color.a = lerpf(0.0,1.0, weight)
+	rays.material.set_shader_parameter("color", color)
+	
 	if progress_bar.value >= progress_bar.max_value:
 		particle.emitting = true
 		# rays.visible = true

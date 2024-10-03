@@ -68,31 +68,33 @@ func populate_setting(setting_list: Dictionary, current_cat: Button):
 
 	for setting in setting_list:
 
-		var setting_node: BaseSetting
+		var setting_node: BaseSetting = null
 
 		if setting_list[setting]["type"] == "boolean":
 
 			setting_node = BOOL_TOGGLE.instantiate()
 			setting_node.pass_json(setting_list[setting])
 
-			add_child(setting_node)
-			print("Settting_Node")
 			
 		elif setting_list[setting]["type"] == "slider":
 		
 			setting_node = SLIDER.instantiate()
 			setting_node.pass_json(setting_list[setting])
 
-			add_child(setting_node)
-			print("Settting_Node")
 			
 		elif setting_list[setting]["type"] == "choice":
 			
 			setting_node = CHOICE.instantiate()
 			setting_node.pass_json(setting_list[setting])
+		
+		else:
+			_logger.warning("Setting Type Invalid: " + setting_list[setting]["type"])
+			continue
 			
-			add_child(setting_node)
  
+		# Add the setting node to the thing
+		add_child(setting_node)
+
 		# Configure up and down focus
 		if prev:
 			

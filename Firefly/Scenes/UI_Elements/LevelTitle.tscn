@@ -1,6 +1,5 @@
 [gd_scene load_steps=6 format=3 uid="uid://c5ahnw1ttou3g"]
 
-[ext_resource type="LabelSettings" uid="uid://c5f3esv7avs44" path="res://UI_Theme/TitleText.tres" id="1_4kq2e"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/LevelTitle.gd" id="1_8542q"]
 
 [sub_resource type="Animation" id="Animation_m2tih"]
@@ -37,20 +36,60 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:visible_ratio")
-tracks/1/interp = 1
+tracks/1/path = NodePath(".:theme_override_font_sizes/font_size")
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
+"transitions": PackedFloat32Array(1, 1.5),
 "update": 0,
-"values": [1.0, 0.0]
+"values": [64, 102]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2, 1),
+"transitions": PackedFloat32Array(1.2, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_rdpmt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_font_sizes/font_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vn7ag"]
 _data = {
 "Drop-In": SubResource("Animation_m2tih"),
-"Fade-Out": SubResource("Animation_2cmer")
+"Fade-Out": SubResource("Animation_2cmer"),
+"RESET": SubResource("Animation_rdpmt")
 }
 
 [node name="EntryText" type="Control"]
@@ -73,9 +112,9 @@ offset_right = 600.0
 offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.568627, 0.364706, 0.756863, 1)
+theme_type_variation = &"LevelTitle"
+theme_override_font_sizes/font_size = 0
 text = "- GlowWorm Cavern -"
-label_settings = ExtResource("1_4kq2e")
 horizontal_alignment = 1
 vertical_alignment = 1
 

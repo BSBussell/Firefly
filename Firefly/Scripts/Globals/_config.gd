@@ -80,9 +80,13 @@ func get_setting(key: String) -> Variant:
 
 # Set a setting value by key and save to file
 func set_setting(key: String, value: Variant) -> void:
-	settings[key] = value
-	save_settings()
+	
+	# Make sure we are actually changing things
+	if value != settings[key]:
+		settings[key] = value
+		save_settings()
 
 
 func connect_to_config_changed(function: Callable) -> void:
 	connect("config_changed", function)
+

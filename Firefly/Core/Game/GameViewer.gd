@@ -6,6 +6,8 @@ const BASE_RENDER: Vector2i = Vector2i(320, 180)
 
 const BASE_UI_RENDER: Vector2i = Vector2i(1920, 1080)
 
+signal res_changed
+
 @export var start_level: PackedScene
 
 # Our loaders
@@ -158,7 +160,8 @@ func set_windowed_scale(win_scale: float = -1) -> void:
 	# Set the window size to the target window size
 	DisplayServer.window_set_size(window_size)
 		
-		
+	# Signal to ui to resize
+	emit_signal("res_changed")
 		
 func set_fullscreen_scale():
 	
@@ -183,6 +186,9 @@ func set_fullscreen_scale():
 	rescale_ui_viewport(screen_size)
 
 	zoom_render(res_scale)
+	
+	# Signal to ui to resize
+	emit_signal("res_changed")
 
 func set_viewports_scale(scale_factor: float):
 	
@@ -316,6 +322,9 @@ func zoom_render(new_scale: float) :
 	update_gameview_res()
 	rescale_game_viewport(window_scale)
 
+func connect_to_res_changed(function: Callable):
+	
+	connect("res_changed", function)
 
 
 ## Works on Apple Silicon Macbooks :/ (this is kinda bad idk how else id do this tbh)
@@ -334,20 +343,20 @@ func get_usable_screen_size() -> Vector2i:
 	
 func config_changed():
 	
-	#if window_scale != _config.get_setting("resolution") + 4:
-			#set_windowed_scale(_config.get_setting("resolution") + 4)
-			
 	# if you have a worse screen just get fucked ig
 	var win_scale_min: int = 3
 	
+	# On fullscreen enabled
 	if _config.get_setting("fullscreen") and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN:
 		
 		set_fullscreen_scale()
 		
+	# On Turning off fullscreen
 	elif (not _config.get_setting("fullscreen") and DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN):
 		
 		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
 	
+	# On adjusting window scale
 	elif (window_scale != _config.get_setting("resolution") + win_scale_min) and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN: 
 		
 		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)

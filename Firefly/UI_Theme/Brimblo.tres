@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=22 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=29 format=3 uid="uid://dtqfsbjdbbwas"]
 
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_rvtbs"]
 [ext_resource type="StyleBox" uid="uid://ba6n0xamrag6i" path="res://UI_Theme/option_Style.tres" id="2_3epl8"]
@@ -14,14 +14,61 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ugbje"]
 
+[sub_resource type="ImageTexture" id="ImageTexture_yx0on"]
+
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_1i0tc"]
 color = Color(0.890196, 0.921569, 0.34902, 1)
 grow_begin = 0.0
 thickness = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_33gnm"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrb5j"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.75, 0.75, 0.75, 0.75)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 6
+
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_qhc66"]
 color = Color(0.835294, 0.615686, 0.160784, 1)
 thickness = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4m27f"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_b6f74"]
 
@@ -39,7 +86,7 @@ bg_color = Color(0.890196, 0.921569, 0.34902, 1)
 border_color = Color(0.360784, 0.364706, 0.678431, 1)
 corner_detail = 1
 
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_0qwdj"]
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_cwao1"]
 color = Color(0.741176, 0.407843, 0.0980392, 1)
 thickness = 17
 
@@ -65,9 +112,30 @@ shadow_offset = Vector2(2.08165e-12, 1)
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_lpqex"]
 color = Color(0.890196, 0.921569, 0.34902, 1)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m5ica"]
+content_margin_left = 30.0
+content_margin_right = 30.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fmqbl"]
+bg_color = Color(0, 0, 0, 0.588235)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_color = Color(0, 0, 0, 0.588235)
+shadow_size = 50
+shadow_offset = Vector2(5, 5)
+
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_7rppv"]
 color = Color(0.890196, 0.921569, 0.34902, 1)
-thickness = 100
+grow_begin = 0.0
+thickness = 5
+vertical = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_at48g"]
+color = Color(0.835294, 0.615686, 0.160784, 1)
+grow_begin = 0.0
+thickness = 5
+vertical = true
 
 [resource]
 AnimatedToggle/colors/hover_modulate = Color(1, 1, 1, 1)
@@ -103,7 +171,7 @@ CounterLabel/colors/font_color = Color(1, 1, 1, 1)
 CounterLabel/constants/line_spacing = 3
 CounterLabel/font_sizes/font_size = 64
 CounterLabel/fonts/font = ExtResource("2_kv5i4")
-GameTitle/base_type = &"HeaderLarge"
+GameTitle/base_type = &"Label"
 GameTitle/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
 GameTitle/colors/font_shadow_color = Color(0.235294, 0.2, 0.501961, 0.588235)
 GameTitle/constants/shadow_offset_x = 7
@@ -112,14 +180,25 @@ GameTitle/constants/shadow_outline_size = 40
 GameTitle/font_sizes/font_size = 128
 GameTitle/fonts/font = ExtResource("1_rvtbs")
 HBoxContainer/constants/separation = 150
+HScrollBar/icons/decrement = SubResource("ImageTexture_yx0on")
+HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_yx0on")
+HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_yx0on")
+HScrollBar/icons/increment = SubResource("ImageTexture_yx0on")
+HScrollBar/icons/increment_highlight = SubResource("ImageTexture_yx0on")
+HScrollBar/icons/increment_pressed = SubResource("ImageTexture_yx0on")
 HScrollBar/styles/grabber = SubResource("StyleBoxLine_1i0tc")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_33gnm")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_rrb5j")
 HScrollBar/styles/scroll = SubResource("StyleBoxLine_qhc66")
+HScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_4m27f")
+HSlider/constants/focused_thickness = 25
+HSlider/constants/thickness = 17
 HSlider/icons/grabber = SubResource("PlaceholderTexture2D_b6f74")
 HSlider/icons/grabber_disabled = SubResource("PlaceholderTexture2D_ppoty")
 HSlider/icons/grabber_highlight = SubResource("PlaceholderTexture2D_u0knq")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_vuypm")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_novrq")
-HSlider/styles/slider = SubResource("StyleBoxLine_0qwdj")
+HSlider/styles/slider = SubResource("StyleBoxLine_cwao1")
 HeaderLarge/base_type = &"Label"
 HeaderLarge/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
 HeaderLarge/colors/font_shadow_color = Color(0.235294, 0.2, 0.501961, 0.588235)
@@ -131,6 +210,10 @@ Label/colors/font_color = Color(1, 1, 1, 1)
 Label/colors/font_shadow_color = Color(0, 0, 0, 0)
 Label/font_sizes/font_size = 52
 Label/fonts/font = ExtResource("1_rvtbs")
+LevelTitle/base_type = &"Label"
+LevelTitle/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
+LevelTitle/font_sizes/font_size = 64
+LevelTitle/fonts/font = ExtResource("1_rvtbs")
 OptionButton/constants/arrow_margin = 2
 OptionButton/constants/modulate_arrow = 13
 OptionButton/constants/outline_size = 5
@@ -151,9 +234,19 @@ PopupMenu/styles/panel = SubResource("StyleBoxFlat_h362d")
 PopupMenu/styles/separator = SubResource("StyleBoxLine_lpqex")
 RichTextLabel/font_sizes/normal_font_size = 36
 RichTextLabel/fonts/normal_font = ExtResource("1_rvtbs")
+ScrollContainer/styles/panel = SubResource("StyleBoxEmpty_m5ica")
 SettingHeader/base_type = &"Label"
 SettingHeader/colors/font_color = Color(1, 1, 1, 1)
 SettingHeader/font_sizes/font_size = 64
 SettingHeader/fonts/font = ExtResource("1_rvtbs")
-TextureProgressBar/constants/scale = 6
+TextureProgressBar/constants/scale = 8
+TimerText/base_type = &"Label"
+TimerText/colors/font_color = Color(0.780392, 0.87451, 0.921569, 1)
+TimerText/font_sizes/font_size = 30
+TimerText/fonts/font = ExtResource("1_rvtbs")
+TooltipLabel/colors/font_color = Color(0.822821, 0.898925, 0.937149, 1)
+TooltipLabel/font_sizes/font_size = 16
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_fmqbl")
+UI_Jar/constants/scale = 10
 VScrollBar/styles/grabber = SubResource("StyleBoxLine_7rppv")
+VScrollBar/styles/scroll = SubResource("StyleBoxLine_at48g")

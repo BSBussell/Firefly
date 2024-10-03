@@ -41,6 +41,16 @@ func scale_theme(resolution: Vector2):
 	scale_rich_elem_font_by("RichTextLabel", scale_factor)
 	# SettingHeader - label
 	scale_elem_font_by("SettingHeader", scale_factor) 
+	
+	# Level Title
+	scale_elem_font_by("LevelTitle", scale_factor)
+	
+	# Timer Text
+	scale_elem_font_by("TimerText", scale_factor)
+	
+	# HSlider Thickness
+	scale_elem_constant_by("HSlider", "thickness", scale_factor)
+	scale_elem_constant_by("HSlider", "focused_thickness", scale_factor)
 	pass
 	
 func scale_elem_constant_by(elem_name: String, prop_name: String, scale_factor: float):

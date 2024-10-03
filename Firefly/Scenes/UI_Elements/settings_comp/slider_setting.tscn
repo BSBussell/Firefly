@@ -8,6 +8,7 @@
 offset_right = 894.0
 offset_bottom = 98.0
 size_flags_vertical = 3
+theme = ExtResource("3_6pt8k")
 theme_override_constants/separation = 0
 script = ExtResource("1_wox52")
 
@@ -19,12 +20,10 @@ text = "Auto Glow Mode "
 vertical_alignment = 1
 
 [node name="HSlider" type="HSlider" parent="."]
-custom_minimum_size = Vector2(2.08165e-12, 100)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.5
-theme = ExtResource("3_6pt8k")
 value = 50.0
 
 [node name="Focus" type="AudioStreamPlayer" parent="."]

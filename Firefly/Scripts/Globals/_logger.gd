@@ -8,7 +8,7 @@ var log_calls = true
 var log_name = "user://fire_log.txt"
 
 # How many log messages before the log file is saved
-var log_save_size: int = 1
+var log_save_size: int = 1000
 
 var _log_count: int = 0
 var log_file: FileAccess

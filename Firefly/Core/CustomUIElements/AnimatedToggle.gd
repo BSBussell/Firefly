@@ -21,7 +21,7 @@ var toggle: bool = false
 
 func _ready():  
 	
-	_config.connect_to_config_changed(Callable(self, "config_changed"))
+	_viewports.viewer.connect_to_res_changed(Callable(self, "config_changed"))
 
 	
 	#refresh_focus()
@@ -101,5 +101,9 @@ func _on_focus_exited():
 	
 func config_changed():
 	
+	#if animated_sprite_2d.scale.x == base_Scale:
 	_apply_theme()
 	set_theme_scale(base_Scale)
+	#else:
+		#_apply_theme()
+		#set_theme_scale(hover_Scale)

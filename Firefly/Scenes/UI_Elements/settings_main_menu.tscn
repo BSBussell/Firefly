@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://dwemeqesk48kw"]
+[gd_scene load_steps=19 format=3 uid="uid://dwemeqesk48kw"]
 
 [ext_resource type="Script" path="res://Scenes/UI_Elements/settings_menu.gd" id="1_qs4ru"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_wl4wj"]
 [ext_resource type="Shader" path="res://Core/Game/wavy_sidebar.gdshader" id="2_tn6mq"]
 [ext_resource type="Shader" path="res://Scenes/UI_Elements/topDownWobble.gdshader" id="3_ia2ge"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/pause_buttons.gd" id="6_5eyux"]
@@ -386,6 +387,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+theme = ExtResource("1_wl4wj")
 script = ExtResource("1_qs4ru")
 
 [node name="PauseLinger" type="ColorRect" parent="."]

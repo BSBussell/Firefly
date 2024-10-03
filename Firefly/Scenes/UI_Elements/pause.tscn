@@ -624,7 +624,6 @@ libraries = {
 speed_scale = 2.5
 
 [node name="SettingsSubMenu" parent="." instance=ExtResource("7_dxgjy")]
-visible = false
 layout_mode = 1
 
 [node name="Audio" type="Node" parent="."]
