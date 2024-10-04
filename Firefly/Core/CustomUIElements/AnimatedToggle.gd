@@ -29,7 +29,13 @@ func _ready():
 	pass
 
 
+func update_theme_sizing(custom_scale = base_Scale) -> void:
+	custom_minimum_size = sprite_size * custom_scale
+	animated_sprite_2d.position = custom_minimum_size/2
+
 func set_theme_scale(scale_val):
+	
+	update_theme_sizing(scale_val)
 	animated_sprite_2d.scale = Vector2(scale_val, scale_val)
 
 func _apply_theme():

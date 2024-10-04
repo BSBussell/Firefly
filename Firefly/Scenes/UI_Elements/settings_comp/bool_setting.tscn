@@ -21,6 +21,7 @@ vertical_alignment = 1
 
 [node name="AnimatedToggle" parent="." instance=ExtResource("2_l08fw")]
 layout_mode = 2
+size_flags_horizontal = 9
 size_flags_vertical = 4
 theme = null
 

@@ -16,13 +16,14 @@ script = ExtResource("1_wox52")
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
+theme = ExtResource("3_6pt8k")
 text = "Auto Glow Mode "
-vertical_alignment = 1
+vertical_alignment = 2
 
 [node name="HSlider" type="HSlider" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
+size_flags_vertical = 4
 size_flags_stretch_ratio = 0.5
 value = 50.0
 

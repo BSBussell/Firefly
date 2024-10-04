@@ -152,7 +152,7 @@ func set_windowed_scale(win_scale: float = -1) -> void:
 	update_gameview_res()
 
 	# Update the viewports using the window scale
-	set_viewports_scale(win_scale)
+	set_viewports_scale(window_scale)
 	
 	# Update Theme
 	update_brimblo()
@@ -362,7 +362,7 @@ func config_changed():
 		
 		
 		config_scale = _config.get_setting("resolution") + win_scale_min
-		set_windowed_scale(config_scale)
+		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
 	
 	# On adjusting window scale
 	elif (scale_changed) and not fullscreen_on: 
@@ -372,7 +372,7 @@ func config_changed():
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 			
 		config_scale = _config.get_setting("resolution") + win_scale_min	
-		set_windowed_scale(config_scale)
+		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
 		
 		
 		
