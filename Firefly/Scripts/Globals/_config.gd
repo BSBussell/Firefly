@@ -86,7 +86,7 @@ func set_setting(key: String, value: Variant) -> void:
 		settings[key] = value
 		save_settings()
 
-
+## Connect a callable to the config changed signal. KEEP IT LIGHT!!
 func connect_to_config_changed(function: Callable) -> void:
 	connect("config_changed", function)
 

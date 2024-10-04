@@ -152,7 +152,7 @@ func set_windowed_scale(win_scale: float = -1) -> void:
 	update_gameview_res()
 
 	# Update the viewports using the window scale
-	set_viewports_scale(window_scale)
+	set_viewports_scale(win_scale)
 	
 	# Update Theme
 	update_brimblo()
@@ -341,36 +341,46 @@ func get_usable_screen_size() -> Vector2i:
 	
 	return screen_size
 	
+var config_scale: int = 3
+# if you have a worse screen just get fucked ig
+var win_scale_min: int = 3
+	
 func config_changed():
 	
-	# if you have a worse screen just get fucked ig
-	var win_scale_min: int = 3
+	
+	
+	var scale_changed: bool = config_scale != (_config.get_setting("resolution") + win_scale_min)
+	var fullscreen_on: bool = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
 	
 	# On fullscreen enabled
-	if _config.get_setting("fullscreen") and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN:
+	if _config.get_setting("fullscreen") and not fullscreen_on:
 		
 		set_fullscreen_scale()
 		
 	# On Turning off fullscreen
-	elif (not _config.get_setting("fullscreen") and DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN):
+	elif (not _config.get_setting("fullscreen") and fullscreen_on):
 		
-		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
+		
+		config_scale = _config.get_setting("resolution") + win_scale_min
+		set_windowed_scale(config_scale)
 	
 	# On adjusting window scale
-	elif (window_scale != _config.get_setting("resolution") + win_scale_min) and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN: 
+	elif (scale_changed) and not fullscreen_on: 
 		
 		# Linux window servers struggle to rescale the window without a "full screen flush"
 		if OS.get_name() in ["Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD"]:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-				
-		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
+			
+		config_scale = _config.get_setting("resolution") + win_scale_min	
+		set_windowed_scale(config_scale)
 		
 		
 		
 	
-	if _config.get_setting("vsync"):
+	# If we need to turn on or off vsync
+	if _config.get_setting("vsync") and DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_DISABLED:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
-	else:
+	elif DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_ENABLED:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
 

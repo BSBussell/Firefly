@@ -7,6 +7,7 @@ class_name SliderSetting
 
 @onready var focus = $Focus
 
+
 ## Example Slider Dict:
 #"Volume": {
 #     "label": "Volume",
@@ -19,6 +20,13 @@ class_name SliderSetting
 # },
 
 func setup_element():
+	
+	# Temporarily disconnect the signal, that way we can set initial values
+	# Just ensures we dont call that function when we don't need to.
+	# the performance was needed for a while but then I fixed the root issue but,
+	# might as well keep the optimization here too
+	h_slider.disconnect("value_changed", Callable(self, "_on_h_slider_value_changed"))
+	
 	
 	set_thickness(h_slider.get_theme_constant("thickness", "HSlider"))
 	
@@ -37,6 +45,10 @@ func setup_element():
 	# Set the toggle state
 	h_slider.value = slider_val
 	print(h_slider.value)
+	
+	# Reconnect the signal now that we've set the val.
+	h_slider.connect("value_changed", Callable(self, "_on_h_slider_value_changed"))
+
 	
 	
 
@@ -75,6 +87,8 @@ func get_focus_obj() -> Control:
 func _on_h_slider_value_changed(value):
 	if setting_json:
 		_config.set_setting(setting_json["config_key"], value)
+		
+	
 
 
 func _on_h_slider_focus_entered():
