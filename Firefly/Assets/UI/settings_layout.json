@@ -35,11 +35,11 @@
 				"config_key": "fullscreen"
 			},
 			"resolution": {
-				"label": "Resolution Scale",
-				 "description": "Select your resolution",
+				"label": "Window Scale",
+				 "description": "Set the Window Scale",
 				 "type": "choice",
 				 "config_key": "resolution",
-				 "options": ["1x", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x "]
+				 "options": ["1x", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x", "10x"]
 			},
 			"vsync": {
 				"label": "V-Sync Enabled",
