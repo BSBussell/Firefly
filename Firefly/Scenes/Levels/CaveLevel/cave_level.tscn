@@ -1212,9 +1212,10 @@ position = Vector2(44, -73)
 [node name="GemManager" type="Node2D" parent="."]
 script = ExtResource("19_cc61p")
 
-[node name="JarsManager" type="Node2D" parent="."]
+[node name="JarsManager" type="Node2D" parent="." node_paths=PackedStringArray("gem_manager")]
 position = Vector2(3, -4)
 script = ExtResource("21_h1irh")
+gem_manager = NodePath("../GemManager")
 
 [node name="FlyJar" parent="JarsManager" instance=ExtResource("12_0kfi3")]
 position = Vector2(640, 98)

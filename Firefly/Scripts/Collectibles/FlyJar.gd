@@ -3,7 +3,7 @@ class_name FlyJar
 
 @onready var Sprite = $Sprite2D
 @onready var animation_player = $AnimationPlayer
-@export var point_value = 0.0
+@export var point_value = 20
 
 var nabbed = false
 signal collected(jar: FlyJar)
@@ -57,6 +57,8 @@ func collect():
 		nabbed = true
 		_jar_tracker.mark_jar_collected(gen_id())
 		emit_signal("collected", self)
+		
+	_globals.ACTIVE_PLAYER.add_glow(point_value)
 
 	
 # I am going to kms	

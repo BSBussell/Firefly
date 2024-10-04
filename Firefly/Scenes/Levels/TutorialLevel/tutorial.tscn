@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://cbgoqx8kcalop"]
+[gd_scene load_steps=61 format=3 uid="uid://cbgoqx8kcalop"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/Tutorial.gd" id="1_pdcac"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_us1rr"]
@@ -28,7 +28,6 @@
 [ext_resource type="PackedScene" uid="uid://dtblwt5hi5l4c" path="res://Scenes/Checkpoint/checkpoint.tscn" id="21_41qdo"]
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/Spring/spring.tscn" id="21_jydlm"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="22_krb2s"]
-[ext_resource type="PackedScene" uid="uid://mhckwfmi6yo1" path="res://Scenes/Collectibles/gem.tscn" id="23_rutx8"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="24_re622"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="25_pmv25"]
 [ext_resource type="PackedScene" uid="uid://b5syfsbo715ra" path="res://Scenes/Collectibles/BlueJar.tscn" id="26_uyh54"]
@@ -708,48 +707,10 @@ position = Vector2(-27, -31)
 position = Vector2(359, 93)
 script = ExtResource("22_krb2s")
 
-[node name="Gem" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(-571, -196)
-
-[node name="Gem9" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(105, -5)
-
-[node name="Gem10" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(1175, -282)
-
-[node name="Gem11" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(809, -278)
-
-[node name="Gem12" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(1490, -271)
-
-[node name="Gem13" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(340, -298)
-
-[node name="Gem2" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(-955, -444)
-
-[node name="Gem3" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(-1464, -353)
-
-[node name="Gem4" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(-1651, -107)
-
-[node name="Gem5" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(-1923, -148)
-
-[node name="Gem6" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(-2053, -331)
-
-[node name="Gem7" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(-2897, -533)
-
-[node name="Gem8" parent="GemManager" instance=ExtResource("23_rutx8")]
-position = Vector2(-2968, -1037)
-
-[node name="JarsManager" type="Node2D" parent="."]
+[node name="JarsManager" type="Node2D" parent="." node_paths=PackedStringArray("gem_manager")]
 position = Vector2(3, -4)
 script = ExtResource("24_re622")
+gem_manager = NodePath("../GemManager")
 
 [node name="FlyJar4" parent="JarsManager" instance=ExtResource("25_pmv25")]
 position = Vector2(1209, 66)
@@ -795,7 +756,6 @@ position = Vector2(-45, -115)
 
 [node name="FlyJar15" parent="JarsManager" instance=ExtResource("25_pmv25")]
 position = Vector2(-2215, -327)
-point_value = 75.0
 
 [node name="FlyJar16" parent="JarsManager" instance=ExtResource("25_pmv25")]
 position = Vector2(-434, -476)

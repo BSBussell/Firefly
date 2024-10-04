@@ -21,10 +21,10 @@ func player_startup_logic():
 # And becasue of that we hide the gems
 func gem_startup_logic():
 	
-	if not spawn_point_id:
-		gem_manager.hide_gems()
-	else:
-		gem_manager.show_gems()
+	#if not spawn_point_id:
+		#gem_manager.hide_gems()
+	#else:
+	gem_manager.show_gems()
 
 func local_ready():
 
