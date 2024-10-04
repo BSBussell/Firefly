@@ -359,6 +359,10 @@ func config_changed():
 	# On adjusting window scale
 	elif (window_scale != _config.get_setting("resolution") + win_scale_min) and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN: 
 		
+		# Linux window servers struggle to rescale the window without a "full screen flush"
+		if OS.get_name() in ["Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD"]:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+				
 		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
 		
 		

@@ -1,5 +1,5 @@
 extends BaseSetting
-class_name BoolSetting
+class_name SliderSetting
 
 @onready var label: Label = $SettingName
 @onready var h_slider: HSlider = $HSlider
@@ -14,7 +14,7 @@ class_name BoolSetting
 #     "type": "Slider",
 #     "config_key": "master_vol",
 #	  "min": 0,
-#	  "max": 10,
+#	  "max": 10,   
 #	  "step": 1
 # },
 
