@@ -1,8 +1,9 @@
-[gd_resource type="Theme" load_steps=29 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=30 format=3 uid="uid://dtqfsbjdbbwas"]
 
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_rvtbs"]
 [ext_resource type="StyleBox" uid="uid://ba6n0xamrag6i" path="res://UI_Theme/option_Style.tres" id="2_3epl8"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="2_kv5i4"]
+[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="4_203xq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkirc"]
 
@@ -232,8 +233,8 @@ PauseHeader/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
 PauseHeader/font_sizes/font_size = 64
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_h362d")
 PopupMenu/styles/separator = SubResource("StyleBoxLine_lpqex")
-RichTextLabel/font_sizes/normal_font_size = 36
-RichTextLabel/fonts/normal_font = ExtResource("1_rvtbs")
+RichTextLabel/font_sizes/normal_font_size = 64
+RichTextLabel/fonts/normal_font = ExtResource("4_203xq")
 ScrollContainer/styles/panel = SubResource("StyleBoxEmpty_m5ica")
 SettingHeader/base_type = &"Label"
 SettingHeader/colors/font_color = Color(1, 1, 1, 1)

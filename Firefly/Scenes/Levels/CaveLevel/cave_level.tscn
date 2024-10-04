@@ -236,11 +236,12 @@ size = Vector2(103.5, 138)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c8xov"]
 size = Vector2(221, 168)
 
-[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager")]
+[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = ExtResource("1_bfl7c")
 Text = "- GlowWorm Caverns -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
+gem_manager = NodePath("GemManager")
 ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("4_moxw1"), ExtResource("5_by1im"), ExtResource("6_pkwh7"), ExtResource("7_h4wtv"), ExtResource("8_kstwy")])
 id = 1
 win_condition = 1

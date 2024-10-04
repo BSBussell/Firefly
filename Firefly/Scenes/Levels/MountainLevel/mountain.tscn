@@ -57,6 +57,10 @@ func local_ready():
 	ambience.play(0)
 
 	pp___fx.visible = true
+
+func on_death():
+	
+	gem_manager.respawn_all()
 "
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
@@ -119,10 +123,12 @@ size = Vector2(811, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w5fqu"]
 size = Vector2(144.75, 138)
 
-[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER")]
+[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = SubResource("GDScript_0jk77")
 Text = "- Pidgeon Mountain -"
 PLAYER = NodePath("Flyph")
+jar_manager = NodePath("JarManager")
+gem_manager = NodePath("GemManager")
 ui_components = Array[PackedScene]([ExtResource("2_gu43t"), ExtResource("3_elh37"), ExtResource("4_lbsyo"), ExtResource("5_ii5yd"), ExtResource("6_u084r"), ExtResource("7_x5rfv"), ExtResource("8_g0d32"), ExtResource("1_iqxgk")])
 
 [node name="PP + FX" type="Node2D" parent="."]
