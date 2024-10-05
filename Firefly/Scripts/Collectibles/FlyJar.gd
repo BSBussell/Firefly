@@ -58,7 +58,7 @@ func collect():
 		_jar_tracker.mark_jar_collected(gen_id())
 		emit_signal("collected", self)
 		
-	_globals.ACTIVE_PLAYER.add_glow(point_value)
+	_globals.ACTIVE_PLAYER.add_glow(point_value  )
 
 	
 # I am going to kms	
