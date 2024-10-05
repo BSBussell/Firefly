@@ -1,6 +1,8 @@
 extends Node2D
 class_name Gem
 
+@export var glow_points: int = 50
+
 var active: bool = true
 var consumed: bool  = false
 
@@ -42,7 +44,7 @@ func consume_item(player: Flyph):
 	
 	# Add 50 glow points
 	if player:
-		player.add_glow(50)
+		player.add_glow(glow_points)
 	
 	
 

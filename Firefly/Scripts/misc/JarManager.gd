@@ -56,6 +56,14 @@ func blue_jar_collected(jar: FlyJar):
 	
 	blue_collected += 1
 	
+	if gem_manager: 
+		var new_gem: Gem = gem_manager.spawn_blue_gem(jar.global_position)
+		
+		# Setup the gem to spawn in 15s
+		new_gem.deactivate()
+		await get_tree().create_timer(15).timeout
+		new_gem.activate()
+	
 	if blue_collected >= blue_max:
 		emit_signal("BlueJarsCollected")
 		
