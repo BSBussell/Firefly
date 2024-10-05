@@ -44,7 +44,6 @@ func setup_element():
 
 	# Set the toggle state
 	h_slider.value = slider_val
-	print(h_slider.value)
 	
 	# Reconnect the signal now that we've set the val.
 	h_slider.connect("value_changed", Callable(self, "_on_h_slider_value_changed"))

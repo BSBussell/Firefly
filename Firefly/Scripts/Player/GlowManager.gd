@@ -89,6 +89,7 @@ func _process(delta):
 	
 	# If we haven't enabled glow yet then we don't do anything
 	if not GLOW_ENABLED:
+		update_meter()
 		return
 	
 	# Always enable glow_point growth
@@ -131,6 +132,10 @@ func _process(delta):
 	
 	glow_point_visual()
 	
+	update_meter()
+	
+	
+func update_meter() -> void:
 	# Update our meter
 	var glow_meter_percentage: int = glow_points
 	
@@ -141,7 +146,6 @@ func _process(delta):
 		
 	# Signal to the meter to change its visual
 	emit_signal("glow_meter_changed", glow_meter_percentage)
-	
 
 func grow_points(delta: float) -> void:
 	

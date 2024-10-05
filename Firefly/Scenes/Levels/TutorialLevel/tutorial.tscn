@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://cbgoqx8kcalop"]
+[gd_scene load_steps=62 format=3 uid="uid://cbgoqx8kcalop"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/Tutorial.gd" id="1_pdcac"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_us1rr"]
@@ -30,6 +30,7 @@
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="22_krb2s"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="24_re622"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="25_pmv25"]
+[ext_resource type="PackedScene" uid="uid://dkycbjyeccpvj" path="res://Scenes/UI_Elements/Dialog/Forest_Sign.tscn" id="26_57qw8"]
 [ext_resource type="PackedScene" uid="uid://b5syfsbo715ra" path="res://Scenes/Collectibles/BlueJar.tscn" id="26_uyh54"]
 [ext_resource type="PackedScene" uid="uid://d2r3fdnd3npfh" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="26_vi2mq"]
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/GlowTutorial.gd" id="27_s6n8v"]
@@ -593,27 +594,19 @@ libraries = {
 "": SubResource("AnimationLibrary_7vltr")
 }
 
-[node name="GlowSign" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
-position = Vector2(-95, -93)
-collision_mask = 1
+[node name="ForestSign" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_57qw8")]
+position = Vector2(-103, -76)
 script = ExtResource("27_s6n8v")
 level = NodePath("../..")
 dialogue = ExtResource("28_jstyy")
 talk_target = NodePath("Marker2D")
-blend_priority = -1
-blend_override = 0.3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/GlowSign"]
-position = Vector2(-7, 5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/ForestSign"]
+position = Vector2(1, -12)
 shape = SubResource("RectangleShape2D_08e63")
 
-[node name="Marker2D" type="Marker2D" parent="Events/GlowSign"]
-position = Vector2(-9, -4)
-
-[node name="Sprite2D" type="Sprite2D" parent="Events/GlowSign"]
-z_index = -50
-position = Vector2(-8.10001, 9)
-texture = ExtResource("30_bbc3m")
+[node name="Marker2D" type="Marker2D" parent="Events/ForestSign"]
+position = Vector2(0, -19)
 
 [node name="SlideBoost" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
 position = Vector2(-1139, -49)
@@ -911,9 +904,9 @@ id = "cave"
 [connection signal="body_exited" from="Events/FF_Tut" to="Events/FF_Tut" method="_on_body_exited"]
 [connection signal="body_entered" from="Events/Guide_Tut" to="Events/Guide_Tut" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/Guide_Tut" to="Events/Guide_Tut" method="_on_body_exited"]
-[connection signal="body_entered" from="Events/GlowSign" to="Events/GlowSign" method="_on_body_entered"]
-[connection signal="body_exited" from="Events/GlowSign" to="Events/GlowSign" method="_on_body_exited"]
-[connection signal="finish_dialogue" from="Events/GlowSign" to="Events/GlowSign" method="_on_finish_dialogue"]
+[connection signal="body_entered" from="Events/ForestSign" to="Events/ForestSign" method="_on_body_entered"]
+[connection signal="body_exited" from="Events/ForestSign" to="Events/ForestSign" method="_on_body_exited"]
+[connection signal="finish_dialogue" from="Events/ForestSign" to="Events/ForestSign" method="_on_finish_dialogue"]
 [connection signal="body_entered" from="Events/SlideBoost" to="Events/SlideBoost" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/SlideBoost" to="Events/SlideBoost" method="_on_body_exited"]
 [connection signal="finish_dialogue" from="Events/SlideBoost" to="Events/SlideBoost" method="_on_finish_dialogue"]

@@ -37,7 +37,7 @@ func connect_signal(function: Callable):
 	
 	var err = connect("grabbed", function)
 	if err != OK:
-		print("Stupid Error: ", err)
+		print("Error connecting signal: ", err)
 
 func player_grabbed():
 	_logger.info("Segment - Emitting Grabbed Signal")

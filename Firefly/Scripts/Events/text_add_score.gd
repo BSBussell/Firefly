@@ -27,7 +27,7 @@ func _physics_process(_delta):
 		
 		var player: Flyph = enter_body as Flyph
 		if not player:
-			print("ah shit")
+			return
 			
 		player.enable_glow()
 		#_globals.GEM_MANAGER.show_gems()
@@ -43,7 +43,7 @@ func on_enter(_body):
 	
 	var player: Flyph = _body as Flyph
 	if not player:
-		print("ah shit")
+		return
 		
 	
 	inside = true

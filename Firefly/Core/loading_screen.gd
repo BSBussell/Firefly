@@ -13,7 +13,6 @@ func _ready():
 
 
 	# Get the shader material attached to the ColorRect
-	print(triangle_size)
 	material.set("shader_parameter/diamondPixelSize", triangle_size)
 
 	progress_bar.value = 0

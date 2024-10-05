@@ -28,5 +28,5 @@ bus = &"SFX"
 
 [node name="PointLight2D" type="PointLight2D" parent="Light"]
 color = Color(0.890196, 0.921569, 0.34902, 1)
-energy = 0.3
+energy = 0.1
 texture = ExtResource("4_bb6ix")

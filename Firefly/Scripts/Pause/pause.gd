@@ -36,7 +36,6 @@ func _ready():
 
 
 	# Get the shader material attached to the ColorRect
-	print(triangle_size)
 	var color_rect: ColorRect = $"."
 	color_rect.material.set("shader_parameter/diamondPixelSize", triangle_size)
 	
@@ -62,7 +61,7 @@ func toggle_pause():
 	
 	# If there is another ui element up
 	if conflict():
-		print("can't pause")
+		print("Error, missing component can't pause")
 		return
 	
 	# Hide settings

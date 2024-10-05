@@ -293,8 +293,6 @@ func jump():
 		var exponential_multi = max_jump_multi
 		swing_multi = exponential_multi
 
-		print("Swing Multiplier: ", swing_multi)
-
 		parent.set_temp_gravity(boost_sj_gravity)
 
 		jump_y_vel = boost_sj_velocity

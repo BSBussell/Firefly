@@ -15,11 +15,6 @@ func _ready():
 	
 	# Show Mouse
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	
-	
-	
-	if _loader.connect("finished_loading", Callable(self, "on_load")) != OK:
-		print("hmm")
 		
 	# Grab its focus
 	await animation_player.animation_finished

@@ -35,15 +35,12 @@ func _on_timer_timeout():
 	
 	var dir: float = snappedf( randf_range(-0.3, 0.3), 0.1)
 	
-	print(dir)
-	
 	# Float weirdness
 	const TOLERANCE: float = 0.0001
 
 	if abs(abs(dir) - 0.3) > TOLERANCE:
 		dir = 0.0
 		
-	print(dir)
 	
 	var dur: float = snappedf( randf_range(1.0, 3.5), 0.1)
 	

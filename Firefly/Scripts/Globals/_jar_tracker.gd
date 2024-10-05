@@ -20,4 +20,3 @@ func num_found_jars() -> int:
 ## Clears the collected jars dict
 func reset_jars():
 	collected_jars.clear()
-	print(collected_jars.size())

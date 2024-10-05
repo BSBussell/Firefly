@@ -51,7 +51,7 @@ func show_Victory_Screen():
 
 func hide_Victory_Screen():
 	self.visible = false
-	get_tree().paused = false
+	get_tree().paused = false  
 	displayed = false
 	
 func connect_signal(sig: String):

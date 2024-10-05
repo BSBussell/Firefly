@@ -288,7 +288,7 @@ func _ready() -> void:
 	if movement_states[0]:
 		movement_data = movement_states[0]
 	else:
-		printerr("No Movement Data KYS")
+		printerr("No Movement Data")
 
 	# I hate myself
 	calculate_properties()
@@ -427,10 +427,6 @@ func set_input_axis(delta: float) -> void:
 	# If we're still locked then assign the locked value to input
 	if lock_dir:
 		horizontal_axis = hold_dir
-
-	if horizontal_axis:
-		print(horizontal_axis)
-	
 
 
 

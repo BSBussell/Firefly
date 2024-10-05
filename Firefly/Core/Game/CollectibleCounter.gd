@@ -85,7 +85,3 @@ func play_hide():
 	COUNTER_ANIMATOR.get_animation("Hide").track_set_key_value(0, 0, current_pos)
 	COUNTER_ANIMATOR.play("Hide")
 	
-
-
-func _on_focus_entered():
-	print("bastard")

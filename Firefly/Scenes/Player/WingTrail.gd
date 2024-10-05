@@ -22,8 +22,6 @@ func _ready():
 	
 	time_passed = seed
 	
-	print(name, " length ", resting_position.length())
-	
 	_initialize_points()
 
 # Initialize the points of the Line2D
