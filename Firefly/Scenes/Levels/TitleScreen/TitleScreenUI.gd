@@ -15,6 +15,9 @@ func _ready():
 	
 	# Show Mouse
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
+	if _loader.connect("finished_loading", Callable(self, "on_load")) != OK:
+		print("Error Failed to Connect On Load Signal. IDEK what to do in this case")
 		
 	# Grab its focus
 	await animation_player.animation_finished
