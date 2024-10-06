@@ -26,11 +26,15 @@ func _ready():
 	yellow_max = yellow_jars.size()
 	blue_max = blue_jars.size()
 
-	for jar in yellow_jars:
+	for jar: FlyJar in yellow_jars:
 		jar.connect("collected", Callable(self, "yellow_jar_collected"))
+		_jar_tracker.register_jar_exists(jar.gen_id())
 	
-	for jar in blue_jars:
+	for jar: FlyJar in blue_jars:
 		jar.connect("collected", Callable(self, "blue_jar_collected"))
+		_jar_tracker.register_jar_exists(jar.gen_id())
+		
+		
 	
 
 

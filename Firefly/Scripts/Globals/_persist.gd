@@ -14,7 +14,7 @@ var load_funcs: Dictionary = {}
 var file_path: String = "user://save.json"
 
 func _ready():
-	load_file()
+	load_file(file_path)
 
 ## Register a classes save and load functions
 func register_persistent_class(parent_name: String, save_func: Callable, load_func: Callable):
@@ -38,8 +38,8 @@ func save_file() -> void:
 		file.close()
 
 # Load settings from the configuration file
-func load_file() -> void:
-	var file: FileAccess = FileAccess.open(file_path, FileAccess.READ)
+func load_file(path: String) -> void:
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	if file:
 		var config_data: String = file.get_as_text()
 		var json: JSON = JSON.new()
@@ -69,10 +69,10 @@ func load_values():
 	for key in load_funcs.keys():
 		
 		# If the keys dictionary is empty, skip it
-		if stored_values[key] != {}:
+		if stored_values.has(key) and stored_values[key] != {}:
 			load_funcs[key].call(stored_values[key])
 			
-	load_file()
+	load_file(file_path)
 
 
 ## Reset persistent data

@@ -11,21 +11,33 @@ signal collected(jar: FlyJar)
 func _ready():
 	animation_player.play("Idle")
 	
-	var id = gen_id()
+	
+	
+	var id: String = gen_id()
+	
 	if _jar_tracker.is_jar_collected(id):
 		
 		visible = false
 		
-		# Wait for the collecter to init
-		await get_tree().create_timer(1).timeout
+		# Wait for loading to finish
+		await _loader.finished_loading
 		
 		# Signal to the counter
 		emit_signal("collected", self)
 		
 		# Free it
 		queue_free()
+	
+	elif not _jar_tracker.is_registered(id):
+		
+		# Wait for loading to finish
+		await _loader.finished_loading
+		
+		# Make it exist
+		_jar_tracker.register_jar_exists(id)
+		
 
-func gen_id() -> int:
+func gen_id() -> String:
 	
 	# Variables that make this jar unique
 	var identifiers = [
@@ -33,7 +45,7 @@ func gen_id() -> int:
 		_globals.ACTIVE_LEVEL.id
 	]
 	
-	return hash(str(identifiers))
+	return str(hash(str(identifiers)))
 
 func _on_area_entered(area):
 
