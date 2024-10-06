@@ -1,0 +1,199 @@
+[gd_scene load_steps=6 format=3 uid="uid://xaei37imnuo0"]
+
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_jbhry"]
+[ext_resource type="Shader" path="res://Core/Game/wavy_sidebar.gdshader" id="2_ivfl2"]
+[ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="2_uw3sv"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crxj6"]
+shader = ExtResource("2_ivfl2")
+shader_parameter/progress = 0.2
+shader_parameter/waveFrequency1 = 3.5
+shader_parameter/waveFrequency2 = 5.5
+shader_parameter/waveAmplitude1 = 0.021
+shader_parameter/waveAmplitude2 = 0.009
+shader_parameter/waveSpeed1 = 0.5
+shader_parameter/waveSpeed2 = 0.07
+shader_parameter/waveLength1 = 2.63
+shader_parameter/waveLength2 = 5.298
+shader_parameter/noiseScale = 3.96
+shader_parameter/noiseSpeed = 0.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_720w0"]
+content_margin_top = 30.0
+content_margin_right = 5.0
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_jbhry")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_crxj6")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.890196, 0.921569, 0.34902, 1)
+
+[node name="SaveContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.1
+anchor_right = 0.8
+anchor_bottom = 0.95
+offset_left = 0.999994
+offset_right = 0.999977
+offset_bottom = 1.28746e-05
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="SaveContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+size_flags_stretch_ratio = 0.2
+text = "Select a File
+"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SaveContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 170
+
+[node name="SaveFile" type="PanelContainer" parent="SaveContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="Label" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "File A"
+vertical_alignment = 1
+
+[node name="Spacer" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer/Spacer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+texture = ExtResource("2_uw3sv")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Jars" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
+
+[node name="Jars" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer/VBoxContainer/Jars"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxEmpty_720w0")
+text = "5/20"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Time" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"TimerText"
+text = "1:10:10"
+horizontal_alignment = 2
+
+[node name="SaveFile2" type="PanelContainer" parent="SaveContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer"]
+layout_mode = 2
+text = "File B"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+theme_type_variation = &"CounterLabel"
+theme_override_font_sizes/font_size = 35
+text = "05/20"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_stretch_ratio = 0.1
+
+[node name="Label2" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_type_variation = &"TimerText"
+text = "20:20:20"
+horizontal_alignment = 1
+
+[node name="SaveFile3" type="PanelContainer" parent="SaveContainer/ScrollContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile3/VBoxContainer"]
+layout_mode = 2
+text = "File B"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile3/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"TimerText"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile3/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"TimerText"
+text = "20:20:20"
+horizontal_alignment = 1
+
+[node name="New Save" type="HBoxContainer" parent="SaveContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Button" type="Button" parent="SaveContainer/New Save"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "New Save"
