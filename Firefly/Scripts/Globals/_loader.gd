@@ -85,6 +85,7 @@ func load_level(path: String, spawn_id: String = ""):
 	
 	# Once the screen is uncovered, resume the timer
 	_stats.start_timer()
+	
 	# Hide the loading screen
 	await hide_loading(loading_screen)
 
@@ -101,9 +102,7 @@ func return_to_title():
 
 func reset_game(level_path: String):
 
-	_stats.DEATHS = 0
-	_stats.reset_timer()
-	_stats.INVALID_RUN = false
+	_stats.reset_stats()
 	_jar_tracker.reset_jars()
 	
 	_persist.reset()

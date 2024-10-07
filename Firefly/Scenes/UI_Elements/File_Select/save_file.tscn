@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=3 uid="uid://0h47qgdfafs"]
+
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_kyvp3"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/File_Select/SaveFileUI.gd" id="2_e53p8"]
+
+[node name="SaveFile" type="PanelContainer" node_paths=PackedStringArray("file_label", "save_info", "jar_counter", "time_string", "file_buttons")]
+size_flags_vertical = 3
+focus_mode = 2
+theme = ExtResource("1_kyvp3")
+script = ExtResource("2_e53p8")
+file_label = NodePath("HBoxContainer/FileLabels/FileLabel")
+save_info = NodePath("HBoxContainer/FileLabels/SaveInfo")
+jar_counter = NodePath("HBoxContainer/FileLabels/SaveInfo/JarCounter")
+time_string = NodePath("HBoxContainer/FileLabels/SaveInfo/TimeString")
+file_buttons = NodePath("HBoxContainer/FileOptions")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="FileLabels" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FileLabel" type="Label" parent="HBoxContainer/FileLabels"]
+layout_mode = 2
+theme_type_variation = &"FileLabel"
+text = "File B"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="SaveInfo" type="HBoxContainer" parent="HBoxContainer/FileLabels"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="JarCounter" type="Label" parent="HBoxContainer/FileLabels/SaveInfo"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+theme_type_variation = &"FileJarCount"
+text = "05/20"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="HBoxContainer/FileLabels/SaveInfo"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_stretch_ratio = 0.1
+
+[node name="TimeString" type="Label" parent="HBoxContainer/FileLabels/SaveInfo"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_type_variation = &"FileTime"
+text = "05:15:30"
+horizontal_alignment = 1
+
+[node name="FileOptions" type="PanelContainer" parent="HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_type_variation = &"FileButtons"
+
+[node name="Button" type="VBoxContainer" parent="HBoxContainer/FileOptions"]
+layout_mode = 2
+size_flags_horizontal = 8
+alignment = 1
+
+[node name="StartButton" type="Button" parent="HBoxContainer/FileOptions/Button"]
+layout_mode = 2
+size_flags_vertical = 2
+text = "Start"
+alignment = 2
+
+[node name="EraseButton" type="Button" parent="HBoxContainer/FileOptions/Button"]
+layout_mode = 2
+size_flags_vertical = 10
+text = "Erase"
+alignment = 2
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="pressed" from="HBoxContainer/FileOptions/Button/StartButton" to="." method="_on_start_button_pressed"]

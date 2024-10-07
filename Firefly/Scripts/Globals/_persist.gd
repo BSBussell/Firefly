@@ -9,12 +9,34 @@ var save_funcs: Dictionary = {}
 ## The functions that will be called when loading the next level
 var load_funcs: Dictionary = {}
 
+var save_dir_path: String = "user://saves/"
+
+var save_dir: DirAccess
 
 ## Save File
-var file_path: String = "user://save.json"
+var current_file_path: String = ""
 
 func _ready():
-	load_file(file_path)
+	
+	
+	save_dir = DirAccess.open(save_dir_path)
+	
+	# Create the "saves" directory if it doesn't exist
+	if not save_dir:
+		var dir: DirAccess = DirAccess.open("user://")
+		dir.make_dir("saves")
+		save_dir = DirAccess.open(save_dir_path)
+	
+	#load_file(file_path)
+
+
+## Template save and load functions
+# func save() -> Dictionary:
+# Load all data after loading the level
+	
+
+# func load(saved_dict: Dictionary):
+# Is passed a dictionary of values from a prior context
 
 ## Register a classes save and load functions
 func register_persistent_class(parent_name: String, save_func: Callable, load_func: Callable):
@@ -30,8 +52,34 @@ func register_persistent_class(parent_name: String, save_func: Callable, load_fu
 	load_funcs[parent_name] = load_func
 
 
-func save_file() -> void:
-	var file: FileAccess = FileAccess.open(file_path, FileAccess.WRITE)
+func new_file() -> String:
+	
+	var path: String
+	
+	# Get File Num
+	var count: int = get_saves().size() + 1
+	
+	# Build path 
+	path = save_dir_path + str(count) + ".json"
+	
+	stored_values = {}
+	_stats.reset_stats()
+	_jar_tracker.reset_jars()
+	save_file(path)
+	
+	
+	# Return the path
+	return str(count) + ".json"
+	
+
+## Saves either the current instanced file, or a specified one
+func save_file(path: String = current_file_path) -> void:
+	
+	if path == "":
+		return
+		
+	path = save_dir_path + path
+	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	if file:
 		var save_data: String = JSON.stringify(stored_values)
 		file.store_string(save_data)
@@ -39,6 +87,8 @@ func save_file() -> void:
 
 # Load settings from the configuration file
 func load_file(path: String) -> void:
+	
+	path = save_dir_path + path
 	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
 	if file:
 		var config_data: String = file.get_as_text()
@@ -48,13 +98,7 @@ func load_file(path: String) -> void:
 			stored_values = json.data
 		file.close()
 
-## Template save and load functions
-# func save() -> Dictionary:
-# Load all data after loading the level
-	
 
-# func load(saved_dict: Dictionary):
-# Is passed a dictionary of values from a prior context
 
 ## Calls all save functions and stores the values in the dictionary
 func save_values():
@@ -72,8 +116,34 @@ func load_values():
 		if stored_values.has(key) and stored_values[key] != {}:
 			load_funcs[key].call(stored_values[key])
 			
-	load_file(file_path)
+	#load_file(file_path)
 
+
+## Returns a PackedStringArray of all the saves filepaths.
+func get_saves() -> PackedStringArray:
+	return save_dir.get_files()
+	
+## Gets the values from the key
+func get_values(key: String) -> Dictionary:
+	if stored_values.has(key):
+		return stored_values[key]
+	return {}
+	
+## Gets the values of the save at the specified file path
+func get_save_values(file_path: String) -> Dictionary:
+	load_file(file_path)
+	load_values()
+	return stored_values
+	
+	
+func load_save(file_path: String) -> void:
+	
+	current_file_path = file_path
+	
+	load_file(file_path)
+	load_values()
+	
+	
 
 ## Reset persistent data
 func reset():

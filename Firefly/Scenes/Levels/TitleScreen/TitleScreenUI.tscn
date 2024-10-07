@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://fdtkndaa0lce"]
+[gd_scene load_steps=17 format=3 uid="uid://fdtkndaa0lce"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TitleScreen/TitleScreenUI.gd" id="1_st8au"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_yv17k"]
@@ -7,6 +7,7 @@
 [ext_resource type="Shader" path="res://Core/wind.gdshader" id="4_cf7gw"]
 [ext_resource type="PackedScene" uid="uid://bfr6itpdlgpsr" path="res://Scenes/UI_Elements/pause_buttons.tscn" id="5_lxaax"]
 [ext_resource type="PackedScene" uid="uid://dwemeqesk48kw" path="res://Scenes/UI_Elements/settings_main_menu.tscn" id="7_u4ssm"]
+[ext_resource type="PackedScene" uid="uid://xaei37imnuo0" path="res://Scenes/UI_Elements/FileSelect.tscn" id="8_i807r"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vmqk0"]
 shader = ExtResource("4_cf7gw")
@@ -364,7 +365,7 @@ _data = {
 "settings_out": SubResource("Animation_k2hrg")
 }
 
-[node name="TitleScreenUi" type="Control"]
+[node name="TitleScreenUi" type="Control" node_paths=PackedStringArray("File_Select")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -374,6 +375,7 @@ grow_vertical = 2
 theme = ExtResource("1_yv17k")
 script = ExtResource("1_st8au")
 start_level = ExtResource("2_fvuap")
+File_Select = NodePath("FileSelect")
 
 [node name="Fade" type="ColorRect" parent="."]
 layout_mode = 1
@@ -445,6 +447,10 @@ text = "Quit"
 [node name="SettingsSubMenu" parent="." instance=ExtResource("7_u4ssm")]
 visible = false
 z_index = 0
+layout_mode = 1
+
+[node name="FileSelect" parent="." instance=ExtResource("8_i807r")]
+visible = false
 layout_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

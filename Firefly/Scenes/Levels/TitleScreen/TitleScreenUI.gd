@@ -2,6 +2,7 @@ extends UiComponent
 class_name TitleScreenUI
 
 @export var start_level: PackedScene
+@export var File_Select: Control
 
 @onready var animation_player = $AnimationPlayer
 @onready var settings = $ItemsContainer/Settings
@@ -44,7 +45,8 @@ func _on_start_pressed():
 	animation_player.play("StartGame")
 	resume.release_focus()
 	await animation_player.animation_finished
-	_loader.load_level(start_level.resource_path)
+	File_Select.visible = true
+	#_loader.load_level(start_level.resource_path)
 
 
 func _on_quit_pressed():

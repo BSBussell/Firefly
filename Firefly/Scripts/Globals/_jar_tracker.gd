@@ -8,7 +8,7 @@ func _ready():
 	var load_callable: Callable = Callable(self, "load_jars")
 	
 	_persist.register_persistent_class("JarTracker", save_callable, load_callable)
-	_persist.load_values()
+	#_persist.load_values()
 	
 func save_jars() -> Dictionary:
 	

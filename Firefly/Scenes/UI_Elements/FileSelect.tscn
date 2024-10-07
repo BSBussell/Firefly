@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://xaei37imnuo0"]
+[gd_scene load_steps=8 format=3 uid="uid://xaei37imnuo0"]
 
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_jbhry"]
 [ext_resource type="Shader" path="res://Core/Game/wavy_sidebar.gdshader" id="2_ivfl2"]
 [ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="2_uw3sv"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/File_Select/Populate_Save_Container.gd" id="3_4lt6d"]
+[ext_resource type="PackedScene" uid="uid://0h47qgdfafs" path="res://Scenes/UI_Elements/File_Select/save_file.tscn" id="4_aywdb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_crxj6"]
 shader = ExtResource("2_ivfl2")
@@ -22,7 +24,7 @@ shader_parameter/noiseSpeed = 0.0
 content_margin_top = 30.0
 content_margin_right = 5.0
 
-[node name="Control" type="Control"]
+[node name="FileSelect" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,9 +46,9 @@ color = Color(0.780392, 0.87451, 0.921569, 1)
 [node name="SaveContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.2
+anchor_left = 0.25
 anchor_top = 0.1
-anchor_right = 0.8
+anchor_right = 0.75
 anchor_bottom = 0.95
 offset_left = 0.999994
 offset_right = 0.999977
@@ -63,37 +65,48 @@ text = "Select a File
 horizontal_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="SaveContainer"]
-clip_contents = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="SaveContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 170
 
-[node name="SaveFile" type="PanelContainer" parent="SaveContainer/ScrollContainer/VBoxContainer"]
+[node name="Spacer" type="Control" parent="SaveContainer/ScrollContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(2.08165e-12, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 120
+script = ExtResource("3_4lt6d")
+
+[node name="SaveFile" type="PanelContainer" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile"]
+[node name="HBoxContainer" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer/SaveFile"]
 layout_mode = 2
 theme_override_constants/separation = 100
 
-[node name="Label" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer"]
+[node name="Label" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer/SaveFile/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "File A"
 vertical_alignment = 1
 
-[node name="Spacer" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer"]
+[node name="Spacer" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer/SaveFile/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 alignment = 2
 
-[node name="TextureRect" type="TextureRect" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer/Spacer"]
+[node name="TextureRect" type="TextureRect" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer/SaveFile/HBoxContainer/Spacer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
@@ -101,16 +114,16 @@ texture = ExtResource("2_uw3sv")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer/SaveFile/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Jars" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer/VBoxContainer"]
+[node name="Jars" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer/SaveFile/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 2
 
-[node name="Jars" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer/VBoxContainer/Jars"]
+[node name="Jars" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer/SaveFile/HBoxContainer/VBoxContainer/Jars"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -120,74 +133,29 @@ text = "5/20"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Time" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile/HBoxContainer/VBoxContainer"]
+[node name="Time" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer/SaveFile/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"TimerText"
 text = "1:10:10"
 horizontal_alignment = 2
 
-[node name="SaveFile2" type="PanelContainer" parent="SaveContainer/ScrollContainer/VBoxContainer"]
+[node name="Spacer2" type="Control" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(2.08165e-12, 120)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer"]
-layout_mode = 2
-text = "File B"
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-alignment = 1
-
-[node name="Label" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 10
-size_flags_vertical = 1
-theme_type_variation = &"CounterLabel"
-theme_override_font_sizes/font_size = 35
-text = "05/20"
-horizontal_alignment = 1
-
-[node name="Control" type="Control" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_stretch_ratio = 0.1
-
-[node name="Label2" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile2/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 2
-theme_type_variation = &"TimerText"
-text = "20:20:20"
-horizontal_alignment = 1
-
-[node name="SaveFile3" type="PanelContainer" parent="SaveContainer/ScrollContainer/VBoxContainer"]
+[node name="SaveFile2" parent="SaveContainer/ScrollContainer/VBoxContainer2/VBoxContainer" instance=ExtResource("4_aywdb")]
 visible = false
 layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="SaveContainer/ScrollContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(2.08165e-12, 30)
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile3"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile3/VBoxContainer"]
-layout_mode = 2
-text = "File B"
-horizontal_alignment = 1
-
-[node name="Label2" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile3/VBoxContainer"]
-layout_mode = 2
-theme_type_variation = &"TimerText"
-horizontal_alignment = 1
-
-[node name="Label3" type="Label" parent="SaveContainer/ScrollContainer/VBoxContainer/SaveFile3/VBoxContainer"]
-layout_mode = 2
-theme_type_variation = &"TimerText"
-text = "20:20:20"
-horizontal_alignment = 1
 
 [node name="New Save" type="HBoxContainer" parent="SaveContainer"]
 visible = false
