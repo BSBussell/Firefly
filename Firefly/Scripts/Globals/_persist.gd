@@ -52,16 +52,14 @@ func register_persistent_class(parent_name: String, save_func: Callable, load_fu
 	load_funcs[parent_name] = load_func
 
 
-func new_file() -> String:
+func new_file(file_name: String) -> String:
 	
 	var path: String
 	
-	# Get File Num
-	var count: int = get_saves().size() + 1
-	
 	# Build path 
-	path = save_dir_path + str(count) + ".json"
+	path = save_dir_path + file_name + ".json"
 	
+	# Reset Save Vals
 	stored_values = {}
 	_stats.reset_stats()
 	_jar_tracker.reset_jars()
@@ -69,8 +67,11 @@ func new_file() -> String:
 	
 	
 	# Return the path
-	return str(count) + ".json"
+	return file_name + ".json"
 	
+## Relatively simple tbh but like we'll see what it needs in the future
+func delete_file(file_name: String) -> void:
+	save_dir.remove(file_name)
 
 ## Saves either the current instanced file, or a specified one
 func save_file(path: String = current_file_path) -> void:

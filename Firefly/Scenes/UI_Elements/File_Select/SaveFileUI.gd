@@ -3,13 +3,23 @@ class_name FILE_UI
 
 @export var file_label: Label
 
+@export_category("Save Details")
 @export var save_info: HBoxContainer
 @export var jar_counter: Label
 @export var time_string: Label
 
+@export_category("New Save Details")
+@export var name_entry: HBoxContainer
+@export var name_field: LineEdit
+
+@export_category("FileOptions")
 @export var file_buttons: PanelContainer
+@export var erase_button: Button
+
+@onready var animation_player = $AnimationPlayer
 
 var save_file: String
+
 var new_file: bool = false
 
 var focused: bool = false
@@ -17,18 +27,35 @@ var focused: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	set_process(false)
-
+	set_pivot()
+	
+	connect_child_focus()
+	
+var selected: bool = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if user_pressed():
+	
+	if user_pressed() and not selected:
+		
+		selected = true
 		
 		if not new_file:
 			show_buttons()
 		else:
-			set_file(_persist.new_file())
-			new_file = false
 			
+			animation_player.play("grow")
+			await get_tree().create_timer(0.4).timeout
+			
+			name_entry.visible = true
+			name_field.grab_focus()
+		
+		
+			
+
+func set_pivot() -> void:
+	
+	pivot_offset = size / 2.0			
 		
 
 func set_file(path: String) -> void:
@@ -39,15 +66,18 @@ func set_file(path: String) -> void:
 	# Load in save info
 	_persist.get_save_values(path)
 	
-	
-	
 	# Visual Setup
+	animation_player.play("grow")
 	
 	# Make labels visible
 	save_info.visible = true
+	name_entry.visible = false
+	
+	
+	
 	
 	# Set Label Text
-	file_label.text = "File " + path.left(path.length() - 5).capitalize()
+	file_label.text = path.left(path.length() - 5) + "'s File"
 	
 	var nabbed_jars: int = _jar_tracker.num_found_jars()
 	var regged_jars: int = _jar_tracker.num_known_jars()
@@ -62,6 +92,9 @@ func set_new() -> void:
 	save_file = ""
 	new_file = true
 	
+	animation_player.play("grow")
+	await get_tree().create_timer(0.4).timeout
+	
 	# Visual Setup
 	file_label.text = "New File"
 	save_info.visible = false
@@ -69,17 +102,28 @@ func set_new() -> void:
 
 
 func _on_focus_entered() -> void:
-	set_process(true)
+	
 	print("Focus Entered")
+	set_hover_stylebox()
+	set_process(true)
 	
 	
-
-
 func _on_focus_exited() -> void:
-	#pass
-	set_process(false)
 	
-	hide_buttons()
+	await get_tree().create_timer(0.1).timeout
+	if not any_has_focus():
+		
+		print("Focus Exited")
+		set_process(false)
+		selected = false
+		
+		if new_file:
+			
+			name_entry.visible = false
+		else:
+			hide_buttons()
+			
+		remove_hover_stylebox()
 	
 func user_pressed() -> bool:
 	return Input.is_action_pressed("ui_accept")
@@ -87,19 +131,95 @@ func user_pressed() -> bool:
 
 func show_buttons() -> void:
 	
-		
+	animation_player.play("grow")
+	await get_tree().create_timer(0.4).timeout
+	
 	file_buttons.visible = true
 	
 func hide_buttons() -> void:
-	
 	
 	# Show Buttons
 	file_buttons.visible = false
 
 
+
 func _on_start_button_pressed():
 	
 	_persist.load_save(save_file)
-	_loader.load_level(_stats.CURRENT_LEVEL)
+	var container = get_parent() as SaveContainer
+	container.start_game(_stats.CURRENT_LEVEL)
 
 
+
+## When the confim name button is pressed make a new file
+func _on_confirm_name_pressed():
+	
+	var file_name = name_field.text
+	set_file(_persist.new_file(file_name))
+	new_file = false
+	
+
+
+
+# When the erase button is pressed make it need to be double pressed to delete
+var erase_check: bool = true
+func _on_erase_button_pressed():
+	
+	if erase_check:
+		
+		erase_button.text = "Really?"
+		erase_check = false
+		
+		await get_tree().create_timer(3.0).timeout
+		
+		erase_check = true
+		erase_button.text = "Erase"
+	else:
+		animation_player.play("delete")
+		_persist.delete_file(save_file)
+
+
+	
+# Ties all the childrens focus' to the main focus node
+func connect_child_focus() -> void:
+	
+	var entered: Callable = Callable(self, "_on_focus_entered")
+	var exited: Callable = Callable(self, "_on_focus_exited")
+	
+	for child in recur_get_children():
+		child.connect("focus_entered", entered)
+		child.connect("focus_exited", exited)
+	
+## Returns True if any child has focus
+func any_has_focus() -> bool:
+	
+	if has_focus():
+		return true
+		
+	for child in recur_get_children():
+		if child.has_focus():
+			return true
+	
+	return false
+		
+
+# Recursively Grab all the children!
+func recur_get_children(node: Control = self) -> Array:
+	
+	var children: Array = []
+	for child in node.get_children():
+		if child as Control:
+			children.append(child)
+			
+			if child.get_child_count() > 0:
+				children.append_array(recur_get_children(child))
+	
+	return children
+	
+func set_hover_stylebox():
+	
+	var hover_stylebox = get_theme_stylebox("focus_panel", "PanelContainer")
+	add_theme_stylebox_override("panel", hover_stylebox)
+	
+func remove_hover_stylebox():
+	remove_theme_stylebox_override("panel")

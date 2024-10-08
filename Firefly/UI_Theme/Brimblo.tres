@@ -1,8 +1,9 @@
-[gd_resource type="Theme" load_steps=32 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=37 format=3 uid="uid://dtqfsbjdbbwas"]
 
 [ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_rvtbs"]
 [ext_resource type="StyleBox" uid="uid://ba6n0xamrag6i" path="res://UI_Theme/option_Style.tres" id="2_3epl8"]
 [ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="2_kv5i4"]
+[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="3_qt4dg"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkirc"]
 
@@ -110,6 +111,67 @@ corner_detail = 1
 color = Color(0.741176, 0.407843, 0.0980392, 1)
 thickness = 17
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1wwrg"]
+bg_color = Color(0.780392, 0.87451, 0.921569, 1)
+border_color = Color(0.835294, 0.615686, 0.160784, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 2
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+shadow_color = Color(0, 0, 0, 0.470588)
+shadow_size = 5
+shadow_offset = Vector2(2.08165e-12, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vebhx"]
+bg_color = Color(0.780392, 0.87451, 0.921569, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 2
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+shadow_color = Color(0, 0, 0, 0.0980392)
+shadow_size = 5
+shadow_offset = Vector2(2.08165e-12, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v1mc2"]
+bg_color = Color(0.835294, 0.615686, 0.160784, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+corner_detail = 2
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+shadow_color = Color(0, 0, 0, 0.0980392)
+shadow_size = 5
+shadow_offset = Vector2(2.08165e-12, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2witd"]
+bg_color = Color(0.890196, 0.921569, 0.34902, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+corner_detail = 2
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+shadow_color = Color(0, 0, 0, 0.0980392)
+shadow_size = 5
+shadow_offset = Vector2(2.08165e-12, 5)
+
 [sub_resource type="FontVariation" id="FontVariation_w02q8"]
 base_font = ExtResource("1_rvtbs")
 
@@ -123,11 +185,7 @@ shadow_offset = Vector2(2.08165e-12, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_no6qs"]
 bg_color = Color(0.490196, 0.439216, 0.741176, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.780392, 0.87451, 0.921569, 1)
+border_color = Color(0.835294, 0.615686, 0.160784, 1)
 corner_radius_top_left = 75
 corner_radius_top_right = 75
 corner_radius_bottom_right = 75
@@ -138,7 +196,7 @@ expand_margin_top = 30.0
 expand_margin_right = 30.0
 expand_margin_bottom = 30.0
 shadow_color = Color(0, 0, 0, 0.0941176)
-shadow_size = 10
+shadow_size = 15
 shadow_offset = Vector2(2.08165e-12, 15)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ewrsx"]
@@ -149,10 +207,10 @@ corner_radius_top_right = 75
 corner_radius_bottom_right = 75
 corner_radius_bottom_left = 75
 corner_detail = 2
-expand_margin_left = 30.0
-expand_margin_top = 30.0
-expand_margin_right = 30.0
-expand_margin_bottom = 30.0
+expand_margin_left = 20.0
+expand_margin_top = 20.0
+expand_margin_right = 20.0
+expand_margin_bottom = 20.0
 shadow_color = Color(0, 0, 0, 0.0941176)
 shadow_size = 10
 shadow_offset = Vector2(2.08165e-12, 15)
@@ -234,6 +292,8 @@ FileJarCount/base_type = &"Label"
 FileJarCount/font_sizes/font_size = 30
 FileLabel/base_type = &"Label"
 FileLabel/font_sizes/font_size = 40
+FileOptionButtons/base_type = &"Button"
+FileOptionButtons/font_sizes/font_size = 32
 FileSelect/base_type = &"BoxContainer"
 FileTime/base_type = &"TimerText"
 FileTime/font_sizes/font_size = 25
@@ -279,6 +339,21 @@ LevelTitle/base_type = &"Label"
 LevelTitle/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
 LevelTitle/font_sizes/font_size = 64
 LevelTitle/fonts/font = ExtResource("1_rvtbs")
+LineEdit/colors/caret_color = Color(0.490196, 0.439216, 0.741176, 1)
+LineEdit/colors/font_color = Color(0.490196, 0.439216, 0.741176, 1)
+LineEdit/colors/font_placeholder_color = Color(0.490196, 0.439216, 0.741176, 0.486275)
+LineEdit/colors/selection_color = Color(0.501961, 0.501961, 0.501961, 0)
+LineEdit/constants/minimum_character_width = 10
+LineEdit/font_sizes/font_size = 35
+LineEdit/fonts/font = ExtResource("3_qt4dg")
+LineEdit/styles/focus = SubResource("StyleBoxFlat_1wwrg")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_vebhx")
+NameEntryButton/base_type = &"Button"
+NameEntryButton/colors/font_hover_color = Color(1, 1, 1, 1)
+NameEntryButton/font_sizes/font_size = 24
+NameEntryButton/fonts/font = ExtResource("1_rvtbs")
+NameEntryButton/styles/hover = SubResource("StyleBoxFlat_v1mc2")
+NameEntryButton/styles/normal = SubResource("StyleBoxFlat_2witd")
 OptionButton/constants/arrow_margin = 2
 OptionButton/constants/modulate_arrow = 13
 OptionButton/constants/outline_size = 5

@@ -1,9 +1,106 @@
-[gd_scene load_steps=3 format=3 uid="uid://0h47qgdfafs"]
+[gd_scene load_steps=7 format=3 uid="uid://0h47qgdfafs"]
 
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_kyvp3"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/File_Select/SaveFileUI.gd" id="2_e53p8"]
 
-[node name="SaveFile" type="PanelContainer" node_paths=PackedStringArray("file_label", "save_info", "jar_counter", "time_string", "file_buttons")]
+[sub_resource type="Animation" id="Animation_myojw"]
+resource_name = "delete"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(2, 2, 2, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_xla8y"]
+resource_name = "grow"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5),
+"transitions": PackedFloat32Array(1.3, 0.4, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.2), Vector2(1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"set_pivot"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_lh8br"]
+resource_name = "shrink"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.2), Vector2(1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"set_pivot"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f6b36"]
+_data = {
+"delete": SubResource("Animation_myojw"),
+"grow": SubResource("Animation_xla8y"),
+"shrink": SubResource("Animation_lh8br")
+}
+
+[node name="SaveFile" type="PanelContainer" node_paths=PackedStringArray("file_label", "save_info", "jar_counter", "time_string", "name_entry", "name_field", "file_buttons", "erase_button")]
+pivot_offset = Vector2(162.5, 37.5)
 size_flags_vertical = 3
 focus_mode = 2
 theme = ExtResource("1_kyvp3")
@@ -12,7 +109,10 @@ file_label = NodePath("HBoxContainer/FileLabels/FileLabel")
 save_info = NodePath("HBoxContainer/FileLabels/SaveInfo")
 jar_counter = NodePath("HBoxContainer/FileLabels/SaveInfo/JarCounter")
 time_string = NodePath("HBoxContainer/FileLabels/SaveInfo/TimeString")
+name_entry = NodePath("HBoxContainer/FileLabels/NameEnter")
+name_field = NodePath("HBoxContainer/FileLabels/NameEnter/NameField")
 file_buttons = NodePath("HBoxContainer/FileOptions")
+erase_button = NodePath("HBoxContainer/FileOptions/Button/EraseButton")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -25,11 +125,12 @@ size_flags_horizontal = 3
 [node name="FileLabel" type="Label" parent="HBoxContainer/FileLabels"]
 layout_mode = 2
 theme_type_variation = &"FileLabel"
-text = "File B"
+text = "New Game"
 horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="SaveInfo" type="HBoxContainer" parent="HBoxContainer/FileLabels"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
@@ -55,6 +156,35 @@ theme_type_variation = &"FileTime"
 text = "05:15:30"
 horizontal_alignment = 1
 
+[node name="NameEnter" type="HBoxContainer" parent="HBoxContainer/FileLabels"]
+visible = false
+custom_minimum_size = Vector2(900, 2.08165e-12)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Spacer" type="Control" parent="HBoxContainer/FileLabels/NameEnter"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.28
+
+[node name="NameField" type="LineEdit" parent="HBoxContainer/FileLabels/NameEnter"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+placeholder_text = "Your Name"
+
+[node name="ConfirmName" type="Button" parent="HBoxContainer/FileLabels/NameEnter"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_stretch_ratio = 0.0
+theme_type_variation = &"NameEntryButton"
+text = "Confirm"
+
+[node name="Spacer2" type="Control" parent="HBoxContainer/FileLabels/NameEnter"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.22
+
 [node name="FileOptions" type="PanelContainer" parent="HBoxContainer"]
 visible = false
 layout_mode = 2
@@ -68,15 +198,25 @@ alignment = 1
 [node name="StartButton" type="Button" parent="HBoxContainer/FileOptions/Button"]
 layout_mode = 2
 size_flags_vertical = 2
+theme_type_variation = &"FileOptionButtons"
 text = "Start"
 alignment = 2
 
 [node name="EraseButton" type="Button" parent="HBoxContainer/FileOptions/Button"]
 layout_mode = 2
 size_flags_vertical = 10
+theme_type_variation = &"FileOptionButtons"
 text = "Erase"
 alignment = 2
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_f6b36")
+}
+
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="pressed" from="HBoxContainer/FileLabels/NameEnter/ConfirmName" to="." method="_on_confirm_name_pressed"]
 [connection signal="pressed" from="HBoxContainer/FileOptions/Button/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="focus_exited" from="HBoxContainer/FileOptions/Button/EraseButton" to="." method="_on_erase_button_focus_exited"]
+[connection signal="pressed" from="HBoxContainer/FileOptions/Button/EraseButton" to="." method="_on_erase_button_pressed"]

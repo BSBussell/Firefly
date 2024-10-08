@@ -19,4 +19,6 @@ func _on_area_entered(_area):
 	var new_level_path = new_level	
 	if not execute_once:
 		execute_once = true
+		
+		_stats.CURRENT_LEVEL = new_level_path
 		world.load_level(new_level_path, spawn_id)

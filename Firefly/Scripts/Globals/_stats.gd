@@ -90,6 +90,7 @@ func reset_stats() -> void:
 	
 	reset_timer()
 	DEATHS = 0
+	INVALID_RUN = false
 	
 	# Take us back to the first level
 	CURRENT_LEVEL = "res://Scenes/Levels/TutorialLevel/tutorial.tscn"
