@@ -21,6 +21,9 @@ func _unhandled_input(event):
 		await animation_player.animation_finished
 		emit_signal("Closing")
 
+	if Input.is_action_just_pressed("ui_accept"):
+		print("Focus Owner:", get_viewport().gui_get_focus_owner())
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass

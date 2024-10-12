@@ -1,5 +1,6 @@
 extends PanelContainer
 class_name FILE_UI
+# I deserve to be bullied for this. i am sorry
 
 @export var file_label: Label
 
@@ -47,19 +48,36 @@ var selected: bool = false
 func _process(delta):
 	
 	if user_pressed() and not selected:
+		open_file()
+			
 		
-		selected = true
 		
-		opened_audio.play()
+	
+func open_file():
+	
+	selected = true
 		
-		if not new_file:
-			show_buttons()
+	opened_audio.play()
+	
+	if not new_file:
+		show_buttons()
+	else:
+		show_name_entry()
+		
+func close_file():
+	
+	set_process(false)
+		
+	# If the user has selected the file deselect it and remove visuals
+	if selected:
+		selected = false
+		
+		if new_file:
+			hide_name_entry()
 		else:
-			show_name_entry()
+			hide_buttons()
 			
-		
-		
-			
+	remove_hover_stylebox()
 
 func set_pivot() -> void:
 	
@@ -79,9 +97,7 @@ func set_file(path: String) -> void:
 	_persist.get_save_values(path)
 	
 	assist_file = _stats.INVALID_RUN
-	
-	selected = false
-	
+
 	# Visual Setup
 	animation_player.play("set_file")
 	
@@ -109,31 +125,53 @@ func set_new() -> void:
 
 func _on_focus_entered() -> void:
 	
-	print("Focus Entered")
-	set_hover_stylebox()
-	set_process(true)
+	print("Panel Focus Entered")
 	
-	focused_audio.play()
+	set_label_focus()
 	
+	if not selected:
+		
+		set_hover_stylebox()
+		focused_audio.play()
+		
+		set_process(true)
+		
+	
+func _on_child_focus_entered() -> void:
+	print("Child Focus Entered")
+	return
 	
 func _on_focus_exited() -> void:
 	
 	await get_tree().create_timer(0.1).timeout
+	print("Panel Focus Exited")
+	
+	
+	remove_label_focus()
+	
+	
+	# Otherwise check if any of the children are focused
 	if not any_has_focus():
 		
-		print("Focus Exited")
-		set_process(false)
 		
-		# If the user has selected the file deselect it and remove visuals
-		if selected:
-			selected = false
-			
-			if new_file:
-				hide_name_entry()
-			else:
-				hide_buttons()
-			
-		remove_hover_stylebox()
+		# Fold the file back up hide buttons, etc
+		close_file()
+		
+	
+func _on_child_focus_exited() -> void:
+	
+	await get_tree().create_timer(0.1).timeout
+	print("Child Focus Exited")
+	
+	
+	# Check if any nodes are focused
+	if not any_has_focus():
+		
+		# Fold the file back up hide buttons, etc if none are
+		close_file()
+		
+	
+	return	
 	
 func user_pressed() -> bool:
 	var accept = Input.is_action_pressed("ui_accept")
@@ -148,7 +186,8 @@ func show_buttons() -> void:
 	animation_player.get_animation("showButtons").track_set_key_value(2, 1, reference_size)
 	
 	animation_player.play("showButtons")
-	start_button.grab_focus()
+	
+	#start_button.grab_focus()
 	
 func hide_buttons() -> void:
 	
@@ -164,7 +203,8 @@ func show_name_entry() -> void:
 	animation_player.get_animation("show_name").track_set_key_value(0,1, reference_size)
 	
 	animation_player.play("show_name")
-	name_field.grab_focus()
+	
+	#name_field.grab_focus()
 	
 	
 	
@@ -193,7 +233,9 @@ func _on_confirm_name_pressed():
 	set_file(_persist.new_file(file_name))
 	new_file = false
 	
+	await animation_player.animation_finished
 	grab_focus()
+	open_file()
 	
 
 
@@ -220,8 +262,8 @@ func _on_erase_button_pressed():
 # Ties all the childrens focus' to the main focus node
 func connect_child_focus() -> void:
 	
-	var entered: Callable = Callable(self, "_on_focus_entered")
-	var exited: Callable = Callable(self, "_on_focus_exited")
+	var entered: Callable = Callable(self, "_on_child_focus_entered")
+	var exited: Callable = Callable(self, "_on_child_focus_exited")
 	
 	for child in recur_get_children():
 		child.connect("focus_entered", entered)
@@ -233,12 +275,14 @@ func any_has_focus() -> bool:
 	if has_focus():
 		return true
 		
+	return children_have_focus()
+
+## Returns true if any children have focus		
+func children_have_focus() -> bool:
 	for child in recur_get_children():
 		if child.has_focus():
 			return true
-	
 	return false
-		
 
 # Recursively Grab all the children!
 func recur_get_children(node: Control = self) -> Array:
@@ -270,16 +314,21 @@ func set_hover_stylebox():
 		
 	add_theme_stylebox_override("panel", hover_stylebox)
 	
-	# Set Label Color on hover
-	#var label_hover: Color = Color("#d59d29")
-	#file_label.add_theme_color_override("font_color", label_hover)
 	
 func remove_hover_stylebox():
 	
 	# Remove the panel st
 	remove_theme_stylebox_override("panel")
 	
-	 #Remove label color on hover
-	#file_label.remove_theme_color_override("font_color")
+	
 
+func set_label_focus():
+	
+	# Set Label Color on hover
+	var label_hover: Color = Color("#d59d29")
+	file_label.add_theme_color_override("font_color", label_hover)
 
+func remove_label_focus():
+	
+	# Remove label color on hover
+	file_label.remove_theme_color_override("font_color")

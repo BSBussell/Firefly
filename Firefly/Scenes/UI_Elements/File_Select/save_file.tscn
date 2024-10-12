@@ -305,7 +305,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("HBoxContainer/FileLabels/NameEnter:visible")
+tracks/3/path = NodePath("HBoxContainer/FileLabels/NameEnter/NameEntryH:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -313,6 +313,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("HBoxContainer/FileLabels/NameEnter:custom_minimum_size")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.08165e-12, 2.08165e-12)]
 }
 
 [sub_resource type="Animation" id="Animation_5uc7y"]
@@ -519,7 +531,6 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="SaveInfo" type="HBoxContainer" parent="HBoxContainer/FileLabels"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -583,7 +594,7 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 2
 focus_neighbor_left = NodePath("../../../..")
-focus_neighbor_top = NodePath("../EraseButton")
+focus_neighbor_top = NodePath("\"\"")
 focus_neighbor_right = NodePath("\"\"")
 focus_neighbor_bottom = NodePath("../EraseButton")
 theme_type_variation = &"FileButtons"
@@ -595,7 +606,7 @@ size_flags_vertical = 10
 focus_neighbor_left = NodePath("../../../..")
 focus_neighbor_top = NodePath("../StartButton")
 focus_neighbor_right = NodePath("\"\"")
-focus_neighbor_bottom = NodePath("../StartButton")
+focus_neighbor_bottom = NodePath("\"\"")
 theme_type_variation = &"FileButtons"
 text = "Erase"
 
@@ -630,8 +641,7 @@ libraries = {
 "": SubResource("AnimationLibrary_f6b36")
 }
 
-[node name="Audio" type="Control" parent="."]
-layout_mode = 2
+[node name="Audio" type="Node" parent="."]
 
 [node name="Focused" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("3_de0nn")

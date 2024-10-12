@@ -69,6 +69,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SaveContainer/ScrollContainer:vertical_scroll_mode")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
 
 [sub_resource type="Animation" id="Animation_hujs7"]
 resource_name = "close"
@@ -195,6 +207,18 @@ tracks/4/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SaveContainer/ScrollContainer:vertical_scroll_mode")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [3, 1]
+}
 
 [sub_resource type="Animation" id="Animation_1bedt"]
 resource_name = "start_game"
@@ -251,6 +275,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(960, 540)
+focus_mode = 2
+mouse_filter = 2
 theme = ExtResource("1_jbhry")
 script = ExtResource("2_pynnf")
 save_container = NodePath("SaveContainer/ScrollContainer/VBoxContainer2/SaveContainer")
@@ -263,6 +289,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 color = Color(0.780392, 0.87451, 0.921569, 1)
 
 [node name="SaveContainer" type="VBoxContainer" parent="."]
@@ -294,6 +321,7 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 follow_focus = true
+horizontal_scroll_mode = 0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="SaveContainer/ScrollContainer"]
 layout_mode = 2
