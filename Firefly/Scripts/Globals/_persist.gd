@@ -62,6 +62,7 @@ func new_file(file_name: String) -> String:
 	# Reset Save Vals
 	stored_values = {}
 	_stats.reset_stats()
+	_stats.NAME = file_name
 	_jar_tracker.reset_jars()
 	save_file(path)
 	

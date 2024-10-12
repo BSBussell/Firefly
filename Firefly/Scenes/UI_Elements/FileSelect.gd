@@ -1,6 +1,8 @@
 extends Control
 class_name FileSelectScene
 
+@export var save_container: SaveContainer
+
 @onready var animation_player = $AnimationPlayer
 
 
@@ -25,3 +27,5 @@ func _process(delta):
 
 func load_in():
 	animation_player.play("load_in")
+	
+	save_container.get_child(0).grab_focus()

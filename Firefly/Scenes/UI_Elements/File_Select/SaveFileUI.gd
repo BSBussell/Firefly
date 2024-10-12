@@ -14,11 +14,19 @@ class_name FILE_UI
 
 @export_category("FileOptions")
 @export var file_buttons: PanelContainer
+@export var file_buttons_spacer: PanelContainer
+@export var start_button: Button
 @export var erase_button: Button
 
-@onready var animation_player = $AnimationPlayer
+@export_category("SFXs")
+@export var focused_audio: AudioStreamPlayer
+@export var opened_audio: AudioStreamPlayer
+@export var start_audio: AudioStreamPlayer
+
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var save_file: String
+var assist_file : bool = false
 
 var new_file: bool = false
 
@@ -28,8 +36,10 @@ var focused: bool = false
 func _ready():
 	set_process(false)
 	set_pivot()
-	
 	connect_child_focus()
+	
+	start_button.focus_neighbor_top = focus_neighbor_top
+	erase_button.focus_neighbor_bottom = focus_neighbor_bottom
 	
 var selected: bool = false
 
@@ -40,22 +50,24 @@ func _process(delta):
 		
 		selected = true
 		
+		opened_audio.play()
+		
 		if not new_file:
 			show_buttons()
 		else:
+			show_name_entry()
 			
-			animation_player.play("grow")
-			await get_tree().create_timer(0.4).timeout
-			
-			name_entry.visible = true
-			name_field.grab_focus()
 		
 		
 			
 
 func set_pivot() -> void:
 	
-	pivot_offset = size / 2.0			
+	pivot_offset = size / 2.0	
+	
+func reset_pivot() -> void:
+	
+	pivot_offset = Vector2.ZERO		
 		
 
 func set_file(path: String) -> void:
@@ -66,18 +78,15 @@ func set_file(path: String) -> void:
 	# Load in save info
 	_persist.get_save_values(path)
 	
+	assist_file = _stats.INVALID_RUN
+	
+	selected = false
+	
 	# Visual Setup
-	animation_player.play("grow")
-	
-	# Make labels visible
-	save_info.visible = true
-	name_entry.visible = false
-	
-	
-	
+	animation_player.play("set_file")
 	
 	# Set Label Text
-	file_label.text = path.left(path.length() - 5) + "'s File"
+	file_label.text = path.left(path.length() - 5)
 	
 	var nabbed_jars: int = _jar_tracker.num_found_jars()
 	var regged_jars: int = _jar_tracker.num_known_jars()
@@ -92,9 +101,6 @@ func set_new() -> void:
 	save_file = ""
 	new_file = true
 	
-	animation_player.play("grow")
-	await get_tree().create_timer(0.4).timeout
-	
 	# Visual Setup
 	file_label.text = "New File"
 	save_info.visible = false
@@ -107,6 +113,8 @@ func _on_focus_entered() -> void:
 	set_hover_stylebox()
 	set_process(true)
 	
+	focused_audio.play()
+	
 	
 func _on_focus_exited() -> void:
 	
@@ -115,32 +123,57 @@ func _on_focus_exited() -> void:
 		
 		print("Focus Exited")
 		set_process(false)
-		selected = false
 		
-		if new_file:
+		# If the user has selected the file deselect it and remove visuals
+		if selected:
+			selected = false
 			
-			name_entry.visible = false
-		else:
-			hide_buttons()
+			if new_file:
+				hide_name_entry()
+			else:
+				hide_buttons()
 			
 		remove_hover_stylebox()
 	
 func user_pressed() -> bool:
-	return Input.is_action_pressed("ui_accept")
+	var accept = Input.is_action_pressed("ui_accept")
+	if accept:
+		print(accept)
+	return accept
 
 
 func show_buttons() -> void:
 	
-	animation_player.play("grow")
-	await get_tree().create_timer(0.4).timeout
+	var reference_size: float = file_buttons_spacer.size.x
+	animation_player.get_animation("showButtons").track_set_key_value(2, 1, reference_size)
 	
-	file_buttons.visible = true
+	animation_player.play("showButtons")
+	start_button.grab_focus()
 	
 func hide_buttons() -> void:
 	
+	var reference_size: float = file_buttons_spacer.size.x
+	animation_player.get_animation("hideButtons").track_set_key_value(2, 0, reference_size)
+	
 	# Show Buttons
-	file_buttons.visible = false
+	animation_player.play("hideButtons")
 
+func show_name_entry() -> void:
+	
+	var reference_size = name_entry.size
+	animation_player.get_animation("show_name").track_set_key_value(0,1, reference_size)
+	
+	animation_player.play("show_name")
+	name_field.grab_focus()
+	
+	
+	
+	
+func hide_name_entry() -> void:
+	var reference_size = name_entry.size
+	animation_player.get_animation("hide_name").track_set_key_value(0,0, reference_size)
+	
+	animation_player.play("hide_name")
 
 
 func _on_start_button_pressed():
@@ -148,6 +181,8 @@ func _on_start_button_pressed():
 	_persist.load_save(save_file)
 	var container = get_parent() as SaveContainer
 	container.start_game(_stats.CURRENT_LEVEL)
+	
+	start_audio.play()
 
 
 
@@ -157,6 +192,8 @@ func _on_confirm_name_pressed():
 	var file_name = name_field.text
 	set_file(_persist.new_file(file_name))
 	new_file = false
+	
+	grab_focus()
 	
 
 
@@ -216,10 +253,33 @@ func recur_get_children(node: Control = self) -> Array:
 	
 	return children
 	
+
+
 func set_hover_stylebox():
 	
-	var hover_stylebox = get_theme_stylebox("focus_panel", "PanelContainer")
+	# Sets the theme stylebox
+	var hover_stylebox: StyleBoxFlat 
+	
+	
+	
+	# Check if its a valid run
+	if assist_file:
+		hover_stylebox = get_theme_stylebox("debug_panel", "PanelContainer")
+	else:
+		hover_stylebox = get_theme_stylebox("focus_panel", "PanelContainer")
+		
 	add_theme_stylebox_override("panel", hover_stylebox)
 	
+	# Set Label Color on hover
+	#var label_hover: Color = Color("#d59d29")
+	#file_label.add_theme_color_override("font_color", label_hover)
+	
 func remove_hover_stylebox():
+	
+	# Remove the panel st
 	remove_theme_stylebox_override("panel")
+	
+	 #Remove label color on hover
+	#file_label.remove_theme_color_override("font_color")
+
+

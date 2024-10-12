@@ -4,6 +4,7 @@ var first_level: String = "res://Scenes/Levels/TutorialLevel/tutorial.tscn"
 
 
 var CURRENT_LEVEL: String
+var NAME: String = ""
 var TIME: float = 0
 var DEATHS: int = 0
 
@@ -25,6 +26,7 @@ func save_values() -> Dictionary:
 	
 	var save_data: Dictionary = {}
 	
+	save_data["Name"] = NAME
 	save_data["Level"] = CURRENT_LEVEL
 	save_data["Time"] = TIME
 	save_data["Deaths"] = DEATHS
@@ -36,11 +38,11 @@ func save_values() -> Dictionary:
 	
 func load_values(vals: Dictionary) -> void:
 
-
-	CURRENT_LEVEL = vals.get("Level")
-	DEATHS = vals.get("Deaths")	
-	TIME = vals.get("Time")
-	INVALID_RUN = vals.get("Invalid")
+	NAME = vals.get("Name", NAME)
+	CURRENT_LEVEL = vals.get("Level", CURRENT_LEVEL)
+	DEATHS = vals.get("Deaths", DEATHS)	
+	TIME = vals.get("Time", TIME)
+	INVALID_RUN = vals.get("Invalid", INVALID_RUN)
 
 
 
@@ -66,15 +68,21 @@ func get_timer_string(format: String = "HH:MM:SS:MS") -> String:
 	display_time = display_time.replace("SS", "%02d" % seconds)
 	display_time = display_time.replace("MS", "%03d" % milliseconds)
 	
-	if INVALID_RUN:
-		display_time += " - Debug"
-		
-		# If the player is adjusting the time scale
-		if Engine.time_scale != 1:
-			display_time += " - x%0.2f Time Scale" % [Engine.time_scale]
-
 	return display_time
 
+func get_timer_debug_string(format: String = "HH:MM:SS:MS") -> String:
+	var display_time: String = get_timer_string(format)
+	
+	# If the run is "invalid" attach strings indicating as such
+	if INVALID_RUN:
+		display_time += " - Assist"
+		if Engine.time_scale != 1:
+			display_time += " - x%0.2f Time Scale" % [Engine.time_scale]
+	
+	return display_time
+
+	
+	
 
 func reset_timer() -> void:
 	TIME = 0
