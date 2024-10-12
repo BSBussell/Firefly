@@ -258,7 +258,9 @@ func calc_score():
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
 # 	Player's momentum value
 func add_score(amount: float) -> void:
-	glow_points += amount
+	
+	if GLOW_ENABLED:
+		glow_points += amount
 
 func reset_glow():
 	

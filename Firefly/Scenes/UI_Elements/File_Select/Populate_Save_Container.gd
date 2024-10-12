@@ -60,6 +60,10 @@ func update_focus_neighbors():
 
 func _on_child_exiting_tree(node):
 	
+	
+	if _loader.loading:
+		return
+		
 	var new_padding: FILE_UI
 	if get_child_count()-1 < 3:
 		new_padding = FILE_UI.instantiate()

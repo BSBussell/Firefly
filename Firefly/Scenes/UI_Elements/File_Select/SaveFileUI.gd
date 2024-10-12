@@ -183,7 +183,8 @@ func user_pressed() -> bool:
 func show_buttons() -> void:
 	
 	var reference_size: float = file_buttons_spacer.size.x
-	animation_player.get_animation("showButtons").track_set_key_value(2, 1, reference_size)
+	if animation_player:
+		animation_player.get_animation("showButtons").track_set_key_value(2, 1, reference_size)
 	
 	animation_player.play("showButtons")
 	
@@ -192,7 +193,9 @@ func show_buttons() -> void:
 func hide_buttons() -> void:
 	
 	var reference_size: float = file_buttons_spacer.size.x
-	animation_player.get_animation("hideButtons").track_set_key_value(2, 0, reference_size)
+	
+	if animation_player:
+		animation_player.get_animation("hideButtons").track_set_key_value(2, 0, reference_size)
 	
 	# Show Buttons
 	animation_player.play("hideButtons")

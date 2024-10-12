@@ -55,6 +55,9 @@ func local_ready():
 
 	music.play(0)
 	ambience.play(0)
+	
+	# Turn off any sound mixing fx thingys
+	_audio.set_level_effects([])  
 
 	pp___fx.visible = true
 

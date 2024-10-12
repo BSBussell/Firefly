@@ -299,7 +299,8 @@ func _ready() -> void:
 	glow_manager.startup()
 	
 	# Register the players save and load functions
-	_persist.register_persistent_class("Flyph", Callable(self, "player_save"), Callable(self, "player_load"))
+	if not is_actor:
+		_persist.register_persistent_class("Flyph", Callable(self, "player_save"), Callable(self, "player_load"))
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)
