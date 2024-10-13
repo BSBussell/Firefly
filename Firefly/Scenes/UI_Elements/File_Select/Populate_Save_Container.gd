@@ -3,6 +3,8 @@ class_name SaveContainer
 
 var FILE_UI: PackedScene = preload("res://Scenes/UI_Elements/File_Select/save_file.tscn")
 
+
+@onready var scroll_container = $"../.."
 @onready var animation_player = $"../../../../AnimationPlayer"
 
 # Called when the node enters the scene tree for the first time.
@@ -30,6 +32,10 @@ func _ready():
 		
 	# Update everythings focus neighbor
 	update_focus_neighbors()
+	
+	scroll_container.set_deferred("scroll_vertical", 0)
+	
+	
 		
 	
 	
@@ -61,10 +67,19 @@ func update_focus_neighbors():
 func _on_child_exiting_tree(node):
 	
 	
+	# If children are exiting tree because we are loading a new scene let it happen
 	if _loader.loading:
 		return
-		
-	var new_padding: FILE_UI
+	
+	## Get the element above the exiting node
+	var above_element: Control
+	var control_element: Control = node as Control
+	if control_element:
+		above_element = get_node(control_element.focus_neighbor_top)
+	
+	
+	# Ensure there are a minimum of 3 files on screen
+	var new_padding: FILE_UI = null
 	if get_child_count()-1 < 3:
 		new_padding = FILE_UI.instantiate()
 		add_child.call_deferred(new_padding)
@@ -75,10 +90,15 @@ func _on_child_exiting_tree(node):
 	if new_padding:
 		await new_padding.ready
 		
-	update_focus_neighbors()	
-	get_child(0).grab_focus()
+	# Wait for the node to exit the tree, if its valid
+	if is_instance_valid(node):
+		await node.tree_exited	
+		
+	# Update the linked focus's
+	update_focus_neighbors()
 	
-	
-	#var file_ui: FILE_UI = node as FILE_UI
-	#if file_ui:
-		#if not file_ui.new_file:
+	# Set Focus 
+	if above_element:
+		above_element.grab_focus()
+	else:
+		get_child(0).grab_focus()

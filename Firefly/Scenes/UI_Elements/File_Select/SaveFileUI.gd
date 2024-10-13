@@ -192,7 +192,8 @@ func show_buttons() -> void:
 	
 	animation_player.play("showButtons")
 	
-	#start_button.grab_focus()
+	await animation_player.animation_finished
+	start_button.grab_focus()
 	
 func hide_buttons() -> void:
 	
@@ -211,7 +212,9 @@ func show_name_entry() -> void:
 	
 	animation_player.play("show_name")
 	
-	#name_field.grab_focus()
+	await animation_player.animation_finished
+	
+	name_field.grab_focus()
 	
 	
 	
