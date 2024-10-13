@@ -16,11 +16,14 @@ var run_timer: bool = false
 
 func _ready():
 	
+	register_global_save()
+	#_persist.load_values()
+	
+func register_global_save() -> void:
 	var save_callable: Callable = Callable(self,"save_values")
 	var load_callable: Callable = Callable(self,"load_values")
 	
-	_persist.register_persistent_class("stats", save_callable, load_callable)
-	#_persist.load_values()
+	_persist.register_global_class("stats", save_callable, load_callable)
 
 func save_values() -> Dictionary:
 	

@@ -3,6 +3,11 @@ extends Node
 ## A dictionary that store values from the current game session.
 var stored_values: Dictionary = {}
 
+## Global
+var global_save_funcs: Dictionary = {}
+
+var global_load_funcs: Dictionary = {}
+
 ## The functions that will be called when unloading the current level
 var save_funcs: Dictionary = {}
 
@@ -51,6 +56,17 @@ func register_persistent_class(parent_name: String, save_func: Callable, load_fu
 	save_funcs[parent_name] = save_func
 	load_funcs[parent_name] = load_func
 
+func register_global_class(parent_name: String, save_func: Callable, load_func: Callable):
+
+	# Create class dictionary if it doesn't exist
+	if not stored_values.has(parent_name):
+
+		# Create a dictionary for the class
+		stored_values[parent_name] = {}
+
+	# Put the callable functions in the dictionary
+	global_save_funcs[parent_name] = save_func
+	global_load_funcs[parent_name] = load_func
 
 func new_file(file_name: String) -> String:
 	
@@ -105,6 +121,11 @@ func load_file(path: String) -> void:
 ## Calls all save functions and stores the values in the dictionary
 func save_values():
 	
+	# Global Save Funcs
+	for key in global_save_funcs.keys():
+		stored_values[key] = global_save_funcs[key].call()
+	
+	# Local Save Funcs
 	for key in save_funcs.keys():
 		stored_values[key] = save_funcs[key].call()
 		
@@ -112,6 +133,15 @@ func save_values():
 
 ## Calls all load functions and passes the stored values to them
 func load_values():
+	
+	# Load Global Values
+	for key in global_load_funcs.keys():
+		
+		# If the keys dictionary is empty, skip it
+		if stored_values.has(key) and stored_values[key] != {}:
+			global_load_funcs[key].call(stored_values[key])
+	
+	# Load Local Values
 	for key in load_funcs.keys():
 		
 		# If the keys dictionary is empty, skip it
@@ -133,6 +163,7 @@ func get_values(key: String) -> Dictionary:
 	
 ## Gets the values of the save at the specified file path
 func get_save_values(file_path: String) -> Dictionary:
+	reset()
 	load_file(file_path)
 	load_values()
 	return stored_values
@@ -152,3 +183,5 @@ func reset():
 	stored_values = {}
 	save_funcs = {}
 	load_funcs = {}
+	
+	

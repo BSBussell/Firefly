@@ -143,7 +143,9 @@ func _on_child_focus_entered() -> void:
 	
 func _on_focus_exited() -> void:
 	
-	await get_tree().create_timer(0.1).timeout
+	await get_viewport().gui_focus_changed
+	if not is_inside_tree():
+		return
 	print("Panel Focus Exited")
 	
 	
@@ -160,7 +162,9 @@ func _on_focus_exited() -> void:
 	
 func _on_child_focus_exited() -> void:
 	
-	await get_tree().create_timer(0.1).timeout
+	await get_viewport().gui_focus_changed
+	if not is_inside_tree():
+		return
 	print("Child Focus Exited")
 	
 	

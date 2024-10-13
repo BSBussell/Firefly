@@ -4,11 +4,16 @@ var collected_jars: Dictionary = {}  # Dictionary to store the collected state o
 
 func _ready():
 	
+	register_global_saves()
+	#_persist.load_values()
+	
+
+func register_global_saves() -> void:
+	
 	var save_callable: Callable = Callable(self, "save_jars")
 	var load_callable: Callable = Callable(self, "load_jars")
 	
-	_persist.register_persistent_class("JarTracker", save_callable, load_callable)
-	#_persist.load_values()
+	_persist.register_global_class("JarTracker", save_callable, load_callable)
 	
 func save_jars() -> Dictionary:
 	
