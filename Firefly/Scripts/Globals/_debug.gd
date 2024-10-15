@@ -9,6 +9,9 @@ var _quicksave_points: float = 0
 
 func _input(_event: InputEvent) -> void:
 	
+	if not Input.is_action_pressed("debug_mod"):
+		return
+		
 	var scale_factors = {
 		KEY_1: 0.16,
 		KEY_2: 0.5,

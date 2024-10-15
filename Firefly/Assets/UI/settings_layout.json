@@ -46,6 +46,13 @@
 				"description": "sync game refresh rate with monitor",
 				"type": "boolean",
 				"config_key": "vsync"
+			},
+			"framerate": {
+				"label": "FPS Limit",
+				"description": "Se the max Frameratee",
+				"type": "choice",
+				"config_key": "fps_target",
+				"options": ["30", "60", "90", "120", "144", "165", "240", "NONE"]
 			}
 		}
 	},

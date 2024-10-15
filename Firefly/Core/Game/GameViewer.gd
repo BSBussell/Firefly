@@ -375,6 +375,7 @@ func config_changed():
 		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
 		
 		
+	update_fps(_config.get_setting("fps_target"))
 		
 	
 	# If we need to turn on or off vsync
@@ -384,3 +385,16 @@ func config_changed():
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
 
+var current_fps_val: int = -1
+var fps_key_map: Array = [30, 60, 90, 120, 144, 165, 240, 0]
+func update_fps(config_val: int) -> void:
+	
+	if current_fps_val == config_val:
+		return
+	
+	
+	current_fps_val = config_val	
+		
+	Engine.set_max_fps(fps_key_map[current_fps_val])
+	print(current_fps_val)
+	print("FPS updated to:", str(Engine.get_max_fps()))

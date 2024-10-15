@@ -21,6 +21,7 @@ var def_settings: Dictionary = {
 # Graphics
 	"fullscreen": false,
 	"resolution": 0,
+	"fps_target": 0,   
 	"vsync": false,
 	"game_zoom": 1.0,
 	

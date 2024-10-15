@@ -1,7 +1,11 @@
 [gd_scene load_steps=2 format=3 uid="uid://cpq11svooa16v"]
 
-[ext_resource type="LabelSettings" uid="uid://bofwbwm2acyhx" path="res://UI_Theme/setting_cats.tres" id="1_akogr"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_3wxxk"]
 
 [node name="Divider" type="Label"]
+theme = ExtResource("1_3wxxk")
+theme_type_variation = &"TimerText"
+theme_override_colors/font_color = Color(0.780392, 0.87451, 0.921569, 1)
 text = "|"
-label_settings = ExtResource("1_akogr")
+horizontal_alignment = 1
+vertical_alignment = 1
