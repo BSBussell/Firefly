@@ -76,13 +76,7 @@ func _ready():
 
 func _input(_event: InputEvent) -> void:
 	
-	# Handle Resets
-	if Input.is_action_just_pressed("reset") and not _loader.loading:
-		
-		# Reload the scene
-		get_tree().paused = false
-		await _loader.reset_game(NodePath("res://Scenes/Levels/TutorialLevel/tutorial.tscn"))
-
+	
 		
 			
 

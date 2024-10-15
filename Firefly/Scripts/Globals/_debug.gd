@@ -12,6 +12,15 @@ func _input(_event: InputEvent) -> void:
 	if not Input.is_action_pressed("debug_mod"):
 		return
 		
+		
+	# Handle Resets
+	if Input.is_action_just_pressed("reset") and not _loader.loading:
+		
+		# Reload the scene
+		get_tree().paused = false
+		await _loader.reset_game(NodePath("res://Scenes/Levels/TutorialLevel/tutorial.tscn"))
+
+		
 	var scale_factors = {
 		KEY_1: 0.16,
 		KEY_2: 0.5,
