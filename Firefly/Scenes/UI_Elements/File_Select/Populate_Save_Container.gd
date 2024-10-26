@@ -15,18 +15,18 @@ func _ready():
 	# Display all the files
 	for file in save_files:
 		print(file)
-		var new_save_file: FILE_UI = FILE_UI.instantiate()
+		var new_save_file: FileUI = FILE_UI.instantiate()
 		add_child(new_save_file)
 		new_save_file.set_file(file)
 	
 	# Adding in the mandatory new file select
-	var new_file: FILE_UI = FILE_UI.instantiate()
+	var new_file: FileUI = FILE_UI.instantiate()
 	add_child(new_file)
 	new_file.set_new()
 	
 	# Display a minimum of 3 files
 	while get_child_count() < 3:
-		var new_padding: FILE_UI = FILE_UI.instantiate()
+		var new_padding: FileUI = FILE_UI.instantiate()
 		add_child(new_padding)
 		new_padding.set_new()
 		
@@ -41,10 +41,6 @@ func _ready():
 	
 	
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func start_game(path: String):
 	animation_player.play("start_game")
@@ -85,7 +81,7 @@ func _on_child_exiting_tree(node):
 	
 	
 	# Ensure there are a minimum of 3 files on screen
-	var new_padding: FILE_UI = null
+	var new_padding: FileUI = null
 	if get_child_count()-1 < 3:
 		new_padding = FILE_UI.instantiate()
 		add_child.call_deferred(new_padding)

@@ -1,5 +1,5 @@
 extends PanelContainer
-class_name FILE_UI
+class_name FileUI
 # I deserve to be bullied for this. i am sorry
 
 @export var file_label: Label
@@ -47,7 +47,7 @@ func _ready():
 var selected: bool = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	
 	if user_pressed() and not selected:
 		open_file()

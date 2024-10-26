@@ -6,8 +6,8 @@ var max_elements: int
 var elements: PackedFloat32Array = PackedFloat32Array()
 var total: float = 0.0
 
-func _init(max_elements: int):
-	self.max_elements = max_elements
+func _init(max_elem: int):
+	self.max_elements = max_elem
 
 func add_element(element: float):
 	

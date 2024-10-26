@@ -1184,7 +1184,6 @@ visible = false
 position = Vector2(446, -23)
 scale = Vector2(15.195, 1)
 optional_target = NodePath("Marker2D")
-hide = true
 pull_strength = 0.0
 blend_priority = -1
 

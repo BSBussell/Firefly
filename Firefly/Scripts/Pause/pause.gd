@@ -51,7 +51,7 @@ func define_dependencies() -> void:
 
 
 
-func _input(event):
+func _input(_event):
 	
 	# Handle Pausing
 	if Input.is_action_just_pressed("Pause"):

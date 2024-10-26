@@ -677,7 +677,6 @@ bob_speed = 1.0
 resting_position = Vector2(6, 8.5)
 smoothing = 20.0
 num_segments = 10
-seed = 3.142
 
 [node name="FrontWingOutline" type="Line2D" parent="Visuals/SquishCenter/WingBody" node_paths=PackedStringArray("player")]
 position = Vector2(0, -1)

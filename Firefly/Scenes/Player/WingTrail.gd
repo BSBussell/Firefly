@@ -8,7 +8,7 @@ extends Line2D
 @export var smoothing: float = 30
 @export var num_segments: int = 5  # Number of points between the base and the trailing point
 
-@export var seed: float = 0
+@export var offset: float = 0
 
 var time_passed: float = 0.0  # To keep track of the time for the sine wave
 
@@ -20,7 +20,7 @@ var base_point: Vector2 # globals cheese :3
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	time_passed = seed
+	time_passed = offset
 	
 	_initialize_points()
 
@@ -30,9 +30,9 @@ func _initialize_points():
 	for i in range(num_segments + 2):  # +2 to account for the initial and final points
 		add_point(Vector2.ZERO)
 
-func set_wing_length(length: float) -> void:
+func set_wing_length(wing_len: float) -> void:
 	
-	resting_position = resting_position.normalized() * length
+	resting_position = resting_position.normalized() * wing_len
 
 
 var desired_trailing_point
@@ -110,15 +110,15 @@ func bob_offset(delta: float, speed: float = bob_speed, strength: float = bob_st
 	# Create an up and down bobbing effect using a sine wave
 	return Vector2(0, sin(time_passed * speed) * strength)
 
-func get_length(base_point: Vector2) -> float:
-	return (resting_position - base_point).length()
+func get_length(base: Vector2) -> float:
+	return (resting_position - base).length()
 
-func constrain_length(unconstrained_point, base_point) -> Vector2:
-	return unconstrained_point.normalized() * get_length(base_point)
+func constrain_length(unconstrained_point, base) -> Vector2:
+	return unconstrained_point.normalized() * get_length(base)
 
 # This is disgusting but in a raw way
-func constrain_length_with_offset(unconstrained_point, base_point, offset_length) -> Vector2:
-	var adjusted_base_point = base_point + (base_point - unconstrained_point).normalized() * offset_length
+func constrain_length_with_offset(unconstrained_point, base, offset_length) -> Vector2:
+	var adjusted_base_point = base + (base - unconstrained_point).normalized() * offset_length
 	return constrain_length(unconstrained_point, adjusted_base_point)
 
 
@@ -130,7 +130,7 @@ func idle_wings(delta) -> Vector2:
 func grounded_movement_wings(delta) -> Vector2:
 	# Based on the velocity, have the wings rise upwards to emulate inertia like a cape
 	var velocity_offset = Vector2(0, max(-player.velocity.length() * 0.04, -5)) # bullshit constants, go
-	var long_offset: Vector2 = base_point + resting_position + velocity_offset + bob_offset(delta, 9 if seed == 0 else 15,1.2)
+	var long_offset: Vector2 = base_point + resting_position + velocity_offset + bob_offset(delta, 9 if offset == 0 else 15,1.2)
 	return constrain_length(long_offset, base_point)
 
 
@@ -153,28 +153,28 @@ func aerial_rising_wings(delta) -> Vector2:
 func aerial_falling_wings(delta) -> Vector2:
 	# Based on the velocity, have the wings extend outwards to emulate inertia
 	var velocity_offset = Vector2(0, max(-player.velocity.length() * 0.06, -5.5))
-	var long_offset: Vector2 = base_point + resting_position + velocity_offset + bob_offset(delta, 6 if seed == 0 else 10, 1.0)
+	var long_offset: Vector2 = base_point + resting_position + velocity_offset + bob_offset(delta, 6 if offset == 0 else 10, 1.0)
 	return constrain_length(long_offset, base_point)
 
 
 func gliding_wings(delta) -> Vector2:
 
 	# Woo!
-	var max_extension: float = -8.0 if seed == 0 else -6.2
+	var max_extension: float = -8.0 if offset == 0 else -6.2
 	
 	local_smoothing = smoothing * 5
 	
 	var velocity_offset = Vector2(0, max(-player.velocity.length() * 0.06, max_extension))
-	var long_offset: Vector2 = base_point + resting_position + velocity_offset + bob_offset(delta, 50 if seed == 0 else 25, 10.0)
+	var long_offset: Vector2 = base_point + resting_position + velocity_offset + bob_offset(delta, 50 if offset == 0 else 25, 10.0)
 	return constrain_length(long_offset, base_point)
 	
 func flapping_wings(delta) -> Vector2:
 
 	# Woo!
-	var max_extension: float = -8.0 if seed == 0 else -6.2
+	var max_extension: float = -8.0 if offset == 0 else -6.2
 	
 	local_smoothing = smoothing * 5
 	
 	var velocity_offset = Vector2(0, max(-player.velocity.length() * 0.06, max_extension))
-	var long_offset: Vector2 = base_point + resting_position + velocity_offset + bob_offset(delta, 50 if seed == 0 else 25, 10.0)
+	var long_offset: Vector2 = base_point + resting_position + velocity_offset + bob_offset(delta, 50 if offset == 0 else 25, 10.0)
 	return constrain_length(long_offset, base_point)

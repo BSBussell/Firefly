@@ -261,10 +261,6 @@ func res_interpolate(delta: float):
 
 		scale_progress += delta
 		var t = min(scale_progress / scaling_duration, 1.0)  # Clamp to [0, 1]
-
-		# Interpolate the goal resolution
-		var float_res: Vector2 = Vector2(game_res).lerp(target_res, t)
-		
 		
 		game_res = game_res.lerp(target_res, t)
 		_globals.RENDER_SIZE = game_res

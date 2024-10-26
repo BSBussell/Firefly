@@ -121,13 +121,13 @@ func _process(delta):
 	# If Glow down is pressed and we're not at the bottom
 	if movement_level > 0 and Input.is_action_just_pressed("Glow_Down"):
 		
-		var saved_points: int = glow_points
+		var saved_points: int = int(glow_points)
 		
 		demote()
 		
 		# Ok just a little exploit pre-fixing, if the player is below 30% on the score thing,
 		# dont enable them to easily get glow again. Just to prevent an "off and on again" meta when low on points
-		glow_points = 100 if saved_points > 30 else glow_points
+		glow_points = 100.0 if saved_points > 30 else glow_points
 	
 	
 	glow_point_visual()
@@ -137,11 +137,11 @@ func _process(delta):
 	
 func update_meter() -> void:
 	# Update our meter
-	var glow_meter_percentage: int = glow_points
+	var glow_meter_percentage: int = floor(glow_points)
 	
 	# In auto glow mode, the meter measures how close to max speed we are
 	if _config.get_setting("auto_glow"):
-		glow_meter_percentage = (glow_points + (100 * movement_level)) / (100 * max_level) * 100
+		glow_meter_percentage = floor((glow_points + (100 * movement_level)) / (100 * max_level) * 100)
 		
 		
 	# Signal to the meter to change its visual

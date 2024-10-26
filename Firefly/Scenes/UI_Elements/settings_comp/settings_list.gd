@@ -50,10 +50,9 @@ func populate_setting(setting_list: Dictionary, current_cat: Button):
 		return
 
 	# Free the
-	var hide_settings: bool = false
 	if get_child_count() > 0:
 		
-		hide_settings = true
+		# hide_settings = true
 		#animation_player.play("setting_hide")
 		#await animation_player.animation_finished
 		clear_list()

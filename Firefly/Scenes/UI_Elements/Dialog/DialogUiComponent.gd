@@ -30,7 +30,7 @@ func connect_to_func(init_sig: Signal, end_sig: Signal):
 	end_sig.connect(Callable(self, "finish_dialogue"))
 
 # Only enabled while the textbox is visible
-func _process(delta):
+func _process(_delta):
 	if text_box.visible and Input.is_action_just_pressed("interact"):
 		
 		current_loc += 1

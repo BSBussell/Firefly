@@ -6,14 +6,14 @@ class_name JarCounter
 @export var ANIMATION_TIMER: Timer
 
 var COLLECTED: int = 0
-var max: int = 100
+var MAX: int = 100
 
 
 var out: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	max = 0
+	MAX = 0
 	
 	var collectibles = []
 	collectibles = get_tree().get_nodes_in_group("FlyJar")
@@ -24,10 +24,10 @@ func _ready():
 		if error:
 			print(error)
 	
-	max = collectibles.size()
+	MAX = collectibles.size()
 	COLLECTED = 0
 	
-	COUNTER.text = "%d/%d" % [COLLECTED, max]
+	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
 	
 	# Connect Blue Jars:
 	
@@ -51,7 +51,7 @@ func _ready():
 func jar_collected(_jar: FlyJar):
 		
 	COLLECTED += 1
-	COUNTER.text = "%d/%d" % [COLLECTED, max]
+	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
 	
 	peak_counter()
 	

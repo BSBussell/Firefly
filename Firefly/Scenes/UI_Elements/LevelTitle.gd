@@ -20,17 +20,14 @@ func _ready():
 
 
 # Leave the LevelTitle Text on until input
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	
 	# If the animation finished, fade out
 	if animation_finished:
 		animation_player.play("Fade-Out")
 	
-#COUNTER_ANIMATOR.get_animation("Show").track_set_key_value(0, 0, current_pos)
-func _on_animation_player_animation_finished(anim_name):
+func _on_animation_player_animation_finished(_anim_name):
 	
-	# Wait two and a half secs
-	#await get_tree().create_timer(2.5).timeout
 	
 	# Modify the animation to work with the current font size(cause dynamic resizing)
 	var font_size: int = label.get_theme_font_size("font_size")

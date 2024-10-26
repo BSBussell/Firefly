@@ -66,7 +66,7 @@ func load_level(path: String, spawn_id: String = ""):
 		await level_loader.level_free
 
 	# Load new level
-	var level = await level_loader.load_level(current_path, spawn_id)
+	var level = level_loader.load_level(current_path, spawn_id)
 
 	# Load new ui
 	ui_loader.setup(level)

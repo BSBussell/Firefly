@@ -47,7 +47,7 @@ func gen_id() -> String:
 	
 	return str(hash(str(identifiers)))
 
-func _on_area_entered(area):
+func _on_area_entered(_area):
 
 	# And prevent the player from going into the thing again
 	set_deferred("monitoring", false)

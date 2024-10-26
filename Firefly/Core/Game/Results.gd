@@ -19,13 +19,13 @@ func _ready():
 	version_num.text = _meta.VERSION_NO
 
 
-func _input(event):
+func _input(_event):
 	
 	if Input.is_action_just_pressed("ui_accept") and self.visible:
 		hide_Victory_Screen()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 
 	pass	
 	_logger.info("Result - Process")

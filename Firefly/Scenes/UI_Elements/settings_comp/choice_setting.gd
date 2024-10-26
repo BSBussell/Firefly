@@ -57,11 +57,11 @@ func set_below_focus(below: Control):
 	
 
 
-func set_left_focus(left: Control):
+func set_left_focus(_left_elem: Control):
 	select.focus_neighbor_left = select.get_path()
 	
 
-func set_right_focus(right: Control):
+func set_right_focus(_right_elem: Control):
 	select.focus_neighbor_right = select.get_path()
 	
 

@@ -21,7 +21,7 @@ func _ready():
 	timer.start(delay)
 	
 
-func _process(delta):
+func _process(_delta):
 	
 	_logger.info("Worm - Process Start")
 
@@ -48,12 +48,12 @@ func _physics_process(delta):
 
 	_logger.info("Worm - Physics Process End")
 
-func setup_hunt(initial: SpitSegment, speed: float, delay: float):
+func setup_hunt(initial: SpitSegment, speed: float, dlay: float):
 	
 	first_segment = initial
 	climb_speed = speed
 	target_segment = initial
-	self.delay = delay
+	self.delay = dlay
 	
 
 func start_hunt():

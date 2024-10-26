@@ -13,7 +13,7 @@ signal Closing
 func _ready():
 	pass # Replace with function body.
 
-func _unhandled_input(event):
+func _unhandled_input(_event):
 	
 	if visible and Input.is_action_pressed("ui_cancel"):
 		
@@ -25,9 +25,6 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_accept"):
 		print("Focus Owner:", get_viewport().gui_get_focus_owner())
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func load_in():
 	animation_player.play("load_in")

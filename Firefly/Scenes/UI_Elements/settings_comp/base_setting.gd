@@ -23,19 +23,19 @@ func setup_element():
 	pass
 
 ## Connects the components above focus to the control
-func set_above_focus(above: Control):
+func set_above_focus(_above: Control):
 	pass
 
 ## Connects the components below focus to the control
-func set_below_focus(below: Control):
+func set_below_focus(_below: Control):
 	pass
 
 ## Connects the components left focus to the control
-func set_left_focus(left: Control):
+func set_left_focus(_left: Control):
 	pass
 
 ## Connects the components right focus to the control
-func set_right_focus(right: Control):
+func set_right_focus(_right: Control):
 	pass
 
 ## Returns the object that would be focused on

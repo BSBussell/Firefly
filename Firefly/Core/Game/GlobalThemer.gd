@@ -11,11 +11,6 @@ func _ready():
 	base_theme = theme.duplicate()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 func scale_theme(resolution: Vector2):
 	
 	var scale_factor: float = resolution.x / BASE_RESOLUTION.x

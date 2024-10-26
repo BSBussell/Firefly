@@ -8,11 +8,6 @@ func _ready():
 	config_changed()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-# get_theme_constant("scale", "TextureProgressBar")
 func config_changed():
 	
 	# For some reason it takes awhile for the theme to update after its been changed in parent idk

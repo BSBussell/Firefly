@@ -4,7 +4,7 @@ class_name CheckPoint
 var active = false
 
 @export var optional_target: Marker2D = null
-@export var hide: bool = false
+@export var secret: bool = false
 
 @onready var checkpoint_sprite = $CheckpointSprite
 @onready var spotlight = $Spotlight
@@ -19,7 +19,7 @@ var manager: CheckPointManager
 func _ready():
 	spotlight.set_brightness(0)
 	
-	if hide:
+	if secret:
 		visible = false
 
 
@@ -32,7 +32,7 @@ func set_manager(checkpoint_manager: CheckPointManager):
 func activate_checkpoint(player: Flyph):
 	
 	# If this isn't a hidden checkpoint play fx
-	if not hide:
+	if not secret:
 		checkpoint_sprite.set_frame(1)
 		spotlight.set_brightness(0.6)
 		explode.emitting = true

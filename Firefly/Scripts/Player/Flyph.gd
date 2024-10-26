@@ -107,7 +107,7 @@ signal dead()
 @onready var squish_node: SquishNode = $Visuals/SquishCenter
 @onready var spotlight: PointLight2D = $Visuals/Spotlight
 @onready var light: PointLight2D = $Visuals/Spotlight
-@onready var trail: Line2D = $Visuals/Trail
+@onready var glow_trail: Line2D = $Visuals/Trail
 @onready var back_wing: Line2D = $Visuals/SquishCenter/WingBody/BackWing
 @onready var front_wing: Line2D = $Visuals/SquishCenter/WingBody/FrontWing
 
@@ -966,7 +966,7 @@ func calculate_properties():
 	momentum_time.wait_time = movement_data.STRICTNESS
 
 	# Visual
-	trail.length = movement_data.TRAIL_LENGTH
+	glow_trail.length = movement_data.TRAIL_LENGTH
 	run_threshold = movement_data.RUN_THRESHOLD * TILE_SIZE
 
 	front_wing.set_wing_length(movement_data.WING_LENGTH+1)
@@ -1039,8 +1039,8 @@ func kill():
 	# Prevent double calls mid death
 	if dying: return
 
-	# Reset the trail
-	trail.clear_points()
+	# Reset the glow_trail
+	glow_trail.clear_points()
 
 	# DEATH EXPLOSION
 	Input.start_joy_vibration(1, 0.1, 0.2, 0.2)
@@ -1143,7 +1143,7 @@ func set_respawn_point(point: Vector2):
 ## Event Based State Changes
 
 ## Water Detection
-func _on_water_detector_body_entered(body):
+func _on_water_detector_body_entered(_body):
 	
 	# Prevent double entries.... its weird, this shouldn't
 	# happen as long as im smart but sometimes,,,
@@ -1153,7 +1153,7 @@ func _on_water_detector_body_entered(body):
 
 
 var disable_walljump: bool = false
-func _on_water_detector_body_exited(body):
+func _on_water_detector_body_exited(_body):
 	
 	# Aerial Feels like the best bet
 	
