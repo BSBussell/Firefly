@@ -30,6 +30,20 @@ func scale_theme(resolution: Vector2):
 	# TextureProgressMeter
 	scale_elem_constant_by("TextureProgressBar", "scale", scale_factor)
 	
+	
+	# File Select Buttons
+	scale_elem_font_by("NameEntryButton", scale_factor)
+	scale_elem_font_by("FileButtons", scale_factor)
+	
+	# File Select Lebal
+	scale_elem_font_by("FileLabel", scale_factor)
+	scale_elem_font_by("FileJarCount", scale_factor)
+	scale_elem_font_by("FileTime", scale_factor)
+
+	# File Select Name Entry
+	scale_elem_font_by("LineEdit", scale_factor)
+	
+	
 	# Button
 	scale_elem_font_by("Button", scale_factor)
 	# CounterLabel - label

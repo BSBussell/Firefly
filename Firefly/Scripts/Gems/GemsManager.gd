@@ -26,18 +26,24 @@ func spawn_gem(pos: Vector2) -> Gem:
 	
 	var new_gem: Gem
 	new_gem = gem_scene.instantiate()
-	add_child(new_gem)
+	#add_child(new_gem)
+	call_deferred("add_child", new_gem)
 	gem_array.append(new_gem)
 	new_gem.global_position = pos
+	
+	await new_gem.ready
 	return new_gem
 
 func spawn_blue_gem(pos: Vector2) -> Gem:
 	
 	var new_gem: Gem
 	new_gem = blue_gem.instantiate()
-	add_child(new_gem)
+	#add_child(new_gem)
+	call_deferred("add_child", new_gem)
 	gem_array.append(new_gem)
 	new_gem.global_position = pos
+	
+	await new_gem.ready
 	return new_gem
 
 

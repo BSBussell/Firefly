@@ -33,7 +33,8 @@ func _ready():
 	# Update everythings focus neighbor
 	update_focus_neighbors()
 	
-	scroll_container.set_deferred("scroll_vertical", 0)
+	#await get_tree().create_timer(1.0).timeout
+	#scroll_container.set_deferred("scroll_vertical", 0)
 	
 	
 		
@@ -62,6 +63,11 @@ func update_focus_neighbors():
 			control.focus_neighbor_top = prev.get_path()
 		
 		prev = control
+	
+	if prev:
+		await prev.ready
+		scroll_container.scroll_vertical = 0
+		#scroll_container.set_deferred("scroll_vertical", 0)
 		
 
 func _on_child_exiting_tree(node):

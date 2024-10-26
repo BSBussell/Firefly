@@ -65,7 +65,7 @@ func get_timer_string(format: String = "HH:MM:SS:MS") -> String:
 	var milliseconds: int = int((TIME - int(TIME)) * 1000)
 
 	var display_time: String = format
-	
+	  
 	display_time = display_time.replace("HH", "%02d" % hours)
 	display_time = display_time.replace("MM", "%02d" % minutes)
 	display_time = display_time.replace("SS", "%02d" % seconds)
@@ -76,7 +76,7 @@ func get_timer_string(format: String = "HH:MM:SS:MS") -> String:
 func get_timer_debug_string(format: String = "HH:MM:SS:MS") -> String:
 	var display_time: String = get_timer_string(format)
 	
-	# If the run is "invalid" attach strings indicating as such
+	# If the run is   "invalid" attach strings indicating as such
 	if INVALID_RUN:
 		display_time += " - Assist"
 		if Engine.time_scale != 1:

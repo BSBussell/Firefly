@@ -1,10 +1,12 @@
-[gd_scene load_steps=17 format=3 uid="uid://0h47qgdfafs"]
+[gd_scene load_steps=19 format=3 uid="uid://0h47qgdfafs"]
 
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_kyvp3"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/File_Select/SaveFileUI.gd" id="2_e53p8"]
 [ext_resource type="AudioStream" uid="uid://cnuerb00ea5jy" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_002_75057.mp3" id="3_de0nn"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/File_Select/TextVerification.gd" id="3_pducj"]
 [ext_resource type="AudioStream" uid="uid://dpjkcsm43a70s" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_003_75058.mp3" id="4_33dsm"]
 [ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="5_cbc1n"]
+[ext_resource type="AudioStream" uid="uid://dvrqu1quotelj" path="res://Assets/SFX/UI/zapsplat_foley_bottle_glass_beer_knock_over_road_002_103732.mp3" id="6_daaar"]
 
 [sub_resource type="Animation" id="Animation_5k3mx"]
 resource_name = "OptionExpansion"
@@ -128,7 +130,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.4, 0.5),
 "transitions": PackedFloat32Array(1.3, 0.4, 1),
 "update": 0,
-"values": [Vector2(1, 1), Vector2(1, 0.15), Vector2(1, 1)]
+"values": [Vector2(1, 1), Vector2(1, 0.2), Vector2(1, 1)]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -345,50 +347,50 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("HBoxContainer/FileOptions:visible")
+tracks/1/path = NodePath("HBoxContainer/FileOptions:custom_minimum_size")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"times": PackedFloat32Array(0, 0.2, 0.21),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(220, 2.08165e-12), Vector2(2.08165e-12, 2.08165e-12)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("HBoxContainer/FileOptionSimulator:visible")
+tracks/2/path = NodePath("HBoxContainer/FileOptions:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [true]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("HBoxContainer/FileLabels/FileLabel:horizontal_alignment")
+tracks/3/enabled = false
+tracks/3/path = NodePath("HBoxContainer/FileOptionSimulator:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1, 0]
+"values": [false]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("HBoxContainer/FileOptions:custom_minimum_size")
-tracks/4/interp = 2
+tracks/4/path = NodePath("HBoxContainer/FileLabels/FileLabel:horizontal_alignment")
+tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(220, 2.08165e-12)]
+"update": 1,
+"values": [1, 0]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -487,7 +489,7 @@ _data = {
 "shrink": SubResource("Animation_lh8br")
 }
 
-[node name="SaveFile" type="PanelContainer" node_paths=PackedStringArray("file_label", "save_info", "jar_counter", "time_string", "name_entry", "name_field", "file_buttons", "file_buttons_spacer", "start_button", "erase_button", "focused_audio", "opened_audio", "start_audio")]
+[node name="SaveFile" type="PanelContainer" node_paths=PackedStringArray("file_label", "save_info", "jar_counter", "time_string", "name_entry", "name_field", "file_buttons", "file_buttons_spacer", "start_button", "erase_button", "focused_audio", "opened_audio", "start_audio", "button_focused_audio", "button_pressed_audio")]
 offset_top = 2.0
 offset_right = 762.0
 offset_bottom = 205.0
@@ -513,6 +515,8 @@ erase_button = NodePath("HBoxContainer/FileOptions/Button/EraseButton")
 focused_audio = NodePath("Audio/Focused")
 opened_audio = NodePath("Audio/Opened")
 start_audio = NodePath("Audio/Start")
+button_focused_audio = NodePath("Audio/ButtonFocused")
+button_pressed_audio = NodePath("Audio/ButtonPressed")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -531,6 +535,7 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="SaveInfo" type="HBoxContainer" parent="HBoxContainer/FileLabels"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -569,6 +574,8 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 placeholder_text = "Your Name"
 max_length = 10
+caret_blink = true
+script = ExtResource("3_pducj")
 
 [node name="ConfirmName" type="Button" parent="HBoxContainer/FileLabels/NameEnter/NameEntryH"]
 layout_mode = 2
@@ -640,6 +647,7 @@ text = "Erase"
 libraries = {
 "": SubResource("AnimationLibrary_f6b36")
 }
+speed_scale = 1.75
 
 [node name="Audio" type="Node" parent="."]
 
@@ -655,8 +663,15 @@ bus = &"SFX"
 stream = ExtResource("5_cbc1n")
 bus = &"SFX"
 
+[node name="ButtonFocused" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("5_cbc1n")
+
+[node name="ButtonPressed" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_daaar")
+
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="HBoxContainer/FileLabels/NameEnter/NameEntryH/NameField" to="HBoxContainer/FileLabels/NameEnter/NameEntryH/NameField" method="_on_text_changed"]
 [connection signal="pressed" from="HBoxContainer/FileLabels/NameEnter/NameEntryH/ConfirmName" to="." method="_on_confirm_name_pressed"]
 [connection signal="pressed" from="HBoxContainer/FileOptions/Button/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="focus_exited" from="HBoxContainer/FileOptions/Button/EraseButton" to="." method="_on_erase_button_focus_exited"]

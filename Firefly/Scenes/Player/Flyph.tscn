@@ -1166,6 +1166,8 @@ script = ExtResource("32_qjlto")
 WALL_STATE = NodePath("../Wall")
 AERIAL_STATE = NodePath("../Aerial")
 WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
+WATER_SPEED_MULTI = 0.8
+WATER_ACCEL_MULTI = 1.2
 
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
 script = ExtResource("33_e7xfe")

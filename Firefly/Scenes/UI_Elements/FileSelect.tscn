@@ -267,7 +267,7 @@ _data = {
 "start_game": SubResource("Animation_1bedt")
 }
 
-[node name="FileSelect" type="Control" node_paths=PackedStringArray("save_container")]
+[node name="FileSelect" type="Control" node_paths=PackedStringArray("save_container", "scroll_container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -280,6 +280,7 @@ mouse_filter = 2
 theme = ExtResource("1_jbhry")
 script = ExtResource("2_pynnf")
 save_container = NodePath("SaveContainer/ScrollContainer/VBoxContainer2/SaveContainer")
+scroll_container = NodePath("SaveContainer/ScrollContainer")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_crxj6")

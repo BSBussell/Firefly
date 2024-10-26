@@ -3,8 +3,9 @@ class_name FileSelectScene
 
 @export var save_container: SaveContainer
 
-@onready var animation_player = $AnimationPlayer
+@export var scroll_container: ScrollContainer
 
+@onready var animation_player = $AnimationPlayer
 
 signal Closing
 
@@ -14,7 +15,7 @@ func _ready():
 
 func _unhandled_input(event):
 	
-	if Input.is_action_pressed("ui_cancel"):
+	if visible and Input.is_action_pressed("ui_cancel"):
 		
 		animation_player.play("close")
 		
@@ -32,3 +33,4 @@ func load_in():
 	animation_player.play("load_in")
 	
 	save_container.get_child(0).grab_focus()
+	scroll_container.scroll_vertical = 0

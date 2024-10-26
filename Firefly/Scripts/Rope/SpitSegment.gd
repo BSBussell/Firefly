@@ -2,8 +2,9 @@ extends RigidBody2D
 class_name SpitSegment
 # :3
 
+@export var spotlight: PointLight2D = null
 @onready var spit = $"."
-@onready var spotlight = $PointLight2D
+
 
 var root: Rope = null
 
@@ -52,5 +53,5 @@ func set_decor() -> void:
 func dim() -> void:
 	if spotlight:
 		spotlight.enabled = false
-		spotlight.queue_free()
+		spotlight.queue_free()   
 	

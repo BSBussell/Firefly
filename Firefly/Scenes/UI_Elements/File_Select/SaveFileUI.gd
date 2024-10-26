@@ -23,6 +23,8 @@ class_name FILE_UI
 @export var focused_audio: AudioStreamPlayer
 @export var opened_audio: AudioStreamPlayer
 @export var start_audio: AudioStreamPlayer
+@export var button_focused_audio: AudioStreamPlayer
+@export var button_pressed_audio: AudioStreamPlayer
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -139,6 +141,8 @@ func _on_focus_entered() -> void:
 	
 func _on_child_focus_entered() -> void:
 	print("Child Focus Entered")
+	
+	button_focused_audio.play()
 	return
 	
 func _on_focus_exited() -> void:
@@ -165,6 +169,7 @@ func _on_child_focus_exited() -> void:
 	await get_viewport().gui_focus_changed
 	if not is_inside_tree():
 		return
+		
 	print("Child Focus Exited")
 	
 	
@@ -186,9 +191,9 @@ func user_pressed() -> bool:
 
 func show_buttons() -> void:
 	
-	var reference_size: float = file_buttons_spacer.size.x
+	var reference_size: Vector2 = file_buttons_spacer.size
 	if animation_player:
-		animation_player.get_animation("showButtons").track_set_key_value(2, 1, reference_size)
+		animation_player.get_animation("showButtons").track_set_key_value(1, 1, reference_size)
 	
 	animation_player.play("showButtons")
 	
@@ -232,7 +237,7 @@ func _on_start_button_pressed():
 	var container = get_parent() as SaveContainer
 	container.start_game(_stats.CURRENT_LEVEL)
 	
-	start_audio.play()
+	button_pressed_audio.play()
 
 
 
@@ -242,6 +247,7 @@ func _on_confirm_name_pressed():
 	var file_name = name_field.text
 	set_file(_persist.new_file(file_name))
 	new_file = false
+	button_pressed_audio.play()
 	
 	await animation_player.animation_finished
 	grab_focus()
@@ -256,8 +262,9 @@ func _on_erase_button_pressed():
 	
 	if erase_check:
 		
-		erase_button.text = "Really?"
+		erase_button.text = "Sure?"
 		erase_check = false
+		button_focused_audio.play()
 		
 		await get_tree().create_timer(3.0).timeout
 		
@@ -266,6 +273,7 @@ func _on_erase_button_pressed():
 	else:
 		animation_player.play("delete")
 		_persist.delete_file(save_file)
+		button_pressed_audio.play()
 
 
 	
@@ -333,6 +341,8 @@ func remove_hover_stylebox():
 	
 
 func set_label_focus():
+	
+	close_file()
 	
 	# Set Label Color on hover
 	var label_hover: Color = Color("#d59d29")

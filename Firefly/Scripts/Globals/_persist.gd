@@ -151,9 +151,18 @@ func load_values():
 	#load_file(file_path)
 
 
-## Returns a PackedStringArray of all the saves filepaths.
-func get_saves() -> PackedStringArray:
-	return save_dir.get_files()
+## Returns a PackedStringArray of all the saves filepaths, sorted by most reccently saved
+func get_saves() -> Array:
+	var saves = Array(save_dir.get_files())
+	saves.sort_custom(Callable(self, "_sort_by_modified_time"))
+	return saves
+
+# Helper function to sort files by modification time.
+func _sort_by_modified_time(a: String, b: String) -> int:
+	var dir_path = save_dir.get_current_dir()  # Get the directory path
+	var time_a = FileAccess.get_modified_time(dir_path + "/" + a)
+	var time_b = FileAccess.get_modified_time(dir_path + "/" + b)
+	return time_a > time_b 
 	
 ## Gets the values from the key
 func get_values(key: String) -> Dictionary:
