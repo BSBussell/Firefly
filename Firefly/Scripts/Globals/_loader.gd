@@ -9,7 +9,7 @@ var current_path: String
 signal finished_loading
 
 ## If the game is currently loading a level
-var loading: bool = true
+var loading: bool = false
 
 var title_screen: NodePath = NodePath("res://Scenes/Levels/TitleScreen/title_screen.tscn")
 
@@ -37,6 +37,12 @@ func connect_loaders(ll: LevelLoader, ui: UiLoader):
 	
 ## Loads a level using a given path
 func load_level(path: String, spawn_id: String = "", disp_loading: bool = true):
+
+
+	# Prevent from loading things while we're trying to load
+	if loading:
+		printerr("ERROR: Attempted double load of: ", path)
+		return
 
 	loading = true
 

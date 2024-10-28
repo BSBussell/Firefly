@@ -11,7 +11,7 @@ signal Closing
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pivot_offset = size/2
 
 func _unhandled_input(_event):
 	

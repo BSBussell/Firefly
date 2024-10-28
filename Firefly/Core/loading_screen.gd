@@ -5,6 +5,7 @@ extends ColorRect
 
 func _ready():
 
+	animation_player.play("RESET")
 	scale_shader()	
 
 	progress_bar.value = 0

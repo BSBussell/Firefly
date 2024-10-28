@@ -198,7 +198,6 @@ tracks/8/keys = {
 
 [sub_resource type="Animation" id="Animation_jjext"]
 resource_name = "StartGame"
-length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -237,7 +236,7 @@ tracks/2/keys = {
 }
 tracks/3/type = "value"
 tracks/3/imported = false
-tracks/3/enabled = true
+tracks/3/enabled = false
 tracks/3/path = NodePath("TitleText:modulate")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
@@ -249,7 +248,7 @@ tracks/3/keys = {
 }
 tracks/4/type = "value"
 tracks/4/imported = false
-tracks/4/enabled = true
+tracks/4/enabled = false
 tracks/4/path = NodePath("TitleText:anchor_top")
 tracks/4/interp = 2
 tracks/4/loop_wrap = true
@@ -516,7 +515,6 @@ z_index = 0
 layout_mode = 1
 
 [node name="FileSelect" parent="." instance=ExtResource("8_i807r")]
-visible = false
 layout_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

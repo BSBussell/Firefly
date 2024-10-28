@@ -43,8 +43,15 @@ func _ready():
 
 
 func start_game(path: String):
+	
+	
 	animation_player.play("start_game")
 	await animation_player.animation_finished
+	
+	# Prevent double button presses
+	if _loader.loading:
+		return
+		
 	_loader.load_level(path)	
 
 

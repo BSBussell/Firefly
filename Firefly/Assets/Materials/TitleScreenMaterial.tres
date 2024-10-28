@@ -4,7 +4,7 @@
 
 [resource]
 shader = ExtResource("1_qnes1")
-shader_parameter/progress = 0.960159
+shader_parameter/progress = 1.0
 shader_parameter/waveFrequency1 = 1.0
 shader_parameter/waveFrequency2 = 1.2
 shader_parameter/waveAmplitude1 = 0.033
