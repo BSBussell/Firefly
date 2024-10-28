@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
-[ext_resource type="PackedScene" uid="uid://bxpfadjfys05l" path="res://Scenes/Levels/TitleScreen/title_screen.tscn" id="2_4xtrt"]
+[ext_resource type="PackedScene" uid="uid://sjoth6oe4wr6" path="res://Scenes/Levels/SplashScreen/bee_splash.tscn" id="2_yiswl"]
 [ext_resource type="Script" path="res://Core/Game/LevelLoader.gd" id="3_oejcr"]
 [ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="4_5xpk0"]
@@ -20,7 +20,7 @@ glow_blend_mode = 0
 [node name="GameViewer" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_42j4d")
-start_level = ExtResource("2_4xtrt")
+start_level = ExtResource("2_yiswl")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xxxtd")

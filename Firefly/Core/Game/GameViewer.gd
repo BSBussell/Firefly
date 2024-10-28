@@ -52,7 +52,7 @@ func _ready():
 	_loader.connect_loaders(level_loader, ui_loader)
 	
 	# Load our level
-	_loader.load_level(start_level.resource_path)
+	_loader.load_level(start_level.resource_path, "", false)
 	
 	# Connect Config change function
 	_config.connect_to_config_changed(Callable(self, "config_changed"))

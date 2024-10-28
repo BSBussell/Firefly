@@ -169,7 +169,7 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
@@ -453,6 +453,7 @@ mouse_filter = 1
 color = Color(0.490196, 0.439216, 0.741176, 0)
 
 [node name="TitleText" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
 material = SubResource("ShaderMaterial_vmqk0")
 layout_mode = 1
 anchors_preset = -1

@@ -36,7 +36,7 @@ func connect_loaders(ll: LevelLoader, ui: UiLoader):
 
 	
 ## Loads a level using a given path
-func load_level(path: String, spawn_id: String = ""):
+func load_level(path: String, spawn_id: String = "", disp_loading: bool = true):
 
 	loading = true
 
@@ -51,7 +51,10 @@ func load_level(path: String, spawn_id: String = ""):
 
 	# Stop the timer while the loading screen is being displayed
 	_stats.stop_timer()
-	var loading_screen = await show_loading()
+	
+	var loading_screen: Control
+	if disp_loading:
+		loading_screen = await show_loading()
 
 	# Free the level
 	level_loader.clear_current_level()
@@ -87,7 +90,8 @@ func load_level(path: String, spawn_id: String = ""):
 	_stats.start_timer()
 	
 	# Hide the loading screen
-	await hide_loading(loading_screen)
+	if disp_loading:
+		await hide_loading(loading_screen)
 
 
 

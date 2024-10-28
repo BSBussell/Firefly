@@ -14,8 +14,10 @@ config/name="Firefly"
 run/main_scene="res://Core/Game/GameViewer.tscn"
 config/use_custom_user_dir=true
 config/features=PackedStringArray("4.2", "Forward Plus")
-boot_splash/bg_color=Color(0.0588235, 0.188235, 0.129412, 1)
+boot_splash/bg_color=Color(0.835294, 0.615686, 0.160784, 1)
 boot_splash/show_image=false
+boot_splash/fullsize=false
+boot_splash/use_filter=false
 config/icon="res://Assets/BOOT/icon_green_bkgt.png"
 
 [audio]
