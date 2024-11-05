@@ -1,20 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bkeka0x5vwxx7"]
+[gd_scene load_steps=3 format=3 uid="uid://bkeka0x5vwxx7"]
 
 [ext_resource type="Script" path="res://Core/Game/Results.gd" id="1_cunm8"]
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="2_wux1v"]
-[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="3_wf4fc"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_fors3"]
-font = ExtResource("3_wf4fc")
-font_size = 128
-
-[sub_resource type="LabelSettings" id="LabelSettings_55r0k"]
-font_size = 32
-
-[sub_resource type="LabelSettings" id="LabelSettings_yn33q"]
-font = ExtResource("3_wf4fc")
-font_size = 25
-font_color = Color(0.780392, 0.87451, 0.921569, 1)
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="2_wux1v"]
 
 [node name="Results" type="ColorRect"]
 z_index = 100
@@ -23,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_wux1v")
 color = Color(0.235294, 0.2, 0.501961, 0.886275)
 script = ExtResource("1_cunm8")
 
@@ -34,7 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_wux1v")
-theme_override_constants/separation = 90
+theme_override_constants/separation = 150
 alignment = 1
 
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
@@ -43,8 +31,8 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/CenterContainer"]
 layout_mode = 2
+theme_type_variation = &"GameTitle"
 text = "You Did It!"
-label_settings = SubResource("LabelSettings_fors3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -55,10 +43,10 @@ theme = ExtResource("2_wux1v")
 
 [node name="Stats" type="Label" parent="VBoxContainer/CenterContainer2"]
 layout_mode = 2
+theme_type_variation = &"TimerText"
 text = "Time:
 Jars Found:
 Total Deaths:"
-label_settings = SubResource("LabelSettings_55r0k")
 horizontal_alignment = 2
 
 [node name="CenterContainer3" type="CenterContainer" parent="VBoxContainer"]
@@ -67,34 +55,26 @@ layout_mode = 2
 [node name="Label" type="Label" parent="VBoxContainer/CenterContainer3"]
 layout_mode = 2
 text = "Press Space To Close!"
-label_settings = SubResource("LabelSettings_55r0k")
 horizontal_alignment = 2
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
+anchor_left = 0.02
+anchor_top = 0.98
+anchor_right = 0.02
 anchor_bottom = 1.0
-offset_left = -120.0
 offset_top = -25.0
-grow_horizontal = 0
+offset_right = 120.0
 grow_vertical = 0
 
 [node name="Label" type="Label" parent="Control"]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -82.0
-offset_top = -30.0
-offset_right = 82.0
-offset_bottom = 30.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_type_variation = &"TimerText"
 text = "0.2.0"
-label_settings = SubResource("LabelSettings_yn33q")
-horizontal_alignment = 1

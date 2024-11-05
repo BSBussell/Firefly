@@ -3,7 +3,7 @@ class_name FlyJar
 
 @onready var Sprite = $Sprite2D
 @onready var animation_player = $AnimationPlayer
-@export var point_value = 0.0
+@export var point_value = 20
 
 var nabbed = false
 signal collected(jar: FlyJar)
@@ -11,21 +11,33 @@ signal collected(jar: FlyJar)
 func _ready():
 	animation_player.play("Idle")
 	
-	var id = gen_id()
+	
+	
+	var id: String = gen_id()
+	
 	if _jar_tracker.is_jar_collected(id):
 		
 		visible = false
 		
-		# Wait for the collecter to init
-		await get_tree().create_timer(1).timeout
+		# Wait for loading to finish
+		await _loader.finished_loading
 		
 		# Signal to the counter
 		emit_signal("collected", self)
 		
 		# Free it
 		queue_free()
+	
+	elif not _jar_tracker.is_registered(id):
+		
+		# Wait for loading to finish
+		await _loader.finished_loading
+		
+		# Make it exist
+		_jar_tracker.register_jar_exists(id)
+		
 
-func gen_id() -> int:
+func gen_id() -> String:
 	
 	# Variables that make this jar unique
 	var identifiers = [
@@ -33,9 +45,9 @@ func gen_id() -> int:
 		_globals.ACTIVE_LEVEL.id
 	]
 	
-	return hash(str(identifiers))
+	return str(hash(str(identifiers)))
 
-func _on_area_entered(area):
+func _on_area_entered(_area):
 
 	# And prevent the player from going into the thing again
 	set_deferred("monitoring", false)
@@ -57,6 +69,8 @@ func collect():
 		nabbed = true
 		_jar_tracker.mark_jar_collected(gen_id())
 		emit_signal("collected", self)
+		
+	_globals.ACTIVE_PLAYER.add_glow(point_value  )
 
 	
 # I am going to kms	

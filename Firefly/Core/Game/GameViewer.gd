@@ -6,6 +6,8 @@ const BASE_RENDER: Vector2i = Vector2i(320, 180)
 
 const BASE_UI_RENDER: Vector2i = Vector2i(1920, 1080)
 
+signal res_changed
+
 @export var start_level: PackedScene
 
 # Our loaders
@@ -16,12 +18,15 @@ const BASE_UI_RENDER: Vector2i = Vector2i(1920, 1080)
 @onready var game_view_port = $LevelLoader/GameViewPort
 @onready var ui_view_port = $UILoader/UIViewPort
 
+# Our Theme Node
+@onready var global_themer = $UILoader/UIViewPort/GlobalThemer
+
 ## The default resolution in the monitor's aspect ratio
 var base_aspect_ratio: Vector2i = Vector2i(320, 180)
 
 ## The Resolution of the game scaled up from aspect ratio
 var game_res: Vector2 = Vector2(320, 180)
-
+ 
 ## Window Size
 var window_size: Vector2i = Vector2i(1920, 1080)
 
@@ -47,15 +52,12 @@ func _ready():
 	_loader.connect_loaders(level_loader, ui_loader)
 	
 	# Load our level
-	_loader.load_level(start_level.resource_path)
+	_loader.load_level(start_level.resource_path, "", false)
 	
 	# Connect Config change function
 	_config.connect_to_config_changed(Callable(self, "config_changed"))
 
-	set_windowed_scale()
-
-	
-		
+	config_changed()
 
 	# Get zoom from config
 	res_scale = _config.get_setting("game_zoom")
@@ -63,9 +65,6 @@ func _ready():
 	# Smoothly zoom the render to the current scale
 	smoothly_zoom_render(res_scale)
 	
-	# Let us process input even when game beat
-	set_process_input(true)
-
 	# Hide mouse cursor
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	
@@ -77,18 +76,7 @@ func _ready():
 
 func _input(_event: InputEvent) -> void:
 	
-	# Handle Resets
-	if Input.is_action_just_pressed("reset") and not _loader.loading:
-		
-
-		
-		
-		# Reload the scene
-		get_tree().paused = false
-
-
-		await _loader.reset_game(NodePath("res://Scenes/Levels/TutorialLevel/tutorial.tscn"))
-
+	
 		
 			
 
@@ -96,20 +84,11 @@ func _input(_event: InputEvent) -> void:
 	if Input.is_action_pressed("scale_inc"):
 		
 		res_scale = move_toward(res_scale, 1.4, 0.05)
-
-		# Set Config
-		#_config.set_setting("game_zoom", res_scale)
-		
-		print("inc: ", res_scale)
 		smoothly_zoom_render(res_scale)     
 	
 	elif Input.is_action_pressed("scale_dec"):
 		
 		res_scale = move_toward(res_scale, 0.5, 0.05)
-		# Set Config
-		
-		
-		print("dec:", res_scale)
 		smoothly_zoom_render(res_scale)
 
 
@@ -131,22 +110,26 @@ func swap_fullscreen_mode():
 		
 
 # Sets the window size to be the equilvant of 1080p in the current aspect ratio
-func update_window_size() -> void:
+func update_window_size(win_scale: float = -1) -> void:
 
 	# If web build then return
 	if OS.get_name() == "HTML5":
 		return
 
 	# Convert the base_ui_render to the aspect ratio of the screen
-	window_scale = ceil(BASE_UI_RENDER.x / BASE_RENDER.x)
+	if win_scale != -1: window_scale = win_scale
+	else: window_scale = ceil(BASE_UI_RENDER.x / BASE_RENDER.x)
+	
 
 	# Multiply the aspect ratio by the default scale
 	window_size = base_aspect_ratio * window_scale
+	
+	print(window_size)
 
 	# Set the window size
 	DisplayServer.window_set_size(window_size)
 
-func set_windowed_scale() -> void:
+func set_windowed_scale(win_scale: float = -1) -> void:
 
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)	
 
@@ -154,7 +137,7 @@ func set_windowed_scale() -> void:
 	update_aspect_ratio()
 
 	# Updates the window size based on the aspect ratio
-	update_window_size()
+	update_window_size(win_scale)
 
 	# zoom_render in order to set the render resolution
 	zoom_render(res_scale)
@@ -164,9 +147,15 @@ func set_windowed_scale() -> void:
 
 	# Update the viewports using the window scale
 	set_viewports_scale(window_scale)
+	
+	# Update Theme
+	update_brimblo()
 
 	# Set the window size to the target window size
 	DisplayServer.window_set_size(window_size)
+		
+	# Signal to ui to resize
+	emit_signal("res_changed")
 		
 func set_fullscreen_scale():
 	
@@ -176,6 +165,9 @@ func set_fullscreen_scale():
 	var screen_size = get_usable_screen_size()
 	
 	window_size = screen_size
+	
+	# Update Theme
+	update_brimblo()
 
 	# Update Rendering size for various aspect ratios
 	update_aspect_ratio()
@@ -188,6 +180,9 @@ func set_fullscreen_scale():
 	rescale_ui_viewport(screen_size)
 
 	zoom_render(res_scale)
+	
+	# Signal to ui to resize
+	emit_signal("res_changed")
 
 func set_viewports_scale(scale_factor: float):
 	
@@ -237,6 +232,17 @@ func update_gameview_res():
 	level_loader.position.y = -((base_aspect_ratio.y * 1.4) - (game_res.y)) * window_scale/2
 
 
+## Updates a themes font sizes for the window res
+func update_brimblo():
+	
+	global_themer.scale_theme(window_size)
+	#if window_size.x < 1600:
+		#global_themer.theme = preload("res://UI_Theme/Brimblo_Low_PPI.tres")
+	#else:
+		#global_themer.theme = preload("res://UI_Theme/Brimblo.tres")
+
+	pass
+
 
 var interpolating_res: bool = false
 
@@ -255,10 +261,6 @@ func res_interpolate(delta: float):
 
 		scale_progress += delta
 		var t = min(scale_progress / scaling_duration, 1.0)  # Clamp to [0, 1]
-
-		# Interpolate the goal resolution
-		var float_res: Vector2 = Vector2(game_res).lerp(target_res, t)
-		
 		
 		game_res = game_res.lerp(target_res, t)
 		_globals.RENDER_SIZE = game_res
@@ -310,6 +312,9 @@ func zoom_render(new_scale: float) :
 	update_gameview_res()
 	rescale_game_viewport(window_scale)
 
+func connect_to_res_changed(function: Callable):
+	
+	connect("res_changed", function)
 
 
 ## Works on Apple Silicon Macbooks :/ (this is kinda bad idk how else id do this tbh)
@@ -326,15 +331,60 @@ func get_usable_screen_size() -> Vector2i:
 	
 	return screen_size
 	
-func config_changed():
-	if _config.get_setting("fullscreen") and DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN:
-		set_fullscreen_scale()
-	elif  not _config.get_setting("fullscreen") and DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		set_windowed_scale()
+var config_scale: int = 3
+# if you have a worse screen just get fucked ig
+var win_scale_min: int = 3
 	
-	if _config.get_setting("vsync"):
+func config_changed():
+	
+	
+	
+	var scale_changed: bool = config_scale != (_config.get_setting("resolution") + win_scale_min)
+	var fullscreen_on: bool = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
+	
+	# On fullscreen enabled
+	if _config.get_setting("fullscreen") and not fullscreen_on:
+		
+		set_fullscreen_scale()
+		
+	# On Turning off fullscreen
+	elif (not _config.get_setting("fullscreen") and fullscreen_on):
+		
+		
+		config_scale = _config.get_setting("resolution") + win_scale_min
+		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
+	
+	# On adjusting window scale
+	elif (scale_changed) and not fullscreen_on: 
+		
+		# Linux window servers struggle to rescale the window without a "full screen flush"
+		if OS.get_name() in ["Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD"]:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			
+		config_scale = _config.get_setting("resolution") + win_scale_min	
+		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)
+		
+		
+	update_fps(_config.get_setting("fps_target"))
+		
+	
+	# If we need to turn on or off vsync
+	if _config.get_setting("vsync") and DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_DISABLED:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
-	else:
+	elif DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_ENABLED:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
 
+var current_fps_val: int = -1
+var fps_key_map: Array = [30, 60, 90, 120, 144, 165, 240, 0]
+func update_fps(config_val: int) -> void:
+	
+	if current_fps_val == config_val:
+		return
+	
+	
+	current_fps_val = config_val	
+		
+	Engine.set_max_fps(fps_key_map[current_fps_val])
+	print(current_fps_val)
+	print("FPS updated to:", str(Engine.get_max_fps()))

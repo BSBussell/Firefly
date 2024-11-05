@@ -1,12 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://bpa4bjwojm2t3"]
 
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_ow083"]
 [ext_resource type="Script" path="res://Core/Game/CollectibleCounter.gd" id="1_uxj48"]
-[ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="2_7w2fi"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_u4aag"]
-font = ExtResource("2_7w2fi")
-font_size = 64
-shadow_size = 0
 
 [sub_resource type="Animation" id="Animation_mlp1y"]
 resource_name = "Hide"
@@ -14,14 +9,29 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:offset_right")
+tracks/0/path = NodePath(".:anchor_left")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(2, 6),
+"transitions": PackedFloat32Array(1.4, 1),
 "update": 0,
-"values": [-150, 480.0]
+"values": [0.7, 1.35]
+}
+
+[sub_resource type="Animation" id="Animation_f3hlc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:anchor_left")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.35]
 }
 
 [sub_resource type="Animation" id="Animation_aijno"]
@@ -30,32 +40,33 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:offset_right")
+tracks/0/path = NodePath(".:anchor_left")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(2, 6),
+"transitions": PackedFloat32Array(0.6, 1),
 "update": 0,
-"values": [480, -150]
+"values": [1.35, 0.7]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uw2ul"]
 _data = {
 "Hide": SubResource("Animation_mlp1y"),
+"RESET": SubResource("Animation_f3hlc"),
 "Show": SubResource("Animation_aijno")
 }
 
 [node name="CollectibleCounter" type="Control" node_paths=PackedStringArray("COUNTER", "COUNTER_ANIMATOR", "ANIMATION_TIMER")]
 z_index = 1
 layout_mode = 3
-anchor_left = 1.0
-anchor_top = 0.1
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.4
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("1_ow083")
 script = ExtResource("1_uxj48")
 COUNTER = NodePath("Label")
 COUNTER_ANIMATOR = NodePath("Label/AnimationPlayer")
@@ -64,17 +75,14 @@ ANIMATION_TIMER = NodePath("HideTimer")
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -60.0
-offset_right = 480.0
-offset_bottom = 60.0
+anchor_left = 1.35
+anchor_top = 0.25
+anchor_right = 1.35
+anchor_bottom = 0.25
 grow_horizontal = 0
 grow_vertical = 2
+theme_type_variation = &"CounterLabel"
 text = "00/00"
-label_settings = SubResource("LabelSettings_u4aag")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Label"]
 libraries = {

@@ -9,7 +9,7 @@ func _ready():
 	sprite.connect("property_list_changed", Callable(self, "sprite_changed"))
 	
 	
-func _process(delta):
+func _process(_delta):
 	if sprite.flip_h:
 		position.x = 3
 	else:

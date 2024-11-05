@@ -19,22 +19,22 @@ func _ready():
 	version_num.text = _meta.VERSION_NO
 
 
-func _input(event):
+func _input(_event):
 	
 	if Input.is_action_just_pressed("ui_accept") and self.visible:
 		hide_Victory_Screen()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 
 	pass	
 	_logger.info("Result - Process")
 	
-	var display_time = _stats.get_timer_string()
-
+	var display_time = _stats.get_timer_debug_string()
 	var found_jars: int = _jar_tracker.num_found_jars()
+	var known_jars: int = _jar_tracker.num_known_jars()
 
-	stats_label.text = "Time: %s\n Jars Found: %d\n Total Deaths: %d" % [display_time, found_jars, _stats.DEATHS]
+	stats_label.text = "Time: %s\n Jars Found: %d/%d\n Total Deaths: %d" % [display_time, found_jars, known_jars, _stats.DEATHS]
 
 	_logger.info("Result - Process End")
 
@@ -43,7 +43,7 @@ func show_Victory_Screen():
 	get_tree().paused = true
 
 	# Update stats label
-	var display_time = _stats.get_timer_string()
+	var display_time = _stats.get_timer_debug_string()
 	var found_jars: int = _jar_tracker.num_found_jars()
 	stats_label.text = "Time: %s\n Jars Found: %d\n Total Deaths: %d" % [display_time, found_jars, _stats.DEATHS]
 
@@ -51,7 +51,7 @@ func show_Victory_Screen():
 
 func hide_Victory_Screen():
 	self.visible = false
-	get_tree().paused = false
+	get_tree().paused = false  
 	displayed = false
 	
 func connect_signal(sig: String):

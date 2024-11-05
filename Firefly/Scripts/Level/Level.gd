@@ -52,8 +52,8 @@ func connect_level_loader(ll: LevelLoader) -> void:
 	level_loader = ll
 	
 
-func set_spawn_id(id: String) -> void:
-	spawn_point_id = id
+func set_spawn_id(new_id: String) -> void:
+	spawn_point_id = new_id
 
 func connect_ui_loader(ui: UiLoader) -> void:
 	ui_loader = ui

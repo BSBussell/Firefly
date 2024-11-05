@@ -5,41 +5,37 @@ extends UiComponent
 
 
 var title_text: String = "oop"
-
-#func set_title(title: String):
-	
-	#title_text = title
+var animation_finished: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	# Set title text
 	title_text = context.Text
 	label.text = title_text
-	update_font_size()
+	
+	# Wait a second then play animation
 	await get_tree().create_timer(1.0).timeout
 	animation_player.play("Drop-In")
 
 
-var animation_finished: bool = false
-func _unhandled_input(event):
-	if animation_finished and event.is_action_pressed("Jump"):
-		#await get_tree().create_timer(2.0).timeout
+# Leave the LevelTitle Text on until input
+func _unhandled_input(_event):
+	
+	# If the animation finished, fade out
+	if animation_finished:
 		animation_player.play("Fade-Out")
 	
-
-func _on_animation_player_animation_finished(anim_name):
+func _on_animation_player_animation_finished(_anim_name):
+	
+	
+	# Modify the animation to work with the current font size(cause dynamic resizing)
+	var font_size: int = label.get_theme_font_size("font_size")
+	animation_player.get_animation("Fade-Out").track_set_key_value(1, 0, font_size)
+	animation_player.get_animation("Fade-Out").track_set_key_value(1, 1, font_size * 1.6)
+	
+	# Let the animation end if it wants too
 	animation_finished = true
-
-
-func update_font_size():
-	var base_resolution = Vector2(1920, 1080)  # Base development resolution
-	var current_resolution = DisplayServer.window_get_size()
 	
-	# Calculate the scaling factor based on height or width (whichever you prefer)
-	# This example uses the width to calculate the scaling factor
-	var scale_factor = current_resolution.x / base_resolution.x
-	
-	# Set the font size based on the scaling factor
-	var new_font_size = int(64 * scale_factor)  # 64 is the base font size at 1920x1080
 
-	label.label_settings.font_size = new_font_size
+

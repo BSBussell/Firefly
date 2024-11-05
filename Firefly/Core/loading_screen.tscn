@@ -1,16 +1,17 @@
-[gd_scene load_steps=19 format=3 uid="uid://bivga0jwulfyg"]
+[gd_scene load_steps=20 format=3 uid="uid://bivga0jwulfyg"]
 
 [ext_resource type="Script" path="res://Core/loading_screen.gd" id="1_0il42"]
 [ext_resource type="Shader" path="res://Core/transition.gdshader" id="1_38x6w"]
 [ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="1_u6wva"]
 [ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="2_6qk3d"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="2_gk7og"]
 [ext_resource type="Script" path="res://Core/ProgressBarInterpolate.gd" id="3_6k2he"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_7wtw1"]
-[ext_resource type="Script" path="res://Core/Scale.gd" id="5_wiu7h"]
+[ext_resource type="Script" path="res://Core/LoadingFlyJar.gd" id="5_hvb03"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uth8b"]
 shader = ExtResource("1_38x6w")
-shader_parameter/progress = 1.0
+shader_parameter/progress = 0.0
 shader_parameter/diamondPixelSize = 1080.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bxd2a"]
@@ -39,37 +40,49 @@ tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/path = NodePath(".:material:shader_parameter/progress")
-tracks/0/interp = 1
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0]
+"values": [0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath("HBoxContainer:anchor_left")
-tracks/1/interp = 1
+tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [1.0]
+"values": [0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/path = NodePath("TextureRect/PointLight2D:energy")
-tracks/2/interp = 2
+tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.5]
+"values": [0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("TextureRect:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_u840h"]
@@ -174,6 +187,18 @@ tracks/4/keys = {
 "update": 0,
 "values": [0.87, 0.88]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TextureRect/PointLight2D:energy")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.5]
+}
 
 [sub_resource type="Animation" id="Animation_plopa"]
 resource_name = "load_out"
@@ -250,7 +275,7 @@ _data = {
 }
 
 [node name="LoadingScreen" type="ColorRect"]
-z_index = 100
+z_index = 4096
 material = SubResource("ShaderMaterial_uth8b")
 anchors_preset = 15
 anchor_right = 1.0
@@ -259,6 +284,7 @@ offset_left = 1.0
 offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_gk7og")
 color = Color(0.235294, 0.2, 0.501961, 1)
 script = ExtResource("1_0il42")
 
@@ -266,10 +292,9 @@ script = ExtResource("1_0il42")
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 1.0
+anchor_top = 0.95
 anchor_right = 1.005
 anchor_bottom = 1.0
-offset_top = -50.0
 grow_horizontal = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bxd2a")
 theme_override_styles/fill = SubResource("StyleBoxFlat_n2ksf")
@@ -283,26 +308,30 @@ modulate = Color(1, 1, 1, 0)
 texture_filter = 1
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.925
-anchor_top = 0.88
-anchor_right = 0.925
-anchor_bottom = 0.88
-offset_left = -84.706
-offset_top = -120.0
-offset_bottom = 1.85966e-05
-grow_horizontal = 2
-grow_vertical = 2
+anchor_left = 0.96
+anchor_top = 0.866247
+anchor_right = 0.96
+anchor_bottom = 0.866247
+offset_left = 0.479973
+offset_top = -0.280029
+offset_right = 12.48
+offset_bottom = 16.72
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(10, 10)
+pivot_offset = Vector2(12, 17)
+theme = ExtResource("2_gk7og")
 texture = ExtResource("2_6qk3d")
 expand_mode = 1
 stretch_mode = 4
 flip_h = true
-script = ExtResource("5_wiu7h")
-high_dpi_scale = null
+script = ExtResource("5_hvb03")
 
 [node name="FireFlies" type="CPUParticles2D" parent="TextureRect"]
 modulate = Color(6, 6, 2.5, 1)
 z_index = 1
-position = Vector2(39, 70)
+position = Vector2(6.33386, 14.035)
+scale = Vector2(0.1, 0.1)
 amount = 10
 speed_scale = 0.8
 randomness = 1.0
@@ -327,16 +356,16 @@ color_ramp = SubResource("Gradient_g30c5")
 
 [node name="PointLight2D" type="PointLight2D" parent="TextureRect"]
 z_index = -1
-position = Vector2(41.7061, 64.6)
+position = Vector2(6, 9.135)
+scale = Vector2(0.1, 0.1)
 color = Color(0.890196, 0.921569, 0.34902, 1)
-energy = 0.5
+energy = 0.0
 texture = ExtResource("4_7wtw1")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0

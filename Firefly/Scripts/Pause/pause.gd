@@ -36,10 +36,10 @@ func _ready():
 
 
 	# Get the shader material attached to the ColorRect
-	print(triangle_size)
 	var color_rect: ColorRect = $"."
 	color_rect.material.set("shader_parameter/diamondPixelSize", triangle_size)
 	
+	animation_player.play("RESET")
 	
 
 
@@ -51,7 +51,7 @@ func define_dependencies() -> void:
 
 
 
-func _input(event):
+func _input(_event):
 	
 	# Handle Pausing
 	if Input.is_action_just_pressed("Pause"):
@@ -61,7 +61,7 @@ func toggle_pause():
 	
 	# If there is another ui element up
 	if conflict():
-		print("can't pause")
+		print("Error, missing component can't pause")
 		return
 	
 	# Hide settings

@@ -5,6 +5,8 @@ signal AllJarsCollected()
 signal YellowJarsCollected()
 signal BlueJarsCollected()
 
+@export var gem_manager: GemManager
+
 var yellow_collected: int
 var yellow_max: int
 
@@ -24,11 +26,15 @@ func _ready():
 	yellow_max = yellow_jars.size()
 	blue_max = blue_jars.size()
 
-	for jar in yellow_jars:
+	for jar: FlyJar in yellow_jars:
 		jar.connect("collected", Callable(self, "yellow_jar_collected"))
+		_jar_tracker.register_jar_exists(jar.gen_id())
 	
-	for jar in blue_jars:
+	for jar: FlyJar in blue_jars:
 		jar.connect("collected", Callable(self, "blue_jar_collected"))
+		_jar_tracker.register_jar_exists(jar.gen_id())
+		
+		
 	
 
 
@@ -38,6 +44,14 @@ func yellow_jar_collected(jar: FlyJar):
 	
 	yellow_collected += 1
 	
+	if gem_manager: 
+		var new_gem: Gem =  await  gem_manager.spawn_gem(jar.global_position)
+		
+		# Setup the gem to spawn in 15s
+		new_gem.deactivate()
+		await get_tree().create_timer(15).timeout
+		new_gem.activate()
+	
 	if yellow_collected >= yellow_max:
 		emit_signal("YellowJarsCollected")
 
@@ -45,6 +59,14 @@ func yellow_jar_collected(jar: FlyJar):
 func blue_jar_collected(jar: FlyJar):
 	
 	blue_collected += 1
+	
+	if gem_manager: 
+		var new_gem: Gem = await gem_manager.spawn_blue_gem(jar.global_position)
+		
+		# Setup the gem to spawn in 15s
+		new_gem.deactivate()
+		await get_tree().create_timer(15).timeout
+		new_gem.activate()
 	
 	if blue_collected >= blue_max:
 		emit_signal("BlueJarsCollected")

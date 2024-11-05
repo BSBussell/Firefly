@@ -34,11 +34,25 @@
 				"type": "boolean",
 				"config_key": "fullscreen"
 			},
+			"resolution": {
+				"label": "Window Scale",
+				 "description": "Set the Window Scale",
+				 "type": "choice",
+				 "config_key": "resolution",
+				 "options": ["1x", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x", "10x"]
+			},
 			"vsync": {
 				"label": "V-Sync Enabled",
 				"description": "sync game refresh rate with monitor",
 				"type": "boolean",
 				"config_key": "vsync"
+			},
+			"framerate": {
+				"label": "FPS Limit",
+				"description": "Se the max Frameratee",
+				"type": "choice",
+				"config_key": "fps_target",
+				"options": ["30", "60", "90", "120", "144", "165", "240", "NONE"]
 			}
 		}
 	},
@@ -56,7 +70,7 @@
 				"step": 0.5
 		 	},
 			"Music": {
-				"label": "Music Vol.",
+				"label": "Music",
 				"description": "Control the Volume of the Music",
 				"type": "slider",
 				"config_key": "music",
@@ -65,7 +79,7 @@
 				"step": 0.5
 		 	},
 			"SFX": {
-				"label": "SFX Vol.",
+				"label": "SFX",
 				"description": "Control the Volume of the SFX",
 				"type": "slider",
 				"config_key": "sfx",
@@ -74,7 +88,7 @@
 				"step": 0.5
 		 	},
 			"Ambience": {
-				"label": "Ambience Vol.",
+				"label": "Ambience",
 				"description": "Control the Volume of the Ambience",
 				"type": "slider",
 				"config_key": "ambience",

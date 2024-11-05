@@ -9,6 +9,9 @@ var interpolation_duration: float = 1.0  # Adjust this to control the speed of t
 @onready var current_color: Color = modulate
 @onready var goal_color: Color = modulate
 
+func _ready():
+	set_process(false)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 

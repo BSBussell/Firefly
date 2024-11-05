@@ -54,11 +54,11 @@ void fragment() {
     float fill = step(sdf, threshold);
 
     // Get the original color from the texture
-    vec4 originalColor = texture(TEXTURE, UV);
+    vec4 originalColor = COLOR;
 
     // Set the final color: original color for filled parts, transparent for non-filled parts
     vec4 finalColor = vec4(originalColor.rgb, originalColor.a * fill);
 
     // Set the final color
-    COLOR.a = finalColor.a;
+    COLOR = finalColor;
 }

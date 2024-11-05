@@ -6,14 +6,14 @@ class_name JarCounter
 @export var ANIMATION_TIMER: Timer
 
 var COLLECTED: int = 0
-var max: int = 100
+var MAX: int = 100
 
 
 var out: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	max = 0
+	MAX = 0
 	
 	var collectibles = []
 	collectibles = get_tree().get_nodes_in_group("FlyJar")
@@ -24,10 +24,10 @@ func _ready():
 		if error:
 			print(error)
 	
-	max = collectibles.size()
+	MAX = collectibles.size()
 	COLLECTED = 0
 	
-	COUNTER.text = "%d/%d" % [COLLECTED, max]
+	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
 	
 	# Connect Blue Jars:
 	
@@ -51,7 +51,7 @@ func _ready():
 func jar_collected(_jar: FlyJar):
 		
 	COLLECTED += 1
-	COUNTER.text = "%d/%d" % [COLLECTED, max]
+	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
 	
 	peak_counter()
 	
@@ -75,17 +75,13 @@ func _on_hide_timer_timeout():
 ## Ensures that on animation playing we don't teleport pos
 func play_show():
 	
-	var current_pos = COUNTER.offset_right  
+	var current_pos = COUNTER.anchor_left  
 	COUNTER_ANIMATOR.get_animation("Show").track_set_key_value(0, 0, current_pos)
 	COUNTER_ANIMATOR.play("Show")
 	
 ## Ensures that on animation playing we don't teleport pos
 func play_hide():
-	var current_pos = COUNTER.offset_right
+	var current_pos = COUNTER.anchor_left
 	COUNTER_ANIMATOR.get_animation("Hide").track_set_key_value(0, 0, current_pos)
 	COUNTER_ANIMATOR.play("Hide")
 	
-
-
-func _on_focus_entered():
-	print("bastard")

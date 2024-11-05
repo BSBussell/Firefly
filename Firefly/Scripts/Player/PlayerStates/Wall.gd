@@ -334,7 +334,7 @@ func general_walljump(walljump_type: int, disable_drift: bool, jump_velocity: Ve
 	# The editor "warns" that im casting an enum to an int, 
 	# but when i make the parameter an enum it won't compile... 
 	# so i'll take the warning :3
-	parent.current_wj = walljump_type 
+	parent.current_wj = walljump_type
 	
 	
 	# Preserve the velocity we had before the jump, with a multiplier (ususally 0)

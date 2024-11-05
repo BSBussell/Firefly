@@ -4,6 +4,9 @@ extends Node2D
 class_name GemManager
 
 
+var gem_scene: PackedScene = preload("res://Scenes/Collectibles/gem.tscn")
+var blue_gem: PackedScene = preload("res://Scenes/Collectibles/blueGem.tscn")
+
 # Create an array of objects type Gem
 var gem_array = []
 
@@ -18,6 +21,28 @@ func _ready():
 		if gem:
 			gem_array.append(gem)
 
+## Spawns a gem at the provided GLOBAL COORDINATES, returns this gem for customization
+func spawn_gem(pos: Vector2) -> Gem:
+	
+	var new_gem: Gem
+	new_gem = gem_scene.instantiate()
+	call_deferred("add_child", new_gem)
+	gem_array.append(new_gem)
+	new_gem.global_position = pos
+	
+	await new_gem.ready
+	return new_gem
+
+func spawn_blue_gem(pos: Vector2) -> Gem:
+	
+	var new_gem: Gem
+	new_gem = blue_gem.instantiate()
+	call_deferred("add_child", new_gem)
+	gem_array.append(new_gem)
+	new_gem.global_position = pos
+	
+	await new_gem.ready
+	return new_gem
 
 
 ## Respawns every gem

@@ -22,7 +22,7 @@ func _physics_process(_delta):
 		
 		var player: Flyph = enter_body as Flyph
 		if not player:
-			print("ah shit")
+			return
 			
 		# Enable the player glowing
 		player.enable_glow()
@@ -43,7 +43,6 @@ func on_enter(_body):
 	set_physics_process(true)
 
 func on_exit(_body):
-	print("Player Exitted")
 	inside = false
 	set_physics_process(true)
 

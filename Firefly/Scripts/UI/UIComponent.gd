@@ -26,10 +26,10 @@ func define_dependency(name_of_class: String, dep: UiComponent) -> void:
 # Then once the depdency has been initialized, the add_dependency function can be used to add the actual dependency
 func connect_dependency(dep: UiComponent) -> void:
 	
-	var name: String = get_script_class_name(dep)
+	var className: String = get_script_class_name(dep)
 	
 	# Fill the dependency slot with the actual val
-	dependencies[name] = dep
+	dependencies[className] = dep
 
 # Returns an object of the specified dependency type
 func get_dependency(name_of_class: String, warn_on_missing: bool = true) -> UiComponent:

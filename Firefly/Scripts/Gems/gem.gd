@@ -1,6 +1,8 @@
 extends Node2D
 class_name Gem
 
+@export var glow_points: int = 50
+
 var active: bool = true
 var consumed: bool  = false
 
@@ -28,6 +30,7 @@ func _on_area_2d_body_entered(body):
 	var player = body as Flyph
 	if player:
 		consume_item(player)
+		
 	pass # Replace with function body.
 
 
@@ -40,7 +43,8 @@ func consume_item(player: Flyph):
 	area_2d.set_deferred("monitoring", false)
 	
 	# Add 50 glow points
-	player.add_glow(50)
+	if player:
+		player.add_glow(glow_points)
 	
 	
 
@@ -64,9 +68,12 @@ func activate():
 	# If it hasn't been consumed display it. otherwise just wait
 	if not consumed: 
 		animated_sprite_2d.visible = true
-		# Play the pop in animation
+		
+		# Play the pop in animation/sfx
 		fx.play("PopIn")
 		pop.play()
+		
+		# disable player detection
 		area_2d.set_deferred("monitoring", true)
 	
 	

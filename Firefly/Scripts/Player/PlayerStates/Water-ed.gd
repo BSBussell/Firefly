@@ -159,8 +159,10 @@ func exit() -> void:
 	_audio.disable_underwater_fx()
 	
 	wet.emitting = true
+	
 	if get_tree():
 		await get_tree().create_timer(1.3).timeout
+		
 	wet.emitting = false
 	
 	

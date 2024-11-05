@@ -1,10 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://dwemeqesk48kw"]
+[gd_scene load_steps=19 format=3 uid="uid://dwemeqesk48kw"]
 
 [ext_resource type="Script" path="res://Scenes/UI_Elements/settings_menu.gd" id="1_qs4ru"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_wl4wj"]
 [ext_resource type="Shader" path="res://Core/Game/wavy_sidebar.gdshader" id="2_tn6mq"]
 [ext_resource type="Shader" path="res://Scenes/UI_Elements/topDownWobble.gdshader" id="3_ia2ge"]
-[ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="4_26hot"]
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="5_mjk68"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/pause_buttons.gd" id="6_5eyux"]
 [ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="7_8ntyr"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/CategoryContainer.gd" id="8_rxy5f"]
@@ -41,7 +40,7 @@ shader_parameter/noiseSpeed = 1.82
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dtfaq"]
 shader = ExtResource("3_ia2ge")
-shader_parameter/progress = 0.89
+shader_parameter/progress = 0.87
 shader_parameter/waveFrequency1 = 3.5
 shader_parameter/waveFrequency2 = 5.5
 shader_parameter/waveAmplitude1 = 0.001
@@ -73,7 +72,7 @@ resource_name = "setting_hide"
 length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("SectionSettings:anchor_top")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
@@ -85,7 +84,7 @@ tracks/0/keys = {
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = false
+tracks/1/enabled = true
 tracks/1/path = NodePath("SectionSettings:anchor_bottom")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
@@ -97,7 +96,7 @@ tracks/1/keys = {
 }
 tracks/2/type = "value"
 tracks/2/imported = false
-tracks/2/enabled = false
+tracks/2/enabled = true
 tracks/2/path = NodePath("SettingsWobble2:material:shader_parameter/progress")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
@@ -388,6 +387,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+theme = ExtResource("1_wl4wj")
 script = ExtResource("1_qs4ru")
 
 [node name="PauseLinger" type="ColorRect" parent="."]
@@ -434,8 +434,8 @@ anchor_bottom = 0.1
 offset_top = -4.0
 offset_right = 480.0
 offset_bottom = 116.0
+theme_type_variation = &"SettingHeader"
 text = "Settings"
-label_settings = ExtResource("4_26hot")
 
 [node name="TopBar" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(2.08165e-12, 120)
@@ -445,13 +445,13 @@ anchor_left = 0.05
 anchor_top = 0.25
 anchor_right = 0.95
 anchor_bottom = 0.3
+theme_override_constants/separation = 0
 
 [node name="BackButton" type="Button" parent="TopBar" node_paths=PackedStringArray("focus")]
 layout_mode = 2
 size_flags_vertical = 0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_bottom = NodePath("\"\"")
-theme = ExtResource("5_mjk68")
 text = "< | "
 script = ExtResource("6_5eyux")
 disable_press_sfx = true
@@ -465,9 +465,9 @@ bus = &"SFX"
 [node name="SettingCategories" type="ScrollContainer" parent="TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 13
-theme = ExtResource("5_mjk68")
+size_flags_vertical = 0
 follow_focus = true
+vertical_scroll_mode = 0
 
 [node name="CategoryContainer" type="HBoxContainer" parent="TopBar/SettingCategories" node_paths=PackedStringArray("setting_list")]
 layout_mode = 2
@@ -483,7 +483,6 @@ anchor_top = 0.4
 anchor_right = 0.95
 anchor_bottom = 0.87
 grow_vertical = 2
-theme = ExtResource("5_mjk68")
 follow_focus = true
 horizontal_scroll_mode = 0
 

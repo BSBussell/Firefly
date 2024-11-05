@@ -7,7 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://c8d4kjqyrog77" path="res://Assets/SFX/ambience/creepyCave_near_forest.mp3" id="3_xkvdx"]
 [ext_resource type="Material" uid="uid://dknfr3m14nn24" path="res://Assets/Materials/WaterDistortion.tres" id="4_6ko4m"]
 [ext_resource type="PackedScene" uid="uid://g8ao8gttp7rc" path="res://Core/cave_tile_map.tscn" id="4_eg551"]
-[ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Core/Game/pause.tscn" id="4_moxw1"]
+[ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="4_moxw1"]
 [ext_resource type="AudioStream" uid="uid://cc71beoeqyxis" path="res://Assets/SFX/ambience/CaveEntrance.wav" id="4_qurpt"]
 [ext_resource type="PackedScene" uid="uid://bkeka0x5vwxx7" path="res://Scenes/UI_Elements/results.tscn" id="5_by1im"]
 [ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="6_pkwh7"]
@@ -236,11 +236,12 @@ size = Vector2(103.5, 138)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c8xov"]
 size = Vector2(221, 168)
 
-[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager")]
+[node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = ExtResource("1_bfl7c")
 Text = "- GlowWorm Caverns -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
+gem_manager = NodePath("GemManager")
 ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("4_moxw1"), ExtResource("5_by1im"), ExtResource("6_pkwh7"), ExtResource("7_h4wtv"), ExtResource("8_kstwy")])
 id = 1
 win_condition = 1
@@ -1183,7 +1184,6 @@ visible = false
 position = Vector2(446, -23)
 scale = Vector2(15.195, 1)
 optional_target = NodePath("Marker2D")
-hide = true
 pull_strength = 0.0
 blend_priority = -1
 
@@ -1212,9 +1212,10 @@ position = Vector2(44, -73)
 [node name="GemManager" type="Node2D" parent="."]
 script = ExtResource("19_cc61p")
 
-[node name="JarsManager" type="Node2D" parent="."]
+[node name="JarsManager" type="Node2D" parent="." node_paths=PackedStringArray("gem_manager")]
 position = Vector2(3, -4)
 script = ExtResource("21_h1irh")
+gem_manager = NodePath("../GemManager")
 
 [node name="FlyJar" parent="JarsManager" instance=ExtResource("12_0kfi3")]
 position = Vector2(640, 98)

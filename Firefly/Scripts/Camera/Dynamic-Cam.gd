@@ -79,9 +79,10 @@ var smoothing_factor_2: float = 0.0
 var dict_hash: int = 0
 var settled: bool = true
 var current_grouping_offset: Vector2 = Vector2.ZERO
+
 func calculate_target_position(delta: float) -> Vector2:
-	var base_target: Vector2 = player.global_position - control.startingPos
-	
+
+	var base_target: Vector2 = player.global_position - control.startingPos	
 	var position: Vector2 = base_target
 	var offset: Vector2 = Vector2.ZERO
 	
@@ -94,9 +95,9 @@ func calculate_target_position(delta: float) -> Vector2:
 	var targets_center = get_targets_center()
 	
 	# Check if the list of targets has changed
-	var hash = control.targets.hash()
-	if hash != dict_hash:
-		dict_hash = hash
+	var id = control.targets.hash()
+	if id != dict_hash:
+		dict_hash = id
 		smoothing_factor_2 = 0.0
 	
 	
@@ -211,8 +212,6 @@ func get_targets_blend() -> float:
 
 func get_targets_offset(base_target: Vector2, targets_center: Vector2) -> Vector2:
 	var blend_max = get_targets_blend()
-	var hash: int = control.targets.hash()
-	
 	
 	# Update the smoothing factor
 	multi_target_smoothing = move_toward(multi_target_smoothing, blend_max, 0.01)

@@ -1,21 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://cu5uu6ykpiam"]
+[gd_scene load_steps=19 format=3 uid="uid://cu5uu6ykpiam"]
 
 [ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.gd" id="1_7ojih"]
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="2_825n6"]
-[ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/text_scale.gd" id="3_2f1jd"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="2_5wsxi"]
+[ext_resource type="StyleBox" uid="uid://crlak0jekwn4s" path="res://Scenes/UI_Elements/Dialog/dialogBox.tres" id="2_77ug7"]
 [ext_resource type="Texture2D" uid="uid://kfaixciq44ug" path="res://Assets/Graphics/Collectible/gem.png" id="3_yuqb7"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbl45"]
-content_margin_left = 30.0
-content_margin_top = 50.0
-content_margin_right = 30.0
-content_margin_bottom = 80.0
-bg_color = Color(0.235294, 0.2, 0.501961, 0.882353)
-corner_radius_top_left = 100
-corner_radius_top_right = 100
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 100
-corner_detail = 2
 
 [sub_resource type="Animation" id="Animation_sdlgx"]
 length = 0.001
@@ -384,6 +372,7 @@ _data = {
 }
 
 [node name="DialogUiComponent" type="Control"]
+z_index = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -394,6 +383,7 @@ mouse_filter = 1
 script = ExtResource("1_7ojih")
 
 [node name="Label" type="RichTextLabel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -406,21 +396,20 @@ offset_right = 1.00005
 offset_bottom = 4.99998
 grow_horizontal = 2
 mouse_filter = 1
-theme = ExtResource("2_825n6")
-theme_override_styles/normal = SubResource("StyleBoxFlat_hbl45")
+theme = ExtResource("2_5wsxi")
+theme_override_styles/normal = ExtResource("2_77ug7")
 bbcode_enabled = true
 text = "[center]Blah [color=yellow]Key Word[/color] blah... blah blah blah bala shell big snail test filling the thing up and using as much[/center]"
 fit_content = true
 scroll_active = false
 visible_characters = 0
 visible_ratio = 0.0
-script = ExtResource("3_2f1jd")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_gpio8")
 }
-speed_scale = 3.0
+speed_scale = 5.0
 
 [node name="SpriteAnchor" type="Control" parent="."]
 layout_mode = 1
@@ -436,7 +425,7 @@ grow_horizontal = 2
 mouse_filter = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteAnchor"]
-modulate = Color(100, 100, 0, 1)
+modulate = Color(1, 1, 1, 0)
 texture_filter = 1
 position = Vector2(-1, 2.72528)
 scale = Vector2(5, 5)

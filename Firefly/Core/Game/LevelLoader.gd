@@ -15,7 +15,7 @@ func finished_cleaning():
 	return game_view_port.get_child_count() == 0
 
 # Called every frame while cleaning up the level, once the level is cleaned up we emit the level_free signal, and stop processing 
-func _process(delta) -> void:
+func _process(_delta) -> void:
 	
 	if finished_cleaning():
 		emit_signal("level_free")
@@ -57,7 +57,7 @@ func load_level(level_path: String, spawn_id: String = "") -> Level:
 		return null
 
 func reload_level() -> Level:
-	return await load_level(current_level_path)
+	return load_level(current_level_path)
 	
 
 func clear_current_level() -> void:

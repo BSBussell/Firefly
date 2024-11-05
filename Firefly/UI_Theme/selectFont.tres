@@ -5,3 +5,4 @@
 [resource]
 font = ExtResource("1_pr5nw")
 font_size = 52
+shadow_size = 0

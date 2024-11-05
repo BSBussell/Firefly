@@ -1,6 +1,8 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=22 format=3 uid="uid://dr07bmlv7l7wl"]
 
-[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_ht7w3"]
+[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_1m1wj"]
+[ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="2_qqttt"]
+[ext_resource type="StyleBox" uid="uid://ba6n0xamrag6i" path="res://UI_Theme/option_Style.tres" id="3_gcfyf"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkirc"]
 
@@ -42,26 +44,36 @@ color = Color(0.741176, 0.407843, 0.0980392, 1)
 thickness = 17
 
 [sub_resource type="FontVariation" id="FontVariation_w02q8"]
-base_font = ExtResource("1_ht7w3")
+base_font = ExtResource("1_1m1wj")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vc2dj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35d5h"]
 bg_color = Color(0.490196, 0.439216, 0.741176, 1)
-border_width_left = 10
-border_width_top = 10
-border_width_right = 10
-border_width_bottom = 10
 border_color = Color(0.235294, 0.2, 0.501961, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_detail = 2
+shadow_offset = Vector2(2.08165e-12, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h362d"]
+bg_color = Color(0.490196, 0.439216, 0.741176, 1)
+border_color = Color(0.235294, 0.2, 0.501961, 1)
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+corner_detail = 2
+shadow_offset = Vector2(2.08165e-12, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_lpqex"]
+color = Color(0.890196, 0.921569, 0.34902, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_7rppv"]
 color = Color(0.890196, 0.921569, 0.34902, 1)
 thickness = 100
 
 [resource]
-default_font = ExtResource("1_ht7w3")
+AnimatedToggle/colors/hover_modulate = Color(1, 1, 1, 1)
+AnimatedToggle/colors/modulate = Color(0.854902, 0.854902, 0.854902, 1)
+AnimatedToggle/constants/hover_scale = 25
+AnimatedToggle/constants/scale = 20
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 Button/colors/font_focus_color = Color(0.835294, 0.615686, 0.160784, 1)
@@ -79,13 +91,26 @@ Button/constants/h_separation = 4
 Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
-Button/fonts/font = ExtResource("1_ht7w3")
+Button/fonts/font = ExtResource("1_1m1wj")
 Button/styles/disabled = SubResource("StyleBoxEmpty_jkirc")
 Button/styles/focus = SubResource("StyleBoxEmpty_3ioor")
 Button/styles/hover = SubResource("StyleBoxEmpty_bogsa")
 Button/styles/normal = SubResource("StyleBoxEmpty_nrjkd")
 Button/styles/pressed = SubResource("StyleBoxEmpty_ugbje")
 CheckButton/icons/checked = null
+CounterLabel/base_type = &"Label"
+CounterLabel/colors/font_color = Color(1, 1, 1, 1)
+CounterLabel/constants/line_spacing = 3
+CounterLabel/font_sizes/font_size = 64
+CounterLabel/fonts/font = ExtResource("2_qqttt")
+GameTitle/base_type = &"HeaderLarge"
+GameTitle/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
+GameTitle/colors/font_shadow_color = Color(0.235294, 0.2, 0.501961, 0.588235)
+GameTitle/constants/shadow_offset_x = 7
+GameTitle/constants/shadow_offset_y = 7
+GameTitle/constants/shadow_outline_size = 40
+GameTitle/font_sizes/font_size = 128
+GameTitle/fonts/font = ExtResource("1_1m1wj")
 HBoxContainer/constants/separation = 150
 HScrollBar/styles/grabber = SubResource("StyleBoxLine_1i0tc")
 HScrollBar/styles/scroll = SubResource("StyleBoxLine_qhc66")
@@ -95,11 +120,39 @@ HSlider/icons/grabber_highlight = SubResource("PlaceholderTexture2D_u0knq")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_vuypm")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_novrq")
 HSlider/styles/slider = SubResource("StyleBoxLine_0qwdj")
+HeaderLarge/base_type = &"Label"
+HeaderLarge/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
+HeaderLarge/colors/font_shadow_color = Color(0.235294, 0.2, 0.501961, 0.588235)
+HeaderLarge/constants/shadow_offset_x = 7
+HeaderLarge/constants/shadow_offset_y = 7
+HeaderLarge/constants/shadow_outline_size = 40
+HeaderLarge/font_sizes/font_size = 128
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0)
+Label/font_sizes/font_size = 52
+Label/fonts/font = ExtResource("1_1m1wj")
 OptionButton/constants/arrow_margin = 2
 OptionButton/constants/modulate_arrow = 13
 OptionButton/constants/outline_size = 5
 OptionButton/fonts/font = SubResource("FontVariation_w02q8")
-OptionButton/styles/normal = SubResource("StyleBoxFlat_vc2dj")
-RichTextLabel/font_sizes/normal_font_size = 32
-RichTextLabel/fonts/normal_font = ExtResource("1_ht7w3")
+OptionButton/styles/disabled = ExtResource("3_gcfyf")
+OptionButton/styles/disabled_mirrored = ExtResource("3_gcfyf")
+OptionButton/styles/focus = ExtResource("3_gcfyf")
+OptionButton/styles/hover = ExtResource("3_gcfyf")
+OptionButton/styles/hover_mirrored = ExtResource("3_gcfyf")
+OptionButton/styles/normal = ExtResource("3_gcfyf")
+OptionButton/styles/normal_mirrored = ExtResource("3_gcfyf")
+OptionButton/styles/pressed = SubResource("StyleBoxFlat_35d5h")
+OptionButton/styles/pressed_mirrored = ExtResource("3_gcfyf")
+PauseHeader/base_type = &"Label"
+PauseHeader/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
+PauseHeader/font_sizes/font_size = 64
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_h362d")
+PopupMenu/styles/separator = SubResource("StyleBoxLine_lpqex")
+RichTextLabel/font_sizes/normal_font_size = 36
+RichTextLabel/fonts/normal_font = ExtResource("1_1m1wj")
+SettingHeader/base_type = &"Label"
+SettingHeader/colors/font_color = Color(1, 1, 1, 1)
+SettingHeader/font_sizes/font_size = 64
+SettingHeader/fonts/font = ExtResource("1_1m1wj")
 VScrollBar/styles/grabber = SubResource("StyleBoxLine_7rppv")

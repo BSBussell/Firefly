@@ -9,15 +9,15 @@ var current_path: String
 signal finished_loading
 
 ## If the game is currently loading a level
-var loading: bool = true
+var loading: bool = false
 
 var title_screen: NodePath = NodePath("res://Scenes/Levels/TitleScreen/title_screen.tscn")
 
 ## Loads and displays the loading screen
 func show_loading() -> Control:
 	var loading_screen = preload("res://Core/loading_screen.tscn").instantiate()
-	if ui_loader:
-		ui_loader.add_child(loading_screen)
+	if _viewports.ui_viewport:
+		_viewports.ui_viewport.add_child(loading_screen)
 		loading_screen.play_animation("load_in")
 		
 		# Wait for the animation to finish before continuing 
@@ -36,7 +36,13 @@ func connect_loaders(ll: LevelLoader, ui: UiLoader):
 
 	
 ## Loads a level using a given path
-func load_level(path: String, spawn_id: String = ""):
+func load_level(path: String, spawn_id: String = "", disp_loading: bool = true):
+
+
+	# Prevent from loading things while we're trying to load
+	if loading:
+		printerr("ERROR: Attempted double load of: ", path)
+		return
 
 	loading = true
 
@@ -51,7 +57,10 @@ func load_level(path: String, spawn_id: String = ""):
 
 	# Stop the timer while the loading screen is being displayed
 	_stats.stop_timer()
-	var loading_screen = await show_loading()
+	
+	var loading_screen: Control
+	if disp_loading:
+		loading_screen = await show_loading()
 
 	# Free the level
 	level_loader.clear_current_level()
@@ -66,7 +75,7 @@ func load_level(path: String, spawn_id: String = ""):
 		await level_loader.level_free
 
 	# Load new level
-	var level = await level_loader.load_level(current_path, spawn_id)
+	var level = level_loader.load_level(current_path, spawn_id)
 
 	# Load new ui
 	ui_loader.setup(level)
@@ -85,8 +94,10 @@ func load_level(path: String, spawn_id: String = ""):
 	
 	# Once the screen is uncovered, resume the timer
 	_stats.start_timer()
+	
 	# Hide the loading screen
-	await hide_loading(loading_screen)
+	if disp_loading:
+		await hide_loading(loading_screen)
 
 
 
@@ -101,9 +112,7 @@ func return_to_title():
 
 func reset_game(level_path: String):
 
-	_stats.DEATHS = 0
-	_stats.reset_timer()
-	_stats.INVALID_RUN = false
+	_stats.reset_stats()
 	_jar_tracker.reset_jars()
 	
 	_persist.reset()

@@ -1,5 +1,5 @@
 extends BaseSetting
-class_name SliderSetting
+class_name BoolSetting
 
 @onready var label: Label = $SettingName
 @onready var animated_toggle: AnimatedToggle = $AnimatedToggle 

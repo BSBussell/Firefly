@@ -2,7 +2,9 @@ extends RigidBody2D
 class_name SpitSegment
 # :3
 
+@export var spotlight: PointLight2D = null
 @onready var spit = $"."
+
 
 var root: Rope = null
 
@@ -16,6 +18,12 @@ var origin: Vector2 = Vector2.ZERO
 
 signal grabbed(segment)
 
+
+var is_decor: bool = false
+
+func _ready():
+	if is_decor:
+		dim()
 # Connects the joint to the top of the spit
 func connect_top(joint: PinJoint2D):
 	joint.node_b = spit.get_path()
@@ -30,7 +38,7 @@ func connect_signal(function: Callable):
 	
 	var err = connect("grabbed", function)
 	if err != OK:
-		print("Stupid Error: ", err)
+		print("Error connecting signal: ", err)
 
 func player_grabbed():
 	_logger.info("Segment - Emitting Grabbed Signal")
@@ -38,3 +46,12 @@ func player_grabbed():
 
 func start_cooldown(time: float) -> void:
 	root.start_cooldown(time)
+
+func set_decor() -> void:
+	is_decor = true
+
+func dim() -> void:
+	if spotlight:
+		spotlight.enabled = false
+		spotlight.queue_free()   
+	

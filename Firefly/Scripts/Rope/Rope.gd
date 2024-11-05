@@ -82,6 +82,8 @@ func create_joints() -> void:
 			new_segment.set_deferred("collision_layer", 0)
 			new_segment.set_deferred("collision_mask", 1)
 			new_segment.modulate = "#3e3b65bf"
+			new_segment.set_decor()
+			
 		
 		
 		new_segment.origin = global_position

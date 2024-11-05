@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://8d3l1o16hc1p"]
+[gd_scene load_steps=6 format=3 uid="uid://8d3l1o16hc1p"]
 
 [ext_resource type="Texture2D" uid="uid://c54p0vejhh4nt" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit.png" id="1_vg1po"]
 [ext_resource type="Script" path="res://Scripts/Rope/SpitSegment.gd" id="1_wiwfe"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_ba257"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ctwun"]
 
@@ -9,7 +10,7 @@
 radius = 2.0
 height = 16.0
 
-[node name="Anchor" type="RigidBody2D"]
+[node name="Anchor" type="RigidBody2D" node_paths=PackedStringArray("spotlight")]
 collision_layer = 256
 collision_mask = 514
 mass = 0.75
@@ -21,6 +22,7 @@ linear_damp = 7.0
 angular_damp_mode = 1
 angular_damp = 7.0
 script = ExtResource("1_wiwfe")
+spotlight = NodePath("PointLight2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 4)
@@ -36,3 +38,8 @@ shape = SubResource("CapsuleShape2D_h3dnq")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0, 8)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.780392, 0.87451, 0.921569, 1)
+energy = 0.1
+texture = ExtResource("3_ba257")

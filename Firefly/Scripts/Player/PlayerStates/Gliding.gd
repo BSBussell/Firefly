@@ -47,9 +47,8 @@ var glide_speed: float = 0.0
 
 # Called on state entrance, setup
 func enter() -> void:
+	
 	print("holy shit mom im flying")
-	
-	
 	
 	parent.current_animation = parent.ANI_STATES.FALLING
 	parent.restart_animation = true

@@ -4,7 +4,6 @@ extends "res://Scripts/Level/Level.gd"
 
 @onready var music = $LevelAudio/Music
 @onready var ambience = $LevelAudio/Ambience
-
 @onready var lighting = $Lighting
 
 @onready var ropes = $SwingAbleRopes
@@ -25,7 +24,7 @@ func local_ready():
 	ambience.play(0)
 	
 	# Enable Reverb Audio Filer
-	#_audio.set_level_effects([0])
+	_audio.set_level_effects([0])  
 
 
 	
@@ -36,3 +35,4 @@ func local_ready():
 func on_death():
 	
 	ropes.reset_worms()
+	gem_manager.respawn_all()

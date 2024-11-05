@@ -1,10 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://dpiiunr2hn7c4"]
+[gd_scene load_steps=19 format=3 uid="uid://dpiiunr2hn7c4"]
 
 [ext_resource type="Script" path="res://Scenes/UI_Elements/settings_menu.gd" id="1_2yfve"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_ca3ff"]
 [ext_resource type="Shader" path="res://Scenes/UI_Elements/settingsWobble.gdshader" id="2_c2wmv"]
-[ext_resource type="LabelSettings" uid="uid://g13vq1rytnad" path="res://UI_Theme/LoadingText.tres" id="2_gt2tp"]
 [ext_resource type="Material" uid="uid://dr186ojia5ugu" path="res://Assets/Materials/pause_wobble.tres" id="2_pnv2b"]
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="3_ruqkj"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/CategoryContainer.gd" id="6_5m2g1"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/pause_buttons.gd" id="6_vsv8n"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/settings_list.gd" id="7_cvkcl"]
@@ -327,7 +326,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 0.1),
 "update": 0,
-"values": [1.0, 0.34]
+"values": [1.5, 0.34]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -339,7 +338,7 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 0.1),
 "update": 0,
-"values": [1.0, 0.95]
+"values": [1.5, 0.95]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
@@ -438,7 +437,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 0.1),
 "update": 0,
-"values": [0.34, 1.0]
+"values": [0.34, 1.5]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -450,7 +449,7 @@ tracks/6/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 0.1),
 "update": 0,
-"values": [0.95, 1.0]
+"values": [0.95, 1.5]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
@@ -487,6 +486,7 @@ _data = {
 }
 
 [node name="SettingsSubMenu" type="Control"]
+visible = false
 z_index = -1
 layout_mode = 3
 anchors_preset = 15
@@ -495,6 +495,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+theme = ExtResource("1_ca3ff")
 script = ExtResource("1_2yfve")
 
 [node name="PauseLinger" type="ColorRect" parent="."]
@@ -538,8 +539,8 @@ anchor_bottom = 0.1
 offset_top = -4.0
 offset_right = 480.0
 offset_bottom = 116.0
+theme_type_variation = &"SettingHeader"
 text = "Settings"
-label_settings = ExtResource("2_gt2tp")
 
 [node name="TopBar" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(2.08165e-12, 120)
@@ -549,13 +550,13 @@ anchor_left = 1.0
 anchor_top = 0.25
 anchor_right = 1.0
 anchor_bottom = 0.3
+theme_override_constants/separation = 0
 
 [node name="BackButton" type="Button" parent="TopBar" node_paths=PackedStringArray("focus")]
 layout_mode = 2
 size_flags_vertical = 0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_bottom = NodePath("\"\"")
-theme = ExtResource("3_ruqkj")
 text = "< | "
 script = ExtResource("6_vsv8n")
 disable_press_sfx = true
@@ -570,9 +571,9 @@ bus = &"SFX"
 [node name="SettingCategories" type="ScrollContainer" parent="TopBar"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 13
-theme = ExtResource("3_ruqkj")
+size_flags_vertical = 0
 follow_focus = true
+vertical_scroll_mode = 0
 
 [node name="CategoryContainer" type="HBoxContainer" parent="TopBar/SettingCategories" node_paths=PackedStringArray("setting_list")]
 layout_mode = 2
@@ -587,12 +588,14 @@ anchor_left = 1.0
 anchor_top = 0.4
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 0
 grow_vertical = 2
-theme = ExtResource("3_ruqkj")
+theme = ExtResource("1_ca3ff")
 follow_focus = true
 horizontal_scroll_mode = 0
 
 [node name="Items" type="VBoxContainer" parent="SectionSettings"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 30
@@ -605,18 +608,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Bool2" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
-layout_mode = 2
-
-[node name="Bool3" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
-layout_mode = 2
-
-[node name="Bool4" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
-layout_mode = 2
-
-[node name="Bool5" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
-layout_mode = 2
-
-[node name="Bool6" parent="SectionSettings/Items" instance=ExtResource("7_eb0w4")]
 layout_mode = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -63,9 +63,7 @@ func flip():
 
 var stored_speed: float
 func _on_bouncy_bounce():
-	# print("Starting Cool Down")
-	#stored_speed = speed
-	#speed = 0
+	
 	velocity.x = velocity.x * -0.5
 	#bounce_cool_down.start()
 	

@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://doyxghug75km3"]
 
 [ext_resource type="Script" path="res://Scenes/UI_Elements/Timer.gd" id="1_bujx4"]
-[ext_resource type="LabelSettings" uid="uid://bofwbwm2acyhx" path="res://UI_Theme/setting_cats.tres" id="2_ue08k"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_rn13m"]
 
 [sub_resource type="Animation" id="Animation_upkmo"]
 resource_name = "hide"
@@ -73,10 +73,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = ExtResource("1_rn13m")
 script = ExtResource("1_bujx4")
 
 [node name="Label" type="Label" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -84,8 +84,8 @@ anchor_bottom = 1.0
 offset_left = 50.0
 offset_bottom = 100.0
 grow_vertical = 0
+theme_type_variation = &"TimerText"
 text = "xx:xx:xx"
-label_settings = ExtResource("2_ue08k")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Label")

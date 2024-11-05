@@ -89,6 +89,7 @@ func _process(delta):
 	
 	# If we haven't enabled glow yet then we don't do anything
 	if not GLOW_ENABLED:
+		update_meter()
 		return
 	
 	# Always enable glow_point growth
@@ -120,28 +121,31 @@ func _process(delta):
 	# If Glow down is pressed and we're not at the bottom
 	if movement_level > 0 and Input.is_action_just_pressed("Glow_Down"):
 		
-		var saved_points: int = glow_points
+		var saved_points: int = int(glow_points)
 		
 		demote()
 		
 		# Ok just a little exploit pre-fixing, if the player is below 30% on the score thing,
 		# dont enable them to easily get glow again. Just to prevent an "off and on again" meta when low on points
-		glow_points = 100 if saved_points > 30 else glow_points
+		glow_points = 100.0 if saved_points > 30 else glow_points
 	
 	
 	glow_point_visual()
 	
+	update_meter()
+	
+	
+func update_meter() -> void:
 	# Update our meter
-	var glow_meter_percentage: int = glow_points
+	var glow_meter_percentage: int = floor(glow_points)
 	
 	# In auto glow mode, the meter measures how close to max speed we are
 	if _config.get_setting("auto_glow"):
-		glow_meter_percentage = (glow_points + (100 * movement_level)) / (100 * max_level) * 100
+		glow_meter_percentage = floor((glow_points + (100 * movement_level)) / (100 * max_level) * 100)
 		
 		
 	# Signal to the meter to change its visual
 	emit_signal("glow_meter_changed", glow_meter_percentage)
-	
 
 func grow_points(delta: float) -> void:
 	
@@ -217,10 +221,6 @@ func glow_point_visual() -> void:
 # Returns the current speed normalized to "expected" max speeds.
 func calc_speed() -> float:
 	
-	
-	
-	
-	
 	var new_speed: float = 0.0
 	new_speed = abs(PLAYER.velocity.x)
 	
@@ -258,7 +258,9 @@ func calc_score():
 # A public facing method that can be called by other scripts (ex, collectibles) in order to increase
 # 	Player's momentum value
 func add_score(amount: float) -> void:
-	glow_points += amount
+	
+	if GLOW_ENABLED:
+		glow_points += amount
 
 func reset_glow():
 	
@@ -279,7 +281,6 @@ func promote(starting_points: int = 50) -> bool:
 
 	if movement_level < max_level:
 		
-		print("Glow Boost ", PLAYER.movement_data.GLOW_UPGRADE_BOOST)
 		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
 		
 		change_state(movement_level + 1)
@@ -295,7 +296,6 @@ func promote(starting_points: int = 50) -> bool:
 		
 	# Just use the boost and consume points
 	else:
-		print("Glow Boost ", PLAYER.movement_data.GLOW_UPGRADE_BOOST)
 		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
 		glow_points = 10
 		return false
@@ -326,8 +326,6 @@ func change_state(level: int):
 	
 	movement_level = level
 	
-	_logger.info("Glow Manager - In Level: " + str(movement_level))
-
 	# Ok set the new movement level
 	PLAYER.movement_data = PLAYER.movement_states[movement_level]
 	
@@ -347,8 +345,6 @@ func change_state(level: int):
 	
 # Timer is started when we stop moving, if we start moving again it is stopped again
 func _on_momentum_time_timeout():
-	
-		
-		
+
 	# Start decaying our points
 	decaying = true

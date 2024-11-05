@@ -4,6 +4,8 @@ class_name SettingsMenu
 # Preload individual components
 var BOOL_TOGGLE: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/bool_setting.tscn")
 var SLIDER: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/slider_setting.tscn")
+var CHOICE: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/choice_setting.tscn")
+
 
 @onready var animation_player = $"../../AnimationPlayer"
 
@@ -48,10 +50,9 @@ func populate_setting(setting_list: Dictionary, current_cat: Button):
 		return
 
 	# Free the
-	var hide_settings: bool = false
 	if get_child_count() > 0:
 		
-		hide_settings = true
+		# hide_settings = true
 		#animation_player.play("setting_hide")
 		#await animation_player.animation_finished
 		clear_list()
@@ -66,24 +67,33 @@ func populate_setting(setting_list: Dictionary, current_cat: Button):
 
 	for setting in setting_list:
 
-		var setting_node: BaseSetting
+		var setting_node: BaseSetting = null
 
 		if setting_list[setting]["type"] == "boolean":
 
 			setting_node = BOOL_TOGGLE.instantiate()
 			setting_node.pass_json(setting_list[setting])
 
-			add_child(setting_node)
-			print("Settting_Node")
 			
 		elif setting_list[setting]["type"] == "slider":
 		
 			setting_node = SLIDER.instantiate()
 			setting_node.pass_json(setting_list[setting])
 
-			add_child(setting_node)
-			print("Settting_Node")
+			
+		elif setting_list[setting]["type"] == "choice":
+			
+			setting_node = CHOICE.instantiate()
+			setting_node.pass_json(setting_list[setting])
+		
+		else:
+			_logger.warning("Setting Type Invalid: " + setting_list[setting]["type"])
+			continue
+			
  
+		# Add the setting node to the thing
+		add_child(setting_node)
+
 		# Configure up and down focus
 		if prev:
 			

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwh20ix2o5lnj"]
+[gd_scene load_steps=5 format=3 uid="uid://bwh20ix2o5lnj"]
 
 [ext_resource type="AudioStream" uid="uid://bgp5c8dtonsvg" path="res://Assets/SFX/Mechanics/Plat/twig_snap.mp3" id="1_4xya2"]
 [ext_resource type="AudioStream" uid="uid://cqkuk3ovjbdfn" path="res://Assets/SFX/Mechanics/Plat/small_thin_pieces_of_wood.mp3" id="2_2ak55"]
 [ext_resource type="AudioStream" uid="uid://binoki6dtc4uu" path="res://Assets/SFX/Player/respawn.mp3" id="3_argmy"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_bb6ix"]
 
 [node name="Audio" type="Node2D"]
 
@@ -22,3 +23,10 @@ stream = ExtResource("3_argmy")
 volume_db = -10.0
 pitch_scale = 0.9
 bus = &"SFX"
+
+[node name="Light" type="Node2D" parent="."]
+
+[node name="PointLight2D" type="PointLight2D" parent="Light"]
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.1
+texture = ExtResource("4_bb6ix")

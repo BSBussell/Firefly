@@ -1,0 +1,681 @@
+[gd_scene load_steps=19 format=3 uid="uid://0h47qgdfafs"]
+
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_kyvp3"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/File_Select/SaveFileUI.gd" id="2_e53p8"]
+[ext_resource type="AudioStream" uid="uid://cnuerb00ea5jy" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_002_75057.mp3" id="3_de0nn"]
+[ext_resource type="Script" path="res://Scenes/UI_Elements/File_Select/TextVerification.gd" id="3_pducj"]
+[ext_resource type="AudioStream" uid="uid://dpjkcsm43a70s" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_003_75058.mp3" id="4_33dsm"]
+[ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="5_cbc1n"]
+[ext_resource type="AudioStream" uid="uid://dvrqu1quotelj" path="res://Assets/SFX/UI/zapsplat_foley_bottle_glass_beer_knock_over_road_002_103732.mp3" id="6_daaar"]
+
+[sub_resource type="Animation" id="Animation_5k3mx"]
+resource_name = "OptionExpansion"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.6, 1), Vector2(1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"reset_pivot"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_qnixi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer/FileLabels/FileLabel:horizontal_alignment")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HBoxContainer/FileOptions:custom_minimum_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HBoxContainer/FileLabels/NameEnter:custom_minimum_size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HBoxContainer/FileLabels/NameEnter/NameEntryH:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_myojw"]
+resource_name = "delete"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(2, 2, 2, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_xla8y"]
+resource_name = "grow"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5),
+"transitions": PackedFloat32Array(1.3, 0.4, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.2), Vector2(1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"set_pivot"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_a0fqu"]
+resource_name = "hideButtons"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer/FileOptions:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.490196, 0.439216, 0.741176, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HBoxContainer/FileOptions:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath("HBoxContainer/FileOptionSimulator:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HBoxContainer/FileLabels/FileLabel:horizontal_alignment")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("HBoxContainer/FileOptions:custom_minimum_size")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(220, 2.08165e-12), Vector2(2.08165e-12, 2.08165e-12)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("HBoxContainer/FileOptions/Button:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_xn7je"]
+resource_name = "hide_name"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer/FileLabels/NameEnter:custom_minimum_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(2.08165e-12, 45), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HBoxContainer/FileLabels/NameEnter/NameEntryH:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HBoxContainer/FileLabels/NameEnter/NameEntryH:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nlgiy"]
+resource_name = "set_file"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.5),
+"transitions": PackedFloat32Array(1.3, 1.3, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 2.08165e-12), Vector2(1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"set_pivot"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HBoxContainer/FileLabels/SaveInfo:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HBoxContainer/FileLabels/NameEnter/NameEntryH:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("HBoxContainer/FileLabels/NameEnter:custom_minimum_size")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2.08165e-12, 2.08165e-12)]
+}
+
+[sub_resource type="Animation" id="Animation_5uc7y"]
+resource_name = "showButtons"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer/FileOptions:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HBoxContainer/FileOptions:custom_minimum_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.21),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(220, 2.08165e-12), Vector2(2.08165e-12, 2.08165e-12)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HBoxContainer/FileOptions:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("HBoxContainer/FileOptionSimulator:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("HBoxContainer/FileLabels/FileLabel:horizontal_alignment")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("HBoxContainer/FileOptions/Button:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_w3241"]
+resource_name = "show_name"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HBoxContainer/FileLabels/NameEnter:custom_minimum_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(2.08165e-12, 45)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HBoxContainer/FileLabels/NameEnter/NameEntryH:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HBoxContainer/FileLabels/NameEnter/NameEntryH:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lh8br"]
+resource_name = "shrink"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 0.2), Vector2(1, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"set_pivot"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f6b36"]
+_data = {
+"OptionExpansion": SubResource("Animation_5k3mx"),
+"RESET": SubResource("Animation_qnixi"),
+"delete": SubResource("Animation_myojw"),
+"grow": SubResource("Animation_xla8y"),
+"hideButtons": SubResource("Animation_a0fqu"),
+"hide_name": SubResource("Animation_xn7je"),
+"set_file": SubResource("Animation_nlgiy"),
+"showButtons": SubResource("Animation_5uc7y"),
+"show_name": SubResource("Animation_w3241"),
+"shrink": SubResource("Animation_lh8br")
+}
+
+[node name="SaveFile" type="PanelContainer" node_paths=PackedStringArray("file_label", "save_info", "jar_counter", "time_string", "name_entry", "name_field", "file_buttons", "file_buttons_spacer", "start_button", "erase_button", "focused_audio", "opened_audio", "start_audio", "button_focused_audio", "button_pressed_audio")]
+offset_top = 2.0
+offset_right = 762.0
+offset_bottom = 205.0
+pivot_offset = Vector2(381, 101)
+size_flags_vertical = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_mode = 2
+theme = ExtResource("1_kyvp3")
+script = ExtResource("2_e53p8")
+file_label = NodePath("HBoxContainer/FileLabels/FileLabel")
+save_info = NodePath("HBoxContainer/FileLabels/SaveInfo")
+jar_counter = NodePath("HBoxContainer/FileLabels/SaveInfo/JarCounter")
+time_string = NodePath("HBoxContainer/FileLabels/SaveInfo/TimeString")
+name_entry = NodePath("HBoxContainer/FileLabels/NameEnter/NameEntryH")
+name_field = NodePath("HBoxContainer/FileLabels/NameEnter/NameEntryH/NameField")
+file_buttons = NodePath("HBoxContainer/FileOptions")
+file_buttons_spacer = NodePath("HBoxContainer/FileOptionSimulator")
+start_button = NodePath("HBoxContainer/FileOptions/Button/StartButton")
+erase_button = NodePath("HBoxContainer/FileOptions/Button/EraseButton")
+focused_audio = NodePath("Audio/Focused")
+opened_audio = NodePath("Audio/Opened")
+start_audio = NodePath("Audio/Start")
+button_focused_audio = NodePath("Audio/ButtonFocused")
+button_pressed_audio = NodePath("Audio/ButtonPressed")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="FileLabels" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="FileLabel" type="Label" parent="HBoxContainer/FileLabels"]
+layout_mode = 2
+theme_type_variation = &"FileLabel"
+text = "0123456789"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="SaveInfo" type="HBoxContainer" parent="HBoxContainer/FileLabels"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="JarCounter" type="Label" parent="HBoxContainer/FileLabels/SaveInfo"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_type_variation = &"FileJarCount"
+text = "105/121"
+vertical_alignment = 2
+
+[node name="Control" type="Control" parent="HBoxContainer/FileLabels/SaveInfo"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.05
+
+[node name="TimeString" type="Label" parent="HBoxContainer/FileLabels/SaveInfo"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_type_variation = &"FileTime"
+text = "999:15:30"
+horizontal_alignment = 1
+
+[node name="NameEnter" type="BoxContainer" parent="HBoxContainer/FileLabels"]
+layout_mode = 2
+
+[node name="NameEntryH" type="HBoxContainer" parent="HBoxContainer/FileLabels/NameEnter"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Control" type="Control" parent="HBoxContainer/FileLabels/NameEnter/NameEntryH"]
+layout_mode = 2
+
+[node name="NameField" type="LineEdit" parent="HBoxContainer/FileLabels/NameEnter/NameEntryH"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+placeholder_text = "Your Name"
+max_length = 10
+caret_blink = true
+script = ExtResource("3_pducj")
+
+[node name="ConfirmName" type="Button" parent="HBoxContainer/FileLabels/NameEnter/NameEntryH"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_stretch_ratio = 0.0
+theme_type_variation = &"NameEntryButton"
+text = "Confirm"
+
+[node name="FileOptions" type="PanelContainer" parent="HBoxContainer"]
+visible = false
+modulate = Color(0.490196, 0.439216, 0.741176, 0)
+layout_mode = 2
+theme_type_variation = &"FileButtons"
+
+[node name="Button" type="VBoxContainer" parent="HBoxContainer/FileOptions"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="StartButton" type="Button" parent="HBoxContainer/FileOptions/Button"]
+layout_mode = 2
+size_flags_vertical = 2
+focus_neighbor_left = NodePath("../../../..")
+focus_neighbor_top = NodePath("\"\"")
+focus_neighbor_right = NodePath("\"\"")
+focus_neighbor_bottom = NodePath("../EraseButton")
+theme_type_variation = &"FileButtons"
+text = "Start"
+
+[node name="EraseButton" type="Button" parent="HBoxContainer/FileOptions/Button"]
+layout_mode = 2
+size_flags_vertical = 10
+focus_neighbor_left = NodePath("../../../..")
+focus_neighbor_top = NodePath("../StartButton")
+focus_neighbor_right = NodePath("\"\"")
+focus_neighbor_bottom = NodePath("\"\"")
+theme_type_variation = &"FileButtons"
+text = "Erase"
+
+[node name="FileOptionSimulator" type="PanelContainer" parent="HBoxContainer"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_type_variation = &"FileButtons"
+
+[node name="Button" type="VBoxContainer" parent="HBoxContainer/FileOptionSimulator"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="StartButton" type="Button" parent="HBoxContainer/FileOptionSimulator/Button"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_type_variation = &"FileButtons"
+disabled = true
+text = "Start"
+
+[node name="EraseButton" type="Button" parent="HBoxContainer/FileOptionSimulator/Button"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_type_variation = &"FileButtons"
+disabled = true
+text = "Erase"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_f6b36")
+}
+speed_scale = 1.75
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="Focused" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_de0nn")
+bus = &"SFX"
+
+[node name="Opened" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_33dsm")
+bus = &"SFX"
+
+[node name="Start" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("5_cbc1n")
+bus = &"SFX"
+
+[node name="ButtonFocused" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("5_cbc1n")
+
+[node name="ButtonPressed" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_daaar")
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="HBoxContainer/FileLabels/NameEnter/NameEntryH/NameField" to="HBoxContainer/FileLabels/NameEnter/NameEntryH/NameField" method="_on_text_changed"]
+[connection signal="pressed" from="HBoxContainer/FileLabels/NameEnter/NameEntryH/ConfirmName" to="." method="_on_confirm_name_pressed"]
+[connection signal="pressed" from="HBoxContainer/FileOptions/Button/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="focus_exited" from="HBoxContainer/FileOptions/Button/EraseButton" to="." method="_on_erase_button_focus_exited"]
+[connection signal="pressed" from="HBoxContainer/FileOptions/Button/EraseButton" to="." method="_on_erase_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/FileOptionSimulator/Button/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="focus_exited" from="HBoxContainer/FileOptionSimulator/Button/EraseButton" to="." method="_on_erase_button_focus_exited"]
+[connection signal="pressed" from="HBoxContainer/FileOptionSimulator/Button/EraseButton" to="." method="_on_erase_button_pressed"]

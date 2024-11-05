@@ -20,6 +20,8 @@ var def_settings: Dictionary = {
 	
 # Graphics
 	"fullscreen": false,
+	"resolution": 0,
+	"fps_target": 0,   
 	"vsync": false,
 	"game_zoom": 1.0,
 	
@@ -79,9 +81,13 @@ func get_setting(key: String) -> Variant:
 
 # Set a setting value by key and save to file
 func set_setting(key: String, value: Variant) -> void:
-	settings[key] = value
-	save_settings()
+	
+	# Make sure we are actually changing things
+	if value != settings[key]:
+		settings[key] = value
+		save_settings()
 
-
+## Connect a callable to the config changed signal. KEEP IT LIGHT!!
 func connect_to_config_changed(function: Callable) -> void:
 	connect("config_changed", function)
+

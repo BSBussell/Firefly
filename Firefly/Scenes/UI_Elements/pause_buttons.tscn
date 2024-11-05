@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bfr6itpdlgpsr"]
 
-[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/PlayTest.tres" id="1_l8bhh"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_l8bhh"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/pause_buttons.gd" id="2_gwb1e"]
 [ext_resource type="AudioStream" uid="uid://dvrqu1quotelj" path="res://Assets/SFX/UI/zapsplat_foley_bottle_glass_beer_knock_over_road_002_103732.mp3" id="3_vbyoa"]
 [ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="3_w11k4"]

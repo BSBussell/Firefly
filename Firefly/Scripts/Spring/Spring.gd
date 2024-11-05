@@ -122,14 +122,6 @@ func spring_jump() -> void:
 	# The horizontal momentum; this value will be based on the players current movement speed
 	var momentum: Vector2 = Vector2.ZERO
 	
-	var leniancy_max: float = 0.5
-	var leniancy_min: float = 0.05
-	
-	# The faster the player is moving the more leniancy we give for jump boosted spring bounces
-	var leniancy_blend: float = abs(flyph.velocity.x)/flyph.air_speed
-	var leniancy: float = lerpf(leniancy_min, leniancy_max, leniancy_blend)
-	
-	# var space_bar_check: bool = (flyph.attempt_post_jump() or flyph.attempt_jump(leniancy)) and not flyph.wallJumping
 	var ff_check: bool = flyph.fastFalling or flyph.fastFell or flyph.boostJumping
 	
 	# Check if player is boosting upward by pressing a on the spring

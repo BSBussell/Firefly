@@ -45,36 +45,29 @@ func disable_underwater_fx():
 	enable_level_effects()
 
 
+var prev_values: Array = [null, null, null, null]
+var setting_bus_index: Array = [
+	"master_vol",
+	"music",
+	"ambience",
+	"sfx"
+]
+
 func update_sliders():
-	# Music Slider
-	var master: float = _config.get_setting("master_vol")
-	var music: float = _config.get_setting("music")
-	var sfx: float = _config.get_setting("sfx")
-	var ambience: float = _config.get_setting("ambience")
-
-	# Set the volume
-	AudioServer.set_bus_volume_db(0, master)
-	AudioServer.set_bus_volume_db(1, music)
-	AudioServer.set_bus_volume_db(2, ambience)
-	AudioServer.set_bus_volume_db(3, sfx)
-
-	# Mute if appropriate
-	if master == -15  :
-		AudioServer.set_bus_mute(0, true)
-	else:
-		AudioServer.set_bus_mute(0, false)
-	
-	if music == -15:
-		AudioServer.set_bus_mute(1, true)
-	else:
-		AudioServer.set_bus_mute(1, false)
+	# Iterate over all the buses
+	for i in range(4):
 		
-	if ambience == -15:
-		AudioServer.set_bus_mute(2, true)
-	else:
-		AudioServer.set_bus_mute(2, false)
+		var mixer_val: float = _config.get_setting(setting_bus_index[i])
+
+		# Only update if the value has changed
+		if mixer_val != prev_values[i]:
+			
+			# Set bus volume and mute if volume == -15
+			AudioServer.set_bus_volume_db(i, mixer_val)
+			AudioServer.set_bus_mute(i, mixer_val == -15)
+				
+			# Update previous value
+			prev_values[i] = mixer_val
+			
+			
 		
-	if sfx == -15:
-		AudioServer.set_bus_mute(3, true)
-	else:
-		AudioServer.set_bus_mute(3, false)
