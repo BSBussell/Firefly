@@ -1,11 +1,25 @@
 extends Level
 
 
+@export var STEPS: int = 2
+@onready var ambience = $LevelAudio/Ambience
+@onready var walking = $LevelAudio/Walking
+ 
+
 # Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func local_ready():
+	ambience.play(479)
+	
+	await get_tree().create_timer(2.0).timeout
+	walking.play()
+	
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+var num_loops = 0
+func _on_walking_finished():
+	num_loops += 1
+	
+	if num_loops >= STEPS:
+		walking.stop()
+	else:
+		walking.play()

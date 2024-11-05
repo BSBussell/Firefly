@@ -546,7 +546,6 @@ _data = {
 }
 
 [node name="PauseMenu" type="ColorRect"]
-visible = false
 z_index = 1000
 material = ExtResource("1_qnrtv")
 anchors_preset = 15

@@ -5,19 +5,19 @@
 [ext_resource type="Script" path="res://Scenes/UI_Elements/FileSelect.gd" id="2_pynnf"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/File_Select/Populate_Save_Container.gd" id="3_4lt6d"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_crxj6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ft5sr"]
 shader = ExtResource("2_ivfl2")
 shader_parameter/progress = 0.2
 shader_parameter/waveFrequency1 = 3.5
 shader_parameter/waveFrequency2 = 5.5
 shader_parameter/waveAmplitude1 = 0.021
 shader_parameter/waveAmplitude2 = 0.009
-shader_parameter/waveSpeed1 = 0.5
+shader_parameter/waveSpeed1 = 0.1
 shader_parameter/waveSpeed2 = 0.07
 shader_parameter/waveLength1 = 2.63
 shader_parameter/waveLength2 = 5.298
-shader_parameter/noiseScale = 3.96
-shader_parameter/noiseSpeed = 0.0
+shader_parameter/noiseScale = 2.5
+shader_parameter/noiseSpeed = 0.35
 
 [sub_resource type="Animation" id="Animation_8qadl"]
 length = 0.001
@@ -284,7 +284,7 @@ save_container = NodePath("SaveContainer/ScrollContainer/VBoxContainer2/SaveCont
 scroll_container = NodePath("SaveContainer/ScrollContainer")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_crxj6")
+material = SubResource("ShaderMaterial_ft5sr")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
