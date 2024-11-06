@@ -3,7 +3,17 @@ extends PlayerState
 @export_subgroup("DEPENDENT STATES")
 @export var AERIAL_STATE: PlayerState = null
 
+@export_category("Climb Values")
+@export var up_max_speed: float = 0.025
+@export var down_max_speed: float = -0.075
 
+@export var up_accel: float = 0.02
+@export var down_accel: float = 0.05
+
+@export var up_climb_friction: float = 0.021
+@export var down_climb_friction: float = 0.04
+
+@export_category("Swing Values")
 @export var swing_force: float = 400
 @export var max_swing_force: float = 2000
 @export var min_swing_force: float = 600
@@ -36,7 +46,7 @@ extends PlayerState
 # Rope Detector
 @onready var rope_detector = $"../../Physics/RopeDetector"
 
-@onready var swinging_sfx = $"../../Audio/SwingingSFX"
+@onready var rope_tighten_sfx = $"../../Audio/RopeTightenSFX"
 @onready var rope_creak_sfx = $"../../Audio/RopeCreakSFX"
 
 
@@ -69,6 +79,8 @@ func enter() -> void:
 	# Make us unable to grab another rope
 	rope_detector.set_deferred("monitoring", false)
 	
+	climb_speed = 0.0
+	
 	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 2.5), 1.0)
 	swing_force = snappedf(lerpf(min_swing_force, max_swing_force, speed_ratio), 1)
 	
@@ -87,9 +99,13 @@ func enter() -> void:
 	apply_rope_impulse(parent.velocity * grab_force_multi)
 
 	
-	rand_from_seed(int(parent.stuck_segment.global_position.x))
+	rand_from_seed(int(parent.stuck_segment.root.global_position.x))
 	rope_creak_sfx.pitch_scale = randf_range(1, 2)
 	rope_creak_sfx.play()
+	
+	
+	rope_tighten_sfx.pitch_scale = randf_range(1, 2)
+	rope_tighten_sfx.play()
 
 	
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
@@ -131,17 +147,27 @@ func process_input(event: InputEvent) -> PlayerState:
 
 	_logger.info("Processing Input")
 
+	return null
+
 	# If its just a keyboard
 	if event is InputEventKey:
 		if Input.is_action_just_pressed("Down"):
-			if parent.stuck_segment.next:
-				parent.stuck_segment = parent.stuck_segment.next
-			else:
-				return AERIAL_STATE
+			
+			parent.stuck_segment.path_point.progress_ratio -= 0.1
+			if parent.stuck_segment.path_point.progress_ratio <= 0.1:
+				if parent.stuck_segment.next:
+					parent.stuck_segment = parent.stuck_segment.next
+					parent.stuck_segment.path_point.progress_ratio = 1.0
+				else:
+					return AERIAL_STATE
 				
 		elif Input.is_action_just_pressed("Up"):
-			if parent.stuck_segment.prev:
-				parent.stuck_segment = parent.stuck_segment.prev
+			
+			parent.stuck_segment.path_point.progress_ratio += 0.1
+			if parent.stuck_segment.path_point.progress_ratio >= 0.9:
+				if parent.stuck_segment.prev:
+					parent.stuck_segment = parent.stuck_segment.prev
+					parent.stuck_segment.path_point.progress_ratio = 0.0
 	
 	# If its anything other than a keyboard
 	else:
@@ -163,6 +189,9 @@ func process_input(event: InputEvent) -> PlayerState:
 func process_physics(delta: float) -> PlayerState:
 
 	_logger.info("Wormed Process Physics")
+
+	if climb_rope(delta, parent.vertical_axis):
+		return AERIAL_STATE
 
 	# Swing
 	swinging(delta, parent.horizontal_axis)
@@ -222,6 +251,66 @@ func process_frame(_delta):
 		parent.current_animation = parent.ANI_STATES.WALL_HUG
 
 	_logger.info("Finished Wormed Processing Frame")
+
+
+
+var climb_speed: float = 0.0
+
+
+
+func climb_rope(delta: float, axis: float) -> bool:
+	
+	var point: PathFollow2D = parent.stuck_segment.path_point
+	
+	## Update Progress ratio based on axis
+	# Up
+	if axis > 0:
+		
+		
+		climb_speed = move_toward(climb_speed, up_max_speed, up_accel * delta)
+		
+	
+	# Down
+	elif axis < 0:
+		
+		climb_speed = move_toward(climb_speed, down_max_speed, down_accel * delta)
+		
+	else:
+		
+		# Settle movement
+		if climb_speed > 0:
+			
+			climb_speed = move_toward(climb_speed, 0, up_climb_friction * delta)
+			
+		elif climb_speed < 0:
+			
+			climb_speed = move_toward(climb_speed, 0, down_climb_friction * delta)
+	
+	#
+	print(climb_speed)
+	
+	var ratio: float = point.progress_ratio
+	
+	point.progress_ratio -= climb_speed * delta
+	print(point.progress_ratio)
+	
+	
+	## Update Segment
+	## Move up a segment
+	if climb_speed > 0 and point.progress_ratio == 0.0:
+		if parent.stuck_segment.prev: # readability
+			parent.stuck_segment = parent.stuck_segment.prev
+			parent.stuck_segment.path_point.progress_ratio = 1.0
+	#
+	## Move down a segment
+	elif climb_speed < 0 and point.progress_ratio == 1.0:
+			if parent.stuck_segment.next:
+				parent.stuck_segment = parent.stuck_segment.next
+				parent.stuck_segment.path_point.progress_ratio = 0.0
+			elif climb_speed == down_max_speed:
+				return true
+	
+	return false
 
 ## Called when an animation ends. How we handle transitioning to different animations
 func animation_end() -> PlayerState:
@@ -351,8 +440,8 @@ var min_frequency = 2.5
 func swinging(delta, dir):
 	
 	# Tie the players position to the rope
-	var offset = Vector2(0, -16)
-	parent.global_position = parent.stuck_segment.global_position - offset
+	var offset = Vector2(0, 8)
+	parent.global_position = parent.stuck_segment.path_point.global_position + offset
 	
 	# Relative position to the ropes center
 	var relative_position = round(parent.global_position - parent.stuck_segment.origin)
@@ -427,9 +516,21 @@ func velocity_decay(delta):
 func apply_rope_impulse(force: Vector2):
 	
 	var offset: Vector2 = Vector2.ZERO
+	
+	if parent.stuck_segment.next:
+		offset.y = min(parent.stuck_segment.path_point.progress, 8)
+	else:
+		offset.y = min(parent.stuck_segment.path_point.progress, 4)
+	
 	parent.stuck_segment.apply_impulse(force, offset)
 
 func apply_rope_force(force: Vector2):
 	
 	var offset: Vector2 = Vector2.ZERO
+	
+	if parent.stuck_segment.next:
+		offset.y = min(parent.stuck_segment.path_point.progress, 8)
+	else:
+		offset.y = min(parent.stuck_segment.path_point.progress, 4)
+	
 	parent.stuck_segment.apply_force(force, offset)

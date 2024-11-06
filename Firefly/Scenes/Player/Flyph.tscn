@@ -30,12 +30,12 @@
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
 [ext_resource type="AudioStream" uid="uid://bahbkt2kqpg2w" path="res://Assets/SFX/Water/underWater.mp3" id="20_j21pw"]
 [ext_resource type="AudioStream" uid="uid://c86u0dij278a" path="res://Assets/SFX/Water/getting_out_of_water.mp3" id="21_g6yjb"]
-[ext_resource type="AudioStream" uid="uid://caexb2m0j71la" path="res://Assets/SFX/Mechanics/swinging.mp3" id="22_q5uq7"]
-[ext_resource type="AudioStream" uid="uid://dexpkegjbcfsv" path="res://Assets/SFX/Mechanics/rope_creak.mp3" id="23_oxbt6"]
+[ext_resource type="AudioStream" uid="uid://dexpkegjbcfsv" path="res://Assets/SFX/Mechanics/rope/rope_creak.mp3" id="23_oxbt6"]
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
 [ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Grounded.gd" id="28_u1lt2"]
 [ext_resource type="AudioStream" uid="uid://boqdipngdont3" path="res://Assets/SFX/Player/flap.mp3" id="29_0m3rd"]
+[ext_resource type="AudioStream" uid="uid://bvnm0dwub1v08" path="res://Assets/SFX/Mechanics/rope/rope_stress_tighten_creak_fast_002_20973.mp3" id="29_ymtru"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Aerial.gd" id="29_yqxc8"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Wall.gd" id="30_24240"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Sliding.gd" id="31_f37eu"]
@@ -1093,10 +1093,9 @@ stream = ExtResource("21_g6yjb")
 volume_db = -10.0
 bus = &"SFX"
 
-[node name="SwingingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("22_q5uq7")
+[node name="RopeTightenSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("29_ymtru")
 volume_db = -8.0
-pitch_scale = 2.5
 bus = &"SFX"
 
 [node name="RopeCreakSFX" type="AudioStreamPlayer2D" parent="Audio"]
@@ -1171,6 +1170,12 @@ WATER_ACCEL_MULTI = 1.2
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
 script = ExtResource("33_e7xfe")
 AERIAL_STATE = NodePath("../Aerial")
+up_max_speed = 3.5
+down_max_speed = -10.0
+up_accel = 7.0
+down_accel = 20.0
+up_climb_friction = 10.0
+down_climb_friction = 16.5
 min_swing_force = 800.0
 swing_down_accel = 1700.0
 swing_up_decel = 400.0
