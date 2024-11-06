@@ -12,7 +12,7 @@ height = 16.0
 
 [sub_resource type="Curve2D" id="Curve2D_fqdhe"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2.08165e-12, 18)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2.08165e-12, 11)
 }
 point_count = 2
 

@@ -36,7 +36,10 @@ enum ANI_STATES {
 	
 	WALL_HUG,
 	WALL_SLIDE,
-	WALL_JUMP
+	WALL_JUMP,
+	
+	CLIMB,
+	SWING
 
 }
 
@@ -553,6 +556,11 @@ func update_animations():
 			animation.play("wall_slide")
 		ANI_STATES.WALL_JUMP:
 			animation.play("wall_jump")
+			
+		ANI_STATES.CLIMB:
+			animation.play("climb")
+		ANI_STATES.SWING:
+			animation.play("swing")
 
 
 

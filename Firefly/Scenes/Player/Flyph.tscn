@@ -1,4 +1,4 @@
-[gd_scene load_steps=122 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=133 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
 [ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -59,6 +59,30 @@ interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.1, 0.2)
 colors = PackedColorArray(1, 1, 0.670588, 1, 0.890196, 0.921569, 0.34902, 1, 0.7664, 0.8, 0.296, 1)
 metadata/_snap_enabled = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfasu"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4224, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6win"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4288, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h6fnk"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4352, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4njf4"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4416, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqslt"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4480, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqr8o"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4544, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpwsx"]
 atlas = ExtResource("5_63g2f")
@@ -212,6 +236,26 @@ region = Rect2(2304, 0, 64, 64)
 atlas = ExtResource("5_63g2f")
 region = Rect2(2368, 0, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ixjk"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4608, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_etluv"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4672, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6q4h"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4736, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x2e3k"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4800, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8vbx"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4864, 0, 64, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_neoi8"]
 atlas = ExtResource("5_63g2f")
 region = Rect2(0, 0, 64, 64)
@@ -290,6 +334,29 @@ region = Rect2(4160, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7w45f"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nfasu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6win")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h6fnk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4njf4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqslt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tqr8o")
+}],
+"loop": true,
+"name": &"climb",
+"speed": 9.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bpwsx")
@@ -466,6 +533,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_0ixjk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_etluv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6q4h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x2e3k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8vbx")
+}],
+"loop": true,
+"name": &"swing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_neoi8")
 }, {
 "duration": 1.0,
@@ -539,7 +626,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"wall_slide",
-"speed": 8.0
+"speed": 5.0
 }]
 
 [sub_resource type="Curve" id="Curve_grp02"]
@@ -711,7 +798,7 @@ num_segments = 4
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"stand up"
+animation = &"wall_slide"
 autoplay = "idle"
 flip_h = true
 script = ExtResource("8_dying")
@@ -1095,12 +1182,12 @@ bus = &"SFX"
 
 [node name="RopeTightenSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("29_ymtru")
-volume_db = -8.0
+volume_db = -20.0
 bus = &"SFX"
 
 [node name="RopeCreakSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("23_oxbt6")
-volume_db = -4.0
+volume_db = -20.0
 bus = &"SFX"
 
 [node name="FlapSFX" type="AudioStreamPlayer2D" parent="Audio"]
@@ -1170,7 +1257,7 @@ WATER_ACCEL_MULTI = 1.2
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
 script = ExtResource("33_e7xfe")
 AERIAL_STATE = NodePath("../Aerial")
-up_max_speed = 3.5
+up_max_speed = 3.0
 down_max_speed = -10.0
 up_accel = 7.0
 down_accel = 20.0
@@ -1178,7 +1265,7 @@ up_climb_friction = 10.0
 down_climb_friction = 16.5
 min_swing_force = 800.0
 swing_down_accel = 1700.0
-swing_up_decel = 400.0
+swing_up_decel = 500.0
 max_jump_multi = 9.75
 boost_sj_rise_time = 0.29
 
