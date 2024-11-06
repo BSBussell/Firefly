@@ -19,23 +19,31 @@ extends PlayerState
 @export var min_swing_force: float = 600
 @export var swing_down_accel: float = 1200
 @export var swing_up_decel: float = 800
+
 @export var player_weight: float = 980
 
 @export var grab_force_multi: float = 1.75
 @export var jump_force_multi: float = -1.75
 
+
 # The player should be able to do a lot regardless
 # of swinging
+@export_category("Swing Jump Properties")
 ## The base multiplier when jumping off a rope
-@export var swing_min: float = 3.5
+@export var base_jump_multi: float = 3.5
 ## The max multiplier when jumping off a rope at the right timing.
-@export var max_jump_multi: float = 8
+@export var boost_jump_multi: float = 8
+@export var nyoom_jump_multi: float
 
 ## Height of jumping off a rope
 @export var swing_jump_height: float = 2.0
 @export var swing_jump_rise_time: float = 0.2
 @export var boosted_sj_height: float = 2.0
 @export var boost_sj_rise_time: float = 0.3
+
+## Horizontal Velocity Multiplier
+@export var boost_sj_velocity_cost: float = 0.9
+@export var boost_sj_vel_rev_cost: float = 0.7
 
 
 # Effects
@@ -72,8 +80,11 @@ func enter() -> void:
 	if OS.is_debug_build():
 		_logger.info("Wormed State")
 
-	# We are not speeding up on thingy
+	# We are not speeding up on grab
 	speeding_up = false
+	
+	parent.lock_h_dir(-sign(parent.velocity.x), 0.5, true)
+	if parent.horizontal_axis: parent.horizontal_axis = -sign(parent.velocity.x)
 
 	parent.set_standing_collider()
 
@@ -314,37 +325,31 @@ func jump():
 	# Set Flags
 	parent.jumping = true
 
-	# Add a Horizontal Jump Boost to our players X velocity
+	# Jump in the direction we are facing or the direction we are holding
 	var jump_dir = parent.horizontal_axis
 	if jump_dir == 0:
 		jump_dir = -1 if parent.animation.flip_h else 1
 
+	# The base multiplier for jump height
 	var vertical_multi = 1.0
 
-	# Downward jump off rope
-	if parent.vertical_axis < 0:
-		vertical_multi = -0.4
+	
 
 	# Base Swing Multiplier
-	var swing_multi: float = swing_min
+	var swing_multi: float = base_jump_multi
 
+	# Base Jump y vel
 	var jump_y_vel: float = parent.jump_velocity
 	
-	# But if they time the jump right :3
-	# The goal of this is to simulate how horizontal velocity is highest
+	# If holding down, then we have a negative multiplier to jump down from rope
+	if parent.vertical_axis < 0:
+		vertical_multi = -0.4
+	
+	# If the player jumps while holding towards center rope
 	if speeding_up:
 		
-		# As the players swing speed increases it gradually approaches 15
-		# Normalized force value between 0 and 1
-			# var t = swing_force / max_swing_force
-			# var exponent = 3  # Adjust this exponent to control the growth rate
-		
-		
-			# var exponential_multi = ((max_jump_multi - swing_multi) * pow(t, exponent)) + swing_multi
-			# var exponential_multi = lerp(swing_min, max_jump_multi, swing_force/max_swing_force)
-		
-		var exponential_multi = max_jump_multi
-		swing_multi = exponential_multi
+		# If we already boosting, then we ascend to nyooming
+		swing_multi = boost_jump_multi if not parent.boostJumping else nyoom_jump_multi
 
 		parent.set_temp_gravity(boost_sj_gravity)
 
@@ -353,23 +358,23 @@ func jump():
 		# Set the flag cuz we wanna assume zoooming has started
 		parent.boostJumping = true
 	
-	# else:
 
-		# Set the gravity
-		# if swing_jump_gravity:
-			# parent.set_temp_gravity(swing_jump_gravity)
-
+	# Flip player x velocity if we are jumping in the opposite direction
+	# Multiply by velocity cost to improve feel a little
 	if sign(parent.velocity.x) != sign(jump_dir):
-		parent.velocity.x *= -1
+		parent.velocity.x *= -boost_sj_vel_rev_cost
+	else:
+		parent.velocity.x *= boost_sj_velocity_cost
 	
 
-
-
-	# Jump Velocity
+	# Set Vertical Velocity
 	parent.velocity.y = jump_y_vel * vertical_multi
 
-	# Jump horizontal boost
-	if parent.boostJumping or speeding_up:
+	# Jump horizontal boost, additive if we're in "boost jumping" state
+	if parent.boostJumping:
+		
+		
+		
 		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
 	else:
 		parent.velocity.x = parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
@@ -410,11 +415,12 @@ func swinging(delta, dir):
 	if not parent.animation.flip_h:
 		offset.x *= -1
 		
-	parent.global_position = parent.stuck_segment.path_point.global_position + offset
+	parent.global_position = parent.stuck_segment.path_point.global_position
 	
 	# Relative position to the ropes center
 	var relative_position = round(parent.global_position - parent.stuck_segment.origin)
 	
+	parent.global_position += offset 
 	
 	# If we've moved down since last pool, and 
 	if dir and sign(dir) != sign(relative_position.x) and relative_position.x != 0:
@@ -422,7 +428,7 @@ func swinging(delta, dir):
 		
 		# Increase the players swing force
 		swing_force = move_toward(swing_force, max_swing_force, swing_down_accel * delta)
-		speeding_up = true
+		speeding_up = true 
 		
 		pendulum_force = swing_force
 		
@@ -480,7 +486,17 @@ func apply_weight(_delta):
 
 # Slowly move a players velocity towards zero the longer they're on rope
 func velocity_decay(delta):
-	parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
+	
+	# Enables players to leave the rope in time if they want to maintain a state of nyoom
+	if parent.boostJumping:
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
+	
+	# But if they aren't nyooming then just restart them
+	else:
+		parent.velocity.x = 0
+		
+	# When velocity reaches 0 remove bj privs
+	if parent.velocity.x == 0: parent.boostJumping = false
 
 func apply_rope_impulse(force: Vector2):
 	

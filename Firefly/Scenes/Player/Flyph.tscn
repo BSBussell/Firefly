@@ -1266,8 +1266,11 @@ down_climb_friction = 16.5
 min_swing_force = 800.0
 swing_down_accel = 1700.0
 swing_up_decel = 500.0
-max_jump_multi = 9.75
+base_jump_multi = 3.0
+boost_jump_multi = 11.0
+nyoom_jump_multi = 9.0
 boost_sj_rise_time = 0.29
+boost_sj_vel_rev_cost = 0.8
 
 [node name="Gliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE")]
 script = ExtResource("33_hf8q0")
