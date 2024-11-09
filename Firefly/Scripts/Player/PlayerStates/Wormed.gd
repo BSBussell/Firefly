@@ -126,6 +126,8 @@ func enter() -> void:
 	
 	if parent.boostJumping:
 		period_multi = 3.5
+	else:
+		period_multi = base_period_multi
 
 	
 	rand_from_seed(int(parent.stuck_segment.root.global_position.x))
@@ -233,7 +235,7 @@ func update_direction() -> void:
 
 func particle_emission() -> void:
 	# Speed Particle Emission
-	if abs(parent.velocity.x) > parent.air_speed + parent.movement_data.JUMP_HORIZ_BOOST or parent.temp_gravity_active or speeding_up:
+	if speeding_up or parent.vertical_axis < 0:
 		speed_particles.emitting = true
 		speed_particles.direction.x = 1 if (parent.animation.flip_h) else -1
 	else:
@@ -274,6 +276,9 @@ func climb_rope(delta: float, axis: float) -> bool:
 		
 		velocity = down_max_speed
 		accel = down_accel
+		
+		# Because we move fast in this, give glow
+		parent.add_glow(0.15)
 		
 	else:
 		
@@ -450,7 +455,7 @@ func swinging(delta, dir):
 	parent.global_position += offset 
 	
 	parent.rotation = parent.stuck_segment.rotation
-	parent.rotation_degrees = max(min(parent.rotation_degrees, 4), -4)
+	parent.rotation_degrees = max(min(parent.rotation_degrees, 3.5), -3.5)
 		
 	var target_period_multi: float = base_period_multi
 	var period_accel: float = base_period_accel
