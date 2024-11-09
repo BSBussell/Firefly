@@ -358,8 +358,6 @@ func jump():
 	# The base multiplier for jump height
 	var vertical_multi = 1.0
 
-	
-
 	# Base Swing Multiplier
 	var swing_multi: float = base_jump_multi
 
@@ -397,23 +395,21 @@ func jump():
 
 	# Jump horizontal boost, additive if we're in "boost jumping" state
 	if parent.boostJumping:
-		
-		
-		
 		parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
 	else:
 		parent.velocity.x = parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
 
 	
-	#parent.lock_h_dir(jump_dir, 0.2, true )
+	# Prevent player from jumping straight up
+	parent.lock_h_dir(jump_dir, 0.03, true )
 
 	# Jump SFX
 	jumping_sfx.play(0)
 	
-	# Apply Impulse to the rope using func apply_rope_impulse(force)
-	# Based on velocity
+	# Apply Impulse to the rope based on velocity
 	apply_rope_impulse(parent.velocity * jump_force_multi)
 	
+	# Squishie
 	parent.squish_node.squish(Vector2(0.8, 1.2))
 	
 	# Animation
@@ -437,7 +433,7 @@ var period_multi: float = 1.0
 
 
 
-# Calculus
+# trig kinda
 func swinging(delta, dir):
 	
 	# Tie the players position to the rope
