@@ -9,18 +9,18 @@
 
 [node name="Snap" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("1_4xya2")
-volume_db = -5.0
+volume_db = -10.0
 bus = &"SFX"
 
 [node name="Crash" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_2ak55")
-volume_db = -5.0
+volume_db = -10.0
 pitch_scale = 1.5
 bus = &"SFX"
 
 [node name="Pop" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_argmy")
-volume_db = -10.0
+volume_db = -12.0
 pitch_scale = 0.9
 bus = &"SFX"
 

@@ -798,9 +798,9 @@ num_segments = 4
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"climb"
+animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.767711
+frame_progress = 0.459452
 flip_h = true
 script = ExtResource("8_dying")
 

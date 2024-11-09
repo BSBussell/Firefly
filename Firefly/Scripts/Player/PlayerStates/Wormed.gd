@@ -111,13 +111,11 @@ func enter() -> void:
 	pendulum_force = snappedf(lerpf(min_swing_force * 2, max_swing_force, speed_ratio), 1)
 	
 	
-	# Relative position to the ropes center
-	var a = lerpf(min_frequency, max_frequency, pendulum_force/max_swing_force)
 	# This is the coolest shit i've done
 	if sign(parent.velocity.x) > 0:
-		period = PI/(2*a) 
+		period = PI/(2*wave_length) 
 	else:
-		period = (3*PI)/(2*a)
+		period = (3*PI)/(2*wave_length)
 			
 	
 
@@ -433,7 +431,7 @@ var pendulum_force: float = 0.0
 var return_force: Vector2 = Vector2.ZERO
 
 var max_frequency = 5.0
-var min_frequency = 4.0
+var wave_length = 4.0
 var period_multi: float = 1.0	
 
 
@@ -494,8 +492,6 @@ func swinging(delta, dir):
 	pendulum_force = move_toward(pendulum_force, min_swing_force, delta * swing_decel)
 	
 	return_force = Vector2(pendulum_force, 0)
-	
-	var wave_length: float = min_frequency
 	return_force *= sin(wave_length * period)
 	
 	apply_rope_force(return_force)
