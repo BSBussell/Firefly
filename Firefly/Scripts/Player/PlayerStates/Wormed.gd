@@ -14,36 +14,52 @@ extends PlayerState
 @export var down_climb_friction: float = 0.04
 
 @export_category("Swing Physics Values")
-@export var swing_force: float = 400
-@export var max_swing_force: float = 2000
-@export var min_swing_force: float = 600
-@export var swing_down_accel: float = 1200
-@export var swing_up_decel: float = 800
-
 @export var player_weight: float = 980
 
 @export var grab_force_multi: float = 1.75
 @export var jump_force_multi: float = -1.75
+
+@export var max_swing_force: float = 2000
+@export var min_swing_force: float = 400
+@export var swing_pump_accel: float = 1200
+@export var swing_decel: float = 200
+
+
+## How often the rope swings back and forth
+@export_group("Swing Period Settings")
+## Multiplier for how long one "swing" cycle should last
+@export var base_period_multi: float = 1.0
+
+## Value for how fast the "swing cycle" should be smoothed towards the target
+@export var base_period_accel: float = 2.0
+
+
+@export var pumping_period_multi: float = 1.1
+@export var pumping_period_accel: float = 2
+
+@export var init_boosted_period_multi: float = 3.5
+@export var boosted_period_multi: float = 1.1
+@export var boosted_period_accel: float = 6.0
 
 
 # The player should be able to do a lot regardless
 # of swinging
 @export_category("Swing Jump Properties")
 ## The base multiplier when jumping off a rope
-@export var base_jump_multi: float = 3.5
+@export var base_jump_multi: float = 3
 ## The max multiplier when jumping off a rope at the right timing.
-@export var boost_jump_multi: float = 8
-@export var nyoom_jump_multi: float
+@export var boost_jump_multi: float = 11
+@export var nyoom_jump_multi: float = 9
 
 ## Height of jumping off a rope
 @export var swing_jump_height: float = 2.0
 @export var swing_jump_rise_time: float = 0.2
 @export var boosted_sj_height: float = 2.0
-@export var boost_sj_rise_time: float = 0.3
+@export var boost_sj_rise_time: float = 0.29
 
 ## Horizontal Velocity Multiplier
 @export var boost_sj_velocity_cost: float = 0.9
-@export var boost_sj_vel_rev_cost: float = 0.7
+@export var boost_sj_vel_rev_cost: float = 0.8
 
 
 # Effects
@@ -70,6 +86,7 @@ extends PlayerState
 ## The gravity of the player when they boost jump
 @onready var boost_sj_gravity: float = ((-2.0 * real_bsj_height) / pow(boost_sj_rise_time, 2))
 
+
 var climb_speed: float = 0.0
 
 # Called on state entrance, setup
@@ -83,9 +100,6 @@ func enter() -> void:
 	# We are not speeding up on grab
 	speeding_up = false
 	
-	parent.lock_h_dir(-sign(parent.velocity.x), 0.5, true)
-	if parent.horizontal_axis: parent.horizontal_axis = -sign(parent.velocity.x)
-
 	parent.set_standing_collider()
 
 	# Make us unable to grab another rope
@@ -94,21 +108,24 @@ func enter() -> void:
 	climb_speed = 0.0
 	
 	var speed_ratio = min(abs(parent.velocity.x) / (parent.air_speed * 2.5), 1.0)
-	swing_force = snappedf(lerpf(min_swing_force, max_swing_force, speed_ratio), 1)
+	pendulum_force = snappedf(lerpf(min_swing_force * 2, max_swing_force, speed_ratio), 1)
 	
 	
 	# Relative position to the ropes center
-	var a = lerpf(min_frequency, max_frequency, swing_force/max_swing_force)
+	var a = lerpf(min_frequency, max_frequency, pendulum_force/max_swing_force)
 	# This is the coolest shit i've done
 	if sign(parent.velocity.x) > 0:
 		period = PI/(2*a) 
 	else:
 		period = (3*PI)/(2*a)
 			
-	pendulum_force = swing_force
 	
 
 	apply_rope_impulse(parent.velocity * grab_force_multi)
+	
+	
+	if parent.boostJumping:
+		period_multi = 3.5
 
 	
 	rand_from_seed(int(parent.stuck_segment.root.global_position.x))
@@ -143,6 +160,8 @@ func exit() -> void:
 	rope_detector.set_deferred("monitoring", true)
 	
 	rope_creak_sfx.stop()
+
+	parent.rotation = 0.0
 
 	_logger.info("Flyph - Worm Exit")
 
@@ -297,7 +316,6 @@ func animation_end() -> PlayerState:
 	# If falling ends pause the animation
 	if parent.current_animation == parent.ANI_STATES.FALLING:
 		parent.restart_animation = true
-		#parent.animation.pause()
 
 	return null
 
@@ -327,7 +345,14 @@ func jump():
 
 	# Jump in the direction we are facing or the direction we are holding
 	var jump_dir = parent.horizontal_axis
+	
+	# If we're holding no direcrtion
 	if jump_dir == 0:
+		
+		# Sorry no more boost :<
+		parent.boostJumping = false
+		
+		# Jumping in the direction we're facing 
 		jump_dir = -1 if parent.animation.flip_h else 1
 
 	# The base multiplier for jump height
@@ -379,6 +404,8 @@ func jump():
 	else:
 		parent.velocity.x = parent.movement_data.JUMP_HORIZ_BOOST * jump_dir * swing_multi
 
+	
+	#parent.lock_h_dir(jump_dir, 0.2, true )
 
 	# Jump SFX
 	jumping_sfx.play(0)
@@ -402,9 +429,13 @@ var ret_force: float = 0.0
 
 var period: float = 0.0
 var pendulum_force: float = 0.0
+var return_force: Vector2 = Vector2.ZERO
 
 var max_frequency = 5.0
-var min_frequency = 2.5
+var min_frequency = 4.0
+var period_multi: float = 1.0	
+
+
 
 # Calculus
 func swinging(delta, dir):
@@ -422,62 +453,51 @@ func swinging(delta, dir):
 	
 	parent.global_position += offset 
 	
-	# If we've moved down since last pool, and 
-	if dir and sign(dir) != sign(relative_position.x) and relative_position.x != 0:
+	parent.rotation = parent.stuck_segment.rotation
+	parent.rotation_degrees = max(min(parent.rotation_degrees, 4), -4)
+		
+	var target_period_multi: float = base_period_multi
+	var period_accel: float = base_period_accel
+	
+		
+	# Pretty much if we're holding in direction of center
+	speeding_up = dir and sign(dir) != sign(relative_position.x) and relative_position.x != 0
+	speeding_up = speeding_up and sign(dir) == sign(return_force.x)
 
+	# If we've moved down since last pool, and 
+	if speeding_up:
+
+		# Increase the pendulum force
+		pendulum_force = move_toward(pendulum_force, max_swing_force, swing_pump_accel * delta)
 		
-		# Increase the players swing force
-		swing_force = move_toward(swing_force, max_swing_force, swing_down_accel * delta)
-		speeding_up = true 
+		target_period_multi = pumping_period_multi
+		period_accel = pumping_period_accel
 		
-		pendulum_force = swing_force
-		
-		var a = lerpf(min_frequency, max_frequency, pendulum_force/max_swing_force)
-		# This is the coolest shit i've done
-		if sign(dir) > 0:
-			period = PI/(2*a) 
-		else:
-			period = (3*PI)/(2*a)
-		
-		# Set the glow
-		parent.add_glow(0.1)
+		# Add a bit of glow
+		parent.add_glow(0.15)
 		
 	
-	else:
-		
-		# Decrease the players swing force
-		swing_force = move_toward(swing_force, 600, swing_up_decel * delta)
-		pendulum_force = min(pendulum_force, swing_force)
 	
-		# Register that the player is slowing down, used for discerning jump
-		speeding_up = false
+	## If we've launched from a rope or if we've slide boosted our way to the rope
+	if parent.boostJumping:
+		target_period_multi = boosted_period_multi
+		period_accel = boosted_period_accel
 	
 	
-	# Update the sine sillyness
-	period += delta
+	# Smooth period changes
+	period_multi = move_toward(period_multi, target_period_multi, period_accel * delta)
 	
+	# Update the period variable
+	period += delta * period_multi
 	
-	# If the player is pushing in a direction
-	if parent.horizontal_axis:
-		
-		var push_force: Vector2 = Vector2(swing_force,0)
-		push_force *= dir
-		apply_rope_force(push_force)
-		
-	# If the player is just letting the forces do what they do
-	if not parent.horizontal_axis: #and round(relative_position.x) != 0:
-		
-		pendulum_force -= 1
-		pendulum_force = max(pendulum_force, 0)
-		
-		var return_force: Vector2 = Vector2(pendulum_force, 0)
-		
-		var wave_length: float = 0.0
-		wave_length = lerpf(min_frequency, max_frequency, pendulum_force/max_swing_force)
-		
-		# Holy Fuck my PreCalc professors would be so proud of me
-		return_force *= sin(wave_length * period)
-		apply_rope_force(return_force)
+	pendulum_force = move_toward(pendulum_force, min_swing_force, delta * swing_decel)
+	
+	return_force = Vector2(pendulum_force, 0)
+	
+	var wave_length: float = min_frequency
+	return_force *= sin(wave_length * period)
+	
+	apply_rope_force(return_force)
 	
 func apply_weight(_delta):
 
@@ -489,7 +509,7 @@ func velocity_decay(delta):
 	
 	# Enables players to leave the rope in time if they want to maintain a state of nyoom
 	if parent.boostJumping:
-		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta * 0.25)
 	
 	# But if they aren't nyooming then just restart them
 	else:
