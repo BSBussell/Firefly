@@ -800,7 +800,7 @@ position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.459452
+frame_progress = 0.104532
 flip_h = true
 script = ExtResource("8_dying")
 

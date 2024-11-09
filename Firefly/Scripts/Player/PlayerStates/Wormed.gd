@@ -452,8 +452,11 @@ func swinging(delta, dir):
 	
 	parent.global_position += offset 
 	
-	parent.rotation = parent.stuck_segment.rotation
-	parent.rotation_degrees = max(min(parent.rotation_degrees, 3.5), -3.5)
+	if not parent.stuck_segment.next:
+		parent.rotation = parent.stuck_segment.rotation
+		parent.rotation_degrees = max(min(parent.rotation_degrees, 3.5), -3.5)
+	else:
+		parent.rotation = 0
 		
 	var target_period_multi: float = base_period_multi
 	var period_accel: float = base_period_accel
