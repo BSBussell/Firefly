@@ -6,25 +6,29 @@ class_name MovingPlat
 
 @export_category("Protected Variables")
 @export_group("Only touch in child classes")
-@export var animation_player: AnimationPlayer
 @export var progress_node: PathFollow2D
+
+var max_length: int
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	if animation_player and progress_node:
+	
+	
+	if progress_node:
 		
-		
-		
-		animation_player.speed_scale = speed_scale
+		# Get Max Length
+		progress_node.progress_ratio = 1.0
+		max_length = floor(progress_node.progress)
+		progress_node.progress_ratio = 0.0
 		
 		if closed:
-			animation_player.play("closed")
-			progress_node.loop = true
+			
+			progress_node.loop = false  
 		else:
-			animation_player.play("open")
-			progress_node.loop = false
+			
+			progress_node.loop = true
 	else:
 		printerr("FAILED TO SETUP PROTECTED VARIABLES IN: ", self.name)
 
@@ -33,4 +37,9 @@ func _ready():
 func  _process(delta):
 	
 	if progress_node:
-		progress_node.progress = floor(progress_node.progress)
+		if closed:
+			progress_node.progress += (1 * speed_scale)
+		else:
+			progress_node.progress += (1 * speed_scale)
+			if progress_node.progress_ratio >= 1.0 or progress_node.progress_ratio <= 0:
+				speed_scale *= -1

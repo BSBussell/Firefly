@@ -732,7 +732,7 @@ position = Vector2(867, -1658)
 [node name="MovingPlatBase" parent="MovingPlat" instance=ExtResource("44_se45v")]
 position = Vector2(695, -447)
 curve = SubResource("Curve2D_1jgr0")
-speed_scale = 5.0
+speed_scale = 2.0
 
 [connection signal="body_entered" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_exited"]

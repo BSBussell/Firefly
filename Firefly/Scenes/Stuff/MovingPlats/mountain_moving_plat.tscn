@@ -1,68 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://doxntrdac8cg1"]
+[gd_scene load_steps=3 format=3 uid="uid://doxntrdac8cg1"]
 
 [ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/mountain_moving_plat.gd" id="1_ck0wt"]
 [ext_resource type="PackedScene" uid="uid://dahf17mect811" path="res://Scenes/Stuff/Log/mtn_plat_3.tscn" id="2_khqgs"]
 
-[sub_resource type="Animation" id="Animation_8oakw"]
-length = 0.001
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PathFollow2D:progress_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
-[sub_resource type="Animation" id="Animation_e4i6x"]
-resource_name = "closed"
-length = 10.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PathFollow2D:progress_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 10),
-"transitions": PackedFloat32Array(-1.56, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-
-[sub_resource type="Animation" id="Animation_ydr2x"]
-resource_name = "open"
-length = 10.0
-loop_mode = 2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PathFollow2D:progress_ratio")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 10),
-"transitions": PackedFloat32Array(-1.56, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_1uwxq"]
-_data = {
-"RESET": SubResource("Animation_8oakw"),
-"closed": SubResource("Animation_e4i6x"),
-"open": SubResource("Animation_ydr2x")
-}
-
-[node name="MovingPlatBase" type="Path2D" node_paths=PackedStringArray("animation_player", "progress_node")]
+[node name="MovingPlatBase" type="Path2D" node_paths=PackedStringArray("progress_node")]
 script = ExtResource("1_ck0wt")
-animation_player = NodePath("AnimationPlayer")
 progress_node = NodePath("PathFollow2D")
 
 [node name="mtn_plat_3x" parent="." instance=ExtResource("2_khqgs")]
@@ -79,10 +21,3 @@ rotates = false
 remote_path = NodePath("../../mtn_plat_3x")
 update_rotation = false
 update_scale = false
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-callback_mode_process = 0
-libraries = {
-"": SubResource("AnimationLibrary_1uwxq")
-}
-speed_scale = 0.25
