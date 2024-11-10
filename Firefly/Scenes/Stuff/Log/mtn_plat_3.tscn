@@ -200,12 +200,13 @@ metadata/_snap_enabled = true
 [sub_resource type="Gradient" id="Gradient_lb2wv"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
-[node name="mtn_plat_3x" type="Node2D" node_paths=PackedStringArray("sprite_2d", "break_time", "respawn_time", "collider")]
+[node name="mtn_plat_3x" type="AnimatableBody2D" node_paths=PackedStringArray("sprite_2d", "break_time", "respawn_time", "collider")]
+collision_layer = 32
 script = ExtResource("1_b3ch4")
 sprite_2d = NodePath("Sprite2D")
 break_time = NodePath("Timer/BreakTime")
 respawn_time = NodePath("Timer/RespawnTime")
-collider = NodePath("Collider")
+collider = NodePath(".")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -213,12 +214,8 @@ texture_repeat = 3
 position = Vector2(0, -3)
 texture = ExtResource("2_oi4cp")
 
-[node name="Collider" type="StaticBody2D" parent="."]
-position = Vector2(0, -9)
-collision_layer = 32
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Collider"]
-position = Vector2(0, 3.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5.5)
 shape = SubResource("RectangleShape2D_2hchr")
 one_way_collision = true
 

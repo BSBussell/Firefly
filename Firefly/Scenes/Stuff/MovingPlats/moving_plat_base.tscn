@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://0kp3jctr4amd"]
+
+[ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/MovingPlat.gd" id="1_autgl"]
+
+[sub_resource type="Curve2D" id="Curve2D_5u2vk"]
+
+[node name="MovingPlatBase" type="Path2D"]
+curve = SubResource("Curve2D_5u2vk")
+script = ExtResource("1_autgl")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]

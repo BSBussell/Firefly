@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://b8k3u2ibutssg"]
+[gd_scene load_steps=56 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="1_iqxgk"]
@@ -43,6 +43,7 @@
 [ext_resource type="PackedScene" uid="uid://dahf17mect811" path="res://Scenes/Stuff/Log/mtn_plat_3.tscn" id="34_yetiq"]
 [ext_resource type="PackedScene" uid="uid://cxx8cxk47hjnl" path="res://Scenes/Stuff/Log/mtn_plat_2.tscn" id="35_av2vi"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="39_3mwtf"]
+[ext_resource type="PackedScene" uid="uid://doxntrdac8cg1" path="res://Scenes/Stuff/MovingPlats/mountain_moving_plat.tscn" id="44_se45v"]
 
 [sub_resource type="GDScript" id="GDScript_0jk77"]
 script/source = "extends Level 
@@ -125,6 +126,12 @@ size = Vector2(811, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w5fqu"]
 size = Vector2(144.75, 138)
+
+[sub_resource type="Curve2D" id="Curve2D_1jgr0"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 2.08165e-12)
+}
+point_count = 2
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = SubResource("GDScript_0jk77")
@@ -660,18 +667,6 @@ position = Vector2(748, -1616)
 [node name="mtn_plat_2" parent="Plats" instance=ExtResource("35_av2vi")]
 position = Vector2(552, -1625)
 
-[node name="Valley" type="Node2D" parent="Plats"]
-position = Vector2(8, 20)
-
-[node name="mtn_plat_3x" parent="Plats/Valley" instance=ExtResource("34_yetiq")]
-position = Vector2(716, -445)
-
-[node name="mtn_plat_3x2" parent="Plats/Valley" instance=ExtResource("34_yetiq")]
-position = Vector2(852, -445)
-
-[node name="mtn_plat_3" parent="Plats/Valley" instance=ExtResource("35_av2vi")]
-position = Vector2(785, -478)
-
 [node name="Death" type="Node2D" parent="."]
 
 [node name="Area2D2" type="Area2D" parent="Death"]
@@ -731,6 +726,13 @@ shape = SubResource("RectangleShape2D_w5fqu")
 
 [node name="FlyJar" parent="." instance=ExtResource("27_ubtw2")]
 position = Vector2(867, -1658)
+
+[node name="MovingPlat" type="Node2D" parent="."]
+
+[node name="MovingPlatBase" parent="MovingPlat" instance=ExtResource("44_se45v")]
+position = Vector2(695, -447)
+curve = SubResource("Curve2D_1jgr0")
+speed_scale = 5.0
 
 [connection signal="body_entered" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_exited"]

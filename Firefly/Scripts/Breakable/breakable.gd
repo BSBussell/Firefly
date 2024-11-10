@@ -46,16 +46,18 @@ func _physics_process(_delta):
 	
 	if flyph and flyph.is_on_floor():
 		
+		if TIME_TO_BREAK != -1:
 		
-		snap.play()
-		
-		if break_time.is_stopped():
-			break_time.start()
+			snap.play()
 			
-		# Reset the animation to the default values
-		animation_player.play("RESET")
-		animation_player.play("Shake")
-		animation_player.speed_scale = 2
+			if break_time.is_stopped():
+				break_time.start()
+				
+			# Reset the animation to the default values
+			animation_player.play("RESET")
+			animation_player.play("Shake")
+			animation_player.speed_scale = 2
+		
 		flyph = null
 		set_physics_process(false)
 
@@ -92,6 +94,7 @@ func destroy_platform():
 
 func respawn_platform():
 	
+	
 	pop.play()
 	animation_player.play("respawn")
 	collider.collision_layer = 1<<5
@@ -99,10 +102,12 @@ func respawn_platform():
 	platform_ready = true
 
 func _on_break_time_timeout():
-	destroy_platform()
+	if TIME_TO_BREAK != -1:
+		destroy_platform()
 	
 
 func _on_respawn_time_timeout():
-	respawn_platform()
+	if TIME_TO_RESPAWN != -1:
+		respawn_platform()
 
 
