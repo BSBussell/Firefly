@@ -1,11 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://doxntrdac8cg1"]
+[gd_scene load_steps=4 format=3 uid="uid://doxntrdac8cg1"]
 
 [ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/mountain_moving_plat.gd" id="1_ck0wt"]
 [ext_resource type="PackedScene" uid="uid://dahf17mect811" path="res://Scenes/Stuff/Log/mtn_plat_3.tscn" id="2_khqgs"]
 
+[sub_resource type="Curve" id="Curve_r2f0t"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1e-05, 0), -0.744754, -0.744754, 0, 0, Vector2(0.14, 1), 16.2041, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.22222, 0.0, 0, 0]
+point_count = 5
+metadata/_snap_enabled = true
+metadata/_snap_count = 20
+
 [node name="MovingPlatBase" type="Path2D" node_paths=PackedStringArray("progress_node")]
 script = ExtResource("1_ck0wt")
+cycle_time = 5.0
 progress_node = NodePath("PathFollow2D")
+movement_curve = SubResource("Curve_r2f0t")
 
 [node name="mtn_plat_3x" parent="." instance=ExtResource("2_khqgs")]
 position = Vector2(0, 3)
@@ -16,8 +24,13 @@ TIME_TO_RESPAWN = -1.0
 position = Vector2(0, 3)
 v_offset = 3.0
 rotates = false
+cubic_interp = false
+loop = false
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="PathFollow2D"]
 remote_path = NodePath("../../mtn_plat_3x")
 update_rotation = false
 update_scale = false
+
+[connection signal="cycle_finished" from="." to="." method="_on_cycle_finished"]
+[connection signal="player_landed" from="mtn_plat_3x" to="." method="_on_mtn_plat_3x_player_landed"]

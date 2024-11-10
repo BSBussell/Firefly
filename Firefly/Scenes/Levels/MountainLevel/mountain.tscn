@@ -127,11 +127,11 @@ size = Vector2(811, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w5fqu"]
 size = Vector2(144.75, 138)
 
-[sub_resource type="Curve2D" id="Curve2D_1jgr0"]
+[sub_resource type="Curve2D" id="Curve2D_rhhcb"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, 2.08165e-12)
+"points": PackedVector2Array(0, 0, 2.08165e-12, 50, 0, 0, -36.5833, 2.31322, 36.5833, -2.31322, 100, 50, 2.08165e-12, 50, 0, 0, 200, -100)
 }
-point_count = 2
+point_count = 3
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = SubResource("GDScript_0jk77")
@@ -731,8 +731,7 @@ position = Vector2(867, -1658)
 
 [node name="MovingPlatBase" parent="MovingPlat" instance=ExtResource("44_se45v")]
 position = Vector2(695, -447)
-curve = SubResource("Curve2D_1jgr0")
-speed_scale = 2.0
+curve = SubResource("Curve2D_rhhcb")
 
 [connection signal="body_entered" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_exited"]

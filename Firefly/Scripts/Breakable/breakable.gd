@@ -1,5 +1,8 @@
 extends Node2D
 
+signal player_landed
+signal player_left
+
 @export_category("Properties")
 @export var TIME_TO_BREAK: float = 1.0
 @export var TIME_TO_RESPAWN: float = 3.0
@@ -46,6 +49,8 @@ func _physics_process(_delta):
 	
 	if flyph and flyph.is_on_floor():
 		
+		
+		
 		if TIME_TO_BREAK != -1:
 		
 			snap.play()
@@ -60,6 +65,7 @@ func _physics_process(_delta):
 		
 		flyph = null
 		set_physics_process(false)
+		emit_signal("player_landed")
 
 
 func _on_player_detection_body_entered(body):
@@ -74,13 +80,20 @@ func _on_player_detection_body_entered(body):
 
 func _on_player_detection_body_exited(_body):
 	
+	if _body and not _body is Flyph:
+		return
+	
 	if KILL_ON_EXIT and not break_time.is_stopped():
 		break_time.stop()
 		destroy_platform()
 	
+	
+	emit_signal("player_left")
+	
 	if flyph:
 		set_physics_process(false)
 		flyph = null
+		
 
 func destroy_platform():
 	

@@ -9,7 +9,7 @@
 size = Vector2(52, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wbvo3"]
-size = Vector2(52, 1)
+size = Vector2(52, 13)
 
 [sub_resource type="Animation" id="Animation_2tmny"]
 resource_name = "Break"
