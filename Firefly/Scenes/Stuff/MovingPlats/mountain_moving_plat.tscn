@@ -34,3 +34,4 @@ update_scale = false
 
 [connection signal="cycle_finished" from="." to="." method="_on_cycle_finished"]
 [connection signal="player_landed" from="mtn_plat_3x" to="." method="_on_mtn_plat_3x_player_landed"]
+[connection signal="player_left" from="mtn_plat_3x" to="." method="_on_mtn_plat_3x_player_left"]
