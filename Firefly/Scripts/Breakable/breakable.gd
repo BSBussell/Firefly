@@ -1,7 +1,6 @@
-extends Node2D
+extends Platform
+class_name BreakablePlatform
 
-signal player_landed
-signal player_left
 
 @export_category("Properties")
 @export var TIME_TO_BREAK: float = 1.0
@@ -10,10 +9,10 @@ signal player_left
 
 @export_category("Don't Touch")
 @export_subgroup("Nodes")
+@export var collider: StaticBody2D
 @export var sprite_2d: Sprite2D
 @export var break_time: Timer
 @export var respawn_time: Timer
-@export var collider: StaticBody2D
 
 @onready var explosion: CPUParticles2D = $Explosion
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -22,16 +21,13 @@ signal player_left
 @onready var pop: AudioStreamPlayer2D = $Audio/Pop
 
 
-## Player
-var flyph: Flyph = null
-
 var rng: RandomNumberGenerator
 var platform_ready: bool = true
 
 var plat_pitch: float = 1.0
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func child_ready():
 	
 	rng = RandomNumberGenerator.new()
 	rng.seed = int(position.x + position.y)
@@ -41,59 +37,29 @@ func _ready():
 	break_time.wait_time = TIME_TO_BREAK
 	respawn_time.wait_time = TIME_TO_RESPAWN
 	
+	connect("player_landed", Callable(self, "_on_player_landed"))
+	connect("player_left", Callable(self, "_on_player_left"))
 	
-	pass
-
-
-func _physics_process(_delta):
 	
-	if flyph and flyph.is_on_floor():
+func _on_player_landed(player):
+	if TIME_TO_BREAK != -1:
 		
+		snap.play()
 		
-		
-		if TIME_TO_BREAK != -1:
-		
-			snap.play()
+		if break_time.is_stopped():
+			break_time.start()
 			
-			if break_time.is_stopped():
-				break_time.start()
-				
-			# Reset the animation to the default values
-			animation_player.play("RESET")
-			animation_player.play("Shake")
-			animation_player.speed_scale = 2
-		
-		flyph = null
-		set_physics_process(false)
-		emit_signal("player_landed")
+		# Reset the animation to the default values
+		animation_player.play("RESET")
+		animation_player.play("Shake")
+		animation_player.speed_scale = 2
 
 
-func _on_player_detection_body_entered(body):
-	
-	var player: Flyph = body as Flyph
-	if player and platform_ready:
-	
-		flyph = player
-		# Check if player is on platform
-		set_physics_process(true)
-
-
-func _on_player_detection_body_exited(_body):
-	
-	if _body and not _body is Flyph:
-		return
-	
+func _on_player_left(player):
 	if KILL_ON_EXIT and not break_time.is_stopped():
 		break_time.stop()
 		destroy_platform()
-	
-	
-	emit_signal("player_left")
-	
-	if flyph:
-		set_physics_process(false)
-		flyph = null
-		
+
 
 func destroy_platform():
 	
@@ -122,5 +88,10 @@ func _on_break_time_timeout():
 func _on_respawn_time_timeout():
 	if TIME_TO_RESPAWN != -1:
 		respawn_platform()
+
+
+
+
+
 
 

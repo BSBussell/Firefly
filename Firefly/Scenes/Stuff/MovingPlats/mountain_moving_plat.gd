@@ -1,22 +1,24 @@
 extends MovingPlat
 
-@onready var mtn_plat_3x = $mtn_plat_3x
+@onready var magic_plat = $MagicPlat
+
 
 func _ready():
 	deactivate()
 
-# Platform events
-func _on_mtn_plat_3x_player_landed():
-	activate()  
 
-# Moving Plat events
-func _on_cycle_finished():
-	deactivate()
+func _on_magic_plat_player_landed(player):
+	activate()
+	magic_plat.activate()
 
 
-func _on_mtn_plat_3x_player_left():
+func _on_magic_plat_player_left(player):
 	
+	if player.velocity.y < player.jump_velocity:
+		print(player.velocity.y)
+		player.launched = true
 
-	if _globals.ACTIVE_PLAYER.velocity.y < _globals.ACTIVE_PLAYER.jump_velocity:
-		print(_globals.ACTIVE_PLAYER.velocity.y)
-		_globals.ACTIVE_PLAYER.launched = true
+
+func _on_cycle_finished():
+	deactivate() 
+	magic_plat.deactivate()  

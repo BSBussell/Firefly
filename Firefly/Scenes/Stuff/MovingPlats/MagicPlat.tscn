@@ -1,0 +1,274 @@
+[gd_scene load_steps=31 format=3 uid="uid://yp7k6wpd5yv5"]
+
+[ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/MagicPlat.gd" id="1_ing5c"]
+[ext_resource type="Texture2D" uid="uid://c34rlxcv61v6n" path="res://Assets/Graphics/MISC/MagicPlat_Plain.png" id="2_n75rt"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_7htxf"]
+[ext_resource type="Script" path="res://Scenes/Camera/CameraTriggers/CameraTarget.gd" id="4_3swdl"]
+[ext_resource type="AudioStream" uid="uid://4x84kgobkt3d" path="res://Assets/SFX/Mechanics/magic_plat/zapsplat_multimedia_game_sound_steampunk_machine_activate_click_003_74160.mp3" id="5_lg50r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_var5i"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(108, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8tp2d"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(144, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kl885"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(180, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_csv8o"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(216, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xqx7"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(252, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4o5mk"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(288, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swskp"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(252, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6anlm"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(216, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hj5pw"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(324, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sf7ai"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(360, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2kcjf"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(396, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2rvvi"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(0, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qjkjn"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(36, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_75fww"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(72, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1gqy"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(36, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sjspi"]
+atlas = ExtResource("2_n75rt")
+region = Rect2(0, 0, 36, 18)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_220q3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_var5i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8tp2d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kl885")
+}],
+"loop": false,
+"name": &"activate",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_csv8o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2xqx7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4o5mk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_swskp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6anlm")
+}],
+"loop": true,
+"name": &"activate_shimmer",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hj5pw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sf7ai")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2kcjf")
+}],
+"loop": false,
+"name": &"deactivate",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_2rvvi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qjkjn")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_75fww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e1gqy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sjspi")
+}],
+"loop": true,
+"name": &"shimmer",
+"speed": 7.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hjqn7"]
+size = Vector2(36, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uy20j"]
+size = Vector2(36, 18)
+
+[sub_resource type="Animation" id="Animation_2eoe5"]
+resource_name = "light_up"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 1.5]
+}
+
+[sub_resource type="Animation" id="Animation_jd5mm"]
+resource_name = "dim"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sbtp3"]
+_data = {
+"dim": SubResource("Animation_jd5mm"),
+"light_up": SubResource("Animation_2eoe5")
+}
+
+[sub_resource type="Curve" id="Curve_tvrig"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.3, 1), 0.0, 0.0, 0, 0, Vector2(0.69999, 1), 0.0, 0.0, 0, 0, Vector2(0.7, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_h6jv5"]
+offsets = PackedFloat32Array(0, 0.4, 0.7, 0.9, 1)
+colors = PackedColorArray(0.2, 0.407843, 0.862745, 1, 0.286275, 0.905882, 0.92549, 1, 0.286275, 0.905882, 0.92549, 1, 1, 0.968627, 0.972549, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4hngx"]
+size = Vector2(36, 18)
+
+[node name="MagicPlat" type="AnimatableBody2D" node_paths=PackedStringArray("player_detector")]
+collision_layer = 2
+script = ExtResource("1_ing5c")
+player_detector = NodePath("PlayerDetector")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 9)
+sprite_frames = SubResource("SpriteFrames_220q3")
+animation = &"activate_shimmer"
+autoplay = "shimmer"
+frame_progress = 0.815422
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+shape = SubResource("RectangleShape2D_hjqn7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, 9)
+shape = SubResource("RectangleShape2D_uy20j")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, 11)
+scale = Vector2(0.2, 0.12)
+color = Color(1, 0.854902, 0.270588, 1)
+texture = ExtResource("3_7htxf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PointLight2D"]
+libraries = {
+"": SubResource("AnimationLibrary_sbtp3")
+}
+speed_scale = 5.0
+
+[node name="sparkles" type="CPUParticles2D" parent="."]
+position = Vector2(0, 8)
+amount = 16
+lifetime = 2.0
+preprocess = 1.0
+randomness = 1.0
+local_coords = true
+emission_shape = 3
+emission_rect_extents = Vector2(18, 9)
+direction = Vector2(2.08165e-12, 2.08165e-12)
+gravity = Vector2(2.08165e-12, -0.5)
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_tvrig")
+color_ramp = SubResource("Gradient_h6jv5")
+
+[node name="CameraTarget" type="Area2D" parent="."]
+visible = false
+position = Vector2(0, 9)
+collision_layer = 64
+collision_mask = 0
+script = ExtResource("4_3swdl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraTarget"]
+shape = SubResource("RectangleShape2D_4hngx")
+debug_color = Color(0, 0.6, 0, 0.419608)
+
+[node name="Audio" type="Node2D" parent="."]
+
+[node name="activate" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("5_lg50r")
+volume_db = -5.0
+pitch_scale = 1.3
+bus = &"SFX"
+
+[connection signal="player_landed" from="." to="." method="_on_player_landed"]
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
