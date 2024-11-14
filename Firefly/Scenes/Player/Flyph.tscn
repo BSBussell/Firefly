@@ -699,6 +699,7 @@ collision_mask = 34
 floor_constant_speed = true
 floor_max_angle = 1.55334
 floor_snap_length = 7.0
+platform_on_leave = 2
 script = ExtResource("1_ikygr")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 GROUNDED_STATE = NodePath("StateMachine/Grounded")

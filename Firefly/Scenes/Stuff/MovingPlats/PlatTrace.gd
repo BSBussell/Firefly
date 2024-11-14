@@ -5,14 +5,26 @@ var DOT_SPRITE: PackedScene = preload("res://Scenes/Stuff/MovingPlats/PlatTraceD
 var END_SPRITE: PackedScene = preload("res://Scenes/Stuff/MovingPlats/PlatTraceEnd.tscn")
 
 # Number of points to sample along the curve for smoothness
-@export var sample_count: int = 10
+@export var sample_distance: int = 25
 
-var platform_path: Path2D
+var sample_count: int = 10
+var platform_path: MovingPlat
 
 func _ready():
+	
+	# Ensure this node is only parented by a moving plat
 	if get_parent() is MovingPlat:
-		platform_path = get_parent() as Path2D
+		
+		# Get parent
+		platform_path = get_parent() as MovingPlat
+		
+		# Wait for the platform to initialize(calc max length)
+		await platform_path.ready
+		
+		# Then update sample count, and draw the dots
+		sample_count = platform_path.max_length / sample_distance
 		update_line_from_curve()
+		
 	else:
 		printerr("MovingPlatTrace needs MovingPlat as parent")
 

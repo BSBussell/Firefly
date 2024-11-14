@@ -35,6 +35,7 @@ func enter() -> void:
 	parent.crouchJumping = false
 	parent.wallJumping = false
 	parent.has_glided = false
+	parent.launched = false
 	
 	parent.fastFell = parent.fastFalling
 	parent.fastFalling = false
@@ -45,7 +46,6 @@ func enter() -> void:
 	# Also disable temp gravity when landing just incase we land without falling lol
 	if parent.temp_gravity_active and parent.velocity.y >= 0:
 		parent.temp_gravity_active = false
-		parent.launched = false
 
 
 
@@ -57,6 +57,10 @@ func enter() -> void:
 
 		# SFX
 		landing_sfx.play(0)
+		
+		# Reset velocity so that we're grounded
+		if not parent.launched:
+			parent.velocity.y = 0
 
 		# Squish
 		if jump_buffer.time_left == 0 and not parent.launched:

@@ -374,11 +374,16 @@ func boost_jump() -> void:
 	# Add onto speed
 	if parent.velocity.x * parent.horizontal_axis > 0:
 
+		parent.reverseBoostJumping = false
+
 		parent.velocity.x += parent.movement_data.BOOST_JUMP_HBOOST * parent.horizontal_axis
 
 	# Otherwise instant reset :3
 	else:
 
+		# Set the flag
+		parent.reverseBoostJumping = true
+		
 		# Flip velocity (or zero it)
 		parent.velocity.x *= -parent.movement_data.BJ_REVERSE_MULTIPLIER
 		# Then add to it

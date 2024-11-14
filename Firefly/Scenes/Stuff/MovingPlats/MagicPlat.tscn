@@ -1,8 +1,9 @@
-[gd_scene load_steps=31 format=3 uid="uid://yp7k6wpd5yv5"]
+[gd_scene load_steps=46 format=3 uid="uid://yp7k6wpd5yv5"]
 
 [ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/MagicPlat.gd" id="1_ing5c"]
 [ext_resource type="Texture2D" uid="uid://c34rlxcv61v6n" path="res://Assets/Graphics/MISC/MagicPlat_Plain.png" id="2_n75rt"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_7htxf"]
+[ext_resource type="Texture2D" uid="uid://713w2rclnq7k" path="res://Assets/Graphics/MISC/MagicPlat_Right.png" id="3_p8gun"]
 [ext_resource type="Script" path="res://Scenes/Camera/CameraTriggers/CameraTarget.gd" id="4_3swdl"]
 [ext_resource type="AudioStream" uid="uid://4x84kgobkt3d" path="res://Assets/SFX/Mechanics/magic_plat/zapsplat_multimedia_game_sound_steampunk_machine_activate_click_003_74160.mp3" id="5_lg50r"]
 
@@ -70,6 +71,62 @@ region = Rect2(36, 0, 36, 18)
 atlas = ExtResource("2_n75rt")
 region = Rect2(0, 0, 36, 18)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_yvdd5"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(108, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f4nw0"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(144, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1lthn"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(180, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d65lc"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(216, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wcmq"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(252, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_scv7w"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(288, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54yyl"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(324, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_daap6"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(360, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwvbr"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(396, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dfd8o"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(0, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ichc"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(36, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_08a0r"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(72, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5nx2w"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(36, 0, 36, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpvm1"]
+atlas = ExtResource("3_p8gun")
+region = Rect2(0, 0, 36, 18)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_220q3"]
 animations = [{
 "frames": [{
@@ -83,7 +140,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_kl885")
 }],
 "loop": false,
-"name": &"activate",
+"name": &"plain_activate",
 "speed": 10.0
 }, {
 "frames": [{
@@ -103,7 +160,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_6anlm")
 }],
 "loop": true,
-"name": &"activate_shimmer",
+"name": &"plain_activate_shimmer",
 "speed": 10.0
 }, {
 "frames": [{
@@ -117,7 +174,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_2kcjf")
 }],
 "loop": false,
-"name": &"deactivate",
+"name": &"plain_deactivate",
 "speed": 10.0
 }, {
 "frames": [{
@@ -137,7 +194,69 @@ animations = [{
 "texture": SubResource("AtlasTexture_sjspi")
 }],
 "loop": true,
-"name": &"shimmer",
+"name": &"plain_shimmer",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yvdd5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f4nw0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1lthn")
+}],
+"loop": false,
+"name": &"right_activate",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d65lc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2wcmq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_scv7w")
+}],
+"loop": true,
+"name": &"right_activate_shimmer",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_54yyl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_daap6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cwvbr")
+}],
+"loop": false,
+"name": &"right_deactivate",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 10.0,
+"texture": SubResource("AtlasTexture_dfd8o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ichc")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_08a0r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5nx2w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mpvm1")
+}],
+"loop": true,
+"name": &"right_shimmer",
 "speed": 7.0
 }]
 
@@ -146,21 +265,6 @@ size = Vector2(36, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uy20j"]
 size = Vector2(36, 18)
-
-[sub_resource type="Animation" id="Animation_2eoe5"]
-resource_name = "light_up"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:energy")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [1.0, 1.5]
-}
 
 [sub_resource type="Animation" id="Animation_jd5mm"]
 resource_name = "dim"
@@ -175,6 +279,21 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [1.5, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_2eoe5"]
+resource_name = "light_up"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:energy")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 1.5]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sbtp3"]
@@ -204,9 +323,9 @@ player_detector = NodePath("PlayerDetector")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 9)
 sprite_frames = SubResource("SpriteFrames_220q3")
-animation = &"activate_shimmer"
-autoplay = "shimmer"
-frame_progress = 0.815422
+animation = &"right_shimmer"
+autoplay = "plain_shimmer"
+frame_progress = 0.906234
 
 [node name="PlayerDetector" type="Area2D" parent="."]
 visible = false
@@ -224,6 +343,7 @@ shape = SubResource("RectangleShape2D_uy20j")
 position = Vector2(0, 11)
 scale = Vector2(0.2, 0.12)
 color = Color(1, 0.854902, 0.270588, 1)
+energy = 1.5
 texture = ExtResource("3_7htxf")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="PointLight2D"]
@@ -237,6 +357,7 @@ position = Vector2(0, 8)
 amount = 16
 lifetime = 2.0
 preprocess = 1.0
+speed_scale = 2.0
 randomness = 1.0
 local_coords = true
 emission_shape = 3

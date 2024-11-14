@@ -260,6 +260,7 @@ var jumping: bool = false				# If the player is rising in a jump
 var wallJumping: bool = false			# If the player is rising in a walljump
 var crouchJumping: bool = false			# If the player is rising from a crouch jump
 var boostJumping: bool = false			# If the player is boost jumping (active whole way through)
+var reverseBoostJumping: bool = false   # If the player is preforming a reverse bj
 var launched: bool = false				# If the player is rising from being launched
 
 # Used for when hitting a wall kills our velocity and we wanna get it back
