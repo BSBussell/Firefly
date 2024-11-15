@@ -1,25 +1,41 @@
-[gd_scene load_steps=5 format=3 uid="uid://doxntrdac8cg1"]
+[gd_scene load_steps=7 format=3 uid="uid://doxntrdac8cg1"]
 
 [ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/mountain_moving_plat.gd" id="1_ck0wt"]
 [ext_resource type="PackedScene" uid="uid://yp7k6wpd5yv5" path="res://Scenes/Stuff/MovingPlats/MagicPlat.tscn" id="2_nutfi"]
 [ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/PlatTrace.gd" id="3_2vvbx"]
+[ext_resource type="LabelSettings" uid="uid://cifcsfg2m6elt" path="res://UI_Theme/speedometer.tres" id="4_5osi2"]
+[ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/plat_speedometer.gd" id="5_13lrj"]
 
 [sub_resource type="Curve" id="Curve_r2f0t"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 1), 0.0, 0.0, 0, 0, Vector2(0.49, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 1), 0.958824, 0.0, 0, 0, Vector2(0.49, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 5
 metadata/_snap_enabled = true
 metadata/_snap_count = 20
 
-[node name="MovingPlatBase" type="Path2D" node_paths=PackedStringArray("progress_node")]
+[node name="LaunchPlat" type="Path2D" node_paths=PackedStringArray("progress_node")]
 script = ExtResource("1_ck0wt")
 progress_node = NodePath("PathFollow2D")
 movement_curve = SubResource("Curve_r2f0t")
-avg_velocity = 100.0
+avg_velocity = 90.0
 launch_multi = Vector2(2.75, 1.5)
 
 [node name="MagicPlat" parent="." instance=ExtResource("2_nutfi")]
 position = Vector2(2.08165e-12, -13)
 sprite_variant = 1
+
+[node name="Debug" type="Node2D" parent="MagicPlat"]
+visible = false
+position = Vector2(-2.08165e-12, 13)
+
+[node name="Label" type="Label" parent="MagicPlat/Debug" node_paths=PackedStringArray("plat")]
+offset_left = 20.0
+offset_top = -9.0
+offset_right = 39.0
+offset_bottom = 5.0
+text = "100"
+label_settings = ExtResource("4_5osi2")
+script = ExtResource("5_13lrj")
+plat = NodePath("../../..")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="."]
 v_offset = 3.0

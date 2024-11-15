@@ -148,7 +148,7 @@ func plat_launch(player: Flyph):
 	
 	
 	
-	if player.reverseBoostJumping:
+	if player.boostJumping and  player.reverseBoostJumping:
 		if sign(movement_direction.x) != sign(player.horizontal_axis):
 			movement_direction.x *= -1
 		
@@ -158,10 +158,8 @@ func plat_launch(player: Flyph):
 	
 	if sign(movement_direction.y) < 0:
 		player.velocity.y += (avg_velocity * movement_direction.y) * launch_multi.y	
-		while player.velocity.y > actual_velocity.y:
-			print(player.velocity.y)
-			print(actual_velocity.y)
-			player.velocity.y += (avg_velocity * movement_direction.y) * launch_multi.y	
+		
+		## If the player is not moving up faster than  
 	
 	#print(actual_velocity)
 	#print(player.velocity)

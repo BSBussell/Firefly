@@ -6,6 +6,8 @@ extends MovingPlat
 @onready var moving_plat_trace = $MovingPlatTrace
 
 
+var launched: bool = false
+
 func child_ready():
 	
 	magic_plat.flip_sprite(flip_sprite)
@@ -18,12 +20,15 @@ func _on_magic_plat_player_landed(player):
 		activate()
 		magic_plat.activate()
 		
+	
+		
 
 
 func _on_magic_plat_player_left(player: Flyph):
 	
 	
 	plat_launch(player)
+	launched = true
 	
 	#if player.velocity.y < player.jump_velocity:
 		#print(player.velocity.y)
@@ -33,4 +38,5 @@ func _on_magic_plat_player_left(player: Flyph):
 func _on_cycle_finished():
 	if not magic_plat.landed:
 		deactivate() 
-		magic_plat.deactivate()  
+		magic_plat.deactivate()   
+		launched = false 

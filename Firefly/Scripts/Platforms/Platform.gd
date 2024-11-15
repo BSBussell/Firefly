@@ -76,6 +76,7 @@ func _on_player_detection_body_exited(body):
 	
 
 	if flyph:
+		pass
 		if flyph.is_on_floor():
 			return
 		

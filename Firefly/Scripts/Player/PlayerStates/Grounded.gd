@@ -58,9 +58,7 @@ func enter() -> void:
 		# SFX
 		landing_sfx.play(0)
 		
-		# Reset velocity so that we're grounded
-		if not parent.launched:
-			parent.velocity.y = 0
+		
 
 		# Squish
 		if jump_buffer.time_left == 0 and not parent.launched:

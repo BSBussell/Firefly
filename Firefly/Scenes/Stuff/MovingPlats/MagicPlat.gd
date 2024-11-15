@@ -21,6 +21,7 @@ var prefix: String = "plain_"
 
 
 func child_ready():
+	
 	match sprite_variant:
 		SPRITE_TYPE.PLAIN:
 			prefix = "plain_"
@@ -47,7 +48,6 @@ func deactivate():
 
 func _on_animated_sprite_2d_animation_finished():
 	if activated:
-		
 		animated_sprite_2d.play(prefix + "activate_shimmer")
 	else:
 		animated_sprite_2d.play(prefix + "shimmer")

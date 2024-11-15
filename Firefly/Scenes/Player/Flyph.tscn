@@ -1,4 +1,4 @@
-[gd_scene load_steps=133 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=132 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
 [ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -32,7 +32,6 @@
 [ext_resource type="AudioStream" uid="uid://c86u0dij278a" path="res://Assets/SFX/Water/getting_out_of_water.mp3" id="21_g6yjb"]
 [ext_resource type="AudioStream" uid="uid://dexpkegjbcfsv" path="res://Assets/SFX/Mechanics/rope/rope_creak.mp3" id="23_oxbt6"]
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
-[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Grounded.gd" id="28_u1lt2"]
 [ext_resource type="AudioStream" uid="uid://boqdipngdont3" path="res://Assets/SFX/Player/flap.mp3" id="29_0m3rd"]
 [ext_resource type="AudioStream" uid="uid://bvnm0dwub1v08" path="res://Assets/SFX/Mechanics/rope/rope_stress_tighten_creak_fast_002_20973.mp3" id="29_ymtru"]
@@ -43,6 +42,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Wormed.gd" id="33_e7xfe"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Gliding.gd" id="33_hf8q0"]
 [ext_resource type="Script" path="res://Scripts/Player/Speedometer.gd" id="36_btfxn"]
+[ext_resource type="LabelSettings" uid="uid://cifcsfg2m6elt" path="res://UI_Theme/speedometer.tres" id="42_27nfu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vnjo"]
 custom_solver_bias = 0.1
@@ -689,9 +689,6 @@ size = Vector2(0, 6)
 font = ExtResource("10_nb4h7")
 font_size = 8
 
-[sub_resource type="LabelSettings" id="LabelSettings_yau3k"]
-font = ExtResource("25_bx13g")
-
 [node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "WALL_STATE", "GLIDING_STATE", "WATERED_STATE", "WORMED_STATE", "debug_info")]
 position = Vector2(160, 125)
 collision_layer = 5
@@ -1309,7 +1306,7 @@ offset_top = -29.0
 offset_right = 8.0
 offset_bottom = -15.0
 text = "120"
-label_settings = SubResource("LabelSettings_yau3k")
+label_settings = ExtResource("42_27nfu")
 horizontal_alignment = 1
 script = ExtResource("36_btfxn")
 
