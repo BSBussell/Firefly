@@ -13,6 +13,7 @@ var launched: bool = false
 func child_ready():
 	
 	magic_plat.flip_sprite(flip_sprite)
+	magic_plat.activate_audio.pitch_scale = 1.5
 	deactivate()
 
 
@@ -37,8 +38,7 @@ func _on_magic_plat_player_left(player: Flyph):
 
 
 func _on_cycle_finished():
-	if not magic_plat.landed:
-		deactivate() 
-		magic_plat.deactivate()   
-		
+	
+	deactivate() 
+	magic_plat.deactivate()   
 	launched = false

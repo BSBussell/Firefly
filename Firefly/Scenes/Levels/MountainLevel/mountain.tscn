@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://b8k3u2ibutssg"]
+[gd_scene load_steps=59 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="1_iqxgk"]
@@ -44,6 +44,7 @@
 [ext_resource type="PackedScene" uid="uid://cxx8cxk47hjnl" path="res://Scenes/Stuff/Log/mtn_plat_2.tscn" id="35_av2vi"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="39_3mwtf"]
 [ext_resource type="PackedScene" uid="uid://dgetkxutmuyh5" path="res://Scenes/Stuff/MovingPlats/mtn_movingPlat.tscn" id="44_5my7t"]
+[ext_resource type="PackedScene" uid="uid://doxntrdac8cg1" path="res://Scenes/Stuff/MovingPlats/mtn_launchPlat.tscn" id="44_se45v"]
 
 [sub_resource type="GDScript" id="GDScript_0jk77"]
 script/source = "extends Level 
@@ -132,6 +133,18 @@ _data = {
 "points": PackedVector2Array(0, 0, 2.08165e-12, 2.08165e-12, 0, 0, -100, 2.08165e-12, 100, 2.08165e-12, 125, 100, 0, 0, 0, 0, 250, 2.08165e-12)
 }
 point_count = 3
+
+[sub_resource type="Curve2D" id="Curve2D_1a5aq"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -50, 2.08165e-12)
+}
+point_count = 2
+
+[sub_resource type="Curve2D" id="Curve2D_yvwj1"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2.08165e-12, -50)
+}
+point_count = 2
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = SubResource("GDScript_0jk77")
@@ -734,6 +747,15 @@ position = Vector2(867, -1658)
 [node name="MovingPlat" parent="MovingPlat/Valley" instance=ExtResource("44_5my7t")]
 position = Vector2(669, -481)
 curve = SubResource("Curve2D_355h2")
+
+[node name="LaunchPlat2" parent="MovingPlat/Valley" instance=ExtResource("44_se45v")]
+position = Vector2(777, -632)
+curve = SubResource("Curve2D_1a5aq")
+
+[node name="LaunchPlat" parent="MovingPlat/Valley" instance=ExtResource("44_se45v")]
+position = Vector2(847, -478)
+curve = SubResource("Curve2D_yvwj1")
+flip_sprite = true
 
 [connection signal="body_entered" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_exited"]

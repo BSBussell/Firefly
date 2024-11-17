@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dgetkxutmuyh5"]
+[gd_scene load_steps=8 format=3 uid="uid://dgetkxutmuyh5"]
 
 [ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/mountain_moving_plat.gd" id="1_txdcd"]
 [ext_resource type="PackedScene" uid="uid://yp7k6wpd5yv5" path="res://Scenes/Stuff/MovingPlats/MagicPlat.tscn" id="2_tcnxs"]
@@ -12,11 +12,18 @@ point_count = 3
 metadata/_snap_enabled = true
 metadata/_snap_count = 20
 
+[sub_resource type="Curve" id="Curve_651lc"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.05, 0), 0.0, 0.0, 0, 0, Vector2(0.05001, 1), 0.0, 0.0, 0, 0, Vector2(0.45, 1), 0.0, 0.0, 0, 0, Vector2(0.45001, 0), 0.0, 0.0, 0, 0, Vector2(0.54999, 0), 0.0, 0.0, 0, 0, Vector2(0.55, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 1), 0.0, 0.0, 0, 0, Vector2(0.94999, 1), 0.0, 0.0, 0, 0, Vector2(0.95, 0), 0.0, 0.0, 0, 0]
+point_count = 10
+metadata/_snap_enabled = true
+metadata/_snap_count = 20
+
 [node name="MovingPlat" type="Path2D" node_paths=PackedStringArray("progress_node")]
 script = ExtResource("1_txdcd")
 progress_node = NodePath("PathFollow2D")
 movement_curve = SubResource("Curve_r2f0t")
 avg_velocity = 80.0
+launch_curve = SubResource("Curve_651lc")
 launch_multi = Vector2(2.75, 1.5)
 
 [node name="MagicPlat" parent="." instance=ExtResource("2_tcnxs")]

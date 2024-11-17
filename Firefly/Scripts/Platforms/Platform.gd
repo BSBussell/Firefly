@@ -42,20 +42,18 @@ func child_ready():
 # on anything else :3
 func _physics_process(_delta):
 	
-	# If we havent landed on the plat yet begin looking for a landing
-	if not landed:
-		if flyph and flyph.is_on_floor():
-			
+	
+	if flyph:
+		
+		# If we havent landed on the plat yet begin looking for a landing
+		if not landed and flyph.is_on_floor():	
 			landed = true
 			emit_signal("player_landed", flyph)
-			
-	# If we have landed, begin looking for an exit
-	elif landed:
-		if flyph and not flyph.is_on_floor():
-			set_physics_process(false)
+				
+		# If we have landed, begin looking for an exit
+		elif landed and not flyph.is_on_floor():
 			landed = false
 			emit_signal("player_left", flyph)
-			flyph = null
 		
 
 func _on_player_detection_body_entered(body):
@@ -74,16 +72,9 @@ func _on_player_detection_body_exited(body):
 	if body and not body is Flyph:
 		return
 	
-
-	if flyph:
-		pass
-		if flyph.is_on_floor():
-			return
-		
-		set_physics_process(false)
-		if landed:
-			landed = false
-			emit_signal("player_left", flyph)
-		
-		flyph = null
+	# Stop looking for player landing
+	set_physics_process(false)
+	
+	# Say the player isn't landed
+	landed = false
 		

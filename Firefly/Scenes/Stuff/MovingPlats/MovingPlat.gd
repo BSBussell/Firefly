@@ -4,6 +4,11 @@ class_name MovingPlat
 ## Emitted when a full cycle is completed
 signal cycle_finished
 
+## Emitted when a plat is extended to its max length
+signal plat_extended
+
+## Emitted when a plat is set to its base position
+
 ## If the cycle is considered active
 @export var active: bool = true
 
@@ -18,6 +23,9 @@ signal cycle_finished
 
 ## Velocity
 @export var avg_velocity: float = 50.0
+
+## Launch Curve: Determines, a base launch multiplier.
+@export var launch_curve: Curve
 
 ## Launch Multiplier, modify to adjust launch speed
 @export var launch_multi: Vector2 = Vector2(3,2)
@@ -50,6 +58,9 @@ var actual_velocity: Vector2 = Vector2.ZERO
 ## What was our previous position
 var previous_positon: Vector2 = Vector2.ZERO
 
+## The Max Velocity
+var max_speed: float = 0.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -64,6 +75,8 @@ func _ready():
 		# t = d/v
 		cycle_time = max_length / avg_velocity
 		
+		max_speed = calculate_max_speed_from_curve()
+		
 		child_ready()
 		
 	else:
@@ -73,11 +86,35 @@ func _ready():
 ## Child overrides, enables individualized setup
 func child_ready():
 	pass
+	
+func calculate_max_speed_from_curve() -> float:
+	if movement_curve:
+		var sample_count: int = 100  # Increase for better precision
+		var max_slope: float = 0.0
+
+		for i in range(sample_count - 1):
+			var t1 = i / float(sample_count)
+			var t2 = (i + 1) / float(sample_count)
+
+			var y1 = movement_curve.sample(t1)
+			var y2 = movement_curve.sample(t2)
+
+			# Calculate the slope (difference in progress ratio)
+			var slope = abs(y2 - y1) / (t2 - t1)
+			max_slope = max(max_slope, slope)
+
+		return max_slope * avg_velocity
+	else:
+		return avg_velocity  # Default if no curve is provided
 
 func  _physics_process(delta):
 	if can_run_cycle():
 		run_cycle(delta)
 		
+		
+var curve_val: float = 0.0
+var prev_curve_val: float = 0.0
+
 ## Moves the platform	
 func run_cycle(delta: float) -> void:
 	
@@ -102,7 +139,7 @@ func run_cycle(delta: float) -> void:
 		time_ratio = current_time / cycle_time
 		
 		# Get our progress values
-		var curve_val: float = movement_curve.sample(time_ratio)
+		curve_val = movement_curve.sample(time_ratio)
 		
 		# Apply the offsets for subpixel smoothing
 		progress_node.h_offset = 0
@@ -110,6 +147,12 @@ func run_cycle(delta: float) -> void:
 		
 		# Set the progress nodes progress val, then floor position for pixel res
 		progress_node.set_progress_ratio(curve_val)
+		
+		# This needs to only happen once
+		if snappedf(curve_val, 0.1) == 1.0 and prev_curve_val != 1.0:
+			emit_signal("plat_extended")
+		
+		prev_curve_val = snappedf(curve_val, 0.1)
 		
 		# Get the exact position
 		var exact_position = progress_node.position
@@ -123,30 +166,35 @@ func run_cycle(delta: float) -> void:
 		
 		# Use the previous position to calculatte the direction we are moving in
 		actual_velocity = (progress_node.position - previous_positon) / delta
-		movement_direction = actual_velocity.normalized()
+		
+		if actual_velocity.length() != 0:
+			movement_direction = actual_velocity.normalized()
 		
 		# Update previous position
 		previous_positon = progress_node.position
+
+
+func can_plat_launch(player: Flyph, forced: bool = false) -> bool:
+	
+	var base_launch_multi: float = snappedf(launch_curve.sample_baked(time_ratio), 0.2)
+	var can_launch: bool = base_launch_multi > 0.0
+	var falling: bool = not player.jumping and not player.boostJumping
 		
+	return (not can_launch or falling) and not forced
 
 ## Call this function when we ready to launch the player from the plat
-func plat_launch(player: Flyph):
-	
-	var vel_over_threshold: bool = (actual_velocity.length() < (avg_velocity * launch_threshold))
-	var falling: bool = not player.jumping and not player.boostJumping
-	
-	if vel_over_threshold or falling:
-		return
+func plat_launch(player: Flyph, forced: bool = false) -> bool:
 	
 	
-	movement_direction = snapped(movement_direction, Vector2(0.2,0.2))
+	if  can_plat_launch(player, forced):
+		return false
+	
+	print("Launch: " + str(player.velocity.y))
+	
+	var base_launch_multi: float = snappedf(launch_curve.sample_baked(time_ratio), 0.2)
+	
+	movement_direction = snapped(movement_direction, Vector2(0.25,0.25))
 	print(movement_direction)
-	#if abs(movement_direction.x) > abs(movement_direction.y):
-		#movement_direction = Vector2(sign(movement_direction.x), 0)
-	#elif abs(movement_direction.x) < abs(movement_direction.y):
-		#movement_direction = Vector2(0, sign(movement_direction.y))
-	
-	
 	
 	if player.boostJumping and  player.reverseBoostJumping:
 		if sign(movement_direction.x) != sign(player.horizontal_axis):
@@ -154,15 +202,20 @@ func plat_launch(player: Flyph):
 		
 	
 	if sign(player.horizontal_axis) == sign(movement_direction.x):
-		player.velocity.x += (avg_velocity * movement_direction.x) * launch_multi.x
+		player.velocity.x += ((avg_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi	  
 	
+	print(player.velocity.y)
 	if sign(movement_direction.y) < 0:
-		player.velocity.y += (avg_velocity * movement_direction.y) * launch_multi.y	
-		
-		## If the player is not moving up faster than  
+		player.velocity.y = player.jump_velocity
+		player.velocity.y += ((avg_velocity * movement_direction.y) * launch_multi.y) * base_launch_multi	  
+	
 	
 	#print(actual_velocity)
-	#print(player.velocity)
+	print(player.velocity.y)
+	if player.velocity.y < -500:
+		print("Big Jump")
+		
+	return true
 	
 ## Returns if the moving platform is active
 func is_active() -> bool:

@@ -325,7 +325,7 @@ position = Vector2(0, 9)
 sprite_frames = SubResource("SpriteFrames_220q3")
 animation = &"right_shimmer"
 autoplay = "plain_shimmer"
-frame_progress = 0.572515
+frame_progress = 0.788469
 
 [node name="PlayerDetector" type="Area2D" parent="."]
 visible = false

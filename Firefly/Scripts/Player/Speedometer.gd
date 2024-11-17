@@ -11,6 +11,6 @@ func _ready():
 func _process(_delta: float) -> void:
 	if _config.get_setting("show_speedometer"):
 		visible = true
-		text = "%d" % abs(flyph.velocity.x)
+		text = "%d" % abs(flyph.velocity.y)
 	else:
 		visible = false

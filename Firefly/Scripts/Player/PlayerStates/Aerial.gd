@@ -170,7 +170,7 @@ func state_status():
 	_logger.info("Flyph - Aerial State Checking for State Transition")
 
 	# Make Sure we're still grounded after this
-	if parent.is_on_floor():
+	if parent.is_on_floor() and parent.velocity.y >= 0  :
 
 		# If we've gone from aerial to on the floor
 		parent.landing_speed = min_fall_speed
