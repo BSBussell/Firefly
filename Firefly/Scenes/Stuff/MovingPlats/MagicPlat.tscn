@@ -240,13 +240,13 @@ animations = [{
 "speed": 10.0
 }, {
 "frames": [{
-"duration": 10.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_dfd8o")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6ichc")
 }, {
-"duration": 5.0,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_08a0r")
 }, {
 "duration": 1.0,
@@ -257,7 +257,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"right_shimmer",
-"speed": 7.0
+"speed": 10.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hjqn7"]
@@ -325,7 +325,7 @@ position = Vector2(0, 9)
 sprite_frames = SubResource("SpriteFrames_220q3")
 animation = &"right_shimmer"
 autoplay = "plain_shimmer"
-frame_progress = 0.788469
+frame_progress = 0.291096
 
 [node name="PlayerDetector" type="Area2D" parent="."]
 visible = false
