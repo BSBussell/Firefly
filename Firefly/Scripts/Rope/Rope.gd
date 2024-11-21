@@ -1,11 +1,6 @@
 extends Node2D
 class_name Rope
 
-const SPIT = preload("res://Scenes/Stuff/Rope/RopePieces/spit.tscn")
-const JOINT = preload("res://Scenes/Stuff/Rope/RopePieces/joint.tscn")
-const ANCHOR = preload("res://Scenes/Stuff/Rope/RopePieces/anchor.tscn")
-const WORM = preload("res://Scenes/Stuff/Rope/GlowWorm/worm.tscn")
-
 ## Length of the rope
 @export var Segments: int = 5
 @export var Swingable: bool = true
@@ -18,6 +13,11 @@ const WORM = preload("res://Scenes/Stuff/Rope/GlowWorm/worm.tscn")
 ## How fast does the worm move?
 @export var worm_speed: float = 25
 
+@export_category("Rope Varient")
+@export var SPIT: PackedScene = preload("res://Scenes/Stuff/Rope/RopePieces/spit.tscn")
+@export var JOINT: PackedScene = preload("res://Scenes/Stuff/Rope/RopePieces/joint.tscn")
+@export var ANCHOR: PackedScene = preload("res://Scenes/Stuff/Rope/RopePieces/anchor.tscn")
+@export var WORM: PackedScene = preload("res://Scenes/Stuff/Rope/GlowWorm/worm.tscn")
 
 # Da base
 @onready var base = $Base

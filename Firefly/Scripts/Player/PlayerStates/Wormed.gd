@@ -122,7 +122,7 @@ func enter() -> void:
 	apply_rope_impulse(parent.velocity * grab_force_multi)
 	
 	
-	if parent.boostJumping:
+	if parent.boostJumping or parent.launched:
 		period_multi = 3.5
 	else:
 		period_multi = base_period_multi
@@ -481,7 +481,7 @@ func swinging(delta, dir):
 	
 	
 	## If we've launched from a rope or if we've slide boosted our way to the rope
-	if parent.boostJumping:
+	if parent.boostJumping or parent.launched:
 		target_period_multi = boosted_period_multi
 		period_accel = boosted_period_accel
 	

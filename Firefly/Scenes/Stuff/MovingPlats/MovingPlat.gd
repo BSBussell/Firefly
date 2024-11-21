@@ -24,6 +24,9 @@ signal plat_extended
 ## Velocity
 @export var avg_velocity: float = 50.0
 
+## Launch Velocity
+@export var launch_velocity: float = 50.0
+
 ## Launch Curve: Determines, a base launch multiplier.
 @export var launch_curve: Curve
 
@@ -202,12 +205,12 @@ func plat_launch(player: Flyph, forced: bool = false) -> bool:
 		
 	
 	if sign(player.horizontal_axis) == sign(movement_direction.x):
-		player.velocity.x += ((avg_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi	  
+		player.velocity.x += ((launch_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi	  
 	
 	print(player.velocity.y)
 	if sign(movement_direction.y) < 0:
 		player.velocity.y = player.jump_velocity
-		player.velocity.y += ((avg_velocity * movement_direction.y) * launch_multi.y) * base_launch_multi	  
+		player.velocity.y += ((launch_velocity * movement_direction.y) * launch_multi.y) * base_launch_multi	  
 	
 	
 	#print(actual_velocity)
@@ -215,6 +218,7 @@ func plat_launch(player: Flyph, forced: bool = false) -> bool:
 	if player.velocity.y < -500:
 		print("Big Jump")
 		
+	player.launched = true
 	return true
 	
 ## Returns if the moving platform is active

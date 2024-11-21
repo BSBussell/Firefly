@@ -23,6 +23,7 @@ script = ExtResource("1_7ppon")
 progress_node = NodePath("PathFollow2D")
 movement_curve = SubResource("Curve_vlj2i")
 avg_velocity = 110.0
+launch_velocity = 110.0
 launch_curve = SubResource("Curve_72v7g")
 launch_multi = Vector2(2.75, 2)
 launch_threshold = -1.0

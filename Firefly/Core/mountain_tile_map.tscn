@@ -156,7 +156,7 @@ texture = ExtResource("1_tjhrr")
 "type": 1
 }
 2:3/0 = 0
-2:3/0/probability = 0.2
+2:3/0/probability = 0.025
 2:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:3/0/physics_layer_0/angular_velocity = 0.0
 2:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -616,7 +616,7 @@ texture = ExtResource("1_tjhrr")
 "type": -2
 }
 22:4/0 = 0
-22:4/0/probability = 0.2
+22:4/0/probability = 0.025
 22:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 22:4/0/physics_layer_0/angular_velocity = 0.0
 22:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
@@ -1173,7 +1173,7 @@ texture = ExtResource("1_tjhrr")
 "type": 8
 }
 2:3/0 = 0
-2:3/0/probability = 0.1
+2:3/0/probability = 0.03
 2:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:3/0/physics_layer_0/angular_velocity = 0.0
 2:3/0/physics_layer_1/linear_velocity = Vector2(0, 0)
@@ -1594,7 +1594,7 @@ texture = ExtResource("1_tjhrr")
 21:4/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 21:4/0/physics_layer_2/angular_velocity = 0.0
 22:4/0 = 0
-22:4/0/probability = 0.1
+22:4/0/probability = 0.03
 22:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 22:4/0/physics_layer_0/angular_velocity = 0.0
 22:4/0/physics_layer_1/linear_velocity = Vector2(0, 0)

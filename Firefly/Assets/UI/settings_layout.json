@@ -13,8 +13,9 @@
 			"show_speedometer": {
 				"label": "Show Speedometer",
 				"description": "Show speedometer while playing",
-				"type": "boolean",
+				"type": "choice",
 				"config_key": "show_speedometer",
+				"options": ["off", "x", "y", "both"]
 			},
 			"show_timer": {
 				"label": "Speed Run Timer",

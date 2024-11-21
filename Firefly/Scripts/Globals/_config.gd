@@ -14,7 +14,7 @@ var def_settings: Dictionary = {
 # Gameplay
 	
 	"auto_glow": false,
-	"show_speedometer": false,
+	"show_speedometer": 0,
 	"show_timer": false,
 	
 	
@@ -57,9 +57,38 @@ func load_settings() -> void:
 	else:
 		save_settings()  # Save default settings if config file doesn't exist
 
-func ensure_def_keys_exist():
-	def_settings.merge(settings, true)
-	settings = def_settings
+func ensure_def_keys_exist() -> void:
+	# Ensure all keys in default settings exist and match the expected type
+	for key in def_settings.keys():
+		if settings.has(key):
+			# Check if the type matches, and if not, convert or reset
+			var default_type = typeof(def_settings[key])
+			if typeof(settings[key]) != default_type:
+				settings[key] = cast_value(settings[key], def_settings[key])
+		else:
+			# Add missing default keys
+			settings[key] = def_settings[key]
+
+	# Save the corrected settings back
+	save_settings()
+
+# Helper to cast or reset values to the default type
+func cast_value(old_value: Variant, default_value: Variant) -> Variant:
+	match typeof(default_value):
+		TYPE_BOOL:
+			return bool(old_value)
+		TYPE_INT:
+			return int(old_value)
+		TYPE_FLOAT:
+			return float(old_value)
+		TYPE_STRING:
+			return str(old_value)
+		TYPE_ARRAY:
+			return old_value if typeof(old_value) == TYPE_ARRAY else []
+		TYPE_DICTIONARY:
+			return old_value if typeof(old_value) == TYPE_DICTIONARY else {}
+		_:
+			return default_value  # Use default for unknown types
 
 
 # Save current settings to the configuration file

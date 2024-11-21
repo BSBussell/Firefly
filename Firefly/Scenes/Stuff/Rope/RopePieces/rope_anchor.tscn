@@ -1,0 +1,64 @@
+[gd_scene load_steps=8 format=3 uid="uid://du3u2i3yb82sp"]
+
+[ext_resource type="Script" path="res://Scripts/Rope/SpitSegment.gd" id="1_v5maj"]
+[ext_resource type="Texture2D" uid="uid://belm5u2s5b1ct" path="res://Assets/Graphics/Mechanics/Rope/mountain_rope.png" id="2_6asjg"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_bscf5"]
+[ext_resource type="Texture2D" uid="uid://bc2hrdxr6ctd3" path="res://Assets/Graphics/Mechanics/Rope/mountain_rope_anchor.png" id="3_ijgga"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ctwun"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h3dnq"]
+radius = 2.0
+height = 16.0
+
+[sub_resource type="Curve2D" id="Curve2D_fqdhe"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2.08165e-12, 11)
+}
+point_count = 2
+
+[node name="Anchor" type="RigidBody2D" node_paths=PackedStringArray("spotlight", "path_point")]
+collision_layer = 256
+collision_mask = 514
+mass = 0.75
+physics_material_override = SubResource("PhysicsMaterial_ctwun")
+gravity_scale = 1.1
+can_sleep = false
+linear_damp_mode = 1
+linear_damp = 7.0
+angular_damp_mode = 1
+angular_damp = 7.0
+script = ExtResource("1_v5maj")
+spotlight = NodePath("PointLight2D")
+path_point = NodePath("Path/PathFollow2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(2.08165e-12, 4.25)
+scale = Vector2(1, 0.5)
+texture = ExtResource("2_6asjg")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(2.08165e-12, 8)
+texture = ExtResource("3_ijgga")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, 8)
+shape = SubResource("CapsuleShape2D_h3dnq")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(0, 8)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.780392, 0.87451, 0.921569, 1)
+energy = 0.1
+texture = ExtResource("3_bscf5")
+
+[node name="Path" type="Path2D" parent="."]
+visible = false
+curve = SubResource("Curve2D_fqdhe")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path"]
+rotation = 1.5708
+loop = false

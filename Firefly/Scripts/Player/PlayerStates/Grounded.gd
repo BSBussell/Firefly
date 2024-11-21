@@ -48,6 +48,8 @@ func enter() -> void:
 		parent.temp_gravity_active = false
 
 
+	if sign(parent.horizontal_axis ) != 0 and sign(parent.velocity.x) != sign(parent.horizontal_axis):
+		parent.velocity.x = 0
 
 	# If we're landing
 	if parent.aerial:

@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://5vqm2gftly6d"]
+
+[ext_resource type="Script" path="res://Scripts/Rope/SpitSegment.gd" id="1_35rxn"]
+[ext_resource type="Texture2D" uid="uid://belm5u2s5b1ct" path="res://Assets/Graphics/Mechanics/Rope/mountain_rope.png" id="2_lmjlh"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_yqfx0"]
+bounce = 1.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h3dnq"]
+radius = 2.0
+height = 16.0
+
+[sub_resource type="Curve2D" id="Curve2D_atb7h"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16)
+}
+point_count = 2
+
+[node name="Spit" type="RigidBody2D" node_paths=PackedStringArray("path_point")]
+collision_layer = 256
+collision_mask = 514
+mass = 0.75
+physics_material_override = SubResource("PhysicsMaterial_yqfx0")
+can_sleep = false
+linear_damp = 4.0
+angular_damp = 5.0
+script = ExtResource("1_35rxn")
+path_point = NodePath("Path/PathFollow2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, 8)
+texture = ExtResource("2_lmjlh")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 12)
+texture = ExtResource("2_lmjlh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+shape = SubResource("CapsuleShape2D_h3dnq")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(0, 16)
+
+[node name="Path" type="Path2D" parent="."]
+curve = SubResource("Curve2D_atb7h")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path"]
+position = Vector2(0, 8)
+rotation = 1.5708
+progress = 8.0
+loop = false
