@@ -672,7 +672,7 @@ stream = ExtResource("8_m0ifv")
 bus = &"Ambience"
 
 [node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("9_2ctjn")]
-position = Vector2(1567, -303)
+position = Vector2(68, 32)
 MusicPlayer = NodePath("../LevelAudio/Music")
 
 [node name="PlayerCam" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("10_chrda")]

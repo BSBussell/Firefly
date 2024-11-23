@@ -23,7 +23,6 @@ var current_file_path: String = ""
 
 func _ready():
 	
-	
 	save_dir = DirAccess.open(save_dir_path)
 	
 	# Create the "saves" directory if it doesn't exist

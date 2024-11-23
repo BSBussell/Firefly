@@ -308,6 +308,7 @@ func _ready() -> void:
 
 	if _stats.POSITION != Vector2.ZERO:
 		position = _stats.POSITION
+		_stats.POSITION = Vector2.ZERO
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)

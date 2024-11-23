@@ -29,6 +29,7 @@ driver/output_latency.web=90
 _meta="*res://Scripts/Globals/_meta.gd"
 _config="*res://Scripts/Globals/_config.gd"
 _logger="*res://Scripts/Globals/_logger.gd"
+_playtest="*res://Assets/Playtest Saves/_playtest.gd"
 _persist="*res://Scripts/Globals/_persist.gd"
 _loader="*res://Scripts/Globals/_loader.gd"
 _debug="*res://Scripts/Globals/_debug.gd"

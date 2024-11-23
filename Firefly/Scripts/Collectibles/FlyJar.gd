@@ -14,9 +14,6 @@ var nabbed: bool = false
 
 func _ready():
 	animation_player.play("Idle")
-	
-	
-	
 	id = _globals.gen_id(global_position)
 	
 	if _jar_tracker.is_jar_collected(id):
@@ -39,17 +36,7 @@ func _ready():
 		
 		# Make it exist
 		_jar_tracker.register_jar_exists(id)
-		#
-#
-#func gen_id() -> String:
-	#
-	## Variables that make this jar unique
-	#var identifiers = [
-		#global_position,
-		#_globals.ACTIVE_LEVEL.id
-	#]
-	#
-	#return str(hash(str(identifiers)))
+	
 
 func _on_area_entered(_area):
 
