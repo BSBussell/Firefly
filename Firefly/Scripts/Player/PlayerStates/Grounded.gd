@@ -49,7 +49,7 @@ func enter() -> void:
 
 
 	if sign(parent.horizontal_axis ) != 0 and sign(parent.velocity.x) != sign(parent.horizontal_axis):
-		parent.velocity.x = 0
+		parent.velocity.x *= 0.3 
 
 	# If we're landing
 	if parent.aerial:
