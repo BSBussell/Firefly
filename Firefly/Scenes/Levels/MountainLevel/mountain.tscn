@@ -640,14 +640,14 @@ metadata/_edit_lock_ = true
 follow_viewport_enabled = true
 
 [node name="Cloud1" parent="CloudParticles" instance=ExtResource("11_ykhcc")]
-position = Vector2(2305, -912)
+position = Vector2(3395, -906)
 amount = 15
 lifetime = 30.0
 speed_scale = 0.2
 emission_rect_extents = Vector2(2.08165e-12, 900)
 
 [node name="Cloud3" parent="CloudParticles" instance=ExtResource("11_ykhcc")]
-position = Vector2(2305, -912)
+position = Vector2(3395, -906)
 amount = 15
 lifetime = 30.0
 speed_scale = 0.2
