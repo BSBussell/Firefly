@@ -2,9 +2,9 @@ extends Node
 
 var first_level: String = "res://Scenes/Levels/TutorialLevel/tutorial.tscn"
 
-
-var CURRENT_LEVEL: String
 var NAME: String = ""
+var CURRENT_LEVEL: String
+var POSITION: Vector2 = Vector2.ZERO
 var TIME: float = 0
 var DEATHS: int = 0
 
@@ -31,6 +31,8 @@ func save_values() -> Dictionary:
 	
 	save_data["Name"] = NAME
 	save_data["Level"] = CURRENT_LEVEL
+	save_data["Position_X"] = POSITION.x
+	save_data["Position_Y"] = POSITION.y
 	save_data["Time"] = TIME
 	save_data["Deaths"] = DEATHS
 	save_data["Invalid"] = INVALID_RUN
@@ -43,6 +45,8 @@ func load_values(vals: Dictionary) -> void:
 
 	NAME = vals.get("Name", NAME)
 	CURRENT_LEVEL = vals.get("Level", CURRENT_LEVEL)
+	POSITION.x = vals.get("Position_X", POSITION.x)
+	POSITION.y = vals.get("Position_Y", POSITION.y ) 
 	DEATHS = vals.get("Deaths", DEATHS)	
 	TIME = vals.get("Time", TIME)
 	INVALID_RUN = vals.get("Invalid", INVALID_RUN)
@@ -102,6 +106,7 @@ func reset_stats() -> void:
 	reset_timer()
 	DEATHS = 0
 	INVALID_RUN = false
+	POSITION = Vector2.ZERO
 	
 	# Take us back to the first level
-	CURRENT_LEVEL = "res://Scenes/Levels/TutorialLevel/tutorial.tscn"
+	CURRENT_LEVEL = first_level

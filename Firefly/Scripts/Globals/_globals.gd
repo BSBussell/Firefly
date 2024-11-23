@@ -1,5 +1,6 @@
 extends Node
 
+
 ## This is true if we are within the game loop
 var ACTIVE_LEVEL: Level
 
@@ -14,3 +15,14 @@ var JAR_MANAGER: JarManager
 
 ## The current game render size
 var RENDER_SIZE: Vector2 = Vector2(320, 180)
+
+
+func gen_id(position: Vector2) -> String:
+	
+	# Variables that make this jar unique
+	var identifiers = [
+		position,
+		ACTIVE_LEVEL.id
+	]
+	
+	return str(hash(str(identifiers)))

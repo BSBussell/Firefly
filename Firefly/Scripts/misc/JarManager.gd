@@ -28,11 +28,11 @@ func _ready():
 
 	for jar: FlyJar in yellow_jars:
 		jar.connect("collected", Callable(self, "yellow_jar_collected"))
-		_jar_tracker.register_jar_exists(jar.gen_id())
+		_jar_tracker.register_jar_exists(jar.id)
 	
 	for jar: FlyJar in blue_jars:
 		jar.connect("collected", Callable(self, "blue_jar_collected"))
-		_jar_tracker.register_jar_exists(jar.gen_id())
+		_jar_tracker.register_jar_exists(jar.id)
 		
 		
 	

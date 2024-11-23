@@ -306,6 +306,9 @@ func _ready() -> void:
 	if not is_actor:
 		_persist.register_persistent_class("Flyph", Callable(self, "player_save"), Callable(self, "player_load"))
 
+	if _stats.POSITION != Vector2.ZERO:
+		position = _stats.POSITION
+
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)
 
@@ -1144,6 +1147,9 @@ func _on_hazard_detector_body_entered(_body):
 # Sets the given points as the players respawn point
 func set_respawn_point(point: Vector2):
 	starting_position = point
+	
+	_stats.POSITION = point
+	
 
 
 ## Debug Methods:

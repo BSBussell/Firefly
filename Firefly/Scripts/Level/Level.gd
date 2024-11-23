@@ -103,6 +103,9 @@ func setup_components() -> void:
 
 ## Calls the level loader to load a new level
 func load_level(path: String, spawn_id: String):
+	_stats.CURRENT_LEVEL = path
+	_stats.POSITION = Vector2.ZERO
+	
 	await _loader.load_level(path, spawn_id)
 	
 	
