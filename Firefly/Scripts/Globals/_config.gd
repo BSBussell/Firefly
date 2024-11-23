@@ -19,11 +19,11 @@ var def_settings: Dictionary = {
 	
 	
 # Graphics
-	"fullscreen": false,
+	"fullscreen": true,
 	"resolution": 0,
-	"fps_target": 0,   
-	"vsync": false,
-	"game_zoom": 1.0,
+	"fps_target": 1,   
+	"vsync": true,
+	"game_zoom": 1.4,
 	
 # Audio
 	"master_vol": 0.0,
@@ -33,7 +33,7 @@ var def_settings: Dictionary = {
 
 # Helpers
 	"input_assist": true,
-	"slide_assist": false,
+	"slide_assist": true,
 	"inf_jump": false
 }
 

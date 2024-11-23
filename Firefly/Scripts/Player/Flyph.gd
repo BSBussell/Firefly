@@ -304,11 +304,16 @@ func _ready() -> void:
 	
 	# Register the players save and load functions
 	if not is_actor:
-		_persist.register_persistent_class("Flyph", Callable(self, "player_save"), Callable(self, "player_load"))
+		
+		var save_func: Callable = Callable(self, "player_save")
+		var load_func: Callable = Callable(self, "player_load")
+		
+		_persist.register_persistent_class("Flyph", save_func, load_func)
 
-	if _stats.POSITION != Vector2.ZERO:
-		position = _stats.POSITION
-		_stats.POSITION = Vector2.ZERO
+		# Load the position
+		if _stats.POSITION != Vector2.ZERO:
+			position = _stats.POSITION
+			_stats.POSITION = Vector2.ZERO
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)

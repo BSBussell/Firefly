@@ -50,7 +50,7 @@ _data = {
 
 [node name="Waves" type="CPUParticles2D"]
 emitting = false
-amount = 15
+amount = 10
 lifetime = 0.5
 one_shot = true
 explosiveness = 0.75

@@ -107,7 +107,7 @@
 				"label": "Input Helpers",
 				"description": "Assist with some inputs, such as upward wallhop climbs.",
 				"type": "boolean",
-				"config_key": "input_assists",
+				"config_key": "input_assist",
 			},
 			"slide_assist": {
 				"label": "Slide Boost Helper",
