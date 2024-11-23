@@ -479,7 +479,7 @@ Segments = 7
 
 [node name="Rope2" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
 position = Vector2(-62, -251)
-Segments = 8
+Segments = 9
 
 [node name="Rope12" parent="SwingAbleRopes" instance=ExtResource("8_uc64o")]
 position = Vector2(52, -457)

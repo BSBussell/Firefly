@@ -37,11 +37,14 @@ func child_ready():
 	break_time.wait_time = TIME_TO_BREAK
 	respawn_time.wait_time = TIME_TO_RESPAWN
 	
-	connect("player_landed", Callable(self, "_on_player_landed"))
+	var err = connect("player_landed", Callable(self, "_on_player_landed"))
+	if err != OK:
+		print(self.name)
+	
 	connect("player_left", Callable(self, "_on_player_left"))
 	
 	
-func _on_player_landed(player):
+func _on_player_landed(_player):
 	if TIME_TO_BREAK != -1:
 		
 		snap.play()
@@ -55,7 +58,7 @@ func _on_player_landed(player):
 		animation_player.speed_scale = 2
 
 
-func _on_player_left(player):
+func _on_player_left(_player):
 	if KILL_ON_EXIT and not break_time.is_stopped():
 		break_time.stop()
 		destroy_platform()
