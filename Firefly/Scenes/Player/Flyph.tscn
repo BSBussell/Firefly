@@ -988,6 +988,9 @@ scale_amount_curve = SubResource("Curve_iosa0")
 color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_diik4")
 
+[node name="WaveSpawner" type="Marker2D" parent="Particles"]
+position = Vector2(0, -8)
+
 [node name="Physics" type="Node2D" parent="."]
 
 [node name="HazardDetector" type="Area2D" parent="Physics"]
@@ -1251,6 +1254,8 @@ AERIAL_STATE = NodePath("../Aerial")
 WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
 WATER_SPEED_MULTI = 0.8
 WATER_ACCEL_MULTI = 1.2
+WATER_JUMP_MULTI = 1.0
+WATER_GRAV_MULTI = 0.2
 
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
 script = ExtResource("33_e7xfe")

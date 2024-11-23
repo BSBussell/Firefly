@@ -198,15 +198,25 @@ func update_run_effects(direction: float) -> void:
 
 				# Start our Dust!
 				dash_dust.emitting = true
+				
+				parent.animation.speed_scale = 1.0
 
 			elif not at_run_threshold:
 				parent.current_animation = parent.ANI_STATES.WALKING
+				parent.animation.speed_scale = 1.0
+				
+			elif parent.current_animation == parent.ANI_STATES.RUNNING and parent.velocity.x > parent.speed:
+				var weight: float = parent.velocity.x / (parent.speed * 3)
+				parent.animation.speed_scale = lerpf(1.0, 2 , weight)
+			else:
+				parent.animation.speed_scale = 1.0
 
 	# Set to idle from walking
 	if not direction:
 		if (parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING) :
 			parent.current_animation = parent.ANI_STATES.IDLE
 			run_sfx.stop()
+			parent.animation.speed_scale = 1.0
 
 	# If we're not walking go to runnings
 	if parent.current_animation != parent.ANI_STATES.RUNNING:

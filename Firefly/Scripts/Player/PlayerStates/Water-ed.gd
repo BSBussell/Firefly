@@ -1,5 +1,7 @@
 extends PlayerState
 
+const WAVE_PARTICLE: PackedScene = preload("res://Scenes/Player/particles/waves.tscn")
+
 @export_subgroup("DEPENDENT STATES")
 @export var WALL_STATE: PlayerState = null
 #@export var GROUNDED_STATE: PlayerState = null
@@ -38,6 +40,8 @@ extends PlayerState
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 @onready var wet = $"../../Particles/Wet"
+@onready var wave_spawner = $"../../Particles/WaveSpawner"
+
 
 
 # SFX
@@ -83,6 +87,8 @@ func enter() -> void:
 	ticks = 0
 	min_fall_speed = 0.0
 	parent.aerial = true
+	parent.fastFalling = false
+	parent.fastFell = true
 
 	# Enabling the appropriate Raycasts
 	right_wj_grace.enabled = true
@@ -172,8 +178,8 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 
 	# If Fast Falling Input
-	if Input.is_action_just_pressed("Dive"):
-		water_dive()
+	#if Input.is_action_just_pressed("Dive"):
+		#water_dive()
 
 	return null
 
@@ -265,13 +271,42 @@ func water_jump():
 
 	# Set Flags
 	parent.jumping = true
+	
+	
+	var jump_force: float = parent.jump_velocity * WATER_JUMP_MULTI
+	
+	# Calculate the direction vector based on input
+	var input_direction: Vector2 = Vector2(-parent.horizontal_axis, parent.vertical_axis)
+
+	if input_direction == Vector2.ZERO:
+		input_direction = Vector2(0, 1)
+	elif input_direction.y == 0:
+		input_direction.y = 0.15
+		
+
+	#if parent.vertical_axis >= 1:
+		#parent.velocity.y = 0
+
+	# Normalize the direction vector if it has any magnitude to avoid zero-vector issues
+	if input_direction != Vector2.ZERO:
+		input_direction = input_direction.normalized()
+
+	# Scale the direction by the jump velocity and multiplier
+	var jump_velocity_vector: Vector2 = input_direction * jump_force
+
+	print(input_direction)
+
+	# Apply the jump velocity to the parent's velocity
+	parent.velocity.x = jump_velocity_vector.x
+	parent.velocity.y = jump_velocity_vector.y
 
 	# Add a Horizontal Jump Boost to our players X velocity
-	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
+	#parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
 
 	# Jump Velocity
-	parent.velocity.y = parent.jump_velocity * WATER_JUMP_MULTI
+	#parent.velocity.y = parent.jump_velocity * WATER_JUMP_MULTI
 
+	make_wave(input_direction)
 	
 	# TODO: Water Jump :3
 	# Jump SFX
@@ -369,7 +404,7 @@ func handle_acceleration(delta, direction) -> void:
 
 		# Slowing ourselves down in the air
 		if (abs(parent.velocity.x) > parent.air_speed and sign(parent.velocity.x) == sign(direction)):
-			waterAccel = parent.movement_data.AIR_SPEED_RECUTION
+			waterAccel = parent.movement_data.AIR_SPEED_RECUTION * 3 
 
 		# Speed ourselves up
 		else:
@@ -410,6 +445,11 @@ func apply_airResistance(delta, direction):
 	if direction == 0:
 		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
 
+
+func make_wave(dir: Vector2) -> void:
+	var burst_particle: BurstParticle = WAVE_PARTICLE.instantiate()
+	burst_particle.direction = dir.normalized()
+	wave_spawner.add_child(burst_particle)
 
 # Checks the above raycasts
 func have_stand_room():

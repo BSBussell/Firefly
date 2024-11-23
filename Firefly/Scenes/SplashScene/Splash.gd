@@ -5,7 +5,7 @@ extends UiComponent
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	animation_player.play("RESET")
+	animation_player.play("RESET")  
 	await get_tree().create_timer(1.0).timeout
 	animation_player.play("splash")
 
