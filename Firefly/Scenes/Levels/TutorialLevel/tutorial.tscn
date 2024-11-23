@@ -697,7 +697,7 @@ optional_target = NodePath("Marker2D")
 position = Vector2(-27, -31)
 
 [node name="GemManager" type="Node2D" parent="."]
-position = Vector2(359, 93)
+position = Vector2(3, -4)
 script = ExtResource("22_krb2s")
 
 [node name="JarsManager" type="Node2D" parent="." node_paths=PackedStringArray("gem_manager")]

@@ -209,7 +209,7 @@ func update_run_effects(direction: float) -> void:
 				var weight: float = parent.velocity.x / (parent.speed * 3)
 				parent.animation.speed_scale = lerpf(1.0, 2 , weight)
 			else:
-				parent.animation.speed_scale = 1.0
+				parent.animation.speed_scale = 1.0  
 
 	# Set to idle from walking
 	if not direction:
