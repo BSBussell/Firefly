@@ -42,7 +42,7 @@ func _input(_event: InputEvent) -> void:
 
 	# Load Tutorial
 	if Input.is_key_pressed(KEY_8) and not _loader.loading:
-		
+		_stats.POSITION = Vector2.ZERO
 		_stats.INVALID_RUN = true
 		_loader.load_level("res://Scenes/Levels/TutorialLevel/tutorial.tscn")
 		_stats.CURRENT_LEVEL = "res://Scenes/Levels/TutorialLevel/tutorial.tscn"
@@ -50,13 +50,16 @@ func _input(_event: InputEvent) -> void:
 		
 	# Load Debug Environment
 	if Input.is_key_pressed(KEY_9) and not _loader.loading:
+		_stats.POSITION = Vector2.ZERO
 		_stats.INVALID_RUN = true
 		_loader.load_level("res://Scenes/Levels/CaveLevel/cave_level.tscn")
 		_stats.CURRENT_LEVEL = "res://Scenes/Levels/CaveLevel/cave_level.tscn"
 		
 		
+		
 	# Load Debug Environment
 	if Input.is_key_pressed(KEY_0) and not _loader.loading:
+		_stats.POSITION = Vector2.ZERO
 		_stats.INVALID_RUN = true 
 		_loader.load_level("res://Scenes/Levels/MountainLevel/mountain.tscn")
 		_stats.CURRENT_LEVEL = "res://Scenes/Levels/MountainLevel/mountain.tscn"

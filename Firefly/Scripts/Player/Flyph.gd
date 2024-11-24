@@ -981,7 +981,6 @@ func calculate_properties():
 	# Set timers
 	coyote_time.wait_time = movement_data.COYOTE_TIME
 #	jump_buffer.wait_time = movement_data.JUMP_BUFFER
-	momentum_time.wait_time = movement_data.STRICTNESS
 
 	# Visual
 	glow_trail.length = movement_data.TRAIL_LENGTH

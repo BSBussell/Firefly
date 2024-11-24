@@ -42,6 +42,8 @@ const WAVE_PARTICLE: PackedScene = preload("res://Scenes/Player/particles/waves.
 @onready var wet = $"../../Particles/Wet"
 @onready var wave_spawner = $"../../Particles/WaveSpawner"
 
+# Timer
+@onready var dive_cool_down = $"../../Timers/DiveCoolDown"
 
 
 # SFX
@@ -76,6 +78,9 @@ func enter() -> void:
 	
 	if parent.velocity.y > 150:
 		parent.velocity.y *= WATER_ENTRY_COST
+	
+	if parent.velocity.x > parent.air_speed:
+		parent.velocity.x *= WATER_ENTRY_COST
 
 	# Make Them BLUE!!!
 	parent.animation.set_glow(WATER_MODULATION, 1.0)
@@ -100,7 +105,7 @@ func enter() -> void:
 	
 	parent.set_standing_collider()
 
-	
+	#dive_cool_down.stop()
 
 	slide_fall = parent.current_animation == parent.ANI_STATES.CRAWL
 
@@ -190,7 +195,7 @@ func process_physics(delta: float) -> PlayerState:
 
 	# Grace Jumps
 	
-	handle_grace_walljump()
+	#handle_grace_walljump()
 	handle_water_jump(delta)
 
 	# For Short Hops
@@ -254,7 +259,7 @@ func animation_end() -> PlayerState:
 func handle_water_jump(_delta):
 
 	# If we are able to do a coyote jump
-	if not parent.launched:
+	if not parent.launched and dive_cool_down.is_stopped():
 
 		# If the player has buffered a jump
 		if parent.attempt_jump():
@@ -281,7 +286,7 @@ func water_jump():
 	if input_direction == Vector2.ZERO:
 		input_direction = Vector2(0, 1)
 	elif input_direction.y == 0:
-		input_direction.y = 0.15
+		input_direction.y = 0.15 
 		
 
 	#if parent.vertical_axis >= 1:
@@ -297,8 +302,16 @@ func water_jump():
 	print(input_direction)
 
 	# Apply the jump velocity to the parent's velocity
-	parent.velocity.x = jump_velocity_vector.x
-	parent.velocity.y = jump_velocity_vector.y
+	if sign(parent.velocity.x) != sign(jump_velocity_vector.x):
+		parent.velocity.x += jump_velocity_vector.x
+	else:
+		parent.velocity.x = jump_velocity_vector.x
+	
+	
+	if jump_velocity_vector.y != 0:
+		parent.velocity.y = jump_velocity_vector.y
+
+	dive_cool_down.start()
 
 	# Add a Horizontal Jump Boost to our players X velocity
 	#parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis

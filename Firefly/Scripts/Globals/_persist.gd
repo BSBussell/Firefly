@@ -98,7 +98,7 @@ func save_file(path: String = current_file_path) -> void:
 	path = save_dir_path + path
 	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	if file:
-		var save_data: String = JSON.stringify(stored_values)
+		var save_data: String = JSON.stringify(stored_values, "\t")
 		file.store_string(save_data)
 		file.close()
 

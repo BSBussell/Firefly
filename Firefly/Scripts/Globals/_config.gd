@@ -95,7 +95,7 @@ func cast_value(old_value: Variant, default_value: Variant) -> Variant:
 func save_settings() -> void:
 	var file: FileAccess = FileAccess.open(CONFIG_FILE, FileAccess.WRITE)
 	if file:
-		var config_data: String = JSON.stringify(settings)
+		var config_data: String = JSON.stringify(settings, "\t")
 		file.store_string(config_data)
 		file.close()
 

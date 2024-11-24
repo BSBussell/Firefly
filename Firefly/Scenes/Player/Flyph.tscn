@@ -1254,7 +1254,7 @@ AERIAL_STATE = NodePath("../Aerial")
 WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
 WATER_SPEED_MULTI = 0.8
 WATER_ACCEL_MULTI = 1.2
-WATER_JUMP_MULTI = 1.0
+WATER_JUMP_MULTI = 1.2
 WATER_GRAV_MULTI = 0.2
 
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
@@ -1275,10 +1275,9 @@ WALL_STATE = NodePath("../Wall")
 GROUNDED_STATE = NodePath("../Grounded")
 SLIDING_STATE = NodePath("../Sliding")
 
-[node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("GLOW_PARTICLES", "MOMENTUM_TIMER")]
+[node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("GLOW_PARTICLES")]
 script = ExtResource("25_5it1v")
 GLOW_PARTICLES = NodePath("../Particles/SpeedParticles")
-MOMENTUM_TIMER = NodePath("../Timers/MomentumTime")
 
 [node name="Timers" type="Node" parent="."]
 
@@ -1294,8 +1293,8 @@ one_shot = true
 wait_time = 0.1
 one_shot = true
 
-[node name="MomentumTime" type="Timer" parent="Timers"]
-wait_time = 3.0
+[node name="DiveCoolDown" type="Timer" parent="Timers"]
+wait_time = 0.35
 one_shot = true
 
 [node name="CrouchJumpWindow" type="Timer" parent="Timers"]
@@ -1321,4 +1320,3 @@ script = ExtResource("36_btfxn")
 [connection signal="body_entered" from="Physics/WaterDetector" to="." method="_on_water_detector_body_entered"]
 [connection signal="body_exited" from="Physics/WaterDetector" to="." method="_on_water_detector_body_exited"]
 [connection signal="body_entered" from="Physics/RopeDetector" to="." method="_on_rope_detector_body_entered"]
-[connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]
