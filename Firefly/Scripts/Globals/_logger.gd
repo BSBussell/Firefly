@@ -2,7 +2,7 @@ extends Node
 class_name Logger
 
 # Logging Settings
-var log_calls = true
+var log_calls = false
 
 # Default Log File
 var log_name = "user://fire_log.txt"
