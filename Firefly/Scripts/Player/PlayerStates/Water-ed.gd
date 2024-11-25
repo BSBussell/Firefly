@@ -222,9 +222,6 @@ func process_frame(_delta):
 
 	swimming_sfx.play(swimming_sfx.get_playback_position())
 
-	
-
-
 	# Direction Facing, don't update if we're walljumping up
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
 		if parent.velocity.x < 0 and not parent.animation.flip_h:
@@ -234,10 +231,6 @@ func process_frame(_delta):
 		elif parent.velocity.x > 0 and parent.animation.flip_h:
 			parent.animation.flip_h = false
 			parent.squish_node.squish(parent.turn_around_squash)
-
-	
-
-	pass
 
 ## Called when an animation ends. How we handle transitioning to different animations
 func animation_end() -> PlayerState:
@@ -417,7 +410,7 @@ func handle_acceleration(delta, direction) -> void:
 
 		# Slowing ourselves down in the air
 		if (abs(parent.velocity.x) > parent.air_speed and sign(parent.velocity.x) == sign(direction)):
-			waterAccel = parent.movement_data.AIR_SPEED_RECUTION * 3 
+			waterAccel = parent.movement_data.AIR_SPEED_RECUTION * 1.0 		
 
 		# Speed ourselves up
 		else:
@@ -456,7 +449,7 @@ func apply_airResistance(delta, direction):
 
 	# Ok this makes the game really slippery when changing direction
 	if direction == 0:
-		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta * 0.5)
 
 
 func make_wave(dir: Vector2) -> void:

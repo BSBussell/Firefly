@@ -185,7 +185,6 @@ func update_slide_animation() -> void:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 
-	
 	# When sliding, the only actions are jumping and friction
 	jump_logic(delta)
 	apply_friction(delta, parent.horizontal_axis)
@@ -451,6 +450,4 @@ func slide_downhill() -> bool:
 func on_steep_ground() -> bool:
 
 	var slope_angle = rad_to_deg(parent.get_floor_angle(Vector2.UP))
-	if slope_angle >= 60:
-		return true
-	return false
+	return slope_angle >= 60
