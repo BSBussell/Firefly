@@ -1,9 +1,9 @@
-[gd_scene load_steps=47 format=3 uid="uid://cvxhf2cu04nb6"]
+[gd_scene load_steps=48 format=3 uid="uid://cvxhf2cu04nb6"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/CaveLevel/cave_level.gd" id="1_bfl7c"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_s8gsc"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="2_tbtnh"]
-[ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/collectible_counter.tscn" id="3_sgdeh"]
+[ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/CollectibleCounters/collectible_counter.tscn" id="3_sgdeh"]
 [ext_resource type="AudioStream" uid="uid://c8d4kjqyrog77" path="res://Assets/SFX/ambience/creepyCave_near_forest.mp3" id="3_xkvdx"]
 [ext_resource type="Material" uid="uid://dknfr3m14nn24" path="res://Assets/Materials/WaterDistortion.tres" id="4_6ko4m"]
 [ext_resource type="PackedScene" uid="uid://g8ao8gttp7rc" path="res://Core/cave_tile_map.tscn" id="4_eg551"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://doyxghug75km3" path="res://Scenes/UI_Elements/Timer.tscn" id="8_kstwy"]
 [ext_resource type="PackedScene" uid="uid://bauphk2cyg5tr" path="res://Scenes/Stuff/Rope/rope.tscn" id="8_uc64o"]
 [ext_resource type="AudioStream" uid="uid://b2opcksxr5n35" path="res://Assets/Music/GlowWorm_Cavern.wav" id="9_r5lfn"]
+[ext_resource type="PackedScene" uid="uid://dldtioocav27m" path="res://Scenes/UI_Elements/CollectibleCounters/total_collectible_counter.tscn" id="9_v2hst"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="10_4b7ke"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="11_ev1sj"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="12_0kfi3"]
@@ -242,7 +243,7 @@ Text = "- GlowWorm Caverns -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
-ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("4_moxw1"), ExtResource("5_by1im"), ExtResource("6_pkwh7"), ExtResource("7_h4wtv"), ExtResource("8_kstwy")])
+ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("4_moxw1"), ExtResource("5_by1im"), ExtResource("6_pkwh7"), ExtResource("7_h4wtv"), ExtResource("8_kstwy"), ExtResource("9_v2hst")])
 id = 1
 win_condition = 1
 

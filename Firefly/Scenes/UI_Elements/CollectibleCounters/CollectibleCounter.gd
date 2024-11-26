@@ -6,8 +6,7 @@ class_name JarCounter
 @export var ANIMATION_TIMER: Timer
 
 var COLLECTED: int = 0
-var MAX: int = 100
-
+var MAX: int = 1
 
 var out: bool = false
 

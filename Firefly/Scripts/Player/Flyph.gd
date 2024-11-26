@@ -138,7 +138,6 @@ signal dead()
 # Timers
 #@onready var jump_buffer: Timer = $Timers/JumpBuffer
 @onready var coyote_time: Timer = $Timers/CoyoteTime
-@onready var momentum_time: Timer = $Timers/MomentumTime
 @onready var post_jump_buffer = $Timers/PostJumpBuffer
 
 

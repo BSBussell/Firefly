@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=3 uid="uid://b8k3u2ibutssg"]
+[gd_scene load_steps=86 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="1_iqxgk"]
@@ -16,11 +16,12 @@
 [ext_resource type="Texture2D" uid="uid://byxfeghxx86qh" path="res://Assets/Graphics/TileMaps/Mountain/Parallax/Pixel Mountains & Hills - Parallax pack/240x135px/Parallax Backgrounds 240x135px/PixelMountain04/PixelMountain04_layer06.png" id="5_w2ued"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="6_u084r"]
 [ext_resource type="PackedScene" uid="uid://d0s632u2p275n" path="res://Core/CustomUIElements/upgrade_star.tscn" id="7_x5rfv"]
-[ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/collectible_counter.tscn" id="8_g0d32"]
+[ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/CollectibleCounters/collectible_counter.tscn" id="8_g0d32"]
 [ext_resource type="AudioStream" uid="uid://cu2e2bu6ld7xt" path="res://Assets/SFX/ambience/forest_ambience_b.mp3" id="8_m0ifv"]
 [ext_resource type="AudioStream" uid="uid://cw8jy8t2qet1o" path="res://Assets/Music/Louie Zong - waltzing wildflower.wav" id="8_rej4v"]
 [ext_resource type="PackedScene" uid="uid://b5trsegh656lp" path="res://Core/mountain_tile_map.tscn" id="8_umo66"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="9_2ctjn"]
+[ext_resource type="PackedScene" uid="uid://dldtioocav27m" path="res://Scenes/UI_Elements/CollectibleCounters/total_collectible_counter.tscn" id="9_f48xt"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="10_chrda"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="11_8kdbf"]
 [ext_resource type="PackedScene" uid="uid://c02qw80ac08l8" path="res://Scenes/Levels/MountainLevel/cloud_particle.tscn" id="11_ykhcc"]
@@ -298,7 +299,7 @@ Text = "- Pidgeon Mountain -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarManager")
 gem_manager = NodePath("GemManager")
-ui_components = Array[PackedScene]([ExtResource("2_gu43t"), ExtResource("4_lbsyo"), ExtResource("5_ii5yd"), ExtResource("6_u084r"), ExtResource("3_elh37"), ExtResource("7_x5rfv"), ExtResource("8_g0d32"), ExtResource("1_iqxgk")])
+ui_components = Array[PackedScene]([ExtResource("2_gu43t"), ExtResource("4_lbsyo"), ExtResource("5_ii5yd"), ExtResource("6_u084r"), ExtResource("3_elh37"), ExtResource("7_x5rfv"), ExtResource("8_g0d32"), ExtResource("1_iqxgk"), ExtResource("9_f48xt"), ExtResource("9_f48xt")])
 id = 2
 
 [node name="PP + FX" type="Node2D" parent="."]

@@ -38,6 +38,10 @@ func scale_theme(resolution: Vector2):
 	# File Select Name Entry
 	scale_elem_font_by("LineEdit", scale_factor)
 	
+	# Counter
+	scale_elem_font_by("pause_counter_count", scale_factor)
+	scale_elem_font_by("pause_counter_text", scale_factor)
+	
 	
 	# Button
 	scale_elem_font_by("Button", scale_factor)
