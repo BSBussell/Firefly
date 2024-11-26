@@ -24,7 +24,18 @@ func _ready():
 		if error:
 			print(error)
 	
-	MAX = _jar_tracker.num_known_jars(_globals.ACTIVE_LEVEL.id)
+	# Get all the jars in the level that are not blue
+	var yellow_jars: Array = _jar_tracker.filter(func (value): 
+		
+		var level_match: bool = value["level_id"] == _globals.ACTIVE_LEVEL.id
+		var is_yellow: bool = value["blue"] == false
+		return level_match and is_yellow
+		
+	)
+	
+	MAX = yellow_jars.size()
+	
+	
 	COLLECTED = _jar_tracker.num_found_jars(_globals.ACTIVE_LEVEL.id)
 	
 	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
@@ -48,7 +59,17 @@ func _ready():
 
 func jar_collected(_jar: FlyJar):
 		
-	MAX = _jar_tracker.num_known_jars(_globals.ACTIVE_LEVEL.id)
+	# Get the levels jars thar are not blue
+	var yellow_jars: Array = _jar_tracker.filter(func (value): 
+		
+		var level_match: bool = value["level_id"] == _globals.ACTIVE_LEVEL.id
+		var is_yellow: bool = value["blue"] == false
+		return level_match and is_yellow
+		
+	)
+	MAX = yellow_jars.size()
+	
+	
 	COLLECTED = _jar_tracker.num_found_jars(_globals.ACTIVE_LEVEL.id)
 	
 	COUNTER.text = "%d/%d" % [COLLECTED, MAX]

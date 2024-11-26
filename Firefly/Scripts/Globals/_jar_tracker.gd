@@ -1,6 +1,7 @@
 extends Node
 
-var known_jars: Dictionary = {}  # Dictionary to store the collected state of jars by their instance ID
+## Dictionary stores the state of jars by their silly ID (i have a silly id calc)
+var known_jars: Dictionary = {}  
 
 func _ready():
 	
@@ -18,7 +19,7 @@ func register_global_saves() -> void:
 func save_jars() -> Dictionary:
 	
 	var save_data: Dictionary = {}
-	save_data["PLZ BE CAREFUL MESSING WITH THESE 😊!"] = true
+	save_data["_comment"] = "Please, be careful messing with this section, progress could be lost 🤗"
 	save_data["known_jars"] = known_jars
 	return save_data
 
@@ -51,14 +52,20 @@ func is_jar_collected(jar_id: String) -> bool:
 	return known_jars.has(jar_id) and known_jars[jar_id]["nabbed"]
 
 
+func filter(filt_func: Callable) -> Array:
+	return known_jars.values().filter(filt_func)
+
 func get_level_jars(level: int):
-	var level_jars: Array = known_jars.values().filter(func (value): return value["level_id"] == level)
+	var level_jars: Array = filter(func (value): return value["level_id"] == level)
 	return level_jars
 
 ## Returns the number of found jars for a specific level
 func num_found_jars(level: int):
 	
-	var found_jars: Array = get_level_jars(level).filter(func (value): return value["nabbed"] == true) 
+	var found_jars: Array = filter(func (value): 
+		return value["level_id"] == level and value["nabbed"] == true
+	)
+	 
 	return found_jars.size()
 	
 ## Returns the total number of jars on a level
@@ -67,7 +74,7 @@ func num_known_jars(level: int):
 
 ## Returns the number of found jars
 func total_num_found_jars() -> int:
-	var found_jars: Array = known_jars.values().filter(func (value): return value["nabbed"] == true) 
+	var found_jars: Array = filter(func (value): return value["nabbed"] == true) 
 	return found_jars.size()
 
 ## Returns the total number of jars attainable
