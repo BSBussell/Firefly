@@ -1,6 +1,6 @@
 extends Node
 
-var collected_jars: Dictionary = {}  # Dictionary to store the collected state of jars by their instance ID
+var known_jars: Dictionary = {}  # Dictionary to store the collected state of jars by their instance ID
 
 func _ready():
 	
@@ -18,40 +18,62 @@ func register_global_saves() -> void:
 func save_jars() -> Dictionary:
 	
 	var save_data: Dictionary = {}
-	save_data["collected_jars"] = collected_jars
+	save_data["PLZ BE CAREFUL MESSING WITH THESE 😊!"] = true
+	save_data["known_jars"] = known_jars
 	return save_data
 
 func load_jars(save_data: Dictionary) -> void:
 	
-	collected_jars = save_data["collected_jars"]
+	if save_data.has("known_jars"):
+		known_jars = save_data["known_jars"]
 
-func is_registered(jar_id: String) -> bool:
-	return collected_jars.has(jar_id)
+func is_registered(jar: FlyJar) -> bool:
+	return known_jars.has(jar.id)
 
-func register_jar_exists(jar_id: String) -> void:
-	if not _loader.loading and not collected_jars.has(jar_id):
-		collected_jars[jar_id] = false
+func register_jar_exists(jar: FlyJar) -> void:
+	if not _loader.loading and not known_jars.has(jar.id):
+		
+		var jar_data: Dictionary = {}
+		jar_data["nabbed"] = jar.nabbed
+		jar_data["level_id"] = jar.level_id
+		jar_data["blue"] = jar.blue
+		
+		known_jars[jar.id] = jar_data
 
 func mark_jar_collected(jar_id: String) -> void:
 	if not _loader.loading:
-		collected_jars[jar_id] = true
-		
+		known_jars[jar_id]["nabbed"] = true   
 		_persist.save_values()
 
 
 # Also calculates the running tally of jars
 func is_jar_collected(jar_id: String) -> bool:
-	return collected_jars.has(jar_id) and collected_jars[jar_id]
+	return known_jars.has(jar_id) and known_jars[jar_id]["nabbed"]
 
 
-## Returns the number of found jars
-func num_found_jars() -> int:
-	var found_jars: Array = collected_jars.values().filter(func (value): return value == true)
+func get_level_jars(level: int):
+	var level_jars: Array = known_jars.values().filter(func (value): return value["level_id"] == level)
+	return level_jars
+
+## Returns the number of found jars for a specific level
+func num_found_jars(level: int):
+	
+	var found_jars: Array = get_level_jars(level).filter(func (value): return value["nabbed"] == true) 
 	return found_jars.size()
 	
-func num_known_jars() -> int:
-	return collected_jars.size()
+## Returns the total number of jars on a level
+func num_known_jars(level: int):
+	return get_level_jars(level).size()
+
+## Returns the number of found jars
+func total_num_found_jars() -> int:
+	var found_jars: Array = known_jars.values().filter(func (value): return value["nabbed"] == true) 
+	return found_jars.size()
+
+## Returns the total number of jars attainable
+func total_num_known_jars() -> int:
+	return known_jars.size()
 
 ## Clears the collected jars dict
 func reset_jars() -> void:
-	collected_jars.clear()
+	known_jars.clear()

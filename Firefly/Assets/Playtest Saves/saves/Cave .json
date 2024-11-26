@@ -6,7 +6,7 @@
 	"movement_level": 0
   },
   "JarTracker": {
-	"collected_jars": {}
+	"known_jars": {}
   },
   "stats": {
 	"Deaths": 0,

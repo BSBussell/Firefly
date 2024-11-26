@@ -24,14 +24,12 @@ func _ready():
 		if error:
 			print(error)
 	
-	MAX = collectibles.size()
-	COLLECTED = 0
+	MAX = _jar_tracker.num_known_jars(_globals.ACTIVE_LEVEL.id)
+	COLLECTED = _jar_tracker.num_found_jars(_globals.ACTIVE_LEVEL.id)
 	
 	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
 	
 	# Connect Blue Jars:
-	
-	
 	collectibles = get_tree().get_nodes_in_group("BlueJar")
 	for jar in collectibles:
 		
@@ -50,7 +48,9 @@ func _ready():
 
 func jar_collected(_jar: FlyJar):
 		
-	COLLECTED += 1
+	MAX = _jar_tracker.num_known_jars(_globals.ACTIVE_LEVEL.id)
+	COLLECTED = _jar_tracker.num_found_jars(_globals.ACTIVE_LEVEL.id)
+	
 	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
 	
 	peak_counter()
