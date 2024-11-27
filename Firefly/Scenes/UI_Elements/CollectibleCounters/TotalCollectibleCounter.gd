@@ -50,7 +50,7 @@ func process_jars(jars: Array):
 		
 	return [yellow_total, yellow_collected, blue_total, blue_collected]
 
-	
+
 func update_labels() -> void:
 	
 	var level_jars: Array = _jar_tracker.get_level_jars(_globals.ACTIVE_LEVEL.id)

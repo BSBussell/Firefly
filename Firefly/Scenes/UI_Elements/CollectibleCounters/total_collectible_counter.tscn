@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dldtioocav27m"]
+[gd_scene load_steps=15 format=3 uid="uid://dldtioocav27m"]
 
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_fpka2"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/CollectibleCounters/TotalCollectibleCounter.gd" id="2_amvrn"]
@@ -112,10 +112,15 @@ shader_parameter/waveSpeed = 1.0
 shader_parameter/hard_edges = true
 
 [sub_resource type="Curve" id="Curve_teir1"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.65, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 metadata/_snap_enabled = true
 metadata/_snap_count = 20
+
+[sub_resource type="Gradient" id="Gradient_2r02t"]
+offsets = PackedFloat32Array(0.9, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
 
 [sub_resource type="Animation" id="Animation_mlp1y"]
 resource_name = "Hide"
@@ -254,19 +259,25 @@ vertical_alignment = 1
 
 [node name="Glitter" type="CPUParticles2D" parent="Corner/VBoxContainer/Level/Count"]
 position = Vector2(111, 33)
-emitting = false
 amount = 15
+lifetime = 0.4
+speed_scale = 0.5
 local_coords = true
 texture = ExtResource("3_3hr1d")
 emission_shape = 3
 emission_rect_extents = Vector2(111, 33)
-gravity = Vector2(2.08165e-12, -25)
-angular_velocity_min = -90.0
-angular_velocity_max = 90.0
+gravity = Vector2(2.08165e-12, -30)
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+radial_accel_min = 20.0
+radial_accel_max = 25.0
 angle_max = 90.0
 scale_amount_min = 0.5
 scale_amount_curve = SubResource("Curve_teir1")
 color = Color(0.890196, 0.921569, 0.34902, 1)
+color_ramp = SubResource("Gradient_2r02t")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 script = ExtResource("4_m5v6b")
 
 [node name="Total" type="HBoxContainer" parent="Corner/VBoxContainer"]
@@ -289,17 +300,24 @@ text = "01/51"
 [node name="Glitter2" type="CPUParticles2D" parent="Corner/VBoxContainer/Total/Count"]
 position = Vector2(111, -74)
 amount = 15
+lifetime = 0.4
+speed_scale = 0.5
 local_coords = true
 texture = ExtResource("3_3hr1d")
 emission_shape = 3
 emission_rect_extents = Vector2(111, 33)
-gravity = Vector2(2.08165e-12, -25)
-angular_velocity_min = -90.0
-angular_velocity_max = 90.0
+gravity = Vector2(2.08165e-12, -30)
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+radial_accel_min = 20.0
+radial_accel_max = 25.0
 angle_max = 90.0
 scale_amount_min = 0.5
 scale_amount_curve = SubResource("Curve_teir1")
 color = Color(0.890196, 0.921569, 0.34902, 1)
+color_ramp = SubResource("Gradient_2r02t")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 script = ExtResource("4_m5v6b")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
