@@ -261,7 +261,6 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_evhpn"]
 resource_name = "on_load"
-length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true

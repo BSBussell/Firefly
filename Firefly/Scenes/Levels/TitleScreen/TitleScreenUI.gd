@@ -12,6 +12,8 @@ class_name TitleScreenUI
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	
+	resume.release_focus()
 	animation_player.play("RESET")
 	
 	# Show Mouse
@@ -20,10 +22,7 @@ func _ready():
 	if _loader.connect("finished_loading", Callable(self, "on_load")) != OK:
 		print("Error Failed to Connect On Load Signal. IDEK what to do in this case")
 		
-	# Grab its focus
-	await animation_player.animation_finished
-	resume.silence()
-	resume.grab_focus()
+	
 	
 
 
@@ -56,9 +55,16 @@ func _on_quit_pressed():
 func on_load():
 	await get_tree().create_timer(1).timeout
 	animation_player.play("on_load")
+	
+	# Grab its focus
+	await animation_player.animation_finished
+	resume.silence()
+	resume.grab_focus()
+	
 
 
 func _on_file_select_closing():
 	animation_player.play("FileSelectCancel")
+	await animation_player.animation_finished
 	resume.grab_focus()
 

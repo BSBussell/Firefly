@@ -128,6 +128,10 @@ func hide_counter(time: float = 3.0):
 func _on_hide_timer_timeout():
 	out = false
 	play_hide()
+	
+	# Minor performance optimization maybe?
+	LEVEL_GLITTER.emitting = false
+	TOTAL_GLITTER.emitting = false
 
 ## Ensures that on animation playing we don't teleport pos
 func play_show():
