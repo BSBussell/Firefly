@@ -23,7 +23,6 @@ shader_parameter/offset = 10.0
 
 [sub_resource type="Animation" id="Animation_10dsl"]
 resource_name = "FileSelectCancel"
-length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -368,6 +367,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_k2hrg"]
 resource_name = "settings_out"
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true

@@ -32,6 +32,8 @@ func _on_settings_pressed():
 
 func _on_settings_sub_menu_settings_closed():
 	animation_player.play("settings_out")
+	
+	await animation_player.animation_finished
 	settings.grab_focus()
 
 

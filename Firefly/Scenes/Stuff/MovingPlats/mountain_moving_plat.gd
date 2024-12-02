@@ -29,9 +29,9 @@ func _on_magic_plat_player_landed(player):
 
 func _on_magic_plat_player_left(player: Flyph):
 	
-	
-	if plat_launch(player):
-		launched = true
+	plat_launch(player)
+	#if plat_launch(player):
+		#launched = true
 	
 	flyph = null
 

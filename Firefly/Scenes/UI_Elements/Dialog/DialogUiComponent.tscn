@@ -132,7 +132,7 @@ tracks/4/keys = {
 }
 tracks/5/type = "value"
 tracks/5/imported = false
-tracks/5/enabled = false
+tracks/5/enabled = true
 tracks/5/path = NodePath("Label:theme_override_styles/normal:bg_color")
 tracks/5/interp = 2
 tracks/5/loop_wrap = true
@@ -140,7 +140,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(0.235294, 0.2, 0.501961, 0.882353), Color(1, 1, 1, 0.882353)]
+"values": [Color(0.235294, 0.2, 0.501961, 0.882353), Color(0.235294, 0.2, 0.501961, 0)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -231,7 +231,7 @@ tracks/4/keys = {
 }
 tracks/5/type = "value"
 tracks/5/imported = false
-tracks/5/enabled = false
+tracks/5/enabled = true
 tracks/5/path = NodePath("Label:theme_override_styles/normal:bg_color")
 tracks/5/interp = 2
 tracks/5/loop_wrap = true
@@ -239,7 +239,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0.882353), Color(0.235294, 0.2, 0.501961, 0.882353)]
+"values": [Color(0.235294, 0.2, 0.501961, 0), Color(0.235294, 0.2, 0.501961, 0.882353)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -268,7 +268,7 @@ tracks/7/keys = {
 
 [sub_resource type="Animation" id="Animation_re62h"]
 resource_name = "show_text"
-length = 2.0
+length = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -276,7 +276,7 @@ tracks/0/path = NodePath("Label:visible_ratio")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
+"times": PackedFloat32Array(0, 3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [0.0, 1.0]
@@ -291,7 +291,7 @@ tracks/0/path = NodePath("Label:visible_ratio")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1),
+"times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(0.999999, 1),
 "update": 0,
 "values": [1.0, 0.0]
@@ -383,7 +383,6 @@ mouse_filter = 1
 script = ExtResource("1_7ojih")
 
 [node name="Label" type="RichTextLabel" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -402,14 +401,12 @@ bbcode_enabled = true
 text = "[center]Blah [color=yellow]Key Word[/color] blah... blah blah blah bala shell big snail test filling the thing up and using as much[/center]"
 fit_content = true
 scroll_active = false
-visible_characters = 0
-visible_ratio = 0.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_gpio8")
 }
-speed_scale = 5.0
+speed_scale = 3.5
 
 [node name="SpriteAnchor" type="Control" parent="."]
 layout_mode = 1
@@ -425,7 +422,7 @@ grow_horizontal = 2
 mouse_filter = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteAnchor"]
-modulate = Color(1, 1, 1, 0)
+modulate = Color(100, 100, 0, 1)
 texture_filter = 1
 position = Vector2(-1, 2.72528)
 scale = Vector2(5, 5)
