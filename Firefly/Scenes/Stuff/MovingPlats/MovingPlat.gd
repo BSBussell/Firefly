@@ -202,9 +202,14 @@ func plat_launch(player: Flyph, forced: bool = false) -> bool:
 	if player.boostJumping and  player.reverseBoostJumping:
 		if sign(movement_direction.x) != sign(player.horizontal_axis):
 			movement_direction.x *= -1
-		
+		 
 	
-	if sign(player.horizontal_axis) == sign(movement_direction.x):
+	if sign(player.horizontal_axis) == sign(movement_direction.x): #or sign(player.horizontal_axis) == 0:
+		
+		if abs(player.velocity.x) < player.speed:
+			player.velocity.x = player.speed * sign(movement_direction.x)
+			player.velocity.x *= 0.75  
+		
 		player.velocity.x += ((launch_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi	  
 	
 	print(player.velocity.y)
@@ -212,9 +217,9 @@ func plat_launch(player: Flyph, forced: bool = false) -> bool:
 		player.velocity.y = player.jump_velocity
 		player.velocity.y += ((launch_velocity * movement_direction.y) * launch_multi.y) * base_launch_multi	  
 	
-	
+	 
 	#print(actual_velocity)
-	print(player.velocity.y)
+	print(player.velocity.x  )
 	if player.velocity.y < -500:
 		print("Big Jump")
 		
