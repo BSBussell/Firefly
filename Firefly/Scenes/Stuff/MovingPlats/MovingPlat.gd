@@ -207,8 +207,8 @@ func plat_launch(player: Flyph, forced: bool = false) -> bool:
 	if sign(player.horizontal_axis) == sign(movement_direction.x): #or sign(player.horizontal_axis) == 0:
 		
 		if abs(player.velocity.x) < player.speed:
-			player.velocity.x = player.speed * sign(movement_direction.x)
-			player.velocity.x *= 0.75  
+			player.velocity.x = player.speed 
+			player.velocity.x *= 0.75 * sign(movement_direction.x)
 		
 		player.velocity.x += ((launch_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi	  
 	

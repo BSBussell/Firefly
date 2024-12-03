@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_fs2gb")
-identifier = "change_this"
+identifier = "flight_tut"
 initial_dialogue = Array[String](["I know sometimes our wings get injured or we get tired, and it can just feel impossible to fly. But I've learned a bit of a trick.", "I figured out a way to use barely any effort at all, but gain maximum flight. I bet if you were to clip my wings, you wouldn't be able to stop me from flyin'.", "So, I call it [color=yellow]Glidin'![/color] So whatcha do is, instead of just flapping your wings like you got all the energy in the world, you do it strategically.", "You see, you wait 'til you need your extra height [color=yellow]in midair[/color], then you just extend your wings, just lightly vibrating them by [color=yellow]holding the spacebar down[/color].", "When you do that, you'll both gain a touch of altitude from catchin' the wind, and also you'll begin slowing your fall, allowing you to elegantly glide through the sky.", "The only limit is the peak you jump from! If you wanna try it out, try running up this cliff right up here, jump off, and start gliding!"])
 follow_up_dialogue = Array[String]([])
 victory_dialogue = false
