@@ -36,6 +36,7 @@ sprite_variant = 1
 position = Vector2(-2.08165e-12, 13)
 
 [node name="Label" type="Label" parent="MagicPlat/Debug" node_paths=PackedStringArray("plat")]
+visible = false
 offset_left = 20.0
 offset_top = -9.0
 offset_right = 39.0
