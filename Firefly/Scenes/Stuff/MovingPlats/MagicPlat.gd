@@ -27,6 +27,8 @@ func child_ready():
 			prefix = "plain_"
 		SPRITE_TYPE.RIGHT:
 			prefix = "right_"
+		SPRITE_TYPE.UPWARD:
+			prefix = "up_"
 			
 	animated_sprite_2d.play(prefix + "shimmer")
 

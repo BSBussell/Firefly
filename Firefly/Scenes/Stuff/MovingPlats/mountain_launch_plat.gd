@@ -1,6 +1,7 @@
 extends MovingPlat
 
 @export var flip_sprite: bool = false
+@export var upward: bool = false
 
 
 @onready var magic_plat: Platform = $MagicPlat
@@ -13,6 +14,12 @@ var launched: bool = false
 func child_ready():
 	
 	magic_plat.flip_sprite(flip_sprite)
+	
+	if upward:
+		magic_plat.prefix = "up_"
+		magic_plat.deactivate()
+		
+		
 	magic_plat.activate_audio.pitch_scale = 1.5
 	deactivate()
 
