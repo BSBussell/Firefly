@@ -321,7 +321,7 @@ func handle_sHop(_delta):
 		shopped = false
 
 	# Otherwise if we let go of jump, decrease their velocity
-	elif Input.is_action_just_released("Jump"):
+	elif Input.is_action_just_released("Jump") or (parent.jumping and not Input.is_action_pressed("Jump")):
 
 		# If we aren't already below ff_velocity
 		if parent.velocity.y < parent.ff_velocity:
@@ -330,6 +330,7 @@ func handle_sHop(_delta):
 
 			# Begin descent at this velocity
 			parent.velocity.y = parent.ff_velocity
+			print("Shopping")
 
 
 

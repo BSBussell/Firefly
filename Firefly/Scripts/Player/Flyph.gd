@@ -909,6 +909,7 @@ func disable_auto_glow():
 # Recalculated all the players movement properties
 # Necessary because the player parameters are described in ways that are easier to measure, and quantify
 # but also require some math in order to convert these parameters to the actual forces and changes in velocity
+# Note to Future Self: This is a huge waste of time long term, I never used this when designing levels.
 func calculate_properties():
 
 	# Recalc Speed:
