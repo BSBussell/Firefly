@@ -16,8 +16,11 @@ func ensure_folder_exists(folder_path: String):
 	var dir = DirAccess.open(folder_path)
 	if not dir:
 		var parent_dir = DirAccess.open(folder_path.get_base_dir())
-		parent_dir.make_dir(folder_path.get_file())
-		print("Created folder:", folder_path)
+		if parent_dir:
+			parent_dir.make_dir(folder_path.get_file())
+			print("Created folder:", folder_path)
+		else:
+			print("Failed to access parent directory for:", folder_path)
 
 func sync_playtest_files(source_path: String, target_path: String):
 	var source_dir = DirAccess.open(source_path)
