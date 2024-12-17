@@ -56,6 +56,7 @@ func activate_checkpoint(player: Flyph):
 		
 	active = true
 	manager.update_Active(self)
+	_persist.save_values()
 
 ## Deactivates the checkpoint
 func deactivate_checkpoint():

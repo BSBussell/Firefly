@@ -2010,6 +2010,7 @@ metadata/_better_terrain = {
 tile_set = SubResource("TileSet_18in2")
 format = 2
 layer_0/name = "Foreground"
+layer_0/modulate = Color(0.937309, 0.92365, 0.99479, 1)
 layer_0/z_index = 1
 layer_1/name = "Water"
 layer_1/tile_data = PackedInt32Array()
