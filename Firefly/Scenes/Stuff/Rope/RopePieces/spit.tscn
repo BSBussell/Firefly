@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://dw74c2tkogsdu"]
+[gd_scene load_steps=9 format=3 uid="uid://dw74c2tkogsdu"]
 
 [ext_resource type="Script" path="res://Scripts/Rope/SpitSegment.gd" id="1_e2fpp"]
-[ext_resource type="Texture2D" uid="uid://c54p0vejhh4nt" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit.png" id="1_q2tjy"]
+[ext_resource type="Material" uid="uid://c3b5bi1da1omf" path="res://Scenes/Stuff/Rope/RopePieces/glossy_material.tres" id="2_0hdlm"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_jbxgt"]
+[ext_resource type="Texture2D" uid="uid://dp56qxmdv0vpc" path="res://Scenes/Stuff/Rope/RopePieces/spit_texture.tres" id="4_yt7ja"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_yqfx0"]
 bounce = 1.0
+
+[sub_resource type="Curve" id="Curve_npv07"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.49999, 1), 0.888806, 0.888806, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+metadata/_snap_enabled = true
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h3dnq"]
 radius = 2.0
@@ -28,14 +35,51 @@ script = ExtResource("1_e2fpp")
 path_point = NodePath("Path/PathFollow2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("2_0hdlm")
 position = Vector2(0, 4)
-texture = ExtResource("1_q2tjy")
+texture = ExtResource("4_yt7ja")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="Sprite2D"]
+position = Vector2(0, 2)
+amount = 1
+speed_scale = 0.05
+randomness = 1.0
+local_coords = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+damping_min = 85.0
+damping_max = 85.0
+angle_min = -15.0
+angle_max = 15.0
+scale_amount_max = 2.5
+scale_amount_curve = SubResource("Curve_npv07")
+color = Color(0.219608, 0.34902, 0.701961, 0.588235)
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(0, 12)
-texture = ExtResource("1_q2tjy")
+position = Vector2(1, 7)
+texture = ExtResource("4_yt7ja")
+offset = Vector2(-1, 5)
+
+[node name="CPUParticles2D2" type="CPUParticles2D" parent="Sprite2D2"]
+position = Vector2(-1, 7)
+amount = 1
+speed_scale = 0.05
+randomness = 1.0
+local_coords = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+damping_min = 85.0
+damping_max = 85.0
+angle_min = -15.0
+angle_max = 15.0
+scale_amount_max = 2.5
+scale_amount_curve = SubResource("Curve_npv07")
+color = Color(0.219608, 0.34902, 0.701961, 0.588235)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 8)
 shape = SubResource("CapsuleShape2D_h3dnq")
 
@@ -43,6 +87,7 @@ shape = SubResource("CapsuleShape2D_h3dnq")
 position = Vector2(0, 16)
 
 [node name="Path" type="Path2D" parent="."]
+visible = false
 curve = SubResource("Curve2D_atb7h")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path"]
@@ -50,3 +95,8 @@ position = Vector2(0, 8)
 rotation = 1.5708
 progress = 8.0
 loop = false
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+position = Vector2(8, 8)
+texture = ExtResource("4_jbxgt")

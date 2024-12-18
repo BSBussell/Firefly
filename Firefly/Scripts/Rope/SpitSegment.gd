@@ -45,7 +45,7 @@ func connect_signal(function: Callable):
 func player_grabbed():
 	_logger.info("Segment - Emitting Grabbed Signal")
 	emit_signal("grabbed", self)
-	path_point.progress_ratio = 0.5
+	path_point.progress_ratio = 0.5 
 
 func start_cooldown(time: float) -> void:
 	root.start_cooldown(time)

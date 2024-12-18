@@ -1,0 +1,12 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://dp56qxmdv0vpc"]
+
+[ext_resource type="Texture2D" uid="uid://c54p0vejhh4nt" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit.png" id="1_yy6fc"]
+[ext_resource type="Texture2D" uid="uid://lruo01jafdef" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit_norm.png" id="2_4ogan"]
+[ext_resource type="Texture2D" uid="uid://cy6akdfiw1aey" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit_spec.png" id="3_rhnk5"]
+
+[resource]
+diffuse_texture = ExtResource("1_yy6fc")
+normal_texture = ExtResource("2_4ogan")
+specular_texture = ExtResource("3_rhnk5")
+specular_color = Color(0.890196, 0.921569, 0.34902, 1)
+specular_shininess = 0.99

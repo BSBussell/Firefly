@@ -972,25 +972,31 @@ position = Vector2(231, 2.08165e-12)
 
 [node name="Spring" parent="Springs" instance=ExtResource("41_kel7h")]
 position = Vector2(2872, -1968)
+IS_BLUE = true
 
 [node name="Spring3" parent="Springs" instance=ExtResource("41_kel7h")]
 position = Vector2(2521, -2072)
 rotation = 0.785397
+IS_BLUE = true
 
 [node name="Spring4" parent="Springs" instance=ExtResource("41_kel7h")]
 position = Vector2(2611, -2103)
 rotation = -0.785397
+IS_BLUE = true
 
 [node name="Spring6" parent="Springs" instance=ExtResource("41_kel7h")]
 position = Vector2(2546, -2156)
 rotation = 1.0472
+IS_BLUE = true
 
 [node name="Spring5" parent="Springs" instance=ExtResource("41_kel7h")]
 position = Vector2(2551, -2147)
 rotation = 1.0472
+IS_BLUE = true
 
 [node name="Spring2" parent="Springs" instance=ExtResource("41_kel7h")]
 position = Vector2(2905, -2048)
+IS_BLUE = true
 
 [node name="Death" type="Node2D" parent="."]
 
