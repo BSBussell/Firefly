@@ -124,7 +124,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 
 	# If we press jump again then we play the gliding state
-	if Input.is_action_just_pressed("Jump") and can_glide():
+	if can_glide() and parent.attempt_jump():
 		return GLIDE_STATE
 
 	_logger.info("Aerial State Input End")
