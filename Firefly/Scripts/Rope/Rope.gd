@@ -78,7 +78,6 @@ func create_joints() -> void:
 			
 			
 		if not Swingable:
-			#new_segment.set_collision_layer_value(9, false)
 			new_segment.set_deferred("collision_layer", 0)
 			new_segment.set_deferred("collision_mask", 0)
 			new_segment.modulate = disabled_tint
