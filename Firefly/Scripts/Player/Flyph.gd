@@ -366,6 +366,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if Input.is_action_just_pressed("reset"):
 			calculate_properties()
 
+	if Input.is_action_just_pressed("Kill"):
+		kill()
+
 	# Pass The Input to the State Machine
 	if not dying and not is_actor:
 		StateMachine.process_input(event)
