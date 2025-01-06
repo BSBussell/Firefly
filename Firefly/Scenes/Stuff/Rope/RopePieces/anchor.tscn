@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://8d3l1o16hc1p"]
+[gd_scene load_steps=7 format=3 uid="uid://8d3l1o16hc1p"]
 
-[ext_resource type="Texture2D" uid="uid://c54p0vejhh4nt" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit.png" id="1_vg1po"]
 [ext_resource type="Script" path="res://Scripts/Rope/SpitSegment.gd" id="1_wiwfe"]
+[ext_resource type="Texture2D" uid="uid://dp56qxmdv0vpc" path="res://Scenes/Stuff/Rope/RopePieces/spit_texture.tres" id="2_c3fp5"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_ba257"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ctwun"]
@@ -10,7 +10,13 @@
 radius = 2.0
 height = 16.0
 
-[node name="Anchor" type="RigidBody2D" node_paths=PackedStringArray("spotlight")]
+[sub_resource type="Curve2D" id="Curve2D_fqdhe"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2.08165e-12, 11)
+}
+point_count = 2
+
+[node name="Anchor" type="RigidBody2D" node_paths=PackedStringArray("spotlight", "path_point")]
 collision_layer = 256
 collision_mask = 514
 mass = 0.75
@@ -23,14 +29,15 @@ angular_damp_mode = 1
 angular_damp = 7.0
 script = ExtResource("1_wiwfe")
 spotlight = NodePath("PointLight2D")
+path_point = NodePath("Path/PathFollow2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, 4)
-texture = ExtResource("1_vg1po")
+texture = ExtResource("2_c3fp5")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 position = Vector2(0, 12)
-texture = ExtResource("1_vg1po")
+texture = ExtResource("2_c3fp5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 8)
@@ -43,3 +50,10 @@ position = Vector2(0, 8)
 color = Color(0.780392, 0.87451, 0.921569, 1)
 energy = 0.1
 texture = ExtResource("3_ba257")
+
+[node name="Path" type="Path2D" parent="."]
+curve = SubResource("Curve2D_fqdhe")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path"]
+rotation = 1.5708
+loop = false

@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://cik0pccdw0fxp"]
+
+[ext_resource type="Script" path="res://Scripts/Rope/Rope.gd" id="1_jkshs"]
+[ext_resource type="PackedScene" uid="uid://5vqm2gftly6d" path="res://Scenes/Stuff/Rope/RopePieces/rope_seg.tscn" id="2_csqrf"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_g7pa3"]
+[ext_resource type="PackedScene" uid="uid://du3u2i3yb82sp" path="res://Scenes/Stuff/Rope/RopePieces/rope_anchor.tscn" id="3_umivt"]
+[ext_resource type="Texture2D" uid="uid://belm5u2s5b1ct" path="res://Assets/Graphics/Mechanics/Rope/mountain_rope.png" id="4_x8pre"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3tpb"]
+size = Vector2(8, 8)
+
+[node name="Rope" type="Node2D"]
+z_index = -1
+script = ExtResource("1_jkshs")
+SPIT = ExtResource("2_csqrf")
+ANCHOR = ExtResource("3_umivt")
+
+[node name="Base" type="StaticBody2D" parent="."]
+collision_layer = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Base"]
+position = Vector2(2.08165e-12, -8.5)
+texture = ExtResource("4_x8pre")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Base"]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_i3tpb")
+
+[node name="Marker2D" type="Marker2D" parent="Base"]
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
+color = Color(0.211765, 0.772549, 0.956863, 1)
+energy = 2.5
+texture = ExtResource("3_g7pa3")
+texture_scale = 0.05

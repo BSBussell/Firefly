@@ -3,13 +3,13 @@
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/Tutorial.gd" id="1_pdcac"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_us1rr"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="3_iiuvo"]
-[ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/collectible_counter.tscn" id="4_uy0kn"]
-[ext_resource type="PackedScene" uid="uid://bkeka0x5vwxx7" path="res://Scenes/UI_Elements/results.tscn" id="5_xontx"]
+[ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/CollectibleCounters/collectible_counter.tscn" id="4_uy0kn"]
 [ext_resource type="PackedScene" uid="uid://gp2i0l1wqs08" path="res://Scenes/Player/Meter.tscn" id="6_8gtqn"]
 [ext_resource type="PackedScene" uid="uid://d0s632u2p275n" path="res://Core/CustomUIElements/upgrade_star.tscn" id="7_0unlf"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="7_yf0gu"]
 [ext_resource type="Texture2D" uid="uid://b1fmfctkk6alf" path="res://Assets/Graphics/Particles/leaf.png" id="8_ff3cn"]
 [ext_resource type="PackedScene" uid="uid://doyxghug75km3" path="res://Scenes/UI_Elements/Timer.tscn" id="8_uxlyn"]
+[ext_resource type="PackedScene" uid="uid://dldtioocav27m" path="res://Scenes/UI_Elements/CollectibleCounters/total_collectible_counter.tscn" id="9_flxvo"]
 [ext_resource type="PackedScene" uid="uid://cu5uu6ykpiam" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.tscn" id="9_l61ka"]
 [ext_resource type="Texture2D" uid="uid://w2h578cxmmtw" path="res://Assets/Graphics/TileMaps/Deep_Forest_Resource/bg_sky_4.png" id="9_lb22h"]
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="9_n6462"]
@@ -200,7 +200,7 @@ Text = "- Wild Woodlands -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
-ui_components = Array[PackedScene]([ExtResource("4_uy0kn"), ExtResource("2_us1rr"), ExtResource("9_l61ka"), ExtResource("3_iiuvo"), ExtResource("6_8gtqn"), ExtResource("5_xontx"), ExtResource("7_0unlf"), ExtResource("8_uxlyn")])
+ui_components = Array[PackedScene]([ExtResource("4_uy0kn"), ExtResource("2_us1rr"), ExtResource("9_l61ka"), ExtResource("3_iiuvo"), ExtResource("6_8gtqn"), ExtResource("7_0unlf"), ExtResource("8_uxlyn"), ExtResource("9_flxvo")])
 win_condition = 1
 
 [node name="Lighting" type="Node2D" parent="."]
@@ -223,7 +223,7 @@ metadata/_edit_lock_ = true
 
 [node name="Parallax" type="ParallaxBackground" parent="."]
 scroll_base_offset = Vector2(0, 7.55)
-scroll_base_scale = Vector2(1, 0.6)
+scroll_base_scale = Vector2(1, 0.25)
 
 [node name="Sky" type="ParallaxLayer" parent="Parallax"]
 motion_scale = Vector2(0, 0)
@@ -236,7 +236,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("9_lb22h")
 
 [node name="Mountains" type="ParallaxLayer" parent="Parallax"]
-motion_scale = Vector2(0.5, 0)
+motion_scale = Vector2(0.5, 0.3)
 motion_mirroring = Vector2(1024, 0)
 metadata/_edit_lock_ = true
 
@@ -247,7 +247,7 @@ texture = ExtResource("10_shfhd")
 
 [node name="Far Trees" type="ParallaxLayer" parent="Parallax"]
 position = Vector2(0, -1)
-motion_scale = Vector2(0.6, 0)
+motion_scale = Vector2(0.6, 0.4)
 motion_mirroring = Vector2(1024, 0)
 metadata/_edit_lock_ = true
 
@@ -257,7 +257,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("11_oplr5")
 
 [node name="Godrays" type="ParallaxLayer" parent="Parallax"]
-motion_scale = Vector2(0.7, 0)
+motion_scale = Vector2(0.7, 0.5)
 motion_mirroring = Vector2(1024, 0)
 metadata/_edit_lock_ = true
 
@@ -290,7 +290,7 @@ color = Color(0.890196, 0.921569, 0.34902, 1)
 color_ramp = SubResource("Gradient_ddh3k")
 
 [node name="Close Trees2" type="ParallaxLayer" parent="Parallax"]
-motion_scale = Vector2(0.8, 0)
+motion_scale = Vector2(0.8, 0.65)
 motion_mirroring = Vector2(1024, 0)
 metadata/_edit_lock_ = true
 
@@ -697,7 +697,7 @@ optional_target = NodePath("Marker2D")
 position = Vector2(-27, -31)
 
 [node name="GemManager" type="Node2D" parent="."]
-position = Vector2(359, 93)
+position = Vector2(3, -4)
 script = ExtResource("22_krb2s")
 
 [node name="JarsManager" type="Node2D" parent="." node_paths=PackedStringArray("gem_manager")]

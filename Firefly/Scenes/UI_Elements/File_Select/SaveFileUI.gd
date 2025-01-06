@@ -106,8 +106,8 @@ func set_file(path: String) -> void:
 	# Set Label Text
 	file_label.text = path.left(path.length() - 5)
 	
-	var nabbed_jars: int = _jar_tracker.num_found_jars()
-	var regged_jars: int = _jar_tracker.num_known_jars()
+	var nabbed_jars: int = _jar_tracker.total_num_found_jars()
+	var regged_jars: int = _jar_tracker.total_num_known_jars()
 	
 	jar_counter.text = "%d/%d" % [nabbed_jars, regged_jars]
 	time_string.text = _stats.get_timer_string("HH:MM:SS")

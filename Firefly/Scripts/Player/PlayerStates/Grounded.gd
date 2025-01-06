@@ -35,6 +35,7 @@ func enter() -> void:
 	parent.crouchJumping = false
 	parent.wallJumping = false
 	parent.has_glided = false
+	parent.launched = false
 	
 	parent.fastFell = parent.fastFalling
 	parent.fastFalling = false
@@ -45,9 +46,10 @@ func enter() -> void:
 	# Also disable temp gravity when landing just incase we land without falling lol
 	if parent.temp_gravity_active and parent.velocity.y >= 0:
 		parent.temp_gravity_active = false
-		parent.launched = false
 
 
+	if sign(parent.horizontal_axis ) != 0 and sign(parent.velocity.x) != sign(parent.horizontal_axis):
+		parent.velocity.x *= 0.3 
 
 	# If we're landing
 	if parent.aerial:
@@ -57,6 +59,8 @@ func enter() -> void:
 
 		# SFX
 		landing_sfx.play(0)
+		
+		
 
 		# Squish
 		if jump_buffer.time_left == 0 and not parent.launched:
@@ -194,15 +198,25 @@ func update_run_effects(direction: float) -> void:
 
 				# Start our Dust!
 				dash_dust.emitting = true
+				
+				parent.animation.speed_scale = 1.0
 
 			elif not at_run_threshold:
 				parent.current_animation = parent.ANI_STATES.WALKING
+				parent.animation.speed_scale = 1.0
+				
+			elif parent.current_animation == parent.ANI_STATES.RUNNING and parent.velocity.x > parent.speed:
+				var weight: float = parent.velocity.x / (parent.speed * 3)
+				parent.animation.speed_scale = lerpf(1.0, 2 , weight)
+			else:
+				parent.animation.speed_scale = 1.0  
 
 	# Set to idle from walking
 	if not direction:
 		if (parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING) :
 			parent.current_animation = parent.ANI_STATES.IDLE
 			run_sfx.stop()
+			parent.animation.speed_scale = 1.0
 
 	# If we're not walking go to runnings
 	if parent.current_animation != parent.ANI_STATES.RUNNING:

@@ -8,7 +8,6 @@ extends Node
 
 ## How often we pool speed for a new average
 @export var SPEED_POLL_RATE: float = 0.2
-@export var MOMENTUM_TIMER: Timer
 
 @onready var PLAYER: Flyph = $".."
 
@@ -75,9 +74,7 @@ func startup():
 	
 	glow_grow_rate = PLAYER.movement_data.GLOW_GROWTH_RATE
 	glow_decay_rate = PLAYER.movement_data.GLOW_DECAY_RATE
-	
-	MOMENTUM_TIMER.stop()
-	
+
 	# Initialize our sample array
 	score_sample = SampleArray.new(SPEED_SAMPLE_SIZE)
 	
@@ -342,9 +339,3 @@ func change_state(level: int):
 	else:
 		glow_aura.emitting = false
 	
-	
-# Timer is started when we stop moving, if we start moving again it is stopped again
-func _on_momentum_time_timeout():
-
-	# Start decaying our points
-	decaying = true

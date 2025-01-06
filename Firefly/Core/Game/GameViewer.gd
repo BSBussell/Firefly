@@ -57,6 +57,7 @@ func _ready():
 	# Connect Config change function
 	_config.connect_to_config_changed(Callable(self, "config_changed"))
 
+	config_scale = -1
 	config_changed()
 
 	# Get zoom from config
@@ -358,8 +359,10 @@ func config_changed():
 	elif (scale_changed) and not fullscreen_on: 
 		
 		# Linux window servers struggle to rescale the window without a "full screen flush"
+		# All odds given how like hand-coded my window scaling shit is, I imagine this is my own fault.
+		# However, this projects like 11 months in at this point and we goin for a summer release so :3
 		if OS.get_name() in ["Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD"]:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+			set_fullscreen_scale()
 			
 		config_scale = _config.get_setting("resolution") + win_scale_min	
 		set_windowed_scale(_config.get_setting("resolution") + win_scale_min)

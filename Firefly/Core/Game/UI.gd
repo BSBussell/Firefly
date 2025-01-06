@@ -66,7 +66,7 @@ func load_ui(context: Level) -> void:
 			if ui_components.has(dependency_name):
 				ui_component.connect_dependency(ui_components[dependency_name])
 			else:
-				push_warning("Depdency: ", dependency_name, " could not be found!")
+				push_warning("Dependency: ", dependency_name, " could not be found!")
 		
 		# Now that we've connected it's dependency we can add it to the themer
 		global_themer.add_child(ui_component)

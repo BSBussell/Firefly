@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c317aye6p4rrl"]
+
+[ext_resource type="Texture2D" uid="uid://cxsr107mxo4wb" path="res://Assets/Graphics/MISC/line_end.png" id="1_5egv4"]
+
+[node name="PlatTraceDash" type="Sprite2D"]
+texture = ExtResource("1_5egv4")

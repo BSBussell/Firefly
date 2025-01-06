@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3 uid="uid://doxntrdac8cg1"]
+
+[ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/mountain_launch_plat.gd" id="1_7ppon"]
+[ext_resource type="PackedScene" uid="uid://yp7k6wpd5yv5" path="res://Scenes/Stuff/MovingPlats/MagicPlat.tscn" id="2_nutfi"]
+[ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/PlatTrace.gd" id="3_2vvbx"]
+[ext_resource type="LabelSettings" uid="uid://cifcsfg2m6elt" path="res://UI_Theme/speedometer.tres" id="4_5osi2"]
+[ext_resource type="Script" path="res://Scenes/Stuff/MovingPlats/plat_speedometer.gd" id="5_13lrj"]
+
+[sub_resource type="Curve" id="Curve_vlj2i"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25, 1), 10.8163, 0.0, 0, 0, Vector2(0.35, 1), 0.0, 0.0, 0, 0, Vector2(0.75, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+metadata/_snap_enabled = true
+metadata/_snap_count = 20
+
+[sub_resource type="Curve" id="Curve_72v7g"]
+_data = [Vector2(0.19999, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.35, 1), 0.0, 0.0, 0, 0, Vector2(0.35001, 0), 0.0, 0.0, 0, 0, Vector2(0.49999, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 0.75), 0.0, 0.0, 0, 0, Vector2(0.8, 0.75), 0.0, 0.0, 0, 0, Vector2(0.80001, 0), 0.0, 0.0, 0, 0]
+point_count = 8
+metadata/_snap_enabled = true
+metadata/_snap_count = 20
+
+[node name="LaunchPlat" type="Path2D" node_paths=PackedStringArray("progress_node")]
+script = ExtResource("1_7ppon")
+progress_node = NodePath("PathFollow2D")
+movement_curve = SubResource("Curve_vlj2i")
+avg_velocity = 95.0
+launch_velocity = 110.0
+launch_curve = SubResource("Curve_72v7g")
+launch_multi = Vector2(2.75, 2)
+launch_threshold = -1.0
+
+[node name="MagicPlat" parent="." instance=ExtResource("2_nutfi")]
+position = Vector2(2.08165e-12, -13)
+sprite_variant = 1
+
+[node name="Debug" type="Node2D" parent="MagicPlat"]
+position = Vector2(-2.08165e-12, 13)
+
+[node name="Label" type="Label" parent="MagicPlat/Debug" node_paths=PackedStringArray("plat")]
+visible = false
+offset_left = 20.0
+offset_top = -9.0
+offset_right = 39.0
+offset_bottom = 5.0
+text = "100"
+label_settings = ExtResource("4_5osi2")
+script = ExtResource("5_13lrj")
+plat = NodePath("../../..")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+v_offset = 3.0
+rotates = false
+cubic_interp = false
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="PathFollow2D"]
+position = Vector2(2.08165e-12, -13)
+remote_path = NodePath("../../MagicPlat")
+update_rotation = false
+update_scale = false
+
+[node name="MovingPlatTrace" type="Node2D" parent="."]
+z_index = -1
+position = Vector2(2.08165e-12, -3)
+script = ExtResource("3_2vvbx")
+
+[connection signal="cycle_finished" from="." to="." method="_on_cycle_finished"]
+[connection signal="plat_extended" from="." to="." method="_on_plat_extended"]
+[connection signal="player_landed" from="MagicPlat" to="." method="_on_magic_plat_player_landed"]
+[connection signal="player_left" from="MagicPlat" to="." method="_on_magic_plat_player_left"]

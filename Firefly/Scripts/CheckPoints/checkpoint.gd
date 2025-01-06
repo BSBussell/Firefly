@@ -15,14 +15,17 @@ var active = false
 
 var manager: CheckPointManager
 
+var id: String
+
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	spotlight.set_brightness(0)
+	id = _globals.gen_id(global_position)
 	
 	if secret:
 		visible = false
-
-
 
 
 func set_manager(checkpoint_manager: CheckPointManager):
@@ -47,8 +50,13 @@ func activate_checkpoint(player: Flyph):
 	else:
 		player.set_respawn_point(player.global_position)
 		
+	
+		
+		
+		
 	active = true
 	manager.update_Active(self)
+	_persist.save_values()
 
 ## Deactivates the checkpoint
 func deactivate_checkpoint():

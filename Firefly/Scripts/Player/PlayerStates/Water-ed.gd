@@ -1,5 +1,7 @@
 extends PlayerState
 
+const WAVE_PARTICLE: PackedScene = preload("res://Scenes/Player/particles/waves.tscn")
+
 @export_subgroup("DEPENDENT STATES")
 @export var WALL_STATE: PlayerState = null
 #@export var GROUNDED_STATE: PlayerState = null
@@ -38,6 +40,10 @@ extends PlayerState
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 @onready var wet = $"../../Particles/Wet"
+@onready var wave_spawner = $"../../Particles/WaveSpawner"
+
+# Timer
+@onready var dive_cool_down = $"../../Timers/DiveCoolDown"
 
 
 # SFX
@@ -58,9 +64,6 @@ var ticks: float = 0
 # Keep track of if we have short hopped.
 var shopped: bool = false
 
-# Set if we are falling after a slide
-var slide_fall: bool = false
-
 # Called on state entrance, setup
 func enter() -> void:
 	
@@ -72,6 +75,9 @@ func enter() -> void:
 	
 	if parent.velocity.y > 150:
 		parent.velocity.y *= WATER_ENTRY_COST
+	
+	#if parent.velocity.x > parent.air_speed:
+		#parent.velocity.x *= WATER_ENTRY_COST
 
 	# Make Them BLUE!!!
 	parent.animation.set_glow(WATER_MODULATION, 1.0)
@@ -83,6 +89,8 @@ func enter() -> void:
 	ticks = 0
 	min_fall_speed = 0.0
 	parent.aerial = true
+	parent.fastFalling = false
+	parent.fastFell = true
 
 	# Enabling the appropriate Raycasts
 	right_wj_grace.enabled = true
@@ -94,9 +102,9 @@ func enter() -> void:
 	
 	parent.set_standing_collider()
 
-	
+	#dive_cool_down.stop()
 
-	slide_fall = parent.current_animation == parent.ANI_STATES.CRAWL
+	var slide_fall: bool = parent.current_animation == parent.ANI_STATES.CRAWL
 
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
 	if (not slide_fall) or (not parent.crouchJumping and parent.boostJumping) or parent.launched:
@@ -171,10 +179,6 @@ func exit() -> void:
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
 
-	# If Fast Falling Input
-	if Input.is_action_just_pressed("Dive"):
-		water_dive()
-
 	return null
 
 # Processing Physics in this state, returns nil or new state
@@ -184,7 +188,7 @@ func process_physics(delta: float) -> PlayerState:
 
 	# Grace Jumps
 	
-	handle_grace_walljump()
+	
 	handle_water_jump(delta)
 
 	# For Short Hops
@@ -211,9 +215,6 @@ func process_frame(_delta):
 
 	swimming_sfx.play(swimming_sfx.get_playback_position())
 
-	
-
-
 	# Direction Facing, don't update if we're walljumping up
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
 		if parent.velocity.x < 0 and not parent.animation.flip_h:
@@ -223,10 +224,6 @@ func process_frame(_delta):
 		elif parent.velocity.x > 0 and parent.animation.flip_h:
 			parent.animation.flip_h = false
 			parent.squish_node.squish(parent.turn_around_squash)
-
-	
-
-	pass
 
 ## Called when an animation ends. How we handle transitioning to different animations
 func animation_end() -> PlayerState:
@@ -248,7 +245,7 @@ func animation_end() -> PlayerState:
 func handle_water_jump(_delta):
 
 	# If we are able to do a coyote jump
-	if not parent.launched:
+	if not parent.launched and dive_cool_down.is_stopped():
 
 		# If the player has buffered a jump
 		if parent.attempt_jump():
@@ -265,86 +262,71 @@ func water_jump():
 
 	# Set Flags
 	parent.jumping = true
-
-	# Add a Horizontal Jump Boost to our players X velocity
-	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
-
-	# Jump Velocity
-	parent.velocity.y = parent.jump_velocity * WATER_JUMP_MULTI
-
+	short_dived = false
 	
-	# TODO: Water Jump :3
+	# Total velocity to be added
+	var jump_force: float = parent.jump_velocity * WATER_JUMP_MULTI
+	
+	# Calculate the direction vector based on input
+	var input_direction: Vector2 = Vector2(-parent.horizontal_axis, parent.vertical_axis)
+
+	# If no direction pressed we go up
+	if input_direction == Vector2.ZERO:
+		input_direction = Vector2(0, 1)
+		
+	# If we are going right we go up a tiny bit
+	elif input_direction.y == 0:
+		input_direction.y = 0.15 
+		
+
+	# Normalize the direction vector
+	input_direction = input_direction.normalized()
+
+	# Set the vectors magnitute to be the jump velocity
+	var jump_velocity_vector: Vector2 = input_direction * jump_force
+
+	# Apply the jump velocity to the parent's velocity
+	if sign(parent.velocity.x) != sign(jump_velocity_vector.x):
+		parent.velocity.x += jump_velocity_vector.x
+	else:
+		parent.velocity.x = jump_velocity_vector.x
+	
+	
+	# Apply vertical velocity
+	if jump_velocity_vector.y != 0:
+		parent.velocity.y = jump_velocity_vector.y
+
+
+	# Create wave particle
+	make_wave(input_direction)
+	
 	# Jump SFX
 	jumping_sfx.play(0)
 	
-	
+	# Squish the player
 	parent.squish_node.squish(Vector2(0.8, 1.2))
 	
 	# Animation
 	parent.current_animation = parent.ANI_STATES.PADDLE
 	parent.restart_animation = true
-
-func water_dive():
 	
-	# Set Flags
-	parent.jumping = true
-
-	# Add a Horizontal Jump Boost to our players X velocity
-	parent.velocity.x += parent.movement_data.JUMP_HORIZ_BOOST * parent.horizontal_axis
-
-	# Jump Velocity
-	parent.velocity.y = parent.jump_velocity * WATER_DIVE_MULTI
-
-	
-	# TODO: Water Jump :3
-	# Jump SFX
-	jumping_sfx.play(0)
-	
-	
-	parent.squish_node.squish(Vector2(0.8, 1.2))
-	
-	# Animation
-	parent.current_animation = parent.ANI_STATES.FALLING
-	
-	parent.restart_animation = true
-	
-
-func handle_grace_walljump() -> void:
-
-	# If we aren't being launched and aren't crouch jumping
-	if not parent.launched:
-
-		# Remove the normal wall jumps, only up or down here
-		var wall_jump_manip: float = parent.vertical_axis
-		if wall_jump_manip == 0:
-			wall_jump_manip = 1.0
-
-		# Check the shapecasts and call the walljump if we're in it
-		if right_wj_grace.is_colliding() and round(right_wj_grace.get_collision_normal(0).x) == right_wj_grace.get_collision_normal(0).x :
-			WALL_STATE.handle_walljump(wall_jump_manip, -1)
-		elif left_wj_grace.is_colliding() and round(left_wj_grace.get_collision_normal(0).x) == left_wj_grace.get_collision_normal(0).x:
-			WALL_STATE.handle_walljump(wall_jump_manip, 1)
+	# Start the cool down timer
+	dive_cool_down.start()
 
 
 
+var short_dived: bool = false
 # Whenever the player releases Jump the velocity is set to ff_velocity.
 # This is intended to be less than jump velocity. So that they can kinda get closer to their descent faster
 func handle_sHop(_delta):
 
-	# If we were launched disable shopp
-	if parent.launched:
-		shopped = false
+	
 
 	# Otherwise if we let go of jump, decrease their velocity
-	elif Input.is_action_just_released("Jump"):
+	if Input.is_action_just_released("Jump") and not dive_cool_down.is_stopped() and not short_dived:
 
-		# If we aren't already below ff_velocity
-		if parent.velocity.y < parent.ff_velocity:
-
-			shopped = true
-
-			# Begin descent at this velocity
-			parent.velocity.y = parent.ff_velocity
+			parent.velocity *= 0.8
+			short_dived = true
 
 
 
@@ -352,7 +334,7 @@ func apply_gravity(delta) -> void:
 	
 	var max_fall_speed: float = parent.movement_data.MAX_FALL_SPEED * MAX_FALL_MULTI
 
-	var base_gravity: float = AERIAL_STATE.get_gravity()
+	var base_gravity: float = parent.fall_gravity
 	var water_grav: float = base_gravity * WATER_GRAV_MULTI
 	
 	parent.velocity.y = move_toward(parent.velocity.y, max_fall_speed, -water_grav * delta)
@@ -369,7 +351,7 @@ func handle_acceleration(delta, direction) -> void:
 
 		# Slowing ourselves down in the air
 		if (abs(parent.velocity.x) > parent.air_speed and sign(parent.velocity.x) == sign(direction)):
-			waterAccel = parent.movement_data.AIR_SPEED_RECUTION
+			waterAccel = parent.movement_data.AIR_SPEED_RECUTION * 0.5	
 
 		# Speed ourselves up
 		else:
@@ -408,8 +390,13 @@ func apply_airResistance(delta, direction):
 
 	# Ok this makes the game really slippery when changing direction
 	if direction == 0:
-		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta)
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.air_frict * delta * 0.5)
 
+
+func make_wave(dir: Vector2) -> void:
+	var burst_particle: BurstParticle = WAVE_PARTICLE.instantiate()
+	burst_particle.direction = dir.normalized()
+	wave_spawner.add_child(burst_particle)
 
 # Checks the above raycasts
 func have_stand_room():

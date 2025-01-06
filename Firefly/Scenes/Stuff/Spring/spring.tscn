@@ -1,9 +1,70 @@
-[gd_scene load_steps=22 format=3 uid="uid://52vkpp5l5cdo"]
+[gd_scene load_steps=38 format=3 uid="uid://52vkpp5l5cdo"]
 
 [ext_resource type="Script" path="res://Scripts/Spring/Spring.gd" id="1_bfd0d"]
+[ext_resource type="Texture2D" uid="uid://c0o0qr43cv74f" path="res://Assets/Graphics/Mechanics/blue_spring.png" id="2_f2or3"]
 [ext_resource type="Texture2D" uid="uid://bvuqk1tkrparx" path="res://Assets/Graphics/Mechanics/spring.png" id="2_fj4jj"]
 [ext_resource type="AudioStream" uid="uid://b8jpn4y1xn7h3" path="res://Assets/SFX/Mechanics/metalSpring.mp3" id="3_454p6"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_uwhrc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_df2cs"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1dkp"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_36nx7"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sjpcc"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hbgpb"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_16snp"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nq62l"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vgfjx"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1x0ah"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(128, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ket4"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(144, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5m0g8"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(160, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vwyr3"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(176, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ixa2"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(192, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ahbk5"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(208, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekk4a"]
+atlas = ExtResource("2_f2or3")
+region = Rect2(224, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ui63l"]
 atlas = ExtResource("2_fj4jj")
@@ -67,6 +128,56 @@ region = Rect2(224, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_btwcb"]
 animations = [{
+"frames": [{
+"duration": 0.1,
+"texture": SubResource("AtlasTexture_df2cs")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_e1dkp")
+}, {
+"duration": 0.4,
+"texture": SubResource("AtlasTexture_36nx7")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_sjpcc")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_hbgpb")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_16snp")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_nq62l")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_vgfjx")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_1x0ah")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_0ket4")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_5m0g8")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_vwyr3")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_5ixa2")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_ahbk5")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_ekk4a")
+}],
+"loop": false,
+"name": &"blue_bounce",
+"speed": 20.0
+}, {
 "frames": [{
 "duration": 0.1,
 "texture": SubResource("AtlasTexture_ui63l")
@@ -137,8 +248,6 @@ z_index = -1
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_btwcb")
 animation = &"bounce"
-frame = 13
-frame_progress = 1.0
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 color = Color(0.890196, 0.921569, 0.34902, 1)

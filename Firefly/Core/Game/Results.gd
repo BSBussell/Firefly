@@ -31,8 +31,8 @@ func _process(_delta):
 	_logger.info("Result - Process")
 	
 	var display_time = _stats.get_timer_debug_string()
-	var found_jars: int = _jar_tracker.num_found_jars()
-	var known_jars: int = _jar_tracker.num_known_jars()
+	var found_jars: int = _jar_tracker.total_num_found_jars()
+	var known_jars: int = _jar_tracker.total_num_known_jars()
 
 	stats_label.text = "Time: %s\n Jars Found: %d/%d\n Total Deaths: %d" % [display_time, found_jars, known_jars, _stats.DEATHS]
 
@@ -44,7 +44,7 @@ func show_Victory_Screen():
 
 	# Update stats label
 	var display_time = _stats.get_timer_debug_string()
-	var found_jars: int = _jar_tracker.num_found_jars()
+	var found_jars: int = _jar_tracker.total_num_found_jars()
 	stats_label.text = "Time: %s\n Jars Found: %d\n Total Deaths: %d" % [display_time, found_jars, _stats.DEATHS]
 
 	displayed = true

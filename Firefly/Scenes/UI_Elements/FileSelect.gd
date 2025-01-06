@@ -29,5 +29,6 @@ func _unhandled_input(_event):
 func load_in():
 	animation_player.play("load_in")
 	
+	await animation_player.animation_finished 
 	save_container.get_child(0).grab_focus()
 	scroll_container.scroll_vertical = 0

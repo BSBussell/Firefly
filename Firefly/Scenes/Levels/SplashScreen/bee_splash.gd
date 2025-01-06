@@ -1,7 +1,7 @@
 extends Level
 
 
-@export var STEPS: int = 2
+@export var STEPS: int = 3
 @onready var ambience = $LevelAudio/Ambience
 @onready var walking = $LevelAudio/Walking
  

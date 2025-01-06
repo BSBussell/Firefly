@@ -71,7 +71,7 @@ func calc_wing_pos(delta) -> Vector2:
 	if player.StateMachine.current_state == player.GLIDING_STATE:
 		
 		
-		if player.velocity.y > 0:
+		if player.velocity.y < 0:
 			return gliding_wings(delta)
 		else:
 			return flapping_wings(delta)
@@ -91,8 +91,16 @@ func calc_wing_pos(delta) -> Vector2:
 	# Aerial Situations
 	else:
 		
+		if player.StateMachine.current_state == player.WORMED_STATE:
+			
+			if player.WORMED_STATE.climb_speed >= -5:
+				local_smoothing = smoothing * 0.2
+				return idle_wings(delta)
+			else:
+				return aerial_falling_wings(delta)
+		
 		# If we're fast falling kinda tuck in the wings
-		if player.fastFalling:
+		elif player.fastFalling:
 			local_smoothing = smoothing * 3
 			return idle_wings(delta)
 		

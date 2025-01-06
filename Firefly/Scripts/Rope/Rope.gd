@@ -1,14 +1,10 @@
 extends Node2D
 class_name Rope
 
-const SPIT = preload("res://Scenes/Stuff/Rope/RopePieces/spit.tscn")
-const JOINT = preload("res://Scenes/Stuff/Rope/RopePieces/joint.tscn")
-const ANCHOR = preload("res://Scenes/Stuff/Rope/RopePieces/anchor.tscn")
-const WORM = preload("res://Scenes/Stuff/Rope/GlowWorm/worm.tscn")
-
 ## Length of the rope
 @export var Segments: int = 5
 @export var Swingable: bool = true
+@export var disabled_tint: Color = Color("#3e3b65bf")
 
 @export_category("GlowWorm Properties")
 ## Does this rope have a glow worm?
@@ -18,6 +14,11 @@ const WORM = preload("res://Scenes/Stuff/Rope/GlowWorm/worm.tscn")
 ## How fast does the worm move?
 @export var worm_speed: float = 25
 
+@export_category("Rope Varient")
+@export var SPIT: PackedScene = preload("res://Scenes/Stuff/Rope/RopePieces/spit.tscn")
+@export var JOINT: PackedScene = preload("res://Scenes/Stuff/Rope/RopePieces/joint.tscn")
+@export var ANCHOR: PackedScene = preload("res://Scenes/Stuff/Rope/RopePieces/anchor.tscn")
+@export var WORM: PackedScene = preload("res://Scenes/Stuff/Rope/GlowWorm/worm.tscn")
 
 # Da base
 @onready var base = $Base
@@ -77,11 +78,9 @@ func create_joints() -> void:
 			
 			
 		if not Swingable:
-			# new_segment.set_collision_layer_value(9, false)
-			# new_segment.set_collision_mask_value(1, true)
 			new_segment.set_deferred("collision_layer", 0)
-			new_segment.set_deferred("collision_mask", 1)
-			new_segment.modulate = "#3e3b65bf"
+			new_segment.set_deferred("collision_mask", 0)
+			new_segment.modulate = disabled_tint
 			new_segment.set_decor()
 			
 		

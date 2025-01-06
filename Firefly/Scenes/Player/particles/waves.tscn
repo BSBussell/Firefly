@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=3 uid="uid://diyvv30ntqosd"]
+
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_6jyea"]
+[ext_resource type="Script" path="res://Scenes/Player/particles/burst_particle.gd" id="2_gf68n"]
+
+[sub_resource type="Curve" id="Curve_txael"]
+min_value = 2.13163e-14
+_data = [Vector2(0.6, 2.13163e-14), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_23p21"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.8, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="Animation" id="Animation_v43lf"]
+resource_name = "free"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_61wel"]
+_data = {
+"free": SubResource("Animation_v43lf")
+}
+
+[node name="Waves" type="CPUParticles2D"]
+emitting = false
+amount = 10
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.75
+randomness = 1.0
+texture = ExtResource("1_6jyea")
+emission_shape = 1
+emission_sphere_radius = 15.0
+spread = 22.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+angular_velocity_min = -45.0
+angular_velocity_max = 45.0
+orbit_velocity_curve = SubResource("Curve_txael")
+tangential_accel_min = -21.2
+damping_min = 25.0
+damping_max = 25.0
+scale_amount_min = 0.4
+scale_amount_max = 0.5
+scale_amount_curve = SubResource("Curve_23p21")
+color = Color(0.211765, 0.772549, 0.956863, 0.588235)
+script = ExtResource("2_gf68n")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_61wel")
+}

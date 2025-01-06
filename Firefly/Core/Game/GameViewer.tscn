@@ -39,6 +39,7 @@ snap_2d_transforms_to_pixel = true
 snap_2d_vertices_to_pixel = true
 use_hdr_2d = true
 canvas_item_default_texture_filter = 0
+canvas_item_default_texture_repeat = 1
 audio_listener_enable_2d = true
 size = Vector2i(448, 252)
 size_2d_override = Vector2i(448, 252)

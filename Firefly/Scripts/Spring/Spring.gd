@@ -9,6 +9,8 @@ signal bounce()
 @export_category("Spring Properties")
 ## The time the player is locked to a direction after a spring launch
 @export var SPRING_DIR_LOCK_TIME: float = 0.2
+## Makes the Spring Blue!
+@export var IS_BLUE: bool = false
 
 @export_subgroup("ONLY TOUCH IN PARENT SCENE")
 ## The Max height of our jump in tiles
@@ -38,6 +40,9 @@ var spring_gravity: float
 var spring_jb_velocity: float
 var spring_jb_gravity: float
 
+# Prefix used for spring animation
+var prefix: String = ""
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
@@ -50,6 +55,13 @@ func _ready() -> void:
 	var spring_jb_height: float = MAX_JUMP_BOOST_HEIGHT * 16
 	spring_jb_velocity = ((-2.0 * spring_jb_height) / JUMP_BOOST_RISE_TIME)
 	spring_jb_gravity = (-2.0 * spring_jb_height) / (JUMP_BOOST_RISE_TIME ** 2)
+	
+	# Ok, this is kinda sloppy programming, but this is the fastest way i can implement
+	# this
+	if IS_BLUE:
+		prefix = "blue_"
+		sprite_2d.play(prefix+"bounce")
+		sprite_2d.stop()
 	
 
 
@@ -101,8 +113,10 @@ func spring_down_fx() -> void:
 	
 	# Play spring bounce animation, jump to "spring pressed" frame
 	sprite_2d.stop()
-	sprite_2d.play("bounce")
-	#sprite_2d.frame = 2
+	
+	
+	sprite_2d.play(prefix + "bounce")
+	
 	
 	# Vibrate controller
 	Input.start_joy_vibration(1, 0.1, 0.3, 0.11)

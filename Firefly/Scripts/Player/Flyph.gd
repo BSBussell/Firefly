@@ -36,7 +36,10 @@ enum ANI_STATES {
 	
 	WALL_HUG,
 	WALL_SLIDE,
-	WALL_JUMP
+	WALL_JUMP,
+	
+	CLIMB,
+	SWING
 
 }
 
@@ -135,7 +138,6 @@ signal dead()
 # Timers
 #@onready var jump_buffer: Timer = $Timers/JumpBuffer
 @onready var coyote_time: Timer = $Timers/CoyoteTime
-@onready var momentum_time: Timer = $Timers/MomentumTime
 @onready var post_jump_buffer = $Timers/PostJumpBuffer
 
 
@@ -257,6 +259,7 @@ var jumping: bool = false				# If the player is rising in a jump
 var wallJumping: bool = false			# If the player is rising in a walljump
 var crouchJumping: bool = false			# If the player is rising from a crouch jump
 var boostJumping: bool = false			# If the player is boost jumping (active whole way through)
+var reverseBoostJumping: bool = false   # If the player is preforming a reverse bj
 var launched: bool = false				# If the player is rising from being launched
 
 # Used for when hitting a wall kills our velocity and we wanna get it back
@@ -300,7 +303,16 @@ func _ready() -> void:
 	
 	# Register the players save and load functions
 	if not is_actor:
-		_persist.register_persistent_class("Flyph", Callable(self, "player_save"), Callable(self, "player_load"))
+		
+		var save_func: Callable = Callable(self, "player_save")
+		var load_func: Callable = Callable(self, "player_load")
+		
+		_persist.register_persistent_class("Flyph", save_func, load_func)
+
+		# Load the position
+		if _stats.POSITION != Vector2.ZERO:
+			position = _stats.POSITION
+			_stats.POSITION = Vector2.ZERO
 
 	# Initialize the State Machine pass us to it
 	StateMachine.init(self)
@@ -354,6 +366,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if Input.is_action_just_pressed("reset"):
 			calculate_properties()
 
+	if Input.is_action_just_pressed("Kill"):
+		kill()
+
 	# Pass The Input to the State Machine
 	if not dying and not is_actor:
 		StateMachine.process_input(event)
@@ -404,10 +419,10 @@ func set_input_axis(delta: float) -> void:
 		horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
 		vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
 
-	if horizontal_axis == 0.5:
-		horizontal_axis = 1.0
-	elif horizontal_axis == -0.5:
-		horizontal_axis = -1.0
+	#if horizontal_axis == 0.5:
+		#horizontal_axis = 1.0
+	#elif horizontal_axis == -0.5:
+		#horizontal_axis = -1.0
 
 
 	# If we've just pressed an input then unlock the direction (so silly players
@@ -553,6 +568,11 @@ func update_animations():
 			animation.play("wall_slide")
 		ANI_STATES.WALL_JUMP:
 			animation.play("wall_jump")
+			
+		ANI_STATES.CLIMB:
+			animation.play("climb")
+		ANI_STATES.SWING:
+			animation.play("swing")
 
 
 
@@ -892,6 +912,7 @@ func disable_auto_glow():
 # Recalculated all the players movement properties
 # Necessary because the player parameters are described in ways that are easier to measure, and quantify
 # but also require some math in order to convert these parameters to the actual forces and changes in velocity
+# Note to Future Self: This is a huge waste of time long term, I never used this when designing levels.
 func calculate_properties():
 
 	# Recalc Speed:
@@ -963,7 +984,6 @@ func calculate_properties():
 	# Set timers
 	coyote_time.wait_time = movement_data.COYOTE_TIME
 #	jump_buffer.wait_time = movement_data.JUMP_BUFFER
-	momentum_time.wait_time = movement_data.STRICTNESS
 
 	# Visual
 	glow_trail.length = movement_data.TRAIL_LENGTH
@@ -1135,6 +1155,9 @@ func _on_hazard_detector_body_entered(_body):
 # Sets the given points as the players respawn point
 func set_respawn_point(point: Vector2):
 	starting_position = point
+	
+	_stats.POSITION = point
+	
 
 
 ## Debug Methods:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=122 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=132 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
 [ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -30,12 +30,11 @@
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
 [ext_resource type="AudioStream" uid="uid://bahbkt2kqpg2w" path="res://Assets/SFX/Water/underWater.mp3" id="20_j21pw"]
 [ext_resource type="AudioStream" uid="uid://c86u0dij278a" path="res://Assets/SFX/Water/getting_out_of_water.mp3" id="21_g6yjb"]
-[ext_resource type="AudioStream" uid="uid://caexb2m0j71la" path="res://Assets/SFX/Mechanics/swinging.mp3" id="22_q5uq7"]
-[ext_resource type="AudioStream" uid="uid://dexpkegjbcfsv" path="res://Assets/SFX/Mechanics/rope_creak.mp3" id="23_oxbt6"]
+[ext_resource type="AudioStream" uid="uid://dexpkegjbcfsv" path="res://Assets/SFX/Mechanics/rope/rope_creak.mp3" id="23_oxbt6"]
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
-[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="25_bx13g"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Grounded.gd" id="28_u1lt2"]
 [ext_resource type="AudioStream" uid="uid://boqdipngdont3" path="res://Assets/SFX/Player/flap.mp3" id="29_0m3rd"]
+[ext_resource type="AudioStream" uid="uid://bvnm0dwub1v08" path="res://Assets/SFX/Mechanics/rope/rope_stress_tighten_creak_fast_002_20973.mp3" id="29_ymtru"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Aerial.gd" id="29_yqxc8"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Wall.gd" id="30_24240"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Sliding.gd" id="31_f37eu"]
@@ -43,6 +42,7 @@
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Wormed.gd" id="33_e7xfe"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Gliding.gd" id="33_hf8q0"]
 [ext_resource type="Script" path="res://Scripts/Player/Speedometer.gd" id="36_btfxn"]
+[ext_resource type="LabelSettings" uid="uid://cifcsfg2m6elt" path="res://UI_Theme/speedometer.tres" id="42_27nfu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vnjo"]
 custom_solver_bias = 0.1
@@ -59,6 +59,30 @@ interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.1, 0.2)
 colors = PackedColorArray(1, 1, 0.670588, 1, 0.890196, 0.921569, 0.34902, 1, 0.7664, 0.8, 0.296, 1)
 metadata/_snap_enabled = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nfasu"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4224, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6win"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4288, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h6fnk"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4352, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4njf4"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4416, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqslt"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4480, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tqr8o"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4544, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bpwsx"]
 atlas = ExtResource("5_63g2f")
@@ -212,6 +236,26 @@ region = Rect2(2304, 0, 64, 64)
 atlas = ExtResource("5_63g2f")
 region = Rect2(2368, 0, 64, 64)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_0ixjk"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4608, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_etluv"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4672, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i6q4h"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4736, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x2e3k"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4800, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8vbx"]
+atlas = ExtResource("5_63g2f")
+region = Rect2(4864, 0, 64, 64)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_neoi8"]
 atlas = ExtResource("5_63g2f")
 region = Rect2(0, 0, 64, 64)
@@ -290,6 +334,29 @@ region = Rect2(4160, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_7w45f"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nfasu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6win")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h6fnk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4njf4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqslt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tqr8o")
+}],
+"loop": true,
+"name": &"climb",
+"speed": 8.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bpwsx")
@@ -466,6 +533,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_0ixjk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_etluv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i6q4h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x2e3k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8vbx")
+}],
+"loop": true,
+"name": &"swing",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_neoi8")
 }, {
 "duration": 1.0,
@@ -539,7 +626,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"wall_slide",
-"speed": 8.0
+"speed": 5.0
 }]
 
 [sub_resource type="Curve" id="Curve_grp02"]
@@ -602,9 +689,6 @@ size = Vector2(0, 6)
 font = ExtResource("10_nb4h7")
 font_size = 8
 
-[sub_resource type="LabelSettings" id="LabelSettings_yau3k"]
-font = ExtResource("25_bx13g")
-
 [node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "WALL_STATE", "GLIDING_STATE", "WATERED_STATE", "WORMED_STATE", "debug_info")]
 position = Vector2(160, 125)
 collision_layer = 5
@@ -612,6 +696,7 @@ collision_mask = 34
 floor_constant_speed = true
 floor_max_angle = 1.55334
 floor_snap_length = 7.0
+platform_on_leave = 2
 script = ExtResource("1_ikygr")
 movement_states = Array[Resource("res://Scripts/Player/MovementData.gd")]([ExtResource("2_tlkrj"), ExtResource("3_w3b7s"), ExtResource("4_66rk6")])
 GROUNDED_STATE = NodePath("StateMachine/Grounded")
@@ -711,7 +796,7 @@ num_segments = 4
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"stand up"
+animation = &"walking"
 autoplay = "idle"
 flip_h = true
 script = ExtResource("8_dying")
@@ -903,6 +988,9 @@ scale_amount_curve = SubResource("Curve_iosa0")
 color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_diik4")
 
+[node name="WaveSpawner" type="Marker2D" parent="Particles"]
+position = Vector2(0, -8)
+
 [node name="Physics" type="Node2D" parent="."]
 
 [node name="HazardDetector" type="Area2D" parent="Physics"]
@@ -1093,15 +1181,14 @@ stream = ExtResource("21_g6yjb")
 volume_db = -10.0
 bus = &"SFX"
 
-[node name="SwingingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("22_q5uq7")
-volume_db = -8.0
-pitch_scale = 2.5
+[node name="RopeTightenSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("29_ymtru")
+volume_db = -20.0
 bus = &"SFX"
 
 [node name="RopeCreakSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("23_oxbt6")
-volume_db = -4.0
+volume_db = -20.0
 bus = &"SFX"
 
 [node name="FlapSFX" type="AudioStreamPlayer2D" parent="Audio"]
@@ -1167,15 +1254,19 @@ AERIAL_STATE = NodePath("../Aerial")
 WATER_MODULATION = Color(0.443137, 0.658824, 1, 1)
 WATER_SPEED_MULTI = 0.8
 WATER_ACCEL_MULTI = 1.2
+WATER_JUMP_MULTI = 0.9
+WATER_GRAV_MULTI = 0.1
 
 [node name="Wormed" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE")]
 script = ExtResource("33_e7xfe")
 AERIAL_STATE = NodePath("../Aerial")
-min_swing_force = 800.0
-swing_down_accel = 1700.0
-swing_up_decel = 400.0
-max_jump_multi = 9.75
-boost_sj_rise_time = 0.29
+up_max_speed = 3.0
+down_max_speed = -10.0
+up_accel = 7.0
+down_accel = 20.0
+up_climb_friction = 10.0
+down_climb_friction = 16.5
+init_boosted_period_multi = 3.75
 
 [node name="Gliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE")]
 script = ExtResource("33_hf8q0")
@@ -1184,10 +1275,9 @@ WALL_STATE = NodePath("../Wall")
 GROUNDED_STATE = NodePath("../Grounded")
 SLIDING_STATE = NodePath("../Sliding")
 
-[node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("GLOW_PARTICLES", "MOMENTUM_TIMER")]
+[node name="GlowManager" type="Node" parent="." node_paths=PackedStringArray("GLOW_PARTICLES")]
 script = ExtResource("25_5it1v")
 GLOW_PARTICLES = NodePath("../Particles/SpeedParticles")
-MOMENTUM_TIMER = NodePath("../Timers/MomentumTime")
 
 [node name="Timers" type="Node" parent="."]
 
@@ -1203,8 +1293,8 @@ one_shot = true
 wait_time = 0.1
 one_shot = true
 
-[node name="MomentumTime" type="Timer" parent="Timers"]
-wait_time = 3.0
+[node name="DiveCoolDown" type="Timer" parent="Timers"]
+wait_time = 0.35
 one_shot = true
 
 [node name="CrouchJumpWindow" type="Timer" parent="Timers"]
@@ -1219,7 +1309,7 @@ offset_top = -29.0
 offset_right = 8.0
 offset_bottom = -15.0
 text = "120"
-label_settings = SubResource("LabelSettings_yau3k")
+label_settings = ExtResource("42_27nfu")
 horizontal_alignment = 1
 script = ExtResource("36_btfxn")
 
@@ -1230,4 +1320,3 @@ script = ExtResource("36_btfxn")
 [connection signal="body_entered" from="Physics/WaterDetector" to="." method="_on_water_detector_body_entered"]
 [connection signal="body_exited" from="Physics/WaterDetector" to="." method="_on_water_detector_body_exited"]
 [connection signal="body_entered" from="Physics/RopeDetector" to="." method="_on_rope_detector_body_entered"]
-[connection signal="timeout" from="Timers/MomentumTime" to="GlowManager" method="_on_momentum_time_timeout"]

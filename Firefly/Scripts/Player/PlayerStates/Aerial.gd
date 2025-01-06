@@ -124,7 +124,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 
 	# If we press jump again then we play the gliding state
-	if Input.is_action_just_pressed("Jump") and can_glide():
+	if can_glide() and parent.attempt_jump():
 		return GLIDE_STATE
 
 	_logger.info("Aerial State Input End")
@@ -170,7 +170,7 @@ func state_status():
 	_logger.info("Flyph - Aerial State Checking for State Transition")
 
 	# Make Sure we're still grounded after this
-	if parent.is_on_floor():
+	if parent.is_on_floor() and parent.velocity.y >= 0  :
 
 		# If we've gone from aerial to on the floor
 		parent.landing_speed = min_fall_speed
@@ -321,7 +321,7 @@ func handle_sHop(_delta):
 		shopped = false
 
 	# Otherwise if we let go of jump, decrease their velocity
-	elif Input.is_action_just_released("Jump"):
+	elif Input.is_action_just_released("Jump") or (parent.jumping and not Input.is_action_pressed("Jump")):
 
 		# If we aren't already below ff_velocity
 		if parent.velocity.y < parent.ff_velocity:
@@ -330,6 +330,7 @@ func handle_sHop(_delta):
 
 			# Begin descent at this velocity
 			parent.velocity.y = parent.ff_velocity
+			print("Shopping")
 
 
 

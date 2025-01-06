@@ -6,8 +6,7 @@ class_name JarCounter
 @export var ANIMATION_TIMER: Timer
 
 var COLLECTED: int = 0
-var MAX: int = 100
-
+var MAX: int = 1
 
 var out: bool = false
 
@@ -24,14 +23,23 @@ func _ready():
 		if error:
 			print(error)
 	
-	MAX = collectibles.size()
-	COLLECTED = 0
+	# Get all the jars in the level that are not blue
+	var yellow_jars: Array = _jar_tracker.filter(func (value): 
+		
+		var level_match: bool = value["level_id"] == _globals.ACTIVE_LEVEL.id
+		var is_yellow: bool = value["blue"] == false
+		return level_match and is_yellow
+		
+	)
+	
+	MAX = yellow_jars.size()
+	
+	
+	COLLECTED = _jar_tracker.num_found_jars(_globals.ACTIVE_LEVEL.id)
 	
 	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
 	
 	# Connect Blue Jars:
-	
-	
 	collectibles = get_tree().get_nodes_in_group("BlueJar")
 	for jar in collectibles:
 		
@@ -50,7 +58,19 @@ func _ready():
 
 func jar_collected(_jar: FlyJar):
 		
-	COLLECTED += 1
+	# Get the levels jars thar are not blue
+	var yellow_jars: Array = _jar_tracker.filter(func (value): 
+		
+		var level_match: bool = value["level_id"] == _globals.ACTIVE_LEVEL.id
+		var is_yellow: bool = value["blue"] == false
+		return level_match and is_yellow
+		
+	)
+	MAX = yellow_jars.size()
+	
+	
+	COLLECTED = _jar_tracker.num_found_jars(_globals.ACTIVE_LEVEL.id)
+	
 	COUNTER.text = "%d/%d" % [COLLECTED, MAX]
 	
 	peak_counter()

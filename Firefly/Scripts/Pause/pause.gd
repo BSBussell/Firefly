@@ -1,6 +1,12 @@
 extends UiComponent
 class_name PauseMenu
 
+## Called when the user pauses the game
+signal Paused
+
+## Emitted when the user unpauses the game
+signal Unpaused
+
 # AnimationPlayer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
@@ -16,7 +22,8 @@ class_name PauseMenu
 
 var paused: bool = false
 
-var counter: JarCounter = null
+var base_counter: JarCounter = null
+var counter: TotalJarCounter = null
 var game_timer: GameTimer = null
 var result_screen: VictoryScreen = null
 
@@ -24,7 +31,8 @@ func _ready():
 	
 	self.visible = false
 
-	counter = get_dependency("JarCounter", false)
+	base_counter = get_dependency("JarCounter", false)
+	counter = get_dependency("TotalJarCounter", false)
 	result_screen = get_dependency("VictoryScreen", false)
 	game_timer = get_dependency("GameTimer", true)
 
@@ -45,7 +53,8 @@ func _ready():
 
 func define_dependencies() -> void:
 	
-	define_dependency("JarCounter", counter)
+	define_dependency("JarCounter", base_counter)
+	define_dependency("TotalJarCounter", counter)
 	define_dependency("VictoryScreen", result_screen)
 	define_dependency("GameTimer", game_timer)
 
@@ -90,11 +99,16 @@ func pause():
 	# Set flag
 	paused = true
 	
+	if base_counter:
+		base_counter.hide_counter(0.1)
+	
 	# If there is a counter to display, display it:
 	if counter:
 		counter.show_counter()
+		
 	
-	# Yeah i have no idea whats goin on here
+	
+	# Waiting for the animaiton to finish feels laggier 
 	await get_tree().create_timer(0.1).timeout
 	
 	resume_button.silence()

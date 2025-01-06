@@ -1,20 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://bauphk2cyg5tr"]
+[gd_scene load_steps=7 format=3 uid="uid://bauphk2cyg5tr"]
 
 [ext_resource type="Script" path="res://Scripts/Rope/Rope.gd" id="1_5syat"]
 [ext_resource type="Texture2D" uid="uid://cd35jl6vuxohb" path="res://Assets/Graphics/Mechanics/Rope/base.png" id="1_fgnty"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_ob0ul"]
+[ext_resource type="Texture2D" uid="uid://c54p0vejhh4nt" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit.png" id="4_ryj4p"]
+[ext_resource type="Script" path="res://Scenes/Stuff/Rope/drip.gd" id="5_5h4hg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3tpb"]
 size = Vector2(8, 8)
 
 [node name="Rope" type="Node2D"]
-z_index = -1
+z_index = 1
 script = ExtResource("1_5syat")
+disabled_tint = Color(0.8, 0.8, 0.8, 0.392157)
 
 [node name="Base" type="StaticBody2D" parent="."]
 collision_layer = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="Base"]
+z_index = -1
 position = Vector2(0, -4)
 texture = ExtResource("1_fgnty")
 
@@ -26,7 +30,29 @@ shape = SubResource("RectangleShape2D_i3tpb")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 visible = false
+z_index = 1
+scale = Vector2(1, 1.2)
 color = Color(0.211765, 0.772549, 0.956863, 1)
-energy = 2.5
+energy = 3.0
 texture = ExtResource("3_ob0ul")
 texture_scale = 0.05
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 2
+lifetime = 5.0
+one_shot = true
+speed_scale = 0.2
+randomness = 1.0
+lifetime_randomness = 1.0
+texture = ExtResource("4_ryj4p")
+emission_shape = 3
+emission_rect_extents = Vector2(2, 2.08165e-12)
+gravity = Vector2(2.08165e-12, 9800)
+angle_min = -15.0
+angle_max = 15.0
+scale_amount_min = 0.3
+scale_amount_max = 0.7
+script = ExtResource("5_5h4hg")
+
+[connection signal="finished" from="CPUParticles2D" to="CPUParticles2D" method="_on_finished"]
