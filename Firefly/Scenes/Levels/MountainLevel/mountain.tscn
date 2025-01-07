@@ -405,6 +405,7 @@ jar_manager = NodePath("JarManager")
 gem_manager = NodePath("GemManager")
 ui_components = Array[PackedScene]([ExtResource("2_gu43t"), ExtResource("4_lbsyo"), ExtResource("5_ii5yd"), ExtResource("6_u084r"), ExtResource("3_elh37"), ExtResource("7_x5rfv"), ExtResource("8_g0d32"), ExtResource("1_iqxgk"), ExtResource("9_f48xt"), ExtResource("9_f48xt")])
 id = 2
+win_condition = 1
 
 [node name="PP + FX" type="Node2D" parent="."]
 visible = false
