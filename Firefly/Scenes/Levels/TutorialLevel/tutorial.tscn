@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://cbgoqx8kcalop"]
+[gd_scene load_steps=61 format=3 uid="uid://cbgoqx8kcalop"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/Tutorial.gd" id="1_pdcac"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_us1rr"]
@@ -41,6 +41,7 @@
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="30_sxkh0"]
 [ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="31_6tkka"]
 [ext_resource type="PackedScene" uid="uid://cqmn1d67osiw6" path="res://Core/spawn_point.tscn" id="32_wpwx5"]
+[ext_resource type="PackedScene" uid="uid://bxcdath6ecs0s" path="res://Scenes/NPC/Purple.tscn" id="42_jw5vj"]
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
 min_value = -0.5
@@ -190,6 +191,9 @@ shader_parameter/ray2_intensity = 0.3
 shader_parameter/color = Color(0.211765, 0.772549, 0.956863, 0.686275)
 shader_parameter/hdr = true
 shader_parameter/seed = -108.54
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ouxtq"]
+size = Vector2(86, 70)
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = ExtResource("1_pdcac")
@@ -648,7 +652,7 @@ position = Vector2(-8.10001, 9)
 texture = ExtResource("30_bbc3m")
 
 [node name="SpringLaunch2" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
-position = Vector2(-2279, -905)
+position = Vector2(-2250, -1458)
 collision_mask = 1
 level = NodePath("../..")
 dialogue_file = "res://Assets/DialogueData/Signs/Grass/SpringBoost.json"
@@ -754,10 +758,10 @@ position = Vector2(-434, -476)
 position = Vector2(-2906, -902)
 
 [node name="FlyJar19" parent="JarsManager" instance=ExtResource("25_pmv25")]
-position = Vector2(-2203, -926)
+position = Vector2(-2190, -1418)
 
 [node name="FlyJar20" parent="JarsManager" instance=ExtResource("25_pmv25")]
-position = Vector2(-2370, -960)
+position = Vector2(-2327, -1131)
 
 [node name="FlyJar17" parent="JarsManager" instance=ExtResource("25_pmv25")]
 position = Vector2(-2794, -510)
@@ -893,6 +897,28 @@ position = Vector2(63, 159)
 position = Vector2(-2974, -420)
 id = "cave"
 
+[node name="NPC" type="Node2D" parent="."]
+
+[node name="Purple" parent="NPC" instance=ExtResource("42_jw5vj")]
+z_index = -1
+position = Vector2(-2194, -897)
+
+[node name="VioletDialogue" parent="NPC/Purple" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
+position = Vector2(9, -14)
+collision_mask = 1
+level = NodePath("../../..")
+dialogue_file = "res://Assets/DialogueData/Purple/teaser.json"
+talk_target = NodePath("Marker2D")
+blend_priority = -1
+blend_override = 0.3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC/Purple/VioletDialogue"]
+position = Vector2(-10, 9)
+shape = SubResource("RectangleShape2D_ouxtq")
+
+[node name="Marker2D" type="Marker2D" parent="NPC/Purple/VioletDialogue"]
+position = Vector2(-9, -16)
+
 [connection signal="body_entered" from="Events/Crouch_Tut" to="Events/Crouch_Tut" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/Crouch_Tut" to="Events/Crouch_Tut" method="_on_body_exited"]
 [connection signal="body_entered" from="Events/UP_WJ_Tut" to="Events/UP_WJ_Tut" method="_on_body_entered"]
@@ -914,3 +940,6 @@ id = "cave"
 [connection signal="body_exited" from="Events/SpringLaunch2" to="Events/SpringLaunch2" method="_on_body_exited"]
 [connection signal="finish_dialogue" from="Events/SpringLaunch2" to="Events/SpringLaunch2" method="_on_finish_dialogue"]
 [connection signal="area_entered" from="LoadingZones/levelChangr" to="LoadingZones/levelChangr" method="_on_area_entered"]
+[connection signal="body_entered" from="NPC/Purple/VioletDialogue" to="NPC/Purple/VioletDialogue" method="_on_body_entered"]
+[connection signal="body_exited" from="NPC/Purple/VioletDialogue" to="NPC/Purple/VioletDialogue" method="_on_body_exited"]
+[connection signal="finish_dialogue" from="NPC/Purple/VioletDialogue" to="NPC/Purple/VioletDialogue" method="_on_finish_dialogue"]

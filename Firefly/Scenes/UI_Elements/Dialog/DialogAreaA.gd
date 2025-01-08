@@ -56,11 +56,11 @@ func load_file() -> void:
 			if not dialogue_data:
 				printerr("Error: Could not read " + str(json_string) + " as JSON")
 		else:
-			printerr("Error: Could not open file: " + str(dialogue_file))
+			printerr("Error: Could not open file: " + str(dialogue_file)) 
 	
 ## Event Function when Body Enters DialogueArea
 func _on_body_entered(body: Node2D) -> void:
-	if body as Flyph:
+	if body as Flyph and not body.is_actor:
 		
 		# Enable the Process Loop
 		set_process(true)

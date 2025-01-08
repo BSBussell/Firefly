@@ -128,7 +128,7 @@ func update_window_size(win_scale: float = -1) -> void:
 	print(window_size)
 	
 	# Force Standardized Footage Recording Resolution
-	if false:
+	if true:
 		 # Yeah obs being weird but this gives me 1080p output so
 		window_size = Vector2(1920,1098)
 		base_aspect_ratio = Vector2(320,183)
