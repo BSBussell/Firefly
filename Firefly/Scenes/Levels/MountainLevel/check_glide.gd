@@ -1,7 +1,7 @@
 extends DialogueArea2D
 
 
-@export var super_secret_based_dialogue: DialogueData
+@export_file("*.json") var super_secret_based_dialogue: String
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

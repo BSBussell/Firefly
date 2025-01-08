@@ -210,9 +210,11 @@ func handle_walljump(vc_direction, dir = 0):
 			post_jump_buffer.start() 
 
 func set_walljump_flags(jump_dir: float) -> void:
-	# Set Global Flags
+	
+	# Set Global Flags  
 	parent.wallJumping = true
 	parent.current_wj_dir = jump_dir
+	parent.fastFalling = false # No Longer apply fast fall gravity
 	
 	# Have Walljumps interrupt temp gravity(this won't interrupt launches)
 	if parent.temp_gravity_active:	
