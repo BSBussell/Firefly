@@ -138,6 +138,9 @@ func spring_jump() -> void:
 	
 	var ff_check: bool = flyph.fastFalling or flyph.fastFell or flyph.boostJumping
 	
+	# See if we're sliding
+	ff_check = ff_check or flyph.SLIDING_STATE.can_boost_jump()
+	
 	# Check if player is boosting upward by pressing a on the spring
 	# This is ordered intentionally to not consume a jump if the player is already jumping
 	if ff_check:
