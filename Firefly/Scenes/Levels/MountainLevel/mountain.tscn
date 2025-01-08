@@ -1,4 +1,4 @@
-[gd_scene load_steps=105 format=3 uid="uid://b8k3u2ibutssg"]
+[gd_scene load_steps=99 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="1_iqxgk"]
@@ -33,15 +33,11 @@
 [ext_resource type="Texture2D" uid="uid://dradkaxdcmqy6" path="res://Assets/Graphics/TileMaps/Mountain/sign.png" id="22_wysd2"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="27_ubtw2"]
 [ext_resource type="Script" path="res://Scenes/Levels/MountainLevel/give_glide.gd" id="27_vcrks"]
-[ext_resource type="Resource" uid="uid://bcfcc10gt6lo4" path="res://Assets/DialogueData/flight_tut.tres" id="28_40e6g"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/DialogueFile.gd" id="28_eycno"]
-[ext_resource type="Resource" uid="uid://dytr768efg10k" path="res://Assets/DialogueData/flight_flap_explain.tres" id="30_d14he"]
 [ext_resource type="Script" path="res://Scripts/CheckPoints/checkpointManager.gd" id="30_l82lc"]
 [ext_resource type="PackedScene" uid="uid://bw3m3mutdqjbd" path="res://Scenes/Checkpoint/mountain_checkpoint.tscn" id="30_mc4or"]
-[ext_resource type="Resource" uid="uid://bj076v80h0gld" path="res://Scenes/Levels/MountainLevel/TunnelTips1.tres" id="32_4roqm"]
 [ext_resource type="PackedScene" uid="uid://b5syfsbo715ra" path="res://Scenes/Collectibles/BlueJar.tscn" id="32_oig70"]
 [ext_resource type="Script" path="res://Scenes/Levels/MountainLevel/check_glide.gd" id="32_vvucd"]
-[ext_resource type="Resource" uid="uid://bkhdj1u3gttse" path="res://Assets/DialogueData/thanks_4_playin.tres" id="33_pjuys"]
 [ext_resource type="PackedScene" uid="uid://dahf17mect811" path="res://Scenes/Stuff/Log/mtn_plat_3.tscn" id="34_yetiq"]
 [ext_resource type="PackedScene" uid="uid://cxx8cxk47hjnl" path="res://Scenes/Stuff/Log/mtn_plat_2.tscn" id="35_av2vi"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="39_3mwtf"]
@@ -106,26 +102,12 @@ shader_parameter/seed = 6.855
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rvlin"]
 size = Vector2(86, 70)
 
-[sub_resource type="Resource" id="Resource_2xnve"]
-script = ExtResource("28_eycno")
-identifier = "change_this"
-initial_dialogue = Array[String](["[color=red]Violet Tips # 24:[/color] If you find yourself falling short when trying to launch from a magic platform.", "Try getting a running start before jumping off!"])
-follow_up_dialogue = Array[String](["Summarize what was said above but exasperated"])
-victory_dialogue = false
-
 [sub_resource type="Resource" id="Resource_2h2ca"]
 script = ExtResource("28_eycno")
 identifier = "change_this"
 initial_dialogue = Array[String](["WOWZERS!!! You're incredible!!!", "I don't even know what to say, I'm frankly just so greatful you enjoyed my game enough to the point you could do this!", "Sincerely, Thank You. Players like you are the type of player I only dreamt of when I started this project. And it really means a lot that you found it worth undertaking this challenge.", "Send a screenshot of this screen to my community server, and I'll include you in the game in some form or another.", "And again, from my entire heart, thank you so much, for playing my game.[right]~ Bee[/right]"])
 follow_up_dialogue = Array[String](["Summarize what was said above but exasperated"])
 victory_dialogue = true
-
-[sub_resource type="Resource" id="Resource_ires0"]
-script = ExtResource("28_eycno")
-identifier = "change_this"
-initial_dialogue = Array[String](["Warning: The preceding area is inadvisable to cross without wings! Larva are not advised to continue!", "(ok, so i know what the sign says, but if you get a running start down this slight hill you can use that slide jump maneuver Poppy invented in order to make it through!!)"])
-follow_up_dialogue = Array[String](["Summarize what was said above but exasperated"])
-victory_dialogue = false
 
 [sub_resource type="Curve2D" id="Curve2D_gxdmj"]
 _data = {
@@ -817,7 +799,6 @@ position = Vector2(2318, -2848)
 collision_mask = 1
 script = ExtResource("27_vcrks")
 level = NodePath("../..")
-dialogue = ExtResource("28_40e6g")
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
@@ -838,7 +819,6 @@ position = Vector2(368, -1648)
 collision_mask = 1
 script = ExtResource("27_vcrks")
 level = NodePath("../..")
-dialogue = ExtResource("30_d14he")
 talk_target = NodePath("../FlightGiver/Marker2D")
 blend_priority = 0
 
@@ -858,7 +838,6 @@ texture = ExtResource("22_wysd2")
 position = Vector2(1741, -288)
 collision_mask = 1
 level = NodePath("../..")
-dialogue = ExtResource("32_4roqm")
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
@@ -878,7 +857,6 @@ texture = ExtResource("22_wysd2")
 position = Vector2(1592, -1872)
 collision_mask = 1
 level = NodePath("../..")
-dialogue = SubResource("Resource_2xnve")
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
@@ -900,7 +878,6 @@ collision_mask = 1
 script = ExtResource("32_vvucd")
 super_secret_based_dialogue = SubResource("Resource_2h2ca")
 level = NodePath("../..")
-dialogue = ExtResource("33_pjuys")
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
@@ -920,7 +897,6 @@ texture = ExtResource("22_wysd2")
 position = Vector2(1254, -880)
 collision_mask = 1
 level = NodePath("../..")
-dialogue = SubResource("Resource_ires0")
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 

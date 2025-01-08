@@ -8,7 +8,7 @@ class_name DialogueUiComponent
 @onready var hoverAnim = $SpriteAnchor/hoverAnim
 
 var current_dialogue
-var current_dialogue_arr: Array[String]
+var current_dialogue_arr: Array
 var current_loc: int = 0
 var dialogue_up: bool = false
 
@@ -43,19 +43,16 @@ func _process(_delta):
 
 
 # Initiates Dialogue by setting text_bo
-func initiate_dialogue(text: DialogueData, repeat: bool) -> void:
+func initiate_dialogue(text: Dictionary, repeat: bool) -> void:
 	
 	dialogue_up = true
 	
 	current_dialogue = text
-	current_dialogue_arr = text.initial_dialogue if not repeat else text.follow_up_dialogue
+	current_dialogue_arr = text["dialogue"]
 	current_loc = 0
 	
 	# Set the dialogue text, for smoother visuals replace with animation
 	set_text(current_dialogue_arr[current_loc])
-	
-	# Show the dialogue box
-	#text_box.show()
 	
 	# Play Animations
 	hoverAnim.play("hover")
@@ -63,8 +60,6 @@ func initiate_dialogue(text: DialogueData, repeat: bool) -> void:
 	await animation_player.animation_finished
 	animation_player.play("show_text")
 	await animation_player.animation_finished
-	
-	
 	
 	# Enable Process Loop to look for button Presses
 	set_process(true)
@@ -79,7 +74,6 @@ func next_dialogue():
 	
 	# Set the dialogue text, for smoother visuals replace with animation
 	set_text(current_dialogue_arr[current_loc])
-	
 	
 	# Roate the diamond 
 	animated_sprite_2d.play("rotate")
@@ -107,7 +101,7 @@ func finish_dialogue() -> void:
 	
 	animation_player.play("hide_bubble")
 	
-	if current_dialogue.victory_dialogue:
+	if current_dialogue["victory_dialogue"]:
 		context.emit_win_signal()
 
 

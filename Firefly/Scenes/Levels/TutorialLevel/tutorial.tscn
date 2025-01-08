@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://cbgoqx8kcalop"]
+[gd_scene load_steps=59 format=3 uid="uid://cbgoqx8kcalop"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/Tutorial.gd" id="1_pdcac"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_us1rr"]
@@ -35,14 +35,11 @@
 [ext_resource type="PackedScene" uid="uid://d2r3fdnd3npfh" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="26_vi2mq"]
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/GlowTutorial.gd" id="27_s6n8v"]
 [ext_resource type="Script" path="res://Scenes/Camera/CameraTriggers/CameraTarget.gd" id="27_y6ox2"]
-[ext_resource type="Resource" uid="uid://b2xstp1kvx5vo" path="res://Assets/DialogueData/GlowSign.tres" id="28_jstyy"]
 [ext_resource type="Script" path="res://Scripts/Level/ChangeLevel.gd" id="28_rysps"]
 [ext_resource type="PackedScene" uid="uid://bn0ibiwauibvx" path="res://Scenes/Enemies/walking_enemy.tscn" id="29_dubhh"]
 [ext_resource type="Texture2D" uid="uid://co0mh2m065aja" path="res://Assets/Graphics/TileMaps/Forest_Tile_Set_Extended/Forest_Sign.png" id="30_bbc3m"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="30_sxkh0"]
 [ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="31_6tkka"]
-[ext_resource type="Resource" uid="uid://b7venstdw8jlv" path="res://Assets/DialogueData/SlideBoost.tres" id="31_aqm4y"]
-[ext_resource type="Resource" uid="uid://rbrlqtl2lbly" path="res://Assets/DialogueData/SpringBoost.tres" id="31_oyrcj"]
 [ext_resource type="PackedScene" uid="uid://cqmn1d67osiw6" path="res://Core/spawn_point.tscn" id="32_wpwx5"]
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
@@ -598,7 +595,7 @@ libraries = {
 position = Vector2(-103, -76)
 script = ExtResource("27_s6n8v")
 level = NodePath("../..")
-dialogue = ExtResource("28_jstyy")
+dialogue_file = "res://Assets/DialogueData/GlowSign.json"
 talk_target = NodePath("Marker2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Events/ForestSign"]
@@ -612,7 +609,6 @@ position = Vector2(0, -19)
 position = Vector2(-1139, -49)
 collision_mask = 1
 level = NodePath("../..")
-dialogue = ExtResource("31_aqm4y")
 talk_target = NodePath("Marker2D")
 blend_priority = -1
 blend_override = 0.3
@@ -633,7 +629,6 @@ texture = ExtResource("30_bbc3m")
 position = Vector2(-1128, -241)
 collision_mask = 1
 level = NodePath("../..")
-dialogue = ExtResource("31_oyrcj")
 talk_target = NodePath("../SlideBoost/Marker2D")
 blend_priority = -1
 blend_override = 0.3
@@ -654,7 +649,6 @@ texture = ExtResource("30_bbc3m")
 position = Vector2(-2279, -905)
 collision_mask = 1
 level = NodePath("../..")
-dialogue = ExtResource("31_oyrcj")
 talk_target = NodePath("../SlideBoost/Marker2D")
 blend_priority = -1
 blend_override = 0.3
