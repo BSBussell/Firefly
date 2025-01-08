@@ -1,0 +1,19 @@
+{
+  "identifier": "THX",
+  "dialogue": [
+    "Wow, You did it, I mean I guess that's all I got you at this point! Feel free to experiment, around with the game and let me know what you think.",
+
+    "More will be coming soon, I promise! I have a ton of ideas for the rest of this level, and I can't wait to see what you think of them!",
+    "If you have any feedback, please reach out to me through some channel, either from the itch.io page or the Community Discord server.",
+
+    "In the meanwhile, the game comes with a speedrun timer, and there is a running leaderboard that I'd love to see your name on!.",
+
+    "So if you'd like to restart your progress and go for a better time, enable the timer in the settings menu.",
+
+    "Then press [color=yellow]'~' + 'Delete'[/color] keys to restart the game to the very beginning. Or you could just use your current runs time if you're happy with it!",
+
+    "Good Luck, and Thank you for playing!"
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": true
+}

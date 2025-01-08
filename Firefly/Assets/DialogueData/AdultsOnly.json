@@ -1,0 +1,10 @@
+{
+  "identifier": "ADULTS_ONLY",
+  "dialogue": [
+	"Warning: The preceding area is inadvisable to cross without wings! Larva are not advised to continue!",
+
+	"(ok, so i know what the sign says, but if you get a running start down this slight hill you can use that slide jump maneuver Poppy invented in order to make it through!!)"
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

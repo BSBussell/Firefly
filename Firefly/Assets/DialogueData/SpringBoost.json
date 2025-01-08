@@ -1,0 +1,16 @@
+{
+  "identifier": "SpringBoost",
+  "dialogue": [
+    "Alrighty bestie, so at this point you're prolly pretty familar with a spring right?!",
+
+    "Of course you are. So I'm sure you know if you touch one you'll be sent flyin' through the sky right? Well what if I told you I know how you could be sent flyin' even [color=yellow]further?[/color]",
+
+    "So this is actually super easy, all ya gotta do, is fall onto the spring, [color=yellow]fast-ly.[/color]",
+
+    "If you're fallin' fast onto a spring, you'll be launched way further, it's awesome.",
+
+    "If you need pointers on falling fast, all ya gotta do, is [color=yellow]press down [/color] in midair to tuck in your wings. Do that, and you'll drop like a rock onto that spring."
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

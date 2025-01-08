@@ -799,6 +799,7 @@ position = Vector2(2318, -2848)
 collision_mask = 1
 script = ExtResource("27_vcrks")
 level = NodePath("../..")
+dialogue_file = "res://Assets/DialogueData/FlightTut.json"
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
@@ -819,6 +820,7 @@ position = Vector2(368, -1648)
 collision_mask = 1
 script = ExtResource("27_vcrks")
 level = NodePath("../..")
+dialogue_file = "res://Assets/DialogueData/FlapTut.json"
 talk_target = NodePath("../FlightGiver/Marker2D")
 blend_priority = 0
 
@@ -838,6 +840,7 @@ texture = ExtResource("22_wysd2")
 position = Vector2(1741, -288)
 collision_mask = 1
 level = NodePath("../..")
+dialogue_file = "res://Assets/DialogueData/Momentum_Cancel_Tip.json"
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
@@ -857,6 +860,7 @@ texture = ExtResource("22_wysd2")
 position = Vector2(1592, -1872)
 collision_mask = 1
 level = NodePath("../..")
+dialogue_file = "res://Assets/DialogueData/Tip_24.json"
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
@@ -878,6 +882,7 @@ collision_mask = 1
 script = ExtResource("32_vvucd")
 super_secret_based_dialogue = SubResource("Resource_2h2ca")
 level = NodePath("../..")
+dialogue_file = "res://Assets/DialogueData/Thx4Playn.json"
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
@@ -897,6 +902,7 @@ texture = ExtResource("22_wysd2")
 position = Vector2(1254, -880)
 collision_mask = 1
 level = NodePath("../..")
+dialogue_file = "res://Assets/DialogueData/AdultsOnly.json"
 talk_target = NodePath("Marker2D")
 blend_priority = 0
 
