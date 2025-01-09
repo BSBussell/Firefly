@@ -87,6 +87,7 @@ func _process(delta):
 	# If we haven't enabled glow yet then we don't do anything
 	if not GLOW_ENABLED:
 		update_meter()
+		GLOW_PARTICLES.emitting = false
 		return
 	
 	# Always enable glow_point growth
@@ -185,7 +186,7 @@ func glow_point_visual() -> void:
 	# Otherforms, check if the number of glow points is increasing from the prev
 	var point_growth: bool = movement_level > 0 and (prev_glow_points < glow_points or glow_points == glow_points_max)
 	
-	if base_speed or point_growth:
+	if (base_speed or point_growth) and not PLAYER.dying:
 		
 		GLOW_PARTICLES.emitting = true
 		GLOW_PARTICLES.direction.x = 1 if (PLAYER.animation.flip_h) else -1

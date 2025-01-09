@@ -416,8 +416,15 @@ func set_input_axis(delta: float) -> void:
 	# is enough for my player to move considerably slower than like i want them to... so built in UCF???
 	# If we aren't an actor take user input
 	if not is_actor:
+		
 		horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
 		vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
+		
+		# If we're holding up,
+		if vertical_axis > 0.0:
+			print(horizontal_axis)
+			print(sign(horizontal_axis))
+			horizontal_axis = sign(horizontal_axis)
 
 	#if horizontal_axis == 0.5:
 		#horizontal_axis = 1.0
@@ -1059,6 +1066,8 @@ func kill():
 	# Prevent double calls mid death
 	if dying: return
 
+	dying = true
+
 	# Reset the glow_trail
 	glow_trail.clear_points()
 
@@ -1089,7 +1098,7 @@ func kill():
 	sliding_sfx.stop()
 	wall_slide_sfx.stop()
 	
-	dying = true
+	
 	
 	if StateMachine.current_state == WORMED_STATE or StateMachine.current_state == GLIDING_STATE:
 		StateMachine.change_state(AERIAL_STATE)

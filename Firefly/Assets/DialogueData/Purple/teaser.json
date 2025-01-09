@@ -1,15 +1,15 @@
 {
   "identifier": "teaser",
   "dialogue": [
-	"[font_size=64]Hi! My name is [color=red]Violet![/color][/font_size]",
+	"[font_size=128]Hi! My name is [color=red]Violet![/color][/font_size]",
 	
-	"[font_size=48]Finding [color=yellow]your family[/color] without your wings is [font_size=64]NOT[/font_size] going to be easy.[/font_size]",
+	"[font_size=96]Finding [color=yellow]your family[/color] without your wings is [font_size=128]NOT[/font_size] going to be easy.[/font_size]",
 	
-	"[font_size=48]You'll need every [color=yellow]trick[/color] in the book[/font_size]",
+	"[font_size=96]You'll need every [color=yellow]trick[/color] in the book[/font_size]",
 	
-	"[font_size=64]and then some...[/font_size]",
+	"[font_size=128]and then some...[/font_size]",
 	
-	"[font_size=64]So [color=red]Good Luck[/color], you're gonna need it.[/font_size]"
+	"[font_size=128]So [color=red]Good Luck[/color], you're gonna need it.[/font_size]"
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

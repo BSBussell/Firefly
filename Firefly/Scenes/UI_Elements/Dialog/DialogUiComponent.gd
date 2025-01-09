@@ -69,16 +69,19 @@ func initiate_dialogue(text: Dictionary, repeat: bool) -> void:
 
 func next_dialogue():
 	
-	# Clear Text Animation
-	animation_player.play("wipe_text")
-	
-	# Set the dialogue text, for smoother visuals replace with animation
-	set_text(current_dialogue_arr[current_loc])
-	
 	# Roate the diamond 
 	animated_sprite_2d.play("rotate")
 	
-	# Show the text
+	# Clear Text Animation
+	animation_player.play("wipe_text")
+	
+	# Wait for text to be cleared
+	await animation_player.animation_finished
+	
+	# Set the dialogue text
+	set_text(current_dialogue_arr[current_loc])
+	
+	# Reveal the text
 	animation_player.play("show_text")
 	
 	# Wait for animation to finish

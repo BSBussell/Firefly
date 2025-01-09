@@ -7,13 +7,14 @@ func _ready():
 	
 	animation_player.play("RESET")  
 	await get_tree().create_timer(1.0).timeout
-	animation_player.play("splash")
+	#animation_player.play("splash")
 
 
 func _input(event):
 	if not _loader.loading:
 		if event.is_action("ui_accept"):
-			_loader.load_level("res://Scenes/Levels/TitleScreen/title_screen.tscn")
+			animation_player.play("splash")
+			#_loader.load_level("res://Scenes/Levels/TitleScreen/title_screen.tscn")
 	
 
 
