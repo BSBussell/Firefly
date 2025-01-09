@@ -11,8 +11,8 @@ class_name Meter
 @onready var fire_lit = $Meter/FireLit
 @onready var fire_rumble = $Meter/FireRumble
 @onready var rays = $Rays
-@onready var brighten = $Control/Brighten
-@onready var darkening = $Control/Darkening
+@onready var brighten = $MeterGlobal/LightPos/Brighten
+@onready var darkening = $MeterGlobal/DarkPos/Darkening
 
 
 var actual_score: float = 0
