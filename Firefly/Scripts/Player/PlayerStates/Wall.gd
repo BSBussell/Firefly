@@ -349,7 +349,12 @@ func general_walljump(walljump_type: int, disable_drift: bool, jump_velocity: Ve
 	parent.velocity.x += jump_velocity.x * jump_dir
 	
 	if parent.velocity.y < 0:
-		parent.velocity.y *= 0.75
+		
+		if parent.launched:
+			parent.velocity.y *= 0.6
+		else:
+			parent.velocity.y *= 0.5
+			
 		parent.velocity.y += jump_velocity.y	
 	else:
 		parent.velocity.y = jump_velocity.y	

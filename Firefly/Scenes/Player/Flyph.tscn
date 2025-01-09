@@ -1029,7 +1029,7 @@ position = Vector2(0, -8)
 position = Vector2(3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
-target_position = Vector2(3, 0)
+target_position = Vector2(1, 0)
 max_results = 1
 collision_mask = 18
 
@@ -1037,7 +1037,7 @@ collision_mask = 18
 position = Vector2(-3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
-target_position = Vector2(-3, 0)
+target_position = Vector2(-1, 0)
 max_results = 1
 collision_mask = 18
 

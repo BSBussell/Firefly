@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://cvxhf2cu04nb6"]
+[gd_scene load_steps=52 format=3 uid="uid://cvxhf2cu04nb6"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/CaveLevel/cave_level.gd" id="1_bfl7c"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_s8gsc"]
@@ -18,6 +18,7 @@
 [ext_resource type="AudioStream" uid="uid://b2opcksxr5n35" path="res://Assets/Music/GlowWorm_Cavern.wav" id="9_r5lfn"]
 [ext_resource type="PackedScene" uid="uid://dldtioocav27m" path="res://Scenes/UI_Elements/CollectibleCounters/total_collectible_counter.tscn" id="9_v2hst"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="10_4b7ke"]
+[ext_resource type="PackedScene" uid="uid://cu5uu6ykpiam" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.tscn" id="10_7wqkv"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="11_ev1sj"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="12_0kfi3"]
 [ext_resource type="Script" path="res://Scripts/Level/ChangeLevel.gd" id="13_8cde2"]
@@ -35,6 +36,8 @@
 [ext_resource type="PackedScene" uid="uid://devc8u3nmd12o" path="res://Scenes/Stuff/Log/cave_plat_2.tscn" id="19_f4rja"]
 [ext_resource type="PackedScene" uid="uid://b7bmtk42yrdbf" path="res://Scenes/Stuff/Log/cave_plat_1.tscn" id="20_v46vy"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="21_h1irh"]
+[ext_resource type="PackedScene" uid="uid://bxcdath6ecs0s" path="res://Scenes/NPC/Purple.tscn" id="36_xjo6d"]
+[ext_resource type="PackedScene" uid="uid://d2r3fdnd3npfh" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="37_tv3ja"]
 
 [sub_resource type="Gradient" id="Gradient_vagcp"]
 offsets = PackedFloat32Array(0, 0.1, 0.2, 0.9, 1)
@@ -237,13 +240,16 @@ size = Vector2(103.5, 138)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c8xov"]
 size = Vector2(221, 168)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qbo2a"]
+size = Vector2(86, 70)
+
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = ExtResource("1_bfl7c")
 Text = "- GlowWorm Caverns -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
-ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("4_moxw1"), ExtResource("5_by1im"), ExtResource("6_pkwh7"), ExtResource("7_h4wtv"), ExtResource("8_kstwy"), ExtResource("9_v2hst")])
+ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("4_moxw1"), ExtResource("5_by1im"), ExtResource("6_pkwh7"), ExtResource("7_h4wtv"), ExtResource("8_kstwy"), ExtResource("9_v2hst"), ExtResource("10_7wqkv")])
 id = 1
 win_condition = 1
 
@@ -1367,7 +1373,32 @@ id = "cave_exit"
 [node name="FlyJar" parent="." instance=ExtResource("12_0kfi3")]
 position = Vector2(375, -783)
 
+[node name="NPC" type="Node2D" parent="."]
+
+[node name="Purple" parent="NPC" instance=ExtResource("36_xjo6d")]
+z_index = -1
+position = Vector2(1041, -80)
+
+[node name="VioletDialogue" parent="NPC/Purple" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("37_tv3ja")]
+position = Vector2(9, -14)
+collision_mask = 1
+level = NodePath("../../..")
+dialogue_file = "res://Assets/DialogueData/Purple/teaser.json"
+talk_target = NodePath("Marker2D")
+blend_priority = -1
+blend_override = 0.3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC/Purple/VioletDialogue"]
+position = Vector2(-10, 9)
+shape = SubResource("RectangleShape2D_qbo2a")
+
+[node name="Marker2D" type="Marker2D" parent="NPC/Purple/VioletDialogue"]
+position = Vector2(-9, -16)
+
 [connection signal="body_entered" from="Events/UnderWaterTutorial" to="Events/UnderWaterTutorial" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/UnderWaterTutorial" to="Events/UnderWaterTutorial" method="_on_body_exited"]
 [connection signal="area_entered" from="LoadingZones/Meadow" to="LoadingZones/Meadow" method="_on_area_entered"]
 [connection signal="area_entered" from="LoadingZones/Tutorial" to="LoadingZones/Tutorial" method="_on_area_entered"]
+[connection signal="body_entered" from="NPC/Purple/VioletDialogue" to="NPC/Purple/VioletDialogue" method="_on_body_entered"]
+[connection signal="body_exited" from="NPC/Purple/VioletDialogue" to="NPC/Purple/VioletDialogue" method="_on_body_exited"]
+[connection signal="finish_dialogue" from="NPC/Purple/VioletDialogue" to="NPC/Purple/VioletDialogue" method="_on_finish_dialogue"]

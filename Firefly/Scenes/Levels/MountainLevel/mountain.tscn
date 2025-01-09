@@ -1,4 +1,4 @@
-[gd_scene load_steps=97 format=3 uid="uid://b8k3u2ibutssg"]
+[gd_scene load_steps=99 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="1_iqxgk"]
@@ -43,6 +43,7 @@
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/Spring/spring.tscn" id="41_kel7h"]
 [ext_resource type="Script" path="res://Scripts/Rope/RopeManager.gd" id="44_4lc01"]
 [ext_resource type="PackedScene" uid="uid://dgetkxutmuyh5" path="res://Scenes/Stuff/MovingPlats/mtn_movingPlat.tscn" id="44_5my7t"]
+[ext_resource type="PackedScene" uid="uid://bxcdath6ecs0s" path="res://Scenes/NPC/Purple.tscn" id="46_3vat8"]
 [ext_resource type="PackedScene" uid="uid://cik0pccdw0fxp" path="res://Scenes/Stuff/Rope/mtn_rope.tscn" id="46_rg5qq"]
 [ext_resource type="PackedScene" uid="uid://doxntrdac8cg1" path="res://Scenes/Stuff/MovingPlats/mtn_launchPlat.tscn" id="50_w0xxd"]
 
@@ -370,6 +371,9 @@ _data = {
 "points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2.08165e-12, -100)
 }
 point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1fgin"]
+size = Vector2(86, 70)
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = SubResource("GDScript_0jk77")
@@ -849,7 +853,7 @@ position = Vector2(-8.10001, 9)
 texture = ExtResource("22_wysd2")
 
 [node name="RunningStartTip" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("20_r20go")]
-position = Vector2(1592, -1872)
+position = Vector2(985, -2297)
 collision_mask = 1
 level = NodePath("../..")
 dialogue_file = "res://Assets/DialogueData/Signs/MTN/Tip_24.json"
@@ -1316,6 +1320,29 @@ position = Vector2(2731, -2129)
 curve = SubResource("Curve2D_epl8b")
 upward = true
 
+[node name="NPC" type="Node2D" parent="."]
+
+[node name="Purple" parent="NPC" instance=ExtResource("46_3vat8")]
+z_index = -1
+position = Vector2(1586, -1856)
+scale = Vector2(-1, 1)
+
+[node name="VioletDialogue" parent="NPC/Purple" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("20_r20go")]
+position = Vector2(9, -14)
+collision_mask = 1
+level = NodePath("../../..")
+dialogue_file = "res://Assets/DialogueData/Purple/teaser.json"
+talk_target = NodePath("Marker2D")
+blend_priority = -1
+blend_override = 0.3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NPC/Purple/VioletDialogue"]
+position = Vector2(-10, 9)
+shape = SubResource("RectangleShape2D_1fgin")
+
+[node name="Marker2D" type="Marker2D" parent="NPC/Purple/VioletDialogue"]
+position = Vector2(-9, -16)
+
 [connection signal="body_entered" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_body_exited"]
 [connection signal="finish_dialogue" from="Events/FlightGiver" to="Events/FlightGiver" method="_on_finish_dialogue"]
@@ -1335,3 +1362,6 @@ upward = true
 [connection signal="body_exited" from="Events/Warning" to="Events/Warning" method="_on_body_exited"]
 [connection signal="finish_dialogue" from="Events/Warning" to="Events/Warning" method="_on_finish_dialogue"]
 [connection signal="area_entered" from="Loading/levelChangr" to="Loading/levelChangr" method="_on_area_entered"]
+[connection signal="body_entered" from="NPC/Purple/VioletDialogue" to="NPC/Purple/VioletDialogue" method="_on_body_entered"]
+[connection signal="body_exited" from="NPC/Purple/VioletDialogue" to="NPC/Purple/VioletDialogue" method="_on_body_exited"]
+[connection signal="finish_dialogue" from="NPC/Purple/VioletDialogue" to="NPC/Purple/VioletDialogue" method="_on_finish_dialogue"]
