@@ -79,6 +79,11 @@ func startup():
 	score_sample = SampleArray.new(SPEED_SAMPLE_SIZE)
 	
 	
+	var config_changed: Callable = Callable(self, "config_changed")
+	_config.connect_to_config_changed(config_changed)
+	config_changed.call()
+	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -103,44 +108,40 @@ func _process(delta):
 		
 		decay_points(delta)
 		
+	if auto_glow and round(glow_points) >= 100 :
+		promote()
 		
-	# Upgrading is the glow up is pressed and score is peaked
-	auto_glow = _config.get_setting("auto_glow") and movement_level < max_level
-	
-	
-	# If we haven't maxed out yet
-	if movement_level <= max_level:
-		
-		# If we've reached 100 and trigged glow up (either thorugh button or auto glow does it)
-		if round(glow_points) >= 100 and (Input.is_action_just_pressed("Glow_Up") or auto_glow):
-			promote()
-
-	# If Glow down is pressed and we're not at the bottom
-	if movement_level > 0 and Input.is_action_just_pressed("Glow_Down"):
-		
-		var saved_points: int = int(glow_points)
-		
-		demote()
-		
-		# Ok just a little exploit pre-fixing, if the player is below 30% on the score thing,
-		# dont enable them to easily get glow again. Just to prevent an "off and on again" meta when low on points
-		glow_points = 100.0 if saved_points > 30 else glow_points
-	
-	
 	glow_point_visual()
-	
 	update_meter()
 	
+	
+func _input(event: InputEvent) -> void:
+	
+	# If we press glow up
+	if event.is_action_pressed("Glow_Up"):
+		
+		# Demote and boost in auto glow mode
+		if auto_glow and demote(): 
+			PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
+			
+			
+		# Otherwise if we have enough points use them to promote
+		elif not auto_glow and round(glow_points) >= 100:
+			promote()
+	
+	# If we press glow down
+	elif event.is_action_pressed("Glow_Down"):
+		
+		# If we can demote, demote and give the player a speed boost if they want it
+		if demote(): 
+			PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)	
+	
+	return	
 	
 func update_meter() -> void:
 	# Update our meter
 	var glow_meter_percentage: int = floor(glow_points)
 	
-	# In auto glow mode, the meter measures how close to max speed we are
-	if _config.get_setting("auto_glow"):
-		glow_meter_percentage = floor((glow_points + (100 * movement_level)) / (100 * max_level) * 100)
-		
-		
 	# Signal to the meter to change its visual
 	emit_signal("glow_meter_changed", glow_meter_percentage)
 
@@ -278,8 +279,6 @@ func promote(starting_points: int = 50) -> bool:
 
 	if movement_level < max_level:
 		
-		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
-		
 		change_state(movement_level + 1)
 		
 		# Setup new points
@@ -291,11 +290,8 @@ func promote(starting_points: int = 50) -> bool:
 		
 		return true
 		
-	# Just use the boost and consume points
-	else:
-		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
-		glow_points = 10
-		return false
+	return false
+
 
 # How we should be accessing change_state() 99% of the time unless debug mode
 func demote() -> bool:
@@ -339,3 +335,6 @@ func change_state(level: int):
 	else:
 		glow_aura.emitting = false
 	
+	
+func config_changed():   
+	auto_glow = _config.get_setting("auto_glow")

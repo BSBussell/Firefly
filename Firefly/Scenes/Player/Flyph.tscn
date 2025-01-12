@@ -890,6 +890,38 @@ scale_amount_max = 0.2
 color = Color(3, 3, 0, 1)
 color_ramp = SubResource("Gradient_r3nhe")
 
+[node name="BoostFX" type="CPUParticles2D" parent="Particles"]
+modulate = Color(3, 3, 1, 1)
+z_index = -1
+position = Vector2(-1, -9)
+emitting = false
+amount = 50
+lifetime = 1.1
+one_shot = true
+explosiveness = 0.7
+randomness = 0.32
+texture = ExtResource("8_shld8")
+emission_shape = 3
+emission_rect_extents = Vector2(1, 5)
+spread = 17.32
+gravity = Vector2(0, -20)
+initial_velocity_min = 45.0
+initial_velocity_max = 60.0
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+orbit_velocity_min = -0.1
+orbit_velocity_max = 0.1
+radial_accel_min = -10.0
+radial_accel_max = 10.0
+damping_min = 0.1
+damping_max = 0.2
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.1
+scale_amount_max = 0.2
+color = Color(3, 3, 0, 1)
+color_ramp = SubResource("Gradient_r3nhe")
+
 [node name="WallSlideDust" parent="Particles" instance=ExtResource("9_c4aqh")]
 z_index = 1
 position = Vector2(0, -8)

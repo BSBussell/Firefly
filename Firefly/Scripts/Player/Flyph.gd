@@ -122,6 +122,7 @@ signal dead()
 @onready var wet = $Particles/Wet
 @onready var slide_dust = $Particles/SlideDust
 @onready var dash_dust = $Particles/DashDust
+@onready var boost_fx = $Particles/BoostFX
 
 # Particle Spawners
 @onready var jump_dust_spawner = $Particles/JumpDustSpawner
@@ -1005,6 +1006,11 @@ func calculate_properties():
 func give_boost(boost_speed: float) -> void:
 
 	velocity.x += boost_speed * horizontal_axis
+	
+	# TODO: Fun Particles!
+	if abs(horizontal_axis) > 0:
+		boost_fx.emitting = true
+		boost_fx.direction.x = sign(horizontal_axis)
 
 
 var temp_gravity_active: bool = false
