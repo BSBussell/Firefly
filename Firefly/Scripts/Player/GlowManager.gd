@@ -121,8 +121,9 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Glow_Up"):
 		
 		# Demote and boost in auto glow mode
-		if auto_glow and demote(): 
+		if auto_glow:
 			PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
+			demote()
 			
 			
 		# Otherwise if we have enough points use them to promote
@@ -133,8 +134,9 @@ func _input(event: InputEvent) -> void:
 	elif event.is_action_pressed("Glow_Down"):
 		
 		# If we can demote, demote and give the player a speed boost if they want it
-		if demote(): 
-			PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)	
+		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)	
+		demote()
+		
 	
 	return	
 	
