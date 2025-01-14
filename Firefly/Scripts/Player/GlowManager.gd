@@ -117,25 +117,25 @@ func _process(delta):
 	
 func _input(event: InputEvent) -> void:
 	
+	var glow_boost: float = PLAYER.movement_data.GLOW_UPGRADE_BOOST
+	
 	# If we press glow up
 	if event.is_action_pressed("Glow_Up"):
 		
 		# Demote and boost in auto glow mode
-		if auto_glow:
-			PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)
-			demote()
-			
+		if auto_glow and demote():
+			PLAYER.give_boost(glow_boost)
 			
 		# Otherwise if we have enough points use them to promote
 		elif not auto_glow and round(glow_points) >= 100:
 			promote()
 	
 	# If we press glow down
-	elif event.is_action_pressed("Glow_Down"):
+	elif event.is_action_pressed("Glow_Down") and demote():
 		
 		# If we can demote, demote and give the player a speed boost if they want it
-		PLAYER.give_boost(PLAYER.movement_data.GLOW_UPGRADE_BOOST)	
-		demote()
+		PLAYER.give_boost(glow_boost)	
+		
 		
 	
 	return	
