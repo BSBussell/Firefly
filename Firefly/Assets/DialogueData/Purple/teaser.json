@@ -1,19 +1,19 @@
 {
   "identifier": "teaser",
   "dialogue": [
-	"[font_size=96][font_size=128]Hello![/font_size] My name is [font_size=160][color=red]Violet![/color][/font_size][/font_size]",
+	"[font_size=48][font_size=64]Hello![/font_size] My name is [font_size=80][color=red]Violet![/color][/font_size][/font_size]",
 	
-	"[font_size=96]Finding [color=yellow]your family[/color] with broken wings is [font_size=128]NOT[/font_size] going to be easy.[/font_size]",
+	"[font_size=48]Finding [color=yellow]your family[/color] with broken wings is [font_size=64]NOT[/font_size] going to be easy.[/font_size]",
 	
-	"[font_size=128]Buttttttttttttttt, I'll help you[/font_size]",
+	"[font_size=64]Buttttttttttttttt, I'll help you[/font_size]",
 	
-	"[font_size=96]They're called [color=#36c5f4]Glow Worms[/color]. They're kinda like you actually with the [color=#36c5f4]glowing[/color] and all.[/font_size]",
+	"[font_size=48]They're called [color=#36c5f4]Glow Worms[/color]. They're kinda like you actually with the [color=#36c5f4]glowing[/color] and all.[/font_size]",
+	   
+	"[font_size=64]You're gonna need every [color=yellow]trick[/color] in the book[/font_size]",
 	
-	"[font_size=128]You're gonna need every [color=yellow]trick[/color] in the book[/font_size]",
+	"[font_size=64]and then some...[/font_size]",
 	
-	"[font_size=128]and then some...[/font_size]",
-	
-	"[font_size=128][color=red]Good Luck[/color], you're gonna need it.[/font_size]"
+	"[font_size=64][color=red]Good Luck[/color], you're gonna need it.[/font_size]"
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

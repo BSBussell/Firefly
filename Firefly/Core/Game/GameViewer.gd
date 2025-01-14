@@ -75,22 +75,34 @@ func _ready():
 		#set_fullscreen_scale()
 
 
+var zoom_cooldown: bool = false
 func _input(_event: InputEvent) -> void:
 	
 	
-		
+	if zoom_cooldown:
+		return
 			
 
 	## All these handle is the zooming in and out of gam
-	if Input.is_action_pressed("scale_inc"):
+	if Input.is_action_just_pressed("scale_inc") and res_scale < 1.4:
 		
 		res_scale = move_toward(res_scale, 1.4, 0.05)
 		smoothly_zoom_render(res_scale)     
+		
+		zoom_cooldown = true
+		
+		await get_tree().create_timer(0.05).timeout
+		zoom_cooldown = false
 	
-	elif Input.is_action_pressed("scale_dec"):
+	elif Input.is_action_just_pressed("scale_dec") and res_scale > 0.5:
 		
 		res_scale = move_toward(res_scale, 0.5, 0.05)
 		smoothly_zoom_render(res_scale)
+		
+		zoom_cooldown = true
+		
+		await get_tree().create_timer(0.05).timeout
+		zoom_cooldown = false
 
 
 
@@ -130,7 +142,7 @@ func update_window_size(win_scale: float = -1) -> void:
 	# Force Standardized Footage Recording Resolution
 	if true:
 		 # Yeah obs being weird but this gives me 1080p output so
-		window_size = Vector2(3840,2160)
+		window_size = Vector2(1920,1080)
 		base_aspect_ratio = Vector2(320,180)
 		window_scale =  ceil(window_size.x / base_aspect_ratio.x)
 	

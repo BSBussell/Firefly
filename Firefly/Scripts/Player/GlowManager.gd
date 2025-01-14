@@ -138,8 +138,8 @@ func update_meter() -> void:
 	var glow_meter_percentage: int = floor(glow_points)
 	
 	# In auto glow mode, the meter measures how close to max speed we are
-	if _config.get_setting("auto_glow"):
-		glow_meter_percentage = floor((glow_points + (100 * movement_level)) / (100 * max_level) * 100)
+	#if _config.get_setting("auto_glow"):
+		#glow_meter_percentage = floor((glow_points + (100 * movement_level)) / (100 * max_level) * 100)
 		
 		
 	# Signal to the meter to change its visual

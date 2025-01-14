@@ -51,7 +51,15 @@ func process_physics(delta: float) -> State:
 	move_camera(delta)
 	return check_state()
 
+
+var freeze: bool = false
 func move_camera(delta):
+	
+	if Input.is_action_just_pressed("camera_stop"):
+		freeze = not freeze
+	
+	if freeze:
+		return
 	
 	var target_position = calculate_target_position(delta)
 	

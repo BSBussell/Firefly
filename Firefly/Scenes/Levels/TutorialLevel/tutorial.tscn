@@ -536,6 +536,7 @@ libraries = {
 }
 
 [node name="FF_Tut" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
+visible = false
 z_index = -1
 position = Vector2(946, -260)
 scale = Vector2(0.75, 0.75)
@@ -610,6 +611,7 @@ shape = SubResource("RectangleShape2D_08e63")
 position = Vector2(0, -19)
 
 [node name="SlideBoost" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
+visible = false
 position = Vector2(-1139, -49)
 collision_mask = 1
 level = NodePath("../..")
