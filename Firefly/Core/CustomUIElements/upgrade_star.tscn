@@ -32,6 +32,7 @@ amount = 48
 lifetime = 1.1
 one_shot = true
 explosiveness = 0.78
+randomness = 1.0
 local_coords = true
 texture = ExtResource("1_3f2yx")
 emission_shape = 3

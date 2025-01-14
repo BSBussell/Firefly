@@ -108,7 +108,7 @@ func _process(delta):
 		
 		decay_points(delta)
 		
-	if auto_glow and round(glow_points) >= 100 :
+	if auto_glow and round(glow_points) >= 100 and movement_level < max_level:
 		promote()
 		
 	glow_point_visual()
