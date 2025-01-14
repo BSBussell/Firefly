@@ -13,6 +13,33 @@ offsets = PackedFloat32Array(0, 0.930769, 1)
 colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.890196, 0.921569, 0.34902, 1, 1, 1, 1, 0)
 
 [node name="Star_Control" type="Control"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_1g5pq")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 180.0
+scale = Vector2(6, 6)
+mouse_filter = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(320, 180)
+render_target_update_mode = 4
+
+[node name="StarPosition" type="Control" parent="SubViewportContainer/SubViewport"]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -21,31 +48,32 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
-mouse_filter = 2
-script = ExtResource("1_1g5pq")
 
-[node name="Star" type="CPUParticles2D" parent="."]
+[node name="burst_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition"]
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 emitting = false
-amount = 48
-lifetime = 1.1
+amount = 64
+lifetime = 0.45
 one_shot = true
-explosiveness = 0.78
+speed_scale = 0.5
+explosiveness = 0.75
 randomness = 1.0
 local_coords = true
 texture = ExtResource("1_3f2yx")
 emission_shape = 3
-emission_rect_extents = Vector2(1920, 10)
+emission_rect_extents = Vector2(160, 10)
 gravity = Vector2(0, -1960)
-orbit_velocity_min = -0.01
-orbit_velocity_max = 0.01
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+orbit_velocity_min = -0.05
+orbit_velocity_max = 0.05
 damping_min = 8.908
 damping_max = 8.908
 angle_min = -180.0
 angle_max = 180.0
-scale_amount_min = 2.0
-scale_amount_max = 3.0
+scale_amount_min = 0.1
+scale_amount_max = 0.3
 scale_amount_curve = SubResource("Curve_fjbh2")
 color = Color(1, 1, 0.337255, 1)
 color_ramp = SubResource("Gradient_k6x1h")
