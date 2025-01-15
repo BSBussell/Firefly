@@ -1,10 +1,10 @@
 extends Node
 
-var viewer = null
+var viewer: GameViewer = null
 
-var game_viewport_container = null
-var game_viewport = null
+var game_viewport_container: LevelLoader = null
+var game_viewport: Viewport = null
 
-var ui_viewport_container = null
-var ui_viewport = null
+var ui_viewport_container: UiLoader = null
+var ui_viewport: Viewport = null
 

@@ -38,7 +38,8 @@ var poll_count: float = 0.0
 # If promotions/demotions are automated
 var auto_glow: bool = false
 
-
+# Particles UI
+var particle_ui: UiComponent = null
 
 
 # The number of points they've gained. If they reach max they can promotion
@@ -84,6 +85,13 @@ func startup():
 	config_changed.call()
 	
 	
+	var ui_loader: UiLoader = _viewports.ui_viewport_container
+	await ui_loader.FinishedLoading
+	particle_ui = ui_loader.get_component("StarParticles")
+	if particle_ui == null:
+		printerr("Glow Manager failed to get Particle UI :<")
+	
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -126,6 +134,8 @@ func _input(event: InputEvent) -> void:
 		if auto_glow and demote():
 			PLAYER.give_boost(glow_boost)
 			
+			particle_ui.burst(32)
+			
 		# Otherwise if we have enough points use them to promote
 		elif not auto_glow and round(glow_points) >= 100:
 			promote()
@@ -135,6 +145,8 @@ func _input(event: InputEvent) -> void:
 		
 		# If we can demote, demote and give the player a speed boost if they want it
 		PLAYER.give_boost(glow_boost)	
+		
+		particle_ui.burst(32)
 		
 		
 	
@@ -213,9 +225,21 @@ func glow_point_visual() -> void:
 	
 	## If we can power up, emit the "Glow Aura"
 	if glow_points == 100:
-		glow_aura.emitting = true
+		glow_aura.emitting = true		
 	elif movement_level != max_level:
 		glow_aura.emitting = false
+		 
+	if particle_ui:
+		
+		var speed: float = lerpf(-0.05, 0.15, (glow_points/100))
+		speed += (movement_level*0.2)
+		#if movement_level == max_level:
+			#speed += 0.2 	
+		
+		if speed > 0.05:		
+			particle_ui.toggle_burn(true, speed)
+		else:
+			particle_ui.toggle_burn(false, 0.2 )
 
 
 # Returns the current speed normalized to "expected" max speeds.
