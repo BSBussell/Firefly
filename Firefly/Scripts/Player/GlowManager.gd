@@ -233,8 +233,7 @@ func glow_point_visual() -> void:
 		
 		var speed: float = lerpf(-0.05, 0.15, (glow_points/100))
 		speed += (movement_level*0.2)
-		#if movement_level == max_level:
-			#speed += 0.2 	
+		 	
 		
 		if speed > 0.05:		
 			particle_ui.toggle_burn(true, speed)
