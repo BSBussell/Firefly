@@ -1,4 +1,4 @@
-[gd_scene load_steps=104 format=3 uid="uid://b8k3u2ibutssg"]
+[gd_scene load_steps=107 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="1_iqxgk"]
@@ -32,10 +32,10 @@
 [ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="20_e2f7v"]
 [ext_resource type="PackedScene" uid="uid://d2r3fdnd3npfh" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="20_r20go"]
 [ext_resource type="Texture2D" uid="uid://dradkaxdcmqy6" path="res://Assets/Graphics/TileMaps/Mountain/sign.png" id="22_wysd2"]
-[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="27_u2r4d"]
+[ext_resource type="Texture2D" uid="uid://cmc7wjhhrqhuy" path="res://Assets/Graphics/Particles/dust_small.png" id="25_887jd"]
+[ext_resource type="Texture2D" uid="uid://bc0hcvuvmjblf" path="res://Assets/Graphics/Particles/dust_line.png" id="26_fayyt"]
 [ext_resource type="PackedScene" uid="uid://rlrtgfd0qf8k" path="res://Scenes/Collectibles/FlyJar.tscn" id="27_ubtw2"]
 [ext_resource type="Script" path="res://Scenes/Levels/MountainLevel/give_glide.gd" id="27_vcrks"]
-[ext_resource type="Texture2D" uid="uid://cowopgmei7pv4" path="res://Assets/Graphics/Particles/speed_particle.png" id="28_45hjm"]
 [ext_resource type="Script" path="res://Scripts/CheckPoints/checkpointManager.gd" id="30_l82lc"]
 [ext_resource type="PackedScene" uid="uid://bw3m3mutdqjbd" path="res://Scenes/Checkpoint/mountain_checkpoint.tscn" id="30_mc4or"]
 [ext_resource type="PackedScene" uid="uid://b5syfsbo715ra" path="res://Scenes/Collectibles/BlueJar.tscn" id="32_oig70"]
@@ -95,6 +95,20 @@ colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.666667, 1, 1, 1, 1, 1, 1, 1, 1,
 metadata/_snap_enabled = true
 metadata/_snap_count = 12
 
+[sub_resource type="Curve" id="Curve_25f4v"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, -1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 5
+metadata/_snap_enabled = true
+metadata/_snap_count = 4
+
+[sub_resource type="Curve" id="Curve_kp705"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+metadata/_snap_count = 4
+
 [sub_resource type="Curve" id="Curve_t518d"]
 _data = [Vector2(0, 0.9), 0.0, -0.148742, 0, 0, Vector2(1, 0), -6.0, 0.0, 0, 0]
 point_count = 2
@@ -105,6 +119,13 @@ offsets = PackedFloat32Array(0, 0.166667, 0.25, 0.75, 0.833333, 0.9, 1)
 colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.666667, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.784314, 1, 1, 1, 0.588235, 1, 1, 1, 0)
 metadata/_snap_enabled = true
 metadata/_snap_count = 12
+
+[sub_resource type="Curve" id="Curve_4pwob"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, -1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 5
+metadata/_snap_enabled = true
+metadata/_snap_count = 8
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i174w"]
 resource_local_to_scene = true
@@ -448,15 +469,12 @@ position = Vector2(0, 25)
 texture = ExtResource("1_7m5tg")
 
 [node name="CyanStars" parent="SkyLayer/Sky" instance=ExtResource("3_hd06y")]
-amount = 4
 color = Color(0.286275, 0.905882, 0.92549, 1)
 
 [node name="WhiteStars" parent="SkyLayer/Sky" instance=ExtResource("3_hd06y")]
-amount = 4
 color = Color(1, 0.968627, 0.972549, 1)
 
 [node name="RedStars" parent="SkyLayer/Sky" instance=ExtResource("3_hd06y")]
-amount = 4
 
 [node name="Light Filter2" type="CanvasModulate" parent="SkyLayer"]
 color = Color(0.635294, 0.490196, 0.956863, 1)
@@ -784,7 +802,6 @@ bus = &"Ambience"
 [node name="Particles" type="Node2D" parent="."]
 
 [node name="Foreground" type="Node2D" parent="Particles"]
-visible = false
 z_index = 100
 
 [node name="Dust" type="CPUParticles2D" parent="Particles/Foreground"]
@@ -792,11 +809,11 @@ modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 position = Vector2(-68, -32)
 amount = 15
-lifetime = 1.2
+lifetime = 0.25
 speed_scale = 0.2
 randomness = 1.0
 lifetime_randomness = 0.1
-texture = ExtResource("27_u2r4d")
+texture = ExtResource("25_887jd")
 emission_shape = 3
 emission_rect_extents = Vector2(640, 576)
 direction = Vector2(-1, 0.2)
@@ -812,24 +829,21 @@ linear_accel_min = -0.54
 linear_accel_max = 26.56
 damping_min = 8.908
 damping_max = 8.908
-angle_min = -90.0
-angle_max = 90.0
-scale_amount_min = 0.6
-scale_amount_max = 0.7
+angle_min = -180.0
+angle_max = 180.0
 scale_amount_curve = SubResource("Curve_018uj")
-color = Color(1, 0.505882, 0.258824, 1)
+color = Color(1, 0.854902, 0.270588, 1)
 color_ramp = SubResource("Gradient_dxnem")
 
 [node name="Lines" type="CPUParticles2D" parent="Particles/Foreground"]
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 position = Vector2(-68, -32)
-amount = 5
-lifetime = 1.2
+amount = 12
+lifetime = 0.5
 speed_scale = 0.2
 randomness = 1.0
-local_coords = true
-texture = ExtResource("28_45hjm")
+texture = ExtResource("26_fayyt")
 emission_shape = 3
 emission_rect_extents = Vector2(640, 576)
 direction = Vector2(-1, 0.2)
@@ -837,16 +851,21 @@ spread = 0.0
 gravity = Vector2(2.08165e-12, 20)
 initial_velocity_min = 278.86
 initial_velocity_max = 278.86
-angular_velocity_min = -20.0
-angular_velocity_max = 20.0
-orbit_velocity_min = -0.15
-orbit_velocity_max = 0.15
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("Curve_25f4v")
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_kp705")
 linear_accel_min = -0.54
 linear_accel_max = 26.56
 damping_min = 8.908
 damping_max = 8.908
+angle_min = -90.0
+angle_max = 90.0
+scale_amount_max = 1.3
 scale_amount_curve = SubResource("Curve_t518d")
-color = Color(1, 0.505882, 0.258824, 1)
+color = Color(1, 0.854902, 0.270588, 1)
 color_ramp = SubResource("Gradient_ir77q")
 
 [node name="WallGround" type="Node2D" parent="Particles"]
@@ -857,10 +876,10 @@ modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 position = Vector2(-68, -32)
 amount = 50
-lifetime = 1.1
+lifetime = 0.25
 speed_scale = 0.15
 randomness = 1.0
-texture = ExtResource("27_u2r4d")
+texture = ExtResource("25_887jd")
 emission_shape = 3
 emission_rect_extents = Vector2(640, 576)
 direction = Vector2(-1, 0.2)
@@ -876,8 +895,9 @@ linear_accel_min = -0.54
 linear_accel_max = 26.56
 damping_min = 8.908
 damping_max = 8.908
-scale_amount_min = 0.5
-scale_amount_max = 0.6
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 0.9
 scale_amount_curve = SubResource("Curve_018uj")
 color = Color(1, 0.309804, 0.411765, 1)
 color_ramp = SubResource("Gradient_dxnem")
@@ -886,11 +906,11 @@ color_ramp = SubResource("Gradient_dxnem")
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 position = Vector2(-68, -32)
-amount = 50
-lifetime = 1.1
+amount = 24
+lifetime = 0.5
 speed_scale = 0.15
 randomness = 1.0
-texture = ExtResource("28_45hjm")
+texture = ExtResource("26_fayyt")
 emission_shape = 3
 emission_rect_extents = Vector2(640, 576)
 direction = Vector2(-1, 0.2)
@@ -898,14 +918,18 @@ spread = 0.0
 gravity = Vector2(2.08165e-12, 20)
 initial_velocity_min = 278.86
 initial_velocity_max = 278.86
-angular_velocity_min = -20.0
-angular_velocity_max = 20.0
-orbit_velocity_min = -0.15
-orbit_velocity_max = 0.15
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("Curve_25f4v")
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_kp705")
 linear_accel_min = -0.54
 linear_accel_max = 26.56
 damping_min = 8.908
 damping_max = 8.908
+angle_min = -90.0
+angle_max = 90.0
 scale_amount_min = 0.8
 scale_amount_max = 0.9
 scale_amount_curve = SubResource("Curve_t518d")
@@ -920,9 +944,10 @@ modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 position = Vector2(-68, -32)
 amount = 40
+lifetime = 0.25
 speed_scale = 0.1
 randomness = 1.0
-texture = ExtResource("27_u2r4d")
+texture = ExtResource("25_887jd")
 emission_shape = 3
 emission_rect_extents = Vector2(640, 576)
 direction = Vector2(-1, 2.08165e-12)
@@ -938,8 +963,10 @@ linear_accel_min = -0.54
 linear_accel_max = 26.56
 damping_min = 8.908
 damping_max = 8.908
-scale_amount_min = 0.2
-scale_amount_max = 0.3
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 0.8
+scale_amount_max = 0.9
 scale_amount_curve = SubResource("Curve_018uj")
 color = Color(0.670588, 0.121569, 0.396078, 1)
 color_ramp = SubResource("Gradient_dxnem")
@@ -948,10 +975,11 @@ color_ramp = SubResource("Gradient_dxnem")
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 position = Vector2(-68, -32)
-amount = 40
+amount = 16
+lifetime = 0.5
 speed_scale = 0.1
 randomness = 1.0
-texture = ExtResource("28_45hjm")
+texture = ExtResource("26_fayyt")
 emission_shape = 3
 emission_rect_extents = Vector2(640, 576)
 direction = Vector2(-1, 2.08165e-12)
@@ -959,16 +987,20 @@ spread = 0.0
 gravity = Vector2(2.08165e-12, 2.08165e-12)
 initial_velocity_min = 278.86
 initial_velocity_max = 278.86
-angular_velocity_min = -20.0
-angular_velocity_max = 20.0
-orbit_velocity_min = -0.15
-orbit_velocity_max = 0.15
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("Curve_25f4v")
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_kp705")
 linear_accel_min = -0.54
 linear_accel_max = 26.56
 damping_min = 8.908
 damping_max = 8.908
-scale_amount_min = 0.8
-scale_amount_max = 0.9
+angle_min = -90.0
+angle_max = 90.0
+scale_amount_min = 0.6
+scale_amount_max = 0.7
 scale_amount_curve = SubResource("Curve_t518d")
 color = Color(0.670588, 0.121569, 0.396078, 1)
 color_ramp = SubResource("Gradient_ir77q")
@@ -981,9 +1013,10 @@ modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 position = Vector2(-68, -32)
 amount = 35
+lifetime = 0.25
 speed_scale = 0.05
 randomness = 1.0
-texture = ExtResource("27_u2r4d")
+texture = ExtResource("25_887jd")
 emission_shape = 3
 emission_rect_extents = Vector2(640, 576)
 direction = Vector2(-1, 2.08165e-12)
@@ -999,8 +1032,10 @@ linear_accel_min = -0.54
 linear_accel_max = 26.56
 damping_min = 8.908
 damping_max = 8.908
-scale_amount_min = 0.2
-scale_amount_max = 0.3
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 0.7
+scale_amount_max = 0.8
 scale_amount_curve = SubResource("Curve_018uj")
 color = Color(0.168627, 0.0588235, 0.329412, 1)
 color_ramp = SubResource("Gradient_dxnem")
@@ -1009,10 +1044,11 @@ color_ramp = SubResource("Gradient_dxnem")
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 position = Vector2(-68, -32)
-amount = 35
+amount = 12
+lifetime = 0.5
 speed_scale = 0.05
 randomness = 1.0
-texture = ExtResource("28_45hjm")
+texture = ExtResource("26_fayyt")
 emission_shape = 3
 emission_rect_extents = Vector2(640, 576)
 direction = Vector2(-1, 2.08165e-12)
@@ -1020,16 +1056,20 @@ spread = 0.0
 gravity = Vector2(2.08165e-12, 2.08165e-12)
 initial_velocity_min = 278.86
 initial_velocity_max = 278.86
-angular_velocity_min = -20.0
-angular_velocity_max = 20.0
-orbit_velocity_min = -0.15
-orbit_velocity_max = 0.15
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("Curve_25f4v")
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_4pwob")
 linear_accel_min = -0.54
 linear_accel_max = 26.56
 damping_min = 8.908
 damping_max = 8.908
-scale_amount_min = 0.8
-scale_amount_max = 0.9
+angle_min = -90.0
+angle_max = 90.0
+scale_amount_min = 0.4
+scale_amount_max = 0.5
 scale_amount_curve = SubResource("Curve_t518d")
 color = Color(0.168627, 0.0588235, 0.329412, 1)
 color_ramp = SubResource("Gradient_ir77q")
