@@ -1,18 +1,53 @@
-[gd_scene load_steps=6 format=3 uid="uid://d0s632u2p275n"]
+[gd_scene load_steps=11 format=3 uid="uid://d0s632u2p275n"]
 
 [ext_resource type="Script" path="res://Core/CustomUIElements/upgrade_star.gd" id="1_1g5pq"]
-[ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="1_3f2yx"]
-[ext_resource type="Texture2D" uid="uid://cqpe6wr4f2ctd" path="res://Assets/Graphics/Particles/starticle.png" id="3_5g77g"]
+[ext_resource type="Texture2D" uid="uid://c8ytwq02ajw0r" path="res://Assets/Graphics/Particles/jag.png" id="3_0nvie"]
+[ext_resource type="Texture2D" uid="uid://cowopgmei7pv4" path="res://Assets/Graphics/Particles/speed_particle.png" id="3_yrjhm"]
+
+[sub_resource type="Curve" id="Curve_7vj2r"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, -8.0, 0, 1, Vector2(0.25, -1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 8.0, 0.0, 1, 0]
+point_count = 5
+metadata/_snap_enabled = true
+metadata/_snap_count = 12
+
+[sub_resource type="Curve" id="Curve_c4xda"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, -1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 5
+metadata/_snap_enabled = true
+metadata/_snap_count = 12
 
 [sub_resource type="Curve" id="Curve_fjbh2"]
 _data = [Vector2(0, 0.9), 0.0, -0.148742, 0, 0, Vector2(1, 0), -6.0, 0.0, 0, 0]
 point_count = 2
 metadata/_snap_enabled = true
 
-[sub_resource type="Gradient" id="Gradient_k6x1h"]
-offsets = PackedFloat32Array(0, 0.120743, 0.934985, 1)
-colors = PackedColorArray(0.870588, 0.709804, 0.227451, 1, 0.87451, 0.737255, 0.243137, 0.784314, 0.890196, 0.921569, 0.34902, 1, 1, 1, 1, 0)
+[sub_resource type="Gradient" id="Gradient_i2yhf"]
+offsets = PackedFloat32Array(0, 0.0666667, 0.9, 1)
+colors = PackedColorArray(0.890196, 0, 0, 0, 0.890196, 0.921569, 0.34902, 1, 0.890196, 0.921569, 0.34902, 1, 0.890196, 0.921569, 0.34902, 0)
 metadata/_snap_enabled = true
+metadata/_snap_count = 15
+
+[sub_resource type="Curve" id="Curve_0yyay"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, -8.0, 0, 1, Vector2(0.25, -1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 8.0, 0.0, 1, 0]
+point_count = 5
+metadata/_snap_enabled = true
+metadata/_snap_count = 4
+
+[sub_resource type="Curve" id="Curve_lq0n5"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, -1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 5
+metadata/_snap_enabled = true
+metadata/_snap_count = 8
+
+[sub_resource type="Gradient" id="Gradient_k6x1h"]
+offsets = PackedFloat32Array(0, 0.133333, 0.9, 1)
+colors = PackedColorArray(0.890196, 0, 0, 0, 0.890196, 0.921569, 0.34902, 1, 0.890196, 0.921569, 0.34902, 1, 0.890196, 0.921569, 0.34902, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 15
 
 [node name="StarParticles" type="Control"]
 texture_filter = 1
@@ -51,98 +86,433 @@ grow_vertical = 2
 color = Color(0, 0, 1, 1)
 
 [node name="StarPosition" type="Control" parent="SubViewportContainer/SubViewport"]
-visible = false
 layout_mode = 3
-anchors_preset = 5
+anchors_preset = 7
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 0
 
 [node name="burst_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition"]
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
 emitting = false
-amount = 64
-lifetime = 0.45
+amount = 48
+lifetime = 0.65
 one_shot = true
+preprocess = 0.05
 speed_scale = 0.6
-explosiveness = 0.3
+explosiveness = 0.7
 randomness = 1.0
 local_coords = true
-texture = ExtResource("1_3f2yx")
+texture = ExtResource("3_0nvie")
 emission_shape = 3
-emission_rect_extents = Vector2(160, 10)
-gravity = Vector2(2.08165e-12, 1960)
-angular_velocity_min = -720.0
-angular_velocity_max = 720.0
-orbit_velocity_min = -0.05
-orbit_velocity_max = 0.05
+emission_rect_extents = Vector2(160, 2.08165e-12)
+direction = Vector2(2.08165e-12, -1)
+gravity = Vector2(2.08165e-12, -1670)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+angular_velocity_min = -10.0
+angular_velocity_max = 10.0
+angular_velocity_curve = SubResource("Curve_7vj2r")
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_c4xda")
 damping_min = 8.908
 damping_max = 8.908
-angle_min = -180.0
-angle_max = 180.0
-scale_amount_min = 0.3
-scale_amount_max = 0.6
+angle_min = -90.0
+angle_max = 90.0
+scale_amount_min = 0.8
+scale_amount_max = 1.4
 scale_amount_curve = SubResource("Curve_fjbh2")
 color = Color(1, 1, 0.337255, 1)
-color_ramp = SubResource("Gradient_k6x1h")
+color_ramp = SubResource("Gradient_i2yhf")
 
-[node name="L_continuous_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition"]
+[node name="LeftParticles" type="Control" parent="SubViewportContainer/SubViewport/StarPosition"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="L_continuous_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/LeftParticles" groups=["L0_Particles"]]
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
-position = Vector2(-120, 2.08165e-12)
-amount = 4
-lifetime = 0.9
-speed_scale = 0.5
+position = Vector2(-140, 2)
+amount = 3
+lifetime = 0.36
+speed_scale = 0.2
 randomness = 1.0
-local_coords = true
-texture = ExtResource("3_5g77g")
+lifetime_randomness = 0.05
+texture = ExtResource("3_yrjhm")
 emission_shape = 3
-emission_rect_extents = Vector2(40, 10)
-direction = Vector2(1, 2.08165e-12)
-spread = 180.0
-initial_velocity_min = 75.0
-initial_velocity_max = 75.0
-angular_velocity_min = -720.0
-angular_velocity_max = 720.0
-orbit_velocity_min = -0.1
-orbit_velocity_max = 0.1
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = 75.0
+angular_velocity_max = 105.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = 0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
 damping_min = 8.908
 damping_max = 8.908
-angle_min = -180.0
-angle_max = 180.0
-scale_amount_min = 0.6
-scale_amount_max = 1.5
+angle_min = 75.0
+angle_max = 105.0
+scale_amount_min = 0.3
+scale_amount_max = 0.8
 scale_amount_curve = SubResource("Curve_fjbh2")
-color = Color(1, 1, 0.337255, 0.784314)
 color_ramp = SubResource("Gradient_k6x1h")
 
-[node name="R_continuous_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition"]
+[node name="L_continuous_particles_Mirror" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/LeftParticles" groups=["L0_Particles"]]
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
-position = Vector2(120, 2.08165e-12)
-amount = 4
-lifetime = 0.9
-speed_scale = 0.5
+position = Vector2(-140, 2)
+amount = 3
+lifetime = 0.36
+speed_scale = 0.2
+explosiveness = 0.1
 randomness = 1.0
-local_coords = true
-texture = ExtResource("3_5g77g")
+lifetime_randomness = 0.05
+texture = ExtResource("3_yrjhm")
 emission_shape = 3
-emission_rect_extents = Vector2(40, 10)
-direction = Vector2(1, 2.08165e-12)
-spread = 180.0
-initial_velocity_min = 75.0
-initial_velocity_max = 75.0
-angular_velocity_min = -720.0
-angular_velocity_max = 720.0
-orbit_velocity_min = -0.1
-orbit_velocity_max = 0.1
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = -105.0
+angular_velocity_max = -75.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = -0.25
+orbit_velocity_max = -0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
 damping_min = 8.908
 damping_max = 8.908
-angle_min = -180.0
-angle_max = 180.0
-scale_amount_min = 0.6
-scale_amount_max = 1.5
+angle_min = 75.0
+angle_max = 105.0
+scale_amount_min = 0.3
+scale_amount_max = 0.8
 scale_amount_curve = SubResource("Curve_fjbh2")
-color = Color(1, 1, 0.337255, 0.784314)
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="L1_continuous_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/LeftParticles" groups=["L1_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 6
+lifetime = 0.6
+speed_scale = 0.2
+randomness = 1.0
+lifetime_randomness = 0.1
+texture = ExtResource("3_0nvie")
+emission_shape = 3
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = 75.0
+angular_velocity_max = 105.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = -0.25
+orbit_velocity_max = -0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+scale_amount_min = 0.5
+scale_amount_curve = SubResource("Curve_fjbh2")
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="L1_continuous_particles_Mirror" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/LeftParticles" groups=["L1_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 6
+lifetime = 0.6
+speed_scale = 0.2
+explosiveness = 0.05
+randomness = 1.0
+lifetime_randomness = 0.1
+texture = ExtResource("3_0nvie")
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = -105.0
+angular_velocity_max = -75.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = -0.25
+orbit_velocity_max = -0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+scale_amount_min = 0.5
+scale_amount_curve = SubResource("Curve_fjbh2")
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="L2_continuous_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/LeftParticles" groups=["L2_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 3
+lifetime = 0.36
+speed_scale = 0.2
+randomness = 1.0
+lifetime_randomness = 0.05
+texture = ExtResource("3_yrjhm")
+emission_shape = 3
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = 75.0
+angular_velocity_max = 105.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = 0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+angle_min = 75.0
+angle_max = 105.0
+scale_amount_min = 0.5
+scale_amount_max = 1.3
+scale_amount_curve = SubResource("Curve_fjbh2")
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="L2_continuous_particles_Mirror" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/LeftParticles" groups=["L2_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 12
+lifetime = 0.36
+speed_scale = 0.3
+explosiveness = 0.1
+randomness = 1.0
+lifetime_randomness = 0.05
+texture = ExtResource("3_0nvie")
+emission_shape = 3
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = -105.0
+angular_velocity_max = -75.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = -0.25
+orbit_velocity_max = -0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+angle_min = 75.0
+angle_max = 105.0
+scale_amount_min = 0.6
+scale_amount_max = 1.1
+scale_amount_curve = SubResource("Curve_fjbh2")
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="RightParticles" type="Control" parent="SubViewportContainer/SubViewport/StarPosition"]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(-1, -1)
+
+[node name="R_continuous_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/RightParticles" groups=["L0_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 3
+lifetime = 0.36
+speed_scale = 0.2
+randomness = 1.0
+lifetime_randomness = 0.05
+texture = ExtResource("3_yrjhm")
+emission_shape = 3
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = 75.0
+angular_velocity_max = 105.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = 0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+angle_min = 75.0
+angle_max = 105.0
+scale_amount_min = 0.3
+scale_amount_max = 0.8
+scale_amount_curve = SubResource("Curve_fjbh2")
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="R_continuous_particles_Mirror" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/RightParticles" groups=["L0_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 3
+lifetime = 0.36
+speed_scale = 0.2
+explosiveness = 0.1
+randomness = 1.0
+lifetime_randomness = 0.05
+texture = ExtResource("3_yrjhm")
+emission_shape = 3
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = -105.0
+angular_velocity_max = -75.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = -0.25
+orbit_velocity_max = -0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+angle_min = 75.0
+angle_max = 105.0
+scale_amount_min = 0.3
+scale_amount_max = 0.8
+scale_amount_curve = SubResource("Curve_fjbh2")
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="R1_continuous_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/RightParticles" groups=["L1_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 6
+lifetime = 0.6
+speed_scale = 0.2
+randomness = 1.0
+lifetime_randomness = 0.1
+texture = ExtResource("3_0nvie")
+emission_shape = 3
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = 75.0
+angular_velocity_max = 105.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = -0.25
+orbit_velocity_max = -0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+scale_amount_min = 0.5
+scale_amount_curve = SubResource("Curve_fjbh2")
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="R1_continuous_particles_Mirror" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/RightParticles" groups=["L1_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 6
+lifetime = 0.6
+speed_scale = 0.2
+explosiveness = 0.05
+randomness = 1.0
+lifetime_randomness = 0.1
+texture = ExtResource("3_0nvie")
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = -105.0
+angular_velocity_max = -75.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = -0.25
+orbit_velocity_max = -0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+scale_amount_min = 0.5
+scale_amount_curve = SubResource("Curve_fjbh2")
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="R2_continuous_particles" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/RightParticles" groups=["L2_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 3
+lifetime = 0.36
+speed_scale = 0.2
+randomness = 1.0
+lifetime_randomness = 0.05
+texture = ExtResource("3_yrjhm")
+emission_shape = 3
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = 75.0
+angular_velocity_max = 105.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = 0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+angle_min = 75.0
+angle_max = 105.0
+scale_amount_min = 0.5
+scale_amount_max = 1.3
+scale_amount_curve = SubResource("Curve_fjbh2")
+color_ramp = SubResource("Gradient_k6x1h")
+
+[node name="R2_continuous_particles_Mirror" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/StarPosition/RightParticles" groups=["L2_Particles"]]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-140, 2)
+amount = 12
+lifetime = 0.36
+speed_scale = 0.3
+explosiveness = 0.1
+randomness = 1.0
+lifetime_randomness = 0.05
+texture = ExtResource("3_0nvie")
+emission_shape = 3
+emission_rect_extents = Vector2(25, 2.08165e-12)
+direction = Vector2(-1, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, -4410)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+angular_velocity_min = -105.0
+angular_velocity_max = -75.0
+angular_velocity_curve = SubResource("Curve_0yyay")
+orbit_velocity_min = -0.25
+orbit_velocity_max = -0.25
+orbit_velocity_curve = SubResource("Curve_lq0n5")
+damping_min = 8.908
+damping_max = 8.908
+angle_min = 75.0
+angle_max = 105.0
+scale_amount_min = 0.6
+scale_amount_max = 1.1
+scale_amount_curve = SubResource("Curve_fjbh2")
 color_ramp = SubResource("Gradient_k6x1h")
