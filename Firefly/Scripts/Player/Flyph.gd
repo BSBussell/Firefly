@@ -1008,10 +1008,6 @@ func give_boost(boost_speed: float) -> void:
 	
 	velocity.x += boost_speed * horizontal_axis
 	
-	
-	if not is_on_floor():
-		velocity.y = jump_velocity * 0.75
-	
 	# TODO: Fun Particles!
 	if abs(horizontal_axis) > 0:
 		boost_fx.emitting = true
