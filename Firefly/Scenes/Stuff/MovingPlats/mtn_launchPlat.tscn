@@ -62,6 +62,7 @@ update_scale = false
 z_index = -1
 position = Vector2(2.08165e-12, -3)
 script = ExtResource("3_2vvbx")
+sample_distance = 35
 
 [connection signal="cycle_finished" from="." to="." method="_on_cycle_finished"]
 [connection signal="plat_extended" from="." to="." method="_on_plat_extended"]
