@@ -322,7 +322,7 @@ func away_walljump(jump_dir: float) -> void:
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
 	
 	
-	parent.lock_h_dir(jump_dir, 0.2, true)
+	parent.lock_h_dir(jump_dir, 0.25, false)
 	
 
 ## General Wall Jump Function

@@ -55,7 +55,7 @@ _data = [Vector2(0.6, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 metadata/_snap_enabled = true
 
-[node name="CheckpointArea" type="Area2D"]
+[node name="CheckpointArea" type="Area2D" groups=["Checkpoint"]]
 z_index = -1
 collision_layer = 68
 script = ExtResource("1_p0xf2")

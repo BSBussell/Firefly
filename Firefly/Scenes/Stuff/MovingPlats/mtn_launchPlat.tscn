@@ -13,7 +13,7 @@ metadata/_snap_enabled = true
 metadata/_snap_count = 20
 
 [sub_resource type="Curve" id="Curve_72v7g"]
-_data = [Vector2(0.19999, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(0.35, 1), 0.0, 0.0, 0, 0, Vector2(0.35001, 0), 0.0, 0.0, 0, 0, Vector2(0.49999, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 0.75), 0.0, 0.0, 0, 0, Vector2(0.8, 0.75), 0.0, 0.0, 0, 0, Vector2(0.80001, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.14999, 0), 0.0, 0.0, 0, 0, Vector2(0.15, 1), 0.0, 0.0, 0, 0, Vector2(0.35, 1), 0.0, 0.0, 0, 0, Vector2(0.35001, 0), 0.0, 0.0, 0, 0, Vector2(0.49999, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 0.75), 0.0, 0.0, 0, 0, Vector2(0.8, 0.75), 0.0, 0.0, 0, 0, Vector2(0.80001, 0), 0.0, 0.0, 0, 0]
 point_count = 8
 metadata/_snap_enabled = true
 metadata/_snap_count = 20
@@ -25,7 +25,7 @@ movement_curve = SubResource("Curve_vlj2i")
 avg_velocity = 95.0
 launch_velocity = 110.0
 launch_curve = SubResource("Curve_72v7g")
-launch_multi = Vector2(2.75, 2)
+launch_multi = Vector2(2, 2)
 launch_threshold = -1.0
 
 [node name="MagicPlat" parent="." instance=ExtResource("2_nutfi")]
@@ -62,7 +62,7 @@ update_scale = false
 z_index = -1
 position = Vector2(2.08165e-12, -3)
 script = ExtResource("3_2vvbx")
-sample_distance = 35
+sample_distance = 15
 
 [connection signal="cycle_finished" from="." to="." method="_on_cycle_finished"]
 [connection signal="plat_extended" from="." to="." method="_on_plat_extended"]

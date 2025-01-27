@@ -6,7 +6,7 @@ class_name StarParticles
 @onready var sub_viewport = $SubViewportContainer/SubViewport
 @onready var sub_viewport_container = $SubViewportContainer
 
-@onready var l = $L
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
