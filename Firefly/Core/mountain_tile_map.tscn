@@ -1012,7 +1012,7 @@ texture = ExtResource("1_tjhrr")
 5:10/0/physics_layer_1/angular_velocity = 0.0
 5:10/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 5:10/0/physics_layer_2/angular_velocity = 0.0
-5:10/0/physics_layer_2/polygon_0/points = PackedVector2Array(-5, -3, 6, -3, 8, 8, -8, 8)
+5:10/0/physics_layer_2/polygon_0/points = PackedVector2Array(-5, -3, 5, -3, 8, 8, -8, 8)
 5:10/0/metadata/_better_terrain = {
 4: [1],
 "symmetry": 7,
@@ -1025,7 +1025,7 @@ texture = ExtResource("1_tjhrr")
 6:10/0/physics_layer_1/angular_velocity = 0.0
 6:10/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 6:10/0/physics_layer_2/angular_velocity = 0.0
-6:10/0/physics_layer_2/polygon_0/points = PackedVector2Array(-5, 1, 6, 1, 8, 8, -8, 8)
+6:10/0/physics_layer_2/polygon_0/points = PackedVector2Array(-5, 1, 5, 1, 8, 8, -8, 8)
 5:8/0 = 0
 5:8/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 5:8/0/physics_layer_0/angular_velocity = 0.0

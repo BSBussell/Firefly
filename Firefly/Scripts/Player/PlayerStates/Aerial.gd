@@ -330,7 +330,6 @@ func handle_sHop(_delta):
 
 			# Begin descent at this velocity
 			parent.velocity.y = parent.ff_velocity
-			print("Shopping")
 
 
 

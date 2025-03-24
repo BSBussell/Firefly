@@ -22,6 +22,9 @@ func local_ready():
 	# Start playing the music
 	music.play(0)
 	ambience.play(0)
+
+	_discord.update_state("Explorin' a Cave")
+	_discord.update_jar_count()
 	
 	# Enable Reverb Audio Filer
 	_audio.set_level_effects([0])  

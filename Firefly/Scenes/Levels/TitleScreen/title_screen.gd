@@ -23,6 +23,9 @@ func local_ready():
 	
 	moonlight.visible = true
 	shadow_filter.visible = true
+
+	_discord.update_state("Explorin' the main menu")
+	_discord.hide_jar_count()
 	
 	timer.start(0.2)
 	

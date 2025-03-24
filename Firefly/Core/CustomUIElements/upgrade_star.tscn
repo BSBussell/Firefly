@@ -131,6 +131,7 @@ color = Color(1, 1, 0.337255, 1)
 color_ramp = SubResource("Gradient_i2yhf")
 
 [node name="LeftParticles" type="Control" parent="SubViewportContainer/SubViewport/StarPosition"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 
@@ -324,6 +325,7 @@ scale_amount_curve = SubResource("Curve_fjbh2")
 color_ramp = SubResource("Gradient_k6x1h")
 
 [node name="RightParticles" type="Control" parent="SubViewportContainer/SubViewport/StarPosition"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 scale = Vector2(-1, -1)

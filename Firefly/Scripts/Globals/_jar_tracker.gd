@@ -43,7 +43,12 @@ func register_jar_exists(jar: FlyJar) -> void:
 
 func mark_jar_collected(jar_id: String) -> void:
 	if not _loader.loading:
-		known_jars[jar_id]["nabbed"] = true   
+		known_jars[jar_id]["nabbed"] = true
+		
+		# Update the discord jar count	
+		_discord.update_jar_count()
+	
+		# Save the data
 		_persist.save_values()
 
 

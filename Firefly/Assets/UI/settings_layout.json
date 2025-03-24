@@ -8,7 +8,7 @@
 				"label": "Auto Glow",
 				"description": "Automatically trigger glow while playing",
 				"type": "boolean",
-				"config_key": "auto_glow",
+				"config_key": "auto_glow"
 			},
 			"show_speedometer": {
 				"label": "Show Speedometer",
@@ -21,7 +21,7 @@
 				"label": "Speed Run Timer",
 				"description": "Show speed run timer while playing",
 				"type": "boolean",
-				"config_key": "show_timer",
+				"config_key": "show_timer"
 			}
 		}
 	},
