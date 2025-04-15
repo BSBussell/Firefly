@@ -11,7 +11,9 @@
 
     "When you do that, you'll both gain a touch of altitude from catchin' the wind, and also you'll begin slowing your fall, allowing you to elegantly glide through the sky.",
 
-    "The only limit is the peak you jump from! If you wanna try it out, try running up this cliff right up here, jump off, and start gliding!"
+    "The only limit is the peak you jump from! If you wanna try it out, try running up this cliff right up here, jump off, and start gliding!",
+    "[color=#aaa]You have learned how to glide![/color]",
+    "[color=#aaa]Press the jump button and hold mid air to glide![/color]"
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

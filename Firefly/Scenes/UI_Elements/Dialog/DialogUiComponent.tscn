@@ -398,7 +398,7 @@ mouse_filter = 1
 theme = ExtResource("2_5wsxi")
 theme_override_styles/normal = ExtResource("2_77ug7")
 bbcode_enabled = true
-text = "[center]Blah [color=yellow]Key Word[/color] blah... blah blah blah bala shell big snail test filling the thing up and using as much[/center]"
+text = "[center]Blah [color=yellow]Key Word[/color] blah... blah blah blah bala shell big snail test filling the thing up and using as [color=#aaa]much[/color][/center]"
 fit_content = true
 scroll_active = false
 

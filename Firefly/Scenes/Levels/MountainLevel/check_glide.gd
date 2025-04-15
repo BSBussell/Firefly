@@ -11,7 +11,7 @@ func _process(_delta):
 		if dialogue_ui.dialogue_up: return
 
 		# If you beat the game without obtaining glide, and without using assists!
-		if not level.PLAYER.can_glide and not _stats.INVALID_RUN: dialogue_file = super_secret_based_dialogue
+		#if not level.PLAYER.can_glide and not _stats.INVALID_RUN: dialogue_file = super_secret_based_dialogue
 		
 		load_file()
 		

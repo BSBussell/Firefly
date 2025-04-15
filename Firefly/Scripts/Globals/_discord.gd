@@ -10,7 +10,7 @@ func _ready() -> void:
 	
 	# Setup the default information
 	DiscordRPC.app_id = app_id
-	DiscordRPC.details = "a 🐝 game found on bbussell.com"
+	DiscordRPC.details = "a 🐝 game" #found on bbussell.com/firefly"
 	DiscordRPC.state = "Explorin" # Default state, we're exploring
 	
 	# Set the image as a the jar that is the game's icon
@@ -33,34 +33,39 @@ func _ready() -> void:
 # Sync the displayed timestamp to the game time
 func sync_to_game_time(time: float) -> void:
 	
-	# Set the time to the current time
-	DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system()) - int(time)
-	DiscordRPC.refresh()
+	if (DiscordRPC.get_is_discord_working()):
+		# Set the time to the current time
+		DiscordRPC.start_timestamp = int(Time.get_unix_time_from_system()) - int(time)
+		DiscordRPC.refresh()
 	
 func sync_to_launch_time() -> void:
 	
-	# Set the time to the current time
-	DiscordRPC.start_timestamp = launch_time
-	DiscordRPC.refresh()
+	if (DiscordRPC.get_is_discord_working()):
+		# Set the time to the current time
+		DiscordRPC.start_timestamp = launch_time
+		DiscordRPC.refresh()
 
 # Function for updating the state
 func update_state(new_state: String) -> void:
 	
-	DiscordRPC.state = new_state
-	DiscordRPC.refresh()
+	if (DiscordRPC.get_is_discord_working()):
+		DiscordRPC.state = new_state
+		DiscordRPC.refresh()
 
 func hide_jar_count() -> void:
 	
-	# Reset the party size to 0 so we don't display anything
-	DiscordRPC.current_party_size = 0
-	DiscordRPC.max_party_size = 0
-	
-	DiscordRPC.refresh()
+	if (DiscordRPC.get_is_discord_working()):
+		# Reset the party size to 0 so we don't display anything
+		DiscordRPC.current_party_size = 0
+		DiscordRPC.max_party_size = 0
+		
+		DiscordRPC.refresh()
 
 func update_jar_count() -> void:
 	
-	# Set the party size to the number of jars nabbed
-	DiscordRPC.current_party_size = _jar_tracker.total_num_found_jars()
-	DiscordRPC.max_party_size = _jar_tracker.total_num_known_jars()
-	
-	DiscordRPC.refresh()
+	if (DiscordRPC.get_is_discord_working()):
+		# Set the party size to the number of jars nabbed
+		DiscordRPC.current_party_size = _jar_tracker.total_num_found_jars()
+		DiscordRPC.max_party_size = _jar_tracker.total_num_known_jars()
+		
+		DiscordRPC.refresh()
