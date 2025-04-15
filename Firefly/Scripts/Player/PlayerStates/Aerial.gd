@@ -69,7 +69,7 @@ func enter() -> void:
 
 
 	# Put us in the falling animation if we are not crouch jumping, jumping, or if we're launched
-	if (not slide_fall) or (not parent.crouchJumping and parent.boostJumping) or parent.launched:
+	if ((not slide_fall) or (not parent.crouchJumping and parent.boostJumping) or parent.launched) and parent.current_animation != parent.ANI_STATES.WALL_JUMP:
 		parent.current_animation = parent.ANI_STATES.FALLING
 
 	
@@ -208,29 +208,52 @@ func state_status():
 	return null
 
 
-func process_frame(_delta):
+# Defining variables here for readability
+
+## The timer for how long we've been falling in "squish conditions"
+var fall_timer: float = 0.0
+## The time it takes to achieve maximum squish
+var fall_timer_max: float = 1.5
+
+func process_frame(delta):
 
 	_logger.info("Aerial State Frame")
 
 	# Fall squishing :3
 	if parent.velocity.y > 0 and not parent.launched:
-		var spriteBlend = min(parent.velocity.y / parent.movement_data.MAX_FALL_SPEED, 1)
+
+		fall_timer = min(fall_timer + delta, fall_timer_max)
+
+		var spriteBlend = min(fall_timer / fall_timer_max, 1)
+		print("Sprite Blend: ", spriteBlend)
 		var squishVal = Vector2()
 		squishVal.x = lerp(1.0, parent.falling_squash.x, spriteBlend)
 		squishVal.y =  lerp(1.0, parent.falling_squash.y, spriteBlend)
 		parent.squish_node.squish(squishVal)
 
+	else:
+		fall_timer = 0.0
+
+
+	var grace_wj_dir: int = check_grace_walljump_dir()
 
 	# Direction Facing, don't update if we're walljumping up
 	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
-		if parent.velocity.x < 0 and not parent.animation.flip_h:
+
+		# Face bools
+		var face_left: bool = parent.velocity.x < 0
+		var face_right: bool = parent.velocity.x > 0
+
+		if face_left and not parent.animation.flip_h:
 			parent.animation.flip_h = true
 			parent.squish_node.squish(parent.turn_around_squash)
 
-		elif parent.velocity.x > 0 and parent.animation.flip_h:
+		elif face_right and parent.animation.flip_h:
 			parent.animation.flip_h = false
 			parent.squish_node.squish(parent.turn_around_squash)
 			
+	if grace_wj_dir == 0 and parent.current_animation != parent.ANI_STATES.WALL_JUMP:
+		parent.current_animation = parent.ANI_STATES.FALLING
 
 	_logger.info("Aerial State Frame End")
 
@@ -238,7 +261,9 @@ func process_frame(_delta):
 func animation_end() -> PlayerState:
 
 	# If Jump Anim ends go to Falling
-	if (parent.current_animation == parent.ANI_STATES.JUMP):
+	if (parent.current_animation == parent.ANI_STATES.JUMP or 
+		parent.current_animation == parent.ANI_STATES.WALL_JUMP):
+
 		parent.current_animation = parent.ANI_STATES.FALLING
 
 	# If falling ends pause the animation
@@ -264,7 +289,7 @@ func handle_coyote(_delta):
 				_stats.INVALID_RUN = true
 
 			# Update Animation State if we aren't holding crawl still
-			if (parent.current_animation != parent.ANI_STATES.CRAWL):
+			if (parent.current_animation != parent.ANI_STATES.CRAWL and parent.current_animation != parent.ANI_STATES.WALL_JUMP):
 				parent.current_animation = parent.ANI_STATES.FALLING
 
 
@@ -301,16 +326,28 @@ func coyote_jump():
 
 func handle_grace_walljump() -> void:
 
+	# Get the direction of the walljump
+	var wj_dir = check_grace_walljump_dir()
+	
+	if wj_dir != 0:
+		WALL_STATE.handle_walljump(parent.vertical_axis, wj_dir)
+
+
+
+
+# Returns the direction of potential walljump, and 0 if none
+func check_grace_walljump_dir() -> int:
+
 	# If we aren't being launched and aren't crouch jumping
 	if not parent.launched and not parent.crouchJumping:
 
 		# Check the shapecasts and call the walljump if we're in it
 		if right_wj_grace.is_colliding() and round(right_wj_grace.get_collision_normal(0).x) == right_wj_grace.get_collision_normal(0).x :
-			WALL_STATE.handle_walljump(parent.vertical_axis, -1)
+			return -1
 		elif left_wj_grace.is_colliding() and round(left_wj_grace.get_collision_normal(0).x) == left_wj_grace.get_collision_normal(0).x:
-			WALL_STATE.handle_walljump(parent.vertical_axis, 1)
-
-
+			return 1
+	
+	return 0
 
 # Whenever the player releases Jump the velocity is set to ff_velocity.
 # This is intended to be less than jump velocity. So that they can kinda get closer to their descent faster

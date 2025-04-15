@@ -230,7 +230,8 @@ func walljump_fx(jump_dir: float) -> void:
 	
 	# Set Wall Jump Animation
 	parent.current_animation = parent.ANI_STATES.WALL_JUMP
-	
+	parent.restart_animation = true
+
 	# Vibration
 	# TODO: Create a vibration manager and use those functions
 	Input.start_joy_vibration(1, 0.1, 0.1, 0.175)
@@ -246,9 +247,6 @@ func walljump_fx(jump_dir: float) -> void:
 	# Sprite squashing
 	parent.squish_node.squish(parent.wJump_squash)
 	
-	if (parent.current_animation != parent.ANI_STATES.CRAWL):
-			parent.current_animation = parent.ANI_STATES.FALLING
-			parent.restart_animation = true
 
 func upward_walljump(jump_dir: float) -> void:
 
