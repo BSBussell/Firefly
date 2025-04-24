@@ -1,0 +1,10 @@
+{
+  "identifier": "TIP_24",
+  "dialogue": [
+	"[color=red]Violet Tips # 24:[/color] If you find yourself falling short when trying to launch from a magic platform.",
+
+	"Try getting a running start before jumping off!"
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

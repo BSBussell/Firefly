@@ -210,9 +210,11 @@ func handle_walljump(vc_direction, dir = 0):
 			post_jump_buffer.start() 
 
 func set_walljump_flags(jump_dir: float) -> void:
-	# Set Global Flags
+	
+	# Set Global Flags  
 	parent.wallJumping = true
 	parent.current_wj_dir = jump_dir
+	parent.fastFalling = false # No Longer apply fast fall gravity
 	
 	# Have Walljumps interrupt temp gravity(this won't interrupt launches)
 	if parent.temp_gravity_active:	
@@ -228,7 +230,8 @@ func walljump_fx(jump_dir: float) -> void:
 	
 	# Set Wall Jump Animation
 	parent.current_animation = parent.ANI_STATES.WALL_JUMP
-	
+	parent.restart_animation = true
+
 	# Vibration
 	# TODO: Create a vibration manager and use those functions
 	Input.start_joy_vibration(1, 0.1, 0.1, 0.175)
@@ -244,9 +247,6 @@ func walljump_fx(jump_dir: float) -> void:
 	# Sprite squashing
 	parent.squish_node.squish(parent.wJump_squash)
 	
-	if (parent.current_animation != parent.ANI_STATES.CRAWL):
-			parent.current_animation = parent.ANI_STATES.FALLING
-			parent.restart_animation = true
 
 func upward_walljump(jump_dir: float) -> void:
 
@@ -320,7 +320,7 @@ func away_walljump(jump_dir: float) -> void:
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
 	
 	
-	parent.lock_h_dir(jump_dir, 0.2, true)
+	parent.lock_h_dir(jump_dir, 0.25, false)
 	
 
 ## General Wall Jump Function

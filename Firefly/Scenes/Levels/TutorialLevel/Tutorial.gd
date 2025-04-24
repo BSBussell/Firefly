@@ -34,7 +34,10 @@ func local_ready():
 	music.play(0)
 	ambience.play(0)
 	#cave_entrance.play(0)
-	
+
+	_discord.update_state("Explorin' a Forest")
+	_discord.update_jar_count()
+
 	_audio.set_level_effects([])
 
 	

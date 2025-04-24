@@ -1,0 +1,10 @@
+{
+    "identifier": "theBigOne",
+    
+    "dialogue": [
+        "[color=yellow]CAUTION:[/color] The following trailway is not scalable by any means. It is a harsh cliffside, with sharp rocks and steep drops.",
+        "Do not attempt to climb this cliffside alone, due to the terrains dangers, we can not rescue you should you fall or get stuck."
+    ],
+    "sequential_dialogue": "",
+    "victory_dialogue": false
+}

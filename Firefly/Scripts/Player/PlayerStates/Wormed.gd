@@ -344,7 +344,8 @@ func handle_jump(_delta) -> bool:
 func jump():
 
 	# Set Flags
-	parent.jumping = true
+	parent.jumping = true # We are jumping
+	parent.fastFalling = false # We no longer should apply fast fall gravity
 
 	# Jump in the direction we are facing or the direction we are holding
 	var jump_dir = parent.horizontal_axis

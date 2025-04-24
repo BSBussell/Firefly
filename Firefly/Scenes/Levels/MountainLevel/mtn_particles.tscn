@@ -1,0 +1,323 @@
+[gd_scene load_steps=10 format=3 uid="uid://cdduibrcc8esc"]
+
+[ext_resource type="Texture2D" uid="uid://cmc7wjhhrqhuy" path="res://Assets/Graphics/Particles/dust_small.png" id="1_peqrw"]
+[ext_resource type="Texture2D" uid="uid://bc0hcvuvmjblf" path="res://Assets/Graphics/Particles/dust_line.png" id="2_yfxxs"]
+
+[sub_resource type="Curve" id="Curve_018uj"]
+_data = [Vector2(0, 0.9), 0.0, -0.148742, 0, 0, Vector2(0.1, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.76178, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_dxnem"]
+offsets = PackedFloat32Array(0, 0.166667, 0.25, 0.75, 0.833333, 0.9, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.666667, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.784314, 1, 1, 1, 0.588235, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 12
+
+[sub_resource type="Curve" id="Curve_25f4v"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, -1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 5
+metadata/_snap_enabled = true
+metadata/_snap_count = 4
+
+[sub_resource type="Curve" id="Curve_kp705"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+metadata/_snap_count = 4
+
+[sub_resource type="Curve" id="Curve_t518d"]
+_data = [Vector2(0, 0.9), 0.0, -0.148742, 0, 0, Vector2(1, 0), -6.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_ir77q"]
+offsets = PackedFloat32Array(0, 0.166667, 0.25, 0.75, 0.833333, 0.9, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.666667, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.784314, 1, 1, 1, 0.588235, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 12
+
+[sub_resource type="Curve" id="Curve_4pwob"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, -1), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.75, -1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 5
+metadata/_snap_enabled = true
+metadata/_snap_count = 8
+
+[node name="Particles" type="Node2D"]
+modulate = Color(1, 0.584314, 0, 1)
+
+[node name="Foreground" type="Node2D" parent="."]
+z_index = 100
+
+[node name="Dust" type="CPUParticles2D" parent="Foreground"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-68, -32)
+amount = 15
+lifetime = 0.25
+speed_scale = 0.2
+randomness = 1.0
+lifetime_randomness = 0.1
+texture = ExtResource("1_peqrw")
+emission_shape = 3
+emission_rect_extents = Vector2(640, 576)
+direction = Vector2(-1, 0.2)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 20)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -125.0
+angular_velocity_max = -125.0
+orbit_velocity_min = -0.15
+orbit_velocity_max = 0.15
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_curve = SubResource("Curve_018uj")
+color = Color(1, 0.854902, 0.270588, 1)
+color_ramp = SubResource("Gradient_dxnem")
+
+[node name="Lines" type="CPUParticles2D" parent="Foreground"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-68, -32)
+amount = 12
+lifetime = 0.5
+speed_scale = 0.2
+randomness = 1.0
+texture = ExtResource("2_yfxxs")
+emission_shape = 3
+emission_rect_extents = Vector2(640, 576)
+direction = Vector2(-1, 0.2)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 20)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("Curve_25f4v")
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_kp705")
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -90.0
+angle_max = 90.0
+scale_amount_max = 1.3
+scale_amount_curve = SubResource("Curve_t518d")
+color = Color(1, 0.854902, 0.270588, 1)
+color_ramp = SubResource("Gradient_ir77q")
+
+[node name="WallGround" type="Node2D" parent="."]
+z_index = -48
+
+[node name="Dust" type="CPUParticles2D" parent="WallGround"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-68, -32)
+amount = 50
+lifetime = 0.25
+speed_scale = 0.15
+randomness = 1.0
+texture = ExtResource("1_peqrw")
+emission_shape = 3
+emission_rect_extents = Vector2(640, 576)
+direction = Vector2(-1, 0.2)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 20)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -20.0
+angular_velocity_max = 20.0
+orbit_velocity_min = -0.15
+orbit_velocity_max = 0.15
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 0.9
+scale_amount_curve = SubResource("Curve_018uj")
+color = Color(1, 0.309804, 0.411765, 1)
+color_ramp = SubResource("Gradient_dxnem")
+
+[node name="Lines" type="CPUParticles2D" parent="WallGround"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-68, -32)
+amount = 24
+lifetime = 0.5
+speed_scale = 0.15
+randomness = 1.0
+texture = ExtResource("2_yfxxs")
+emission_shape = 3
+emission_rect_extents = Vector2(640, 576)
+direction = Vector2(-1, 0.2)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 20)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("Curve_25f4v")
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_kp705")
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -90.0
+angle_max = 90.0
+scale_amount_min = 0.8
+scale_amount_max = 0.9
+scale_amount_curve = SubResource("Curve_t518d")
+color = Color(1, 0.309804, 0.411765, 1)
+color_ramp = SubResource("Gradient_ir77q")
+
+[node name="MidGround" type="Node2D" parent="."]
+z_index = -49
+
+[node name="Dust" type="CPUParticles2D" parent="MidGround"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-68, -32)
+amount = 40
+lifetime = 0.25
+speed_scale = 0.1
+randomness = 1.0
+texture = ExtResource("1_peqrw")
+emission_shape = 3
+emission_rect_extents = Vector2(640, 576)
+direction = Vector2(-1, 2.08165e-12)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -20.0
+angular_velocity_max = 20.0
+orbit_velocity_min = -0.15
+orbit_velocity_max = 0.15
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 0.8
+scale_amount_max = 0.9
+scale_amount_curve = SubResource("Curve_018uj")
+color = Color(0.670588, 0.121569, 0.396078, 1)
+color_ramp = SubResource("Gradient_dxnem")
+
+[node name="Lines" type="CPUParticles2D" parent="MidGround"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-68, -32)
+amount = 16
+lifetime = 0.5
+speed_scale = 0.1
+randomness = 1.0
+texture = ExtResource("2_yfxxs")
+emission_shape = 3
+emission_rect_extents = Vector2(640, 576)
+direction = Vector2(-1, 2.08165e-12)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("Curve_25f4v")
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_kp705")
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -90.0
+angle_max = 90.0
+scale_amount_min = 0.6
+scale_amount_max = 0.7
+scale_amount_curve = SubResource("Curve_t518d")
+color = Color(0.670588, 0.121569, 0.396078, 1)
+color_ramp = SubResource("Gradient_ir77q")
+
+[node name="Background" type="Node2D" parent="."]
+z_index = -50
+
+[node name="Dust" type="CPUParticles2D" parent="Background"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-68, -32)
+amount = 35
+lifetime = 0.25
+speed_scale = 0.05
+randomness = 1.0
+texture = ExtResource("1_peqrw")
+emission_shape = 3
+emission_rect_extents = Vector2(640, 576)
+direction = Vector2(-1, 2.08165e-12)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -20.0
+angular_velocity_max = 20.0
+orbit_velocity_min = -0.15
+orbit_velocity_max = 0.15
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 0.7
+scale_amount_max = 0.8
+scale_amount_curve = SubResource("Curve_018uj")
+color = Color(0.168627, 0.0588235, 0.329412, 1)
+color_ramp = SubResource("Gradient_dxnem")
+
+[node name="Lines" type="CPUParticles2D" parent="Background"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-68, -32)
+amount = 12
+lifetime = 0.5
+speed_scale = 0.05
+randomness = 1.0
+texture = ExtResource("2_yfxxs")
+emission_shape = 3
+emission_rect_extents = Vector2(640, 576)
+direction = Vector2(-1, 2.08165e-12)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -30.0
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("Curve_25f4v")
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_4pwob")
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -90.0
+angle_max = 90.0
+scale_amount_min = 0.4
+scale_amount_max = 0.5
+scale_amount_curve = SubResource("Curve_t518d")
+color = Color(0.168627, 0.0588235, 0.329412, 1)
+color_ramp = SubResource("Gradient_ir77q")

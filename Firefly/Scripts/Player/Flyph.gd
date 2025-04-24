@@ -1,4 +1,4 @@
-   
+
 class_name Flyph
 extends CharacterBody2D
 
@@ -14,7 +14,7 @@ const RESPAWN_DUST = preload("res://Scenes/Player/particles/RespawnParticle.tscn
 const SPLASH = preload("res://Scenes/Player/particles/splash_dust.tscn")
 const GET_UP_LEDGE = preload("res://Scenes/Player/particles/get_up_ledge.tscn")
 # ENUMS
-# Animation States
+# Animation States 
 enum ANI_STATES {
 
 	IDLE,
@@ -33,11 +33,11 @@ enum ANI_STATES {
 	SLIDE_PREP,
 	SLIDE_LOOP,
 	SLIDE_END,
-	
+
 	WALL_HUG,
 	WALL_SLIDE,
 	WALL_JUMP,
-	
+
 	CLIMB,
 	SWING
 
@@ -122,6 +122,7 @@ signal dead()
 @onready var wet = $Particles/Wet
 @onready var slide_dust = $Particles/SlideDust
 @onready var dash_dust = $Particles/DashDust
+@onready var boost_fx = $Particles/BoostFX
 
 # Particle Spawners
 @onready var jump_dust_spawner = $Particles/JumpDustSpawner
@@ -300,13 +301,13 @@ func _ready() -> void:
 	set_standing_collider()
 
 	glow_manager.startup()
-	
+
 	# Register the players save and load functions
 	if not is_actor:
-		
+
 		var save_func: Callable = Callable(self, "player_save")
 		var load_func: Callable = Callable(self, "player_load")
-		
+
 		_persist.register_persistent_class("Flyph", save_func, load_func)
 
 		# Load the position
@@ -325,7 +326,7 @@ func player_save() -> Dictionary:
 	save_data["movement_level"] = glow_manager.movement_level
 	save_data["glow_enabled"] = glow_manager.GLOW_ENABLED
 	save_data["can_glide"] = can_glide
-	
+
 
 	return save_data
 
@@ -339,13 +340,13 @@ func player_load(save_data: Dictionary) -> void:
 		enable_glow()
 	else:
 		disable_glow()
-	
-	if save_data.has("can_glide"):	
+
+	if save_data.has("can_glide"):
 		can_glide = save_data["can_glide"]
 	else:
 		can_glide = false
 
-	
+
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -354,8 +355,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Jump") and not is_actor:
 		jump_buffer = base_jump_buffer
 
-	
-		
+
+
 
 	# For quickly chaning states
 	if OS.is_debug_build():
@@ -382,7 +383,7 @@ var jump_buffer: float = -1
 # This will be called by the state machine when it wants to consume a jump buffer
 # Returns True if the jump buffer was consumed
 func attempt_jump(leniancy: float = 0.0) -> bool:
-	
+
 	if jump_buffer > -leniancy:
 		consume_jump()
 		return true
@@ -395,12 +396,12 @@ func update_buffer_timer(delta: float):
 
 # Uses up anything potentially in the jump buffer
 func consume_jump() -> void:
-	
+
 	jump_buffer = -1
-	
+
 ## This is used by the spring routine
 func attempt_post_jump() -> bool:
-	
+
 	if post_jump_buffer.time_left > 0.0:
 		post_jump_buffer.stop()
 		return true
@@ -411,7 +412,7 @@ func animated_jump() -> void:
 
 # This is handled here
 func set_input_axis(delta: float) -> void:
-	
+
 	# Ok for some reason my joystick is giving like 0.9998 which when holding left, which apparently
 	# is enough for my player to move considerably slower than like i want them to... so built in UCF???
 	# If we aren't an actor take user input
@@ -423,7 +424,6 @@ func set_input_axis(delta: float) -> void:
 		#horizontal_axis = 1.0
 	#elif horizontal_axis == -0.5:
 		#horizontal_axis = -1.0
-
 
 	# If we've just pressed an input then unlock the direction (so silly players
 	# can regain control if they want to)
@@ -455,7 +455,7 @@ var hold_dir: float = 0.0
 var lock_time: float = 0.5
 ## Locks the horizontal axis to a value for a given amount of time
 func lock_h_dir(dir: float, time: float, soft: bool = false):
-	
+
 	soft_lock = soft
 	lock_dir = true
 	hold_dir = dir
@@ -472,8 +472,8 @@ func _physics_process(delta: float) -> void:
 
 		# Calls the physics proceess
 		StateMachine.process_physics(delta)
-		
-		
+
+
 
 		# "Assists" in movement
 		movement_assist(delta)
@@ -483,17 +483,17 @@ func _physics_process(delta: float) -> void:
 		prev_velocity_y = velocity.y
 
 		_logger.info("Pre-Move and Sliding")
-		
+
 		# Apply Velocities if we're in a velocity based state
 		if StateMachine.current_state != WORMED_STATE:
 			move_and_slide()
-		
+
 		_logger.info("Post Move and Sliding")
 
 	_logger.info("Flyph Physics Process End")
 
 
-		
+
 
 func _process(delta: float) -> void:
 
@@ -556,11 +556,11 @@ func update_animations():
 			animation.play("falling")
 		ANI_STATES.LANDING:
 			animation.play("landing")
-			
+
 		# Water Animations
 		ANI_STATES.PADDLE:
 			animation.play("paddle")
-			
+
 		# Wall Animations
 		ANI_STATES.WALL_HUG:
 			animation.play("wall_hug")
@@ -568,7 +568,7 @@ func update_animations():
 			animation.play("wall_slide")
 		ANI_STATES.WALL_JUMP:
 			animation.play("wall_jump")
-			
+
 		ANI_STATES.CLIMB:
 			animation.play("climb")
 		ANI_STATES.SWING:
@@ -624,7 +624,7 @@ const JUMP_CORRECTION_FACTOR = 0.9
 # The strength of the correction is proportional to the rising velocity.
 func jump_corner_correction(delta):
 
-	
+
 
 	var strength = abs(velocity.y) * JUMP_CORRECTION_FACTOR
 
@@ -658,12 +658,12 @@ func horizontal_corner_correction(delta):
 	# Adjust the Raycast Length based on usecase (if grounded step we need longer)
 	if not is_on_floor():
 		set_corner_snapping_length(1)
-		
+
 		# Only do this on rising
 		if velocity.y >= 0:
 			return
-			
-		
+
+
 	else:
 		# Make it a bit bigger when doing floor corrections in order to give us a little xtra time to get up lol
 		set_corner_snapping_length(3)
@@ -683,7 +683,7 @@ func horizontal_corner_correction(delta):
 			# Return if nothing was found
 			if right_accuracy.get_collision_count() == 0:
 				return
-				
+
 			var collision_y = right_accuracy.get_collision_point(0).y
 
 			if collision_y == 0:
@@ -700,7 +700,7 @@ func horizontal_corner_correction(delta):
 				#offset += 2
 				correction_speed = 100
 				spawn_getup_dust(true)
-				
+
 
 			# Calculate the desired new position
 			var test_y = move_toward(position.y, position.y-offset, delta * correction_speed)
@@ -716,8 +716,8 @@ func horizontal_corner_correction(delta):
 				# If no collision, update the position
 				position.y = test_y
 				squish_node.squish( Vector2(1.2, 0.8))
-				
-				
+
+
 
 
 	elif bottom_left.is_colliding() and not step_max_left.is_colliding():
@@ -748,7 +748,7 @@ func horizontal_corner_correction(delta):
 				#offset += 2
 				correction_speed = 100
 				spawn_getup_dust(false)
-				
+
 
 			# Attempt to smoothly
 			# Calculate the desired new position
@@ -771,7 +771,7 @@ func horizontal_corner_correction(delta):
 # Auto enter hole
 func auto_enter_tunnel():
 
-	
+
 
 	var left_open: bool = not crouch_left.is_colliding() and not bottom_left.is_colliding()
 	var right_open: bool = not crouch_right.is_colliding() and not bottom_right.is_colliding()
@@ -784,23 +784,23 @@ func auto_enter_tunnel():
 
 	elif right_open and wall_on_right:
 		enter_tunnel()
-	
+
 
 func enter_tunnel():
 
 		_logger.info("Shoving Player into Tunnel")
-		
+
 		set_crouch_collider()
-		
+
 		# Push player forward
 		velocity.x = prev_velocity_x
-		
+
 		# Squish the player
 		squish_node.squish(crouch_squash)
 
 		# Set the flag
 		crouchJumping = true
-		
+
 
 # Gadgets
 
@@ -823,19 +823,19 @@ func set_corner_snapping_length(offset: float):
 ## Visual Things
 
 func spawn_jump_dust():
-	
+
 	# Give dust on landing
 	generic_spawn_particles(JUMP_DUST, jump_dust_spawner)
-	
+
 func spawn_landing_dust():
-	
+
 	generic_spawn_particles(LANDING_DUST, landing_dust_spawner)
-	
+
 func spawn_getup_dust(left: bool):
-	
+
 	var new_particle = GET_UP_LEDGE.instantiate()
 	new_particle.set_name("temp_particles")
-	
+
 	if left:
 		new_particle.get_node("Dust").get_node("LeftDust").visible = false
 	else:
@@ -847,21 +847,21 @@ func spawn_getup_dust(left: bool):
 
 # Spawns the given preloaded particle at the given marker
 func generic_spawn_particles(particles: PackedScene, spawner: Marker2D):
-	
+
 	var new_particle = particles.instantiate()
 	new_particle.set_name("temp_particles")
 	spawner.add_child(new_particle)
 	var particle_animation = new_particle.get_node("AnimationPlayer")
 	particle_animation.play("free")
-	
-	
-	
+
+
+
 ##  Glow State Functions
 #######################################
 #######################################
 
 func connect_meter(update_score: Callable):
-	
+
 	glow_manager.connect("glow_meter_changed", update_score)
 
 func connect_upgrade(promotion_ui_fx: Callable):
@@ -991,7 +991,7 @@ func calculate_properties():
 
 	front_wing.set_wing_length(movement_data.WING_LENGTH+1)
 	back_wing.set_wing_length(movement_data.WING_LENGTH)
-	
+
 
 	# Visual: Setting Glow and such
 	light.set_brightness(movement_data.BRIGHTNESS)
@@ -1004,7 +1004,13 @@ func calculate_properties():
 # Pushes the player in the direction of the boost
 func give_boost(boost_speed: float) -> void:
 
+
 	velocity.x += boost_speed * horizontal_axis
+
+	# TODO: Fun Particles!
+	if abs(horizontal_axis) > 0:
+		boost_fx.emitting = true
+		boost_fx.direction.x = sign(horizontal_axis)
 
 
 var temp_gravity_active: bool = false
@@ -1029,10 +1035,10 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	jumping = false
 	crouchJumping = false
 	boostJumping = false
-	
+
 	fastFalling = false
 	fastFell = false
-	
+
 	# Enable gliding out of this
 	has_glided = false
 
@@ -1043,11 +1049,11 @@ func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vec
 	# If a squash is given, squash the player
 	if (squash != Vector2.ZERO):
 		squish_node.squish(squash)
-		
+
 	# Restart whatever animation we're in
 	# That way we either restart the air movements, or restart running
 	restart_animation = true
-		
+
 	consume_jump()
 
 	#velocity += boost  * horizontal_axis
@@ -1075,12 +1081,12 @@ func kill():
 
 	# Hide Sprite
 	squish_node.visible = false
-	
+
 	# Turn off particles
 	glow_aura.emitting = false
 	promotion_fx.emitting = false
 	wall_slide_dust.emitting = false
-	
+
 	slide_dust.emitting = false
 	dash_dust.emitting = false
 
@@ -1088,9 +1094,9 @@ func kill():
 	run_sfx.stop()
 	sliding_sfx.stop()
 	wall_slide_sfx.stop()
-	
+
 	dying = true
-	
+
 	if StateMachine.current_state == WORMED_STATE or StateMachine.current_state == GLIDING_STATE:
 		StateMachine.change_state(AERIAL_STATE)
 
@@ -1105,12 +1111,12 @@ func kill():
 
 	# Move the player / camera to the starting position
 	global_position = starting_position
-	
+
 	$Physics/HazardDetector.set_collision_mask_value(5, true)
-	
+
 	# Zero out the velocity
 	velocity = Vector2.ZERO
-	
+
 	# Let any Listeners know we dead
 	emit_signal("dead")
 
@@ -1123,7 +1129,7 @@ func kill():
 
 	# Wait 0.7 seconds
 	await get_tree().create_timer(0.7).timeout
-	
+
 	# Renable the player
 	glow_manager.GLOW_ENABLED = true
 
@@ -1140,7 +1146,7 @@ func kill():
 
 ## Connect given callable to be called on death
 func connect_to_death(method: Callable):
-	
+
 	connect("dead", method)
 
 # Ways of death:
@@ -1155,9 +1161,9 @@ func _on_hazard_detector_body_entered(_body):
 # Sets the given points as the players respawn point
 func set_respawn_point(point: Vector2):
 	starting_position = point
-	
+
 	_stats.POSITION = point
-	
+
 
 
 ## Debug Methods:
@@ -1167,7 +1173,7 @@ func set_respawn_point(point: Vector2):
 
 ## Water Detection
 func _on_water_detector_body_entered(_body):
-	
+
 	# Prevent double entries.... its weird, this shouldn't
 	# happen as long as im smart but sometimes,,,
 	if not underWater:
@@ -1177,13 +1183,13 @@ func _on_water_detector_body_entered(_body):
 
 var disable_walljump: bool = false
 func _on_water_detector_body_exited(_body):
-	
+
 	# Aerial Feels like the best bet
-	
+
 	#consume_jump()
 	StateMachine.change_state(AERIAL_STATE)
 	underWater = false
-	
+
 	# Wait 0.5 seconds before flipping the flag
 	disable_walljump = true
 	await get_tree().create_timer(0.25).timeout
@@ -1193,7 +1199,7 @@ func _on_water_detector_body_exited(_body):
 ## Rope Detection
 var stuck_segment: SpitSegment = null
 func enter_rope(segment: SpitSegment):
-	
+
 	_logger.info("Grabbing Rope")
 	stuck_segment = segment
 	segment.player_grabbed()
@@ -1204,7 +1210,7 @@ func enter_rope(segment: SpitSegment):
 
 # When the player enters a rope
 func _on_rope_detector_body_entered(body):
-	
+
 	_logger.info("Rope Detected")
 	var segment = body as SpitSegment
 	if segment and not stuck_segment and not dying:

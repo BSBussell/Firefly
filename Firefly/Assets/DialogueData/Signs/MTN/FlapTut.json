@@ -1,0 +1,10 @@
+{
+  "identifier": "FlapTut",
+  "dialogue": [
+    "So besides just being able to [color=yellow]glide[/color] with your wings, I bet if you were to [color=yellow]let yourself fall for a bit[/color], give your wings a break.",
+
+    "You might be able to [color=yellow]catch the updraft when you re-extend them again[/color] and maybe even [color=yellow]gain some more height![/color] Try it out and see if you can reach further by doing that!"
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

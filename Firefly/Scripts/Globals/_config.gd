@@ -16,6 +16,7 @@ var def_settings: Dictionary = {
 	"auto_glow": false,
 	"show_speedometer": 0,
 	"show_timer": false,
+	"discord_timer": false,
 	
 	
 # Graphics

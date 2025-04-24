@@ -1,0 +1,16 @@
+{
+  "identifier": "WOWZERS",
+  "dialogue": [
+	"WOWZERS!!! You're incredible!!!", 
+	
+	"I don't even know what to say, I'm frankly just so greatful you enjoyed my game enough to the point you could do this!", 
+	
+	"Sincerely, Thank You. Players like you are the type of player I only dreamt of when I started this project. And it really means a lot that you found it worth undertaking this challenge.", 
+	
+	"Send a screenshot of this screen to my community server, and I'll include you in the game in some form or another.", 
+	
+	"And again, from my entire heart, thank you so much, for playing my game.[right]~ Bee[/right]"
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": true
+}

@@ -29,7 +29,7 @@ driver/output_latency.web=90
 _meta="*res://Scripts/Globals/_meta.gd"
 _config="*res://Scripts/Globals/_config.gd"
 _logger="*res://Scripts/Globals/_logger.gd"
-_playtest="*res://Assets/Playtest Saves/_playtest.gd"
+_playtest="res://Assets/Playtest Saves/_playtest.gd"
 _persist="*res://Scripts/Globals/_persist.gd"
 _loader="*res://Scripts/Globals/_loader.gd"
 _debug="*res://Scripts/Globals/_debug.gd"
@@ -40,6 +40,8 @@ _stats="*res://Scripts/Globals/_stats.gd"
 _audio="*res://Scripts/Globals/_audio.gd"
 _jar_tracker="*res://Scripts/Globals/_jar_tracker.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
+DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
+_discord="*res://Scripts/Globals/_discord.gd"
 
 [debug]
 
@@ -58,7 +60,7 @@ movie_writer/movie_file="/home/bee/Documents/GitHub/Firefly/Mov/output.avi"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Asset_Drawer/plugin.cfg", "res://addons/better-terrain/plugin.cfg")
+enabled=PackedStringArray("res://addons/Asset_Drawer/plugin.cfg", "res://addons/better-terrain/plugin.cfg", "res://addons/discord-rpc-gd/plugin.cfg")
 
 [file_customization]
 
@@ -264,6 +266,7 @@ textures/canvas_textures/default_texture_repeat=1
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 renderer/rendering_method.web="forward_plus"
+textures/vram_compression/import_etc2_astc=true
 textures/default_filters/anisotropic_filtering_level=0
 environment/glow/upscale_mode=0
 viewport/hdr_2d=true

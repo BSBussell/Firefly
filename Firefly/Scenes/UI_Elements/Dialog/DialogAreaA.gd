@@ -3,7 +3,7 @@ class_name DialogueArea2D
 
 # Export variable for the Level node
 @export var level: Level
-@export var dialogue: DialogueData
+@export_file("*.json") var dialogue_file: String
 @export var talk_target: Marker2D
 
 @onready var hover = $hover
@@ -15,8 +15,8 @@ class_name DialogueArea2D
 signal initiate_dialogue(text: DialogueData, repeat: bool)
 signal finish_dialogue()
 
+var dialogue_data: Dictionary = {}
 var in_dialogue: bool = false
-
 var dialogue_ui: DialogueUiComponent
 
 func _ready():
@@ -37,9 +37,26 @@ func _ready():
 		printerr("DialogueUiComponent not found in Level!")
 		
 	level.PLAYER.dead.connect(Callable(self, "_stop_dialogue"))
+	
+	load_file()
 		
 	# Disable the Process Loop until Player Enters the Area
 	set_process(false)
+	
+	
+func load_file() -> void:
+	if dialogue_file:
+		var file = FileAccess.open(dialogue_file, FileAccess.READ)
+		if file:
+			var json_string = file.get_as_text()
+			file.close()
+			
+			# Parsing the STR
+			dialogue_data = JSON.parse_string(json_string)
+			if not dialogue_data:
+				printerr("Error: Could not read " + str(json_string) + " as JSON")
+		else:
+			printerr("Error: Could not open file: " + str(dialogue_file))
 	
 ## Event Function when Body Enters DialogueArea
 func _on_body_entered(body: Node2D) -> void:
@@ -79,7 +96,7 @@ func _start_dialogue() -> void:
 	in_dialogue = true
 	
 	# Get the DialogueUiComponent from the Level
-	emit_signal("initiate_dialogue", dialogue, false)
+	emit_signal("initiate_dialogue", dialogue_data, false)
 	
 	
 	

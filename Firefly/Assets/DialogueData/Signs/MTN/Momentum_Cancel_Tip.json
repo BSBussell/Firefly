@@ -1,0 +1,10 @@
+{
+  "identifier": "TIP_22",
+  "dialogue": [
+	"[color=red]Violet Tips # 22:[/color] Holding the opposite direction when you land quickly break's your momentum, it's super useful to avoid sliding off a tight platform!",
+
+	"So, if you find you keep sliding off cramped platforms, keep that in mind to help stick the landing... or at least to make the landing stick."
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

@@ -60,6 +60,15 @@ func _process(delta):
 		# If there is an active player who isn't an actor
 		if _globals.ACTIVE_PLAYER and not _globals.ACTIVE_PLAYER.is_actor:
 			TIME += delta
+			
+			# IF the user is speeding we show people
+			if _config.get_setting('show_speedometer'):
+				# Update the discord game time
+				_discord.sync_to_game_time(TIME)
+				
+			# Otherwise don't
+			else:
+				_discord.sync_to_launch_time()
 
 ## Returns Time as a String format specifier in HH:MM:SS:MS format
 func get_timer_string(format: String = "HH:MM:SS:MS") -> String:

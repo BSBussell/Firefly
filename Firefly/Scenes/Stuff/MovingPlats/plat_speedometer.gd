@@ -9,6 +9,6 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	if plat:
 		text = str(floor(plat.actual_velocity.length()))    

@@ -1,0 +1,9 @@
+{
+  "identifier": "unique_dialogue_id",
+  "dialogue": [
+	"Hello!",
+	"Line 2?"
+  ],
+  "sequential_dialogue": "file_link",
+  "victory_dialogue": false
+}

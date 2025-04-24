@@ -46,6 +46,7 @@ point_count = 3
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER")]
 script = ExtResource("1_0fx3r")
+Text = "- Title Screen -"
 PLAYER = NodePath("Flyph")
 ui_components = Array[PackedScene]([ExtResource("1_rtrql")])
 

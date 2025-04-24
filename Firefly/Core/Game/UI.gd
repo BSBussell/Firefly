@@ -4,6 +4,8 @@ class_name UiLoader
 
 @onready var global_themer = $UIViewPort/GlobalThemer
 
+signal FinishedLoading
+
 
 # The level that is loaded
 var currentLevel: Level
@@ -70,6 +72,8 @@ func load_ui(context: Level) -> void:
 		
 		# Now that we've connected it's dependency we can add it to the themer
 		global_themer.add_child(ui_component)
+		
+	emit_signal("FinishedLoading")
 		
 		
 

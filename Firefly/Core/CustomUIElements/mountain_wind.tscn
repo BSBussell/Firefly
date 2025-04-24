@@ -1,0 +1,121 @@
+[gd_scene load_steps=7 format=3 uid="uid://bhhjjqigpf7ei"]
+
+[ext_resource type="Script" path="res://Core/CustomUIElements/mountain_wind.gd" id="1_8vgh4"]
+[ext_resource type="Texture2D" uid="uid://cmc7wjhhrqhuy" path="res://Assets/Graphics/Particles/dust_small.png" id="2_83ein"]
+[ext_resource type="Texture2D" uid="uid://bc0hcvuvmjblf" path="res://Assets/Graphics/Particles/dust_line.png" id="3_ftasg"]
+
+[sub_resource type="Curve" id="Curve_fjbh2"]
+_data = [Vector2(0, 0.9), 0.0, -0.148742, 0, 0, Vector2(1, 0), -6.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_k6x1h"]
+offsets = PackedFloat32Array(0, 0.166667, 0.25, 0.75, 0.833333, 0.9, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.666667, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.784314, 1, 1, 1, 0.588235, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+metadata/_snap_count = 12
+
+[sub_resource type="Curve" id="Curve_n1wur"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="LeftWind" type="Control"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_8vgh4")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 180.0
+scale = Vector2(6, 6)
+mouse_filter = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+snap_2d_vertices_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(320, 180)
+render_target_update_mode = 0
+
+[node name="blue_screen" type="ColorRect" parent="SubViewportContainer/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 1, 1)
+
+[node name="CenterLeft" type="Control" parent="SubViewportContainer/SubViewport"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Lines" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/CenterLeft"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+amount = 50
+speed_scale = 0.6
+randomness = 1.0
+local_coords = true
+texture = ExtResource("2_83ein")
+emission_shape = 3
+emission_rect_extents = Vector2(320, 180)
+direction = Vector2(1, 2.08165e-12)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -20.0
+angular_velocity_max = 20.0
+orbit_velocity_min = -0.15
+orbit_velocity_max = 0.15
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+scale_amount_min = 0.4
+scale_amount_curve = SubResource("Curve_fjbh2")
+color = Color(1, 0.509804, 0, 1)
+color_ramp = SubResource("Gradient_k6x1h")
+hue_variation_min = -0.2
+hue_variation_curve = SubResource("Curve_n1wur")
+
+[node name="Dust" type="CPUParticles2D" parent="SubViewportContainer/SubViewport/CenterLeft"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+amount = 50
+speed_scale = 0.6
+randomness = 1.0
+local_coords = true
+texture = ExtResource("3_ftasg")
+emission_shape = 3
+emission_rect_extents = Vector2(320, 180)
+direction = Vector2(1, 2.08165e-12)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -20.0
+angular_velocity_max = 20.0
+orbit_velocity_min = -0.15
+orbit_velocity_max = 0.15
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+scale_amount_min = 0.4
+scale_amount_curve = SubResource("Curve_fjbh2")
+color = Color(1, 0.509804, 0, 1)
+color_ramp = SubResource("Gradient_k6x1h")
+hue_variation_min = -0.2
+hue_variation_curve = SubResource("Curve_n1wur")
