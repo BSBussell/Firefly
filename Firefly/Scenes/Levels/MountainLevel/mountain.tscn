@@ -955,6 +955,7 @@ stream = ExtResource("8_m0ifv")
 bus = &"Ambience"
 
 [node name="Particles" type="Node2D" parent="."]
+modulate = Color(1, 0.584314, 0, 1)
 
 [node name="Foreground" type="Node2D" parent="Particles"]
 z_index = 100
@@ -1230,7 +1231,7 @@ color = Color(0.168627, 0.0588235, 0.329412, 1)
 color_ramp = SubResource("Gradient_ir77q")
 
 [node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("9_2ctjn")]
-position = Vector2(3549, -5304)
+position = Vector2(69, 32)
 MusicPlayer = NodePath("../LevelAudio/Music")
 
 [node name="PlayerCam" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("10_chrda")]

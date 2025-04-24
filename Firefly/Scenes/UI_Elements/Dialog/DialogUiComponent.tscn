@@ -1,9 +1,14 @@
-[gd_scene load_steps=19 format=3 uid="uid://cu5uu6ykpiam"]
+[gd_scene load_steps=22 format=3 uid="uid://cu5uu6ykpiam"]
 
+[ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/Wobble.gd" id="1_4cpfj"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.gd" id="1_7ojih"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="2_5wsxi"]
 [ext_resource type="StyleBox" uid="uid://crlak0jekwn4s" path="res://Scenes/UI_Elements/Dialog/dialogBox.tres" id="2_77ug7"]
+[ext_resource type="Shader" path="res://Scenes/UI_Elements/Dialog/WobbleBox.gdshader" id="2_psy80"]
 [ext_resource type="Texture2D" uid="uid://kfaixciq44ug" path="res://Assets/Graphics/Collectible/gem.png" id="3_yuqb7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nveax"]
+shader = ExtResource("2_psy80")
 
 [sub_resource type="Animation" id="Animation_sdlgx"]
 length = 0.001
@@ -372,17 +377,18 @@ _data = {
 }
 
 [node name="DialogUiComponent" type="Control"]
-z_index = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(960, 540)
 mouse_filter = 1
 script = ExtResource("1_7ojih")
 
 [node name="Label" type="RichTextLabel" parent="."]
+material = SubResource("ShaderMaterial_nveax")
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -401,6 +407,9 @@ bbcode_enabled = true
 text = "[center]Blah [color=yellow]Key Word[/color] blah... blah blah blah bala shell big snail test filling the thing up and using as [color=#aaa]much[/color][/center]"
 fit_content = true
 scroll_active = false
+script = ExtResource("1_4cpfj")
+wobble_speed = 0.15
+wobble_amplitude_rot = 1.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
