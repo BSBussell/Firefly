@@ -179,51 +179,53 @@ func run_cycle(delta: float) -> void:
 
 func can_plat_launch(player: Flyph, forced: bool = false) -> bool:
 	
+	# If the player can be launched based on the launch window (set by launch_curve)
 	var base_launch_multi: float = snappedf(launch_curve.sample_baked(time_ratio), 0.2)
 	var can_launch: bool = base_launch_multi > 0.0
+
+	# If the player is falling/not jumping or being boost jumped
 	var falling: bool = not player.jumping and not player.boostJumping
 		
-	return (not can_launch or falling) and not forced
+	#  If the player can't be launched based on the launch window (set by launch_curve)
+	# or the player is falling/not jumping or being boost jumped
+	# or the player is forced to launch, then we can launch
+	return (not can_launch or falling) or forced
 
 ## Call this function when we ready to launch the player from the plat
 func plat_launch(player: Flyph, forced: bool = false) -> bool:
 	
 	
 	if  can_plat_launch(player, forced):
+
+		var falling: bool = not player.jumping and not player.boostJumping
+		if falling:
+
+			# Give the player option to coyote launch
+			player.coyote_launch = true
+			player.coyote_launch_params = {
+				"launch_velocity": get_launch_vector(player),
+				"gravity": -1,
+				"squash": Vector2(0.7, 1.3)
+			}
+
+			print("Coyote Launch: Falling!")
+
+
+
 		return false
 	
-	print("Launch: " + str(player.velocity.y))
 	
-	var base_launch_multi: float = snappedf(launch_curve.sample_baked(time_ratio), 0.2)
 	
-	movement_direction = snapped(movement_direction, Vector2(0.25,0.25))
-	print(movement_direction)
+	var launch_vector: Vector2 = get_launch_vector(player)
+
+	print("Launch: " + str(launch_vector))
 	
-	if player.boostJumping and  player.reverseBoostJumping:
-		if sign(movement_direction.x) != sign(player.horizontal_axis):
-			movement_direction.x *= -1
-		 
+	# player.launched = true
+	player.launch(launch_vector, -1, Vector2(0.7, 1.3))
 	
-	if sign(player.horizontal_axis) == sign(movement_direction.x): #or sign(player.horizontal_axis) == 0:
-		
-		if abs(player.velocity.x) < player.speed:
-			player.velocity.x = player.speed 
-			player.velocity.x *= 0.75 * sign(movement_direction.x)
-		
-		player.velocity.x += ((launch_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi	  
-	
-	print(player.velocity.y)
-	if sign(movement_direction.y) < 0:
-		player.velocity.y = player.jump_velocity
-		player.velocity.y += ((launch_velocity * movement_direction.y) * launch_multi.y) * base_launch_multi	  
-	
-	 
-	#print(actual_velocity)
-	print(player.velocity.x  )
-	if player.velocity.y < -500:
-		print("Big Jump")
-		
-	player.launched = true
+	# Set the jump flag to true, so that we are using jump gravity
+	# when launching. 
+	player.jumping = true
 	return true
 	
 ## Returns if the moving platform is active
@@ -248,4 +250,43 @@ func deactivate() -> void:
 func can_run_cycle() -> bool:
 	return is_active()	
 	
+
+func get_launch_vector(player: Flyph) -> Vector2:
+
+	var base_launch_multi: float = snappedf(launch_curve.sample_baked(time_ratio), 0.2)
+
+	var launch_vector: Vector2 = player.velocity
+	
+	movement_direction = snapped(movement_direction, Vector2(0.25,0.25))
+	print(movement_direction)
+	
+	if player.boostJumping and  player.reverseBoostJumping:
+		if sign(movement_direction.x) != sign(player.horizontal_axis):
+			movement_direction.x *= -1
+		 
+	
+	if sign(player.horizontal_axis) == sign(movement_direction.x): #or sign(player.horizontal_axis) == 0:
+		
+		if abs(player.velocity.x) < player.speed:
+			launch_vector.x = player.speed
+			launch_vector.x *= 0.75 * sign(movement_direction.x)
+			# player.velocity.x = player.speed 
+			# player.velocity.x *= 0.75 * sign(movement_direction.x)
+		
+		# player.velocity.x += ((launch_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi	  
+		launch_vector.x += ((launch_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi
+	
+	print(player.velocity.y)
+	if sign(movement_direction.y) < 0:
+		launch_vector.y = player.jump_velocity
+		launch_vector.y += ((launch_velocity * movement_direction.y) * launch_multi.y) * base_launch_multi
+		# player.velocity.y = player.jump_velocity
+		# player.velocity.y += ((launch_velocity * movement_direction.y) * launch_multi.y) * base_launch_multi	  
+	
+	 
+	#print(actual_velocity)
+	if player.velocity.y < -500:
+		print("Big Jump")
+
+	return launch_vector
 

@@ -124,7 +124,14 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 	
 	if (handle_grace_walljump()):
-		return null
+		
+		# Reenable gliding
+		if parent.just_glode:
+			parent.has_glided = false
+			parent.modulate = "#FFFFFF"
+		
+		else:
+			return null
 
 	# If we press jump again then we play the gliding state
 	if can_glide() and parent.attempt_jump():
@@ -275,8 +282,10 @@ func animation_end() -> PlayerState:
 
 func handle_coyote(_delta):
 
+	var coyote_time_left: bool = coyote_time.time_left > 0.0
+
 	# If we are able to do a coyote jump
-	if coyote_time.time_left > 0.0 and not parent.launched or _config.get_setting("inf_jump"):
+	if coyote_time_left and not parent.launched or _config.get_setting("inf_jump"):
 
 		
 
@@ -301,6 +310,12 @@ func handle_coyote(_delta):
 				return
 
 			coyote_jump()
+	
+	else:
+		# If we have coyote_launch set turn it off presuming we can't coyote_launch
+		if parent.coyote_launch and not coyote_time_left:
+			parent.coyote_launch = false
+			parent.coyote_launch_params = {}
 
 
 #perform coyote jump
@@ -325,12 +340,33 @@ func coyote_jump():
 	# Jump SFX
 	jumping_sfx.play(0)
 
+	handle_coyote_launch()
+
+
+func handle_coyote_launch() -> void:
+
+	# If we have a coyote launch
+	if parent.coyote_launch:
+
+		# Get the params
+		var params = parent.coyote_launch_params
+
+		# Call parent.launch with the params
+		parent.launch(params["launch_velocity"], params["gravity"], params["squash"])
+		parent.jumping = true
+
+		print("Coyote Launch: " + str(params["launch_velocity"]))
+
+		parent.coyote_launch = false
+		parent.coyote_launch_params = {}
+
 func handle_grace_walljump() -> bool:
 
 	# Get the direction of the walljump
 	var wj_dir = check_grace_walljump_dir()
 	
 	if wj_dir != 0:
+		
 		return WALL_STATE.handle_walljump(parent.vertical_axis, wj_dir)
 	
 	return false

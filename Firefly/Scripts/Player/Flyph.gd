@@ -282,9 +282,17 @@ var horizontal_axis: float = 0
 # DEATH
 var dying: bool = false
 
+# Glide Variables
+var can_glide: bool = false
+var just_glode: bool = false
+
+
+# Coyote Launch Variables
+var coyote_launch_params: Dictionary = {}
+var coyote_launch: bool = false
 
 # Persistent Data:
-var can_glide: bool = false
+
 
 # I'm Being really annoying about this btw
 func _ready() -> void:

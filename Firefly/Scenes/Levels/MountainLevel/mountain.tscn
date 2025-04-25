@@ -1400,15 +1400,15 @@ upward = true
 [node name="LaunchPlat" parent="MovingPlat/LaunchDeath/LaunchPlat" instance=ExtResource("50_w0xxd")]
 position = Vector2(90, -32)
 curve = SubResource("Curve2D_4eiou")
-upward = true
 avg_velocity = 105.0
 launch_curve = SubResource("Curve_b6mhp")
+upward = true
 
 [node name="LaunchPlat2" parent="MovingPlat/LaunchDeath/LaunchPlat" instance=ExtResource("50_w0xxd")]
 position = Vector2(183, -248)
 curve = SubResource("Curve2D_utnja")
-upward = true
 launch_curve = SubResource("Curve_67ptn")
+upward = true
 
 [node name="LaunchPlat3" parent="MovingPlat/LaunchDeath/LaunchPlat" instance=ExtResource("50_w0xxd")]
 position = Vector2(179, -524)
@@ -1417,8 +1417,8 @@ curve = SubResource("Curve2D_tgtlx")
 [node name="LaunchPlat" parent="MovingPlat/LaunchDeath/LaunchPlat/LaunchPlat3" instance=ExtResource("50_w0xxd")]
 position = Vector2(216, -28)
 curve = SubResource("Curve2D_8oiou")
-upward = true
 launch_curve = SubResource("Curve_jk2v5")
+upward = true
 
 [node name="LaunchPlat" parent="MovingPlat/LaunchDeath/LaunchPlat/LaunchPlat3/LaunchPlat" instance=ExtResource("50_w0xxd")]
 position = Vector2(107, -111)

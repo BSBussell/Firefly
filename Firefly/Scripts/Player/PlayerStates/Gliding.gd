@@ -69,7 +69,8 @@ func enter() -> void:
 		else:
 			parent.velocity.x *= reverse_boost
 			parent.velocity.x += (glide_x_boost * sign(parent.horizontal_axis))
-		parent.has_glided = true
+		
+		set_flags()
 		
 		parent.modulate = "#A0A0A0"
 		
@@ -98,7 +99,7 @@ func enter() -> void:
 			parent.velocity.x *= reverse_boost
 			parent.velocity.x += (glide_x_boost * sign(parent.horizontal_axis))
 			
-		parent.has_glided = true
+		set_flags()
 		
 		glide_speed = parent.air_speed
 		
@@ -265,3 +266,13 @@ func state_status() -> PlayerState:
 	
 	
 	return null
+
+
+func set_flags() -> void:
+	
+	parent.has_glided = true
+	parent.just_glode = true
+	
+	# Disable glode flag after 0.1 seconds
+	await get_tree().create_timer(0.1).timeout
+	parent.just_glode = false
