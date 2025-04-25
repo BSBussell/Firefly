@@ -71,6 +71,8 @@ func enter() -> void:
 			parent.velocity.x += (glide_x_boost * sign(parent.horizontal_axis))
 		parent.has_glided = true
 		
+		parent.modulate = "#A0A0A0"
+		
 		glide_speed = parent.air_speed
 	
 		# Audio FX
@@ -252,8 +254,8 @@ func state_status() -> PlayerState:
 		return GROUNDED_STATE
 		
 	# If we're launched get us out of gliding	
-	if parent.launched:
-		return AERIAL_STATE
+	#if parent.launched:
+		#return AERIAL_STATE
 	
 	elif parent.is_on_wall_only():
 

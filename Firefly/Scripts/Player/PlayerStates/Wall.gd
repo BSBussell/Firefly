@@ -168,7 +168,7 @@ func apply_airResistance(delta, direction):
 # Performs a wall jump if we can
 # Takes delta and the direction of the wall.
 # If not given we asasume we're on a wall and try to get the wall normal
-func handle_walljump(vc_direction, dir = 0):	
+func handle_walljump(vc_direction, dir = 0) -> bool:	
 	
 	# Attempt jump pretty much just checks if a jump has been buffered and removes that from the buffer if it has
 	if not parent.disable_walljump and parent.attempt_jump():
@@ -190,6 +190,8 @@ func handle_walljump(vc_direction, dir = 0):
 			upward_walljump(jump_dir)
 			post_jump_buffer.start() 
 			
+			return true
+			
 		# Secret Downward WallJump :3
 		elif vc_direction < 0 and not parent.crouchJumping:
 			
@@ -198,6 +200,8 @@ func handle_walljump(vc_direction, dir = 0):
 			
 			downward_walljump(jump_dir)
 			post_jump_buffer.start() 
+			
+			return true
 			
 		# Otherwise do a wall jump
 		# Some caveats, if we are launched, then we have to be holding into the wall
@@ -208,6 +212,10 @@ func handle_walljump(vc_direction, dir = 0):
 
 			away_walljump(jump_dir)
 			post_jump_buffer.start() 
+			
+			return true
+	
+	return false
 
 func set_walljump_flags(jump_dir: float) -> void:
 	

@@ -796,8 +796,9 @@ num_segments = 4
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"wall_jump"
+animation = &"falling"
 autoplay = "idle"
+frame = 4
 frame_progress = 1.0
 flip_h = true
 script = ExtResource("8_dying")
@@ -1054,14 +1055,13 @@ position = Vector2(-1, -8.375)
 shape = SubResource("RectangleShape2D_polx2")
 
 [node name="Raycasts" type="Node2D" parent="."]
-visible = false
 position = Vector2(0, -8)
 
 [node name="Right_WJ_Grace" type="ShapeCast2D" parent="Raycasts"]
 position = Vector2(3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
-target_position = Vector2(2, 2.08165e-12)
+target_position = Vector2(3, 2.08165e-12)
 max_results = 1
 collision_mask = 18
 
@@ -1069,11 +1069,12 @@ collision_mask = 18
 position = Vector2(-3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
-target_position = Vector2(-2, 2.08165e-12)
+target_position = Vector2(-3, 2.08165e-12)
 max_results = 1
 collision_mask = 18
 
 [node name="VerticalSmoothing" type="Node2D" parent="Raycasts"]
+visible = false
 
 [node name="TopLeft" type="RayCast2D" parent="Raycasts/VerticalSmoothing"]
 position = Vector2(-3, -7.5)
@@ -1088,6 +1089,7 @@ target_position = Vector2(0, -5)
 collision_mask = 2
 
 [node name="HorizontalSmoothing" type="Node2D" parent="Raycasts"]
+visible = false
 
 [node name="BottomRight" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
 position = Vector2(3, 7.5)
@@ -1132,6 +1134,7 @@ max_results = 6
 collision_mask = 2
 
 [node name="Colliders" type="Node2D" parent="Raycasts"]
+visible = false
 
 [node name="Stand_Room_Left" type="RayCast2D" parent="Raycasts/Colliders"]
 position = Vector2(-3, -1)

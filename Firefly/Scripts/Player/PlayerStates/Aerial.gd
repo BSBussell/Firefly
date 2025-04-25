@@ -122,6 +122,9 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 		parent.set_standing_collider()
 
+	
+	if (handle_grace_walljump()):
+		return null
 
 	# If we press jump again then we play the gliding state
 	if can_glide() and parent.attempt_jump():
@@ -133,7 +136,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 # We can glide if we cant coyote jump nemore or if we cant wall jump
 func can_glide() -> bool:
-	return coyote_time.time_left <= 0.0 and not (left_wj_grace.is_colliding() or right_wj_grace.is_colliding()) and not parent.launched and parent.   can_glide
+	return coyote_time.time_left <= 0.0 and not (left_wj_grace.is_colliding() or right_wj_grace.is_colliding()) and parent.can_glide
 
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
@@ -144,7 +147,6 @@ func process_physics(delta: float) -> PlayerState:
 
 	# Grace Jumps
 	handle_coyote(delta)
-	handle_grace_walljump()
 
 	# For Short Hops
 	handle_sHop(delta)
@@ -225,7 +227,6 @@ func process_frame(delta):
 		fall_timer = min(fall_timer + delta, fall_timer_max)
 
 		var spriteBlend = min(fall_timer / fall_timer_max, 1)
-		print("Sprite Blend: ", spriteBlend)
 		var squishVal = Vector2()
 		squishVal.x = lerp(1.0, parent.falling_squash.x, spriteBlend)
 		squishVal.y =  lerp(1.0, parent.falling_squash.y, spriteBlend)
@@ -324,13 +325,15 @@ func coyote_jump():
 	# Jump SFX
 	jumping_sfx.play(0)
 
-func handle_grace_walljump() -> void:
+func handle_grace_walljump() -> bool:
 
 	# Get the direction of the walljump
 	var wj_dir = check_grace_walljump_dir()
 	
 	if wj_dir != 0:
-		WALL_STATE.handle_walljump(parent.vertical_axis, wj_dir)
+		return WALL_STATE.handle_walljump(parent.vertical_axis, wj_dir)
+	
+	return false
 
 
 
