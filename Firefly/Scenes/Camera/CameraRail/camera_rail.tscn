@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://daqmd1m0kfoxb"]
+
+[ext_resource type="Script" path="res://Scenes/Camera/CameraRail/CameraRail.gd" id="1_8la01"]
+[ext_resource type="PackedScene" uid="uid://cc0ak8c1sq0nq" path="res://Scenes/Camera/CameraTriggers/CameraTarget.tscn" id="2_1628h"]
+[ext_resource type="Texture2D" uid="uid://c5l4bn8hvsoiy" path="res://Assets/Graphics/MISC/line_trace.png" id="3_bsbyk"]
+
+[sub_resource type="Curve2D" id="Curve2D_rcv3x"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0)
+}
+point_count = 1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_egwag"]
+radius = 60.0
+
+[node name="CameraRail" type="Path2D"]
+curve = SubResource("Curve2D_rcv3x")
+script = ExtResource("1_8la01")
+
+[node name="FollowNode" type="PathFollow2D" parent="."]
+rotation = -1.81578
+
+[node name="CameraTarget" parent="FollowNode" instance=ExtResource("2_1628h")]
+collision_layer = 0
+pull_strength = 2.08165e-12
+blend_priority = 20
+blend_override = 2.08165e-12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FollowNode/CameraTarget"]
+shape = SubResource("CircleShape2D_egwag")
+
+[node name="Sprite2D" type="Sprite2D" parent="FollowNode"]
+texture = ExtResource("3_bsbyk")
