@@ -351,11 +351,18 @@ func handle_coyote_launch() -> void:
 		# Get the params
 		var params = parent.coyote_launch_params
 
-		# Call parent.launch with the params
-		parent.launch(params["launch_velocity"], params["gravity"], params["squash"])
-		parent.jumping = true
+		var launch_velocity: Vector2 = params["launch_velocity"]
+		var gravity: int = params["gravity"]
+		var squash: Vector2 = params["squash"]
+		
+		# If launch velocity is not downward we launch
+		if launch_velocity.y > 0:
 
-		print("Coyote Launch: " + str(params["launch_velocity"]))
+			# Call parent.launch with the params
+			parent.launch(launch_velocity, gravity, squash)
+			parent.jumping = true
+
+			print("Coyote Launch: " + str(params["launch_velocity"]))
 
 		parent.coyote_launch = false
 		parent.coyote_launch_params = {}
