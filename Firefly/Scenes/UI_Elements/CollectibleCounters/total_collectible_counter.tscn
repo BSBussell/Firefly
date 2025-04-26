@@ -237,8 +237,8 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="Corner/VBoxContainer"]
 layout_mode = 2
+theme_type_variation = &"pause_counter_count"
 theme_override_colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
-theme_override_font_sizes/font_size = 40
 text = "Jar Tracker"
 horizontal_alignment = 1
 

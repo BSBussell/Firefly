@@ -5,15 +5,16 @@ extends State
 @export var Cursor_Color: Color
 
 ## The maximum speed the camera will move
-@export var Maximum_Speed: Vector2 = Vector2(25, 25)
+@export var Maximum_Speed: Vector2 = Vector2(20, 20)
 @export var Minimum_Speed: Vector2 = Vector2(5, 5)
 
 ## The default acceleration
-@export var BaseAcceleration: Vector2 = Vector2(0.75, 0.75)
+@export var BaseAcceleration: Vector2 = Vector2(0.6, 0.6)
 
 @onready var cursor = $"../../Cursor"
 @onready var control: PlayerCam 
 @onready var player: Flyph
+
 
 
 
@@ -81,7 +82,7 @@ var settled: bool = true
 var current_grouping_offset: Vector2 = Vector2.ZERO
 
 func calculate_target_position(delta: float) -> Vector2:
-
+	
 	var base_target: Vector2 = player.global_position - control.startingPos	
 	var position: Vector2 = base_target
 	var offset: Vector2 = Vector2.ZERO

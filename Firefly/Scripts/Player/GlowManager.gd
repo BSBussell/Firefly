@@ -80,9 +80,9 @@ func startup():
 	score_sample = SampleArray.new(SPEED_SAMPLE_SIZE)
 	
 	
-	var config_changed: Callable = Callable(self, "config_changed")
-	_config.connect_to_config_changed(config_changed)
-	config_changed.call()
+	var config_changed_call: Callable = Callable(self, "config_changed")
+	_config.connect_to_config_changed(config_changed_call)
+	config_changed_call.call()
 	
 	
 	var ui_loader: UiLoader = _viewports.ui_viewport_container

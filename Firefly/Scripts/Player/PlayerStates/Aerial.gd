@@ -123,15 +123,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 		parent.set_standing_collider()
 
 	
-	if (handle_grace_walljump()):
-		
-		# Reenable gliding
-		if parent.just_glode:
-			parent.has_glided = false
-			parent.modulate = "#FFFFFF"
-		
-		else:
-			return null
+	
 
 	# If we press jump again then we play the gliding state
 	if can_glide() and parent.attempt_jump():
@@ -154,6 +146,16 @@ func process_physics(delta: float) -> PlayerState:
 
 	# Grace Jumps
 	handle_coyote(delta)
+	
+	if (handle_grace_walljump()):
+		
+		# Reenable gliding
+		if parent.just_glode:
+			parent.has_glided = false
+			parent.modulate = "#FFFFFF"
+		
+		else:
+			return null
 
 	# For Short Hops
 	handle_sHop(delta)

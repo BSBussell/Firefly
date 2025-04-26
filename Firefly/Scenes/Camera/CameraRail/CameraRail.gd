@@ -3,121 +3,167 @@ class_name CameraRail
 
 @export var ActivationArea: Area2D
 
-@export var STIFFNESS = 100.0
-@onready var DAMPING = 2.0 * sqrt(STIFFNESS)  # critical damping
+# ACTIVE: when the player is near the rail
+@export var STIFFNESS_ACTIVE:    float = 150.0
+# INACTIVE: when the player is too far/speedy
+@export var STIFFNESS_INACTIVE:  float = 800.0
 
-@onready var follow_node: PathFollow2D = $FollowNode
-@onready var camera_target = $FollowNode/CameraTarget
+@export var MAX_ACTIVE_DISTANCE: float = 250.0
+@export var MAX_ACTIVE_SPEED:    float = 600.0
 
-var player: Flyph = null
+@onready var follow_node:   PathFollow2D = $FollowNode
 
-# Called when the node enters the scene tree for the first time.
+@onready var camera_target: CameraTarget = $FollowNode/CameraTarget
+
+@onready var debug_sprite = $FollowNode/Sprite2D
+@onready var dist = $FollowNode/Sprite2D/Dist
+
+
+
+var player:    Flyph = null
+var cam_vel:   float = 0.0  # spring velocity
+
+
 func _ready():
-
-	# If we have an activation area, connect the signal to the function.
 	if ActivationArea:
-		ActivationArea.connect("body_entered", Callable(self, "_on_activation_area_body_entered"))
-		ActivationArea.connect("body_exited", Callable(self, "_on_activation_area_body_exited"))
+		ActivationArea.connect("body_entered",  Callable(self, "_on_player_in"))
+		ActivationArea.connect("body_exited",   Callable(self, "_on_player_out"))
 	else:
-		push_error("CameraRail: Failed to setup ActivationArea")
+		push_error("CameraRail: ActivationArea not set!")
+	
 
-	set_process(false) # Disable process by default.
+var player_died: bool = false
 
-	pass # Replace with function body.
-
-
-var cam_vel := 0.0  # store this as a member variable
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	
 	if not player:
 		return
-	
-	target_blend(delta)
-	
-	
+		
 	if not (curve and curve.get_point_count() > 0):
-		push_error("CameraRail: Curve is missing or has no points")
+		push_error("CameraRail: Curve missing points!")
 		return
 		
+	if player.dying:
+		camera_off(.15)
+		player_died = true
+	elif player_died:
+		player_died = false
+		check_if_player_inside(player)
 	
-	
-	var local_pos: Vector2 = to_local(player.global_position)
-	var closest_points: Vector2 = curve.get_closest_point(local_pos)
-	var closest_offset: float = curve.get_closest_offset(local_pos)
-	
-	if !is_finite(closest_offset):
-		push_error("CameraRail: Closest offset is not finite")
+		
+		
+
+	var local_pos    = to_local(player.global_position)
+	var closest_off  = curve.get_closest_offset(local_pos)
+	if !is_finite(closest_off):
+		push_error("CameraRail: invalid offset!")
 		return
+
+	var rail_pt      = curve.sample_baked(closest_off)
+	var dist_to_rail = (rail_pt - local_pos).length()
+	var speed        = player.velocity.length()
+	var is_active    = dist_to_rail <= MAX_ACTIVE_DISTANCE and speed <= MAX_ACTIVE_SPEED
 	
-	# Get distance from each other
-	var distance: float = (closest_points - local_pos).length()
-	if distance < 200:
+	dist.text = str(roundf(dist_to_rail))
+
+	var k = STIFFNESS_ACTIVE if is_active else STIFFNESS_INACTIVE
+	var c = 2.0 * sqrt(k)  # critical damping
+
+	var force      = k * (closest_off - follow_node.progress)
+	var damp_force = -c * cam_vel
+	cam_vel += (force + damp_force) * delta
+	follow_node.progress += cam_vel * delta
+
+
 		
-		camera_target.enable_target()
-		var target = closest_offset
-		var pos = follow_node.progress
 
-		# spring force = –k·x
-		var force = STIFFNESS * (target - pos)
-		# damping force = –c·v
-		var damp  = -DAMPING * cam_vel
 
-		# integrate acceleration
-		cam_vel += (force + damp) * delta
-		# integrate velocity
-		pos += cam_vel * delta
+func _on_player_in(body, speed: float = 1.0):
+	if not (body is Flyph):
+		return
+	player = body
+	cam_vel = 0.0
+	
+	var local_pos    = to_local(player.global_position)
+	var closest_off  = curve.get_closest_offset(local_pos)
+	
+	follow_node.progress = closest_off
 
-		follow_node.progress = pos
-	else:
-		camera_target.disable_target()
-		follow_node.progress = closest_offset
-		
+	# reset starting values
+	camera_target.blend_override = 0.0
+	camera_target.pull_strength  = 0.0
+	camera_target.enable_target()
+	
+	camera_on(speed)
+	
+	
+	
+	
+	
 	
 
+func _on_player_out(body):
+	if not (body is Flyph):
+		return
 
-var blend_smooth: float = 1
-func target_blend(delta):
-	camera_target.blend_override = move_toward(camera_target.blend_override, 1.0, blend_smooth* delta)	
-	print(camera_target.blend_override)
+	camera_off()
 	
-	camera_target.pull_strength = move_toward(camera_target.pull_strength, 20, blend_smooth * 15 * delta)
-	print(camera_target.pull_strength)
 
-func _on_player_in(flyph: Flyph):
-	# This function is called when the player enters the activation area.
-	print("Player entered the activation area")
+var camera_tween: Tween = null
+func camera_on(speed: float = 1):
 	
 	camera_target.enable_target()
-	camera_target.blend_override = 0.0
-	camera_target.pull_strength = 0
-	print(camera_target.blend_override)
-	player = flyph
 	
-	var local_pos = to_local(player.global_position)
-	var closest_offset = curve.get_closest_offset(local_pos)
-	follow_node.progress = closest_offset
+	print("Enabling Target")
 	
-	set_process(true) # Enable process when player is in the area.
-
-
-
-
-func _on_player_out(_flyph: Flyph):
-	# This function is called when the player exits the activation area.
-	print("Player exited the activation area")
+	# kill old tweens first
+	if camera_tween and camera_tween.is_valid():
+		camera_tween.kill()
 	
-	camera_target.disable_target()
-	player = null
-	set_process(false) # Disable process when player is out of the area.
+	# build a parallel tween
+	camera_tween = create_tween().set_parallel(true)
+
+	# note: 1) object, 2) property path, 3) final value, 4) duration
+	camera_tween.tween_property(camera_target, "blend_override", 1.0, 0.3 / speed) \
+	  .set_trans(Tween.TRANS_SINE) \
+	  .set_ease(Tween.EASE_IN_OUT)
+
+	camera_tween.tween_property(camera_target, "pull_strength", 1000.0, 0.3 / speed) \
+	  .set_trans(Tween.TRANS_SINE) \
+	  .set_ease(Tween.EASE_IN_OUT)
+	
+	camera_tween.tween_property(debug_sprite, "modulate", Color(1.0,0,0,1.0), 0.3 / speed) \
+	  .set_trans(Tween.TRANS_LINEAR)
+	
+func camera_off(speed: float = 1):
+	
+	print("Disabling Target")
+	
+	# kill old tweens first
+	if camera_tween and camera_tween.is_valid():
+		camera_tween.kill()
+	
+	camera_tween = create_tween().set_parallel(true)
+	camera_tween.tween_property(camera_target, "blend_override", 0.0, 0.3 / speed) \
+	  .set_trans(Tween.TRANS_LINEAR) \
+	  .set_ease(Tween.EASE_IN_OUT)
+	camera_tween.tween_property(camera_target, "pull_strength",  0.0, 0.3 / speed) \
+	  .set_trans(Tween.TRANS_SINE) \
+	  .set_ease(Tween.EASE_IN_OUT)
+	camera_tween.tween_property(debug_sprite, "modulate", Color(1.0,0,0,0.0), 0.3 / speed) \
+	  .set_trans(Tween.TRANS_LINEAR)
+	
+	camera_tween.tween_callback(Callable(camera_target, "disable_target")).set_delay(0.3 / speed)
+
 
 
 func _on_activation_area_body_entered(body):
 	
 	# Check if body is of type Flyph
 	if body is Flyph:
+		
+		print("Player In")
 		_on_player_in(body)
 	else:
 		print("Not a Flyph")
@@ -128,21 +174,17 @@ func _on_activation_area_body_exited(body):
 	
 	# Check if body is of type Flyph
 	if body is Flyph:
+		
+		print("Player Left")
 		_on_player_out(body)
 		
 	else:
 		print("Not a Flyph")
 	
 	
+func check_if_player_inside(p):
+	# Check manually if the player's new position is inside this rail's ActivationArea
+	if ActivationArea and ActivationArea.get_overlapping_bodies().has(p):
+		_on_player_in(p, 0.15)
+	
 
-#
-#func player_died():
-	#camera_target.blend_override = 0
-	#camera_target.ca
-
-# func _on_activation_area_body_entered(body):
-# 	pass # Replace with function body.
-
-
-# func _on_activation_area_body_exited(body):
-# 	pass # Replace with function body.
