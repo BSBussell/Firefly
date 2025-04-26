@@ -1119,7 +1119,10 @@ position = Vector2(2638, -3936)
 position = Vector2(2441, -2784)
 
 [node name="CheckpointArea8" parent="CheckPoints" instance=ExtResource("30_mc4or")]
-position = Vector2(3324, -5391)
+position = Vector2(3439, -5310)
+
+[node name="CheckpointArea9" parent="CheckPoints" instance=ExtResource("30_mc4or")]
+position = Vector2(3127, -4718)
 
 [node name="MountainTileMap" parent="." instance=ExtResource("8_umo66")]
 position = Vector2(0, 2)
