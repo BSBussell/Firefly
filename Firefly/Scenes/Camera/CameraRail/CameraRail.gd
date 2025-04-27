@@ -91,7 +91,7 @@ func _on_player_in(body, speed: float = 1.0):
 	follow_node.progress = closest_off
 
 	# reset starting values
-	camera_target.blend_override = 0.0
+	camera_target.blend_override = 0.3
 	camera_target.pull_strength  = 0.0
 	camera_target.enable_target()
 	
@@ -111,6 +111,8 @@ func _on_player_out(body):
 	
 
 var camera_tween: Tween = null
+
+var smooth_time: float = 0.3 
 func camera_on(speed: float = 1):
 	
 	camera_target.enable_target()
@@ -125,18 +127,18 @@ func camera_on(speed: float = 1):
 	camera_tween = create_tween().set_parallel(true)
 
 	# note: 1) object, 2) property path, 3) final value, 4) duration
-	camera_tween.tween_property(camera_target, "blend_override", 1.0, 0.3 / speed) \
+	camera_tween.tween_property(camera_target, "blend_override", 1.0, smooth_time / speed) \
 	  .set_trans(Tween.TRANS_SINE) \
 	  .set_ease(Tween.EASE_IN_OUT)
 
-	camera_tween.tween_property(camera_target, "pull_strength", 1000.0, 0.3 / speed) \
+	camera_tween.tween_property(camera_target, "pull_strength", 1000.0, smooth_time / speed) \
 	  .set_trans(Tween.TRANS_SINE) \
 	  .set_ease(Tween.EASE_IN_OUT)
 	
-	camera_tween.tween_property(debug_sprite, "modulate", Color(1.0,0,0,1.0), 0.3 / speed) \
+	camera_tween.tween_property(self, "modulate", Color(1.0,1.0,1.0,1.0), smooth_time / speed) \
 	  .set_trans(Tween.TRANS_LINEAR)
 	
-func camera_off(speed: float = 1):
+func camera_off(speed: float = 1.0):
 	
 	print("Disabling Target")
 	
@@ -145,16 +147,17 @@ func camera_off(speed: float = 1):
 		camera_tween.kill()
 	
 	camera_tween = create_tween().set_parallel(true)
-	camera_tween.tween_property(camera_target, "blend_override", 0.0, 0.3 / speed) \
+	camera_tween.tween_property(camera_target, "blend_override", 0.3, smooth_time / speed) \
 	  .set_trans(Tween.TRANS_LINEAR) \
 	  .set_ease(Tween.EASE_IN_OUT)
-	camera_tween.tween_property(camera_target, "pull_strength",  0.0, 0.3 / speed) \
+	camera_tween.tween_property(camera_target, "pull_strength",  20, (smooth_time * 1.5) / speed) \
 	  .set_trans(Tween.TRANS_SINE) \
 	  .set_ease(Tween.EASE_IN_OUT)
-	camera_tween.tween_property(debug_sprite, "modulate", Color(1.0,0,0,0.0), 0.3 / speed) \
+	camera_tween.tween_property(self, "modulate", Color(1,1,1,0.0), (smooth_time * 1.5) / speed) \
 	  .set_trans(Tween.TRANS_LINEAR)
 	
-	camera_tween.tween_callback(Callable(camera_target, "disable_target")).set_delay(0.3 / speed)
+	camera_tween.tween_callback(Callable(camera_target, "disable_target")).set_delay((smooth_time * 1.5) / speed)
+
 
 
 

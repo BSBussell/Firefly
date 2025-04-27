@@ -1169,7 +1169,7 @@ STIFFNESS_ACTIVE = 50.0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CameraTargets/CameraRail2/Area2D"]
 position = Vector2(48, 120.66)
-polygon = PackedVector2Array(-2, -3, 219, -41, 187, -359, 167, -605, 151, -715, 39, -563, 50, -312, -102, -201, -118, -88, -35, -7)
+polygon = PackedVector2Array(-2, -3, 219, -41, 187, -359, 167, -605, 151, -715, 118, -713, 39, -563, 50, -312, -102, -201, -118, -88, -35, -7)
 
 [node name="CameraRail" parent="CameraTargets" node_paths=PackedStringArray("ActivationArea") instance=ExtResource("39_vjww4")]
 position = Vector2(-552, 1885.66)

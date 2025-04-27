@@ -89,7 +89,7 @@ func calculate_target_position(delta: float) -> Vector2:
 	
 	if not player.dying:
 		offset = calc_horiz_offset(delta)
-		position += offset
+		position  += offset
 	
 	
 	# Check if there are any targets to look at
@@ -98,11 +98,18 @@ func calculate_target_position(delta: float) -> Vector2:
 	# Check if the list of targets has changed
 	var id = control.targets.hash()
 	if id != dict_hash:
+		
+		print("Resetting smoothing")
 		dict_hash = id
-		smoothing_factor_2 = 0.0
+		smoothing_factor_2 = 0
+		cursor.modulate = "#00FFFF";
+	else:
+		cursor.modulate = Cursor_Color
 	
 	
 	if targets_center != Vector2.ZERO:
+		
+		
 		
 		#var targets_offset: Vector2
 		var grouping_offset: Vector2
@@ -112,7 +119,7 @@ func calculate_target_position(delta: float) -> Vector2:
 		
 		# Lerp towards this new offset
 		current_grouping_offset = _gerblesh.lerpiVec(current_grouping_offset, grouping_offset, smoothing_factor_2)
-		
+		#current_grouping_offset = grouping_offset
 		
 	
 		

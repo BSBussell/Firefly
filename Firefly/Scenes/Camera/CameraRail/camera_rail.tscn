@@ -19,6 +19,7 @@ curve = SubResource("Curve2D_rcv3x")
 script = ExtResource("1_8la01")
 
 [node name="FollowNode" type="PathFollow2D" parent="."]
+position = Vector2(32, 17.6602)
 rotates = false
 
 [node name="CameraTarget" parent="FollowNode" instance=ExtResource("2_1628h")]
