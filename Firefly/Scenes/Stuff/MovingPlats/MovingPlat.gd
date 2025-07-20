@@ -218,7 +218,7 @@ func plat_launch(player: Flyph, forced: bool = false) -> bool:
 	
 	var launch_vector: Vector2 = get_launch_vector(player)
 
-	print("Launch: " + str(launch_vector))
+	
 	
 	# player.launched = true
 	player.launch(launch_vector, -1, Vector2(0.7, 1.3))
@@ -258,7 +258,7 @@ func get_launch_vector(player: Flyph) -> Vector2:
 	var launch_vector: Vector2 = player.velocity
 	
 	movement_direction = snapped(movement_direction, Vector2(0.25,0.25))
-	print(movement_direction)
+	
 	
 	if player.boostJumping and  player.reverseBoostJumping:
 		if sign(movement_direction.x) != sign(player.horizontal_axis):
@@ -276,7 +276,7 @@ func get_launch_vector(player: Flyph) -> Vector2:
 		# player.velocity.x += ((launch_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi	  
 		launch_vector.x += ((launch_velocity * movement_direction.x) * launch_multi.x) * base_launch_multi
 	
-	print(player.velocity.y)
+	
 	if sign(movement_direction.y) < 0:
 		launch_vector.y = player.jump_velocity
 		launch_vector.y += ((launch_velocity * movement_direction.y) * launch_multi.y) * base_launch_multi

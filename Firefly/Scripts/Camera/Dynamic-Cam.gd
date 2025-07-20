@@ -56,6 +56,10 @@ func move_camera(delta):
 	
 	var target_position = calculate_target_position(delta)
 	
+	
+	
+	
+	
 	# Smoothly move the camera towards the target position
 	follow_speed.x = move_toward(follow_speed.x, Maximum_Speed.x, accel.x)
 	#min(Maximum_Speed.x, follow_speed.x + accel.x)
@@ -68,7 +72,7 @@ func move_camera(delta):
 	blend.y = 1 - pow(0.5, follow_speed.y * delta)
 	
 	# Gerblesh
-	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, blend.x)
+	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, blend.x)	
 	control.actual_cam_pos.y = _gerblesh.lerpi(control.actual_cam_pos.y, target_position.y, blend.y)
 	
 	control.global_position = control.actual_cam_pos.round()
@@ -89,7 +93,7 @@ func calculate_target_position(delta: float) -> Vector2:
 	
 	if not player.dying:
 		offset = calc_horiz_offset(delta)
-		position  += offset
+		#position += offset
 	
 	
 	# Check if there are any targets to look at
@@ -141,7 +145,15 @@ func calculate_target_position(delta: float) -> Vector2:
 		
 		
 	if not player.dying:
+		#print("DC: Targets Offset", targets_center)
+		#print("DC: Grouping Offset: ",current_grouping_offset)
+		#print("DC: Position: ", position)
+		# I want it to do this normally
 		position += current_grouping_offset
+		
+		for target in control.targets.values():
+			if target.target_snap:
+				position = targets_center
 	
 	return position
 
@@ -203,6 +215,7 @@ func get_targets_center() -> Vector2:
 	else:
 		return Vector2.ZERO  # Return a default position if no targets exist
 
+
 func get_targets_blend() -> float:
 	
 	var blend: float = 0.3
@@ -212,6 +225,7 @@ func get_targets_blend() -> float:
 		if current_priority < target.blend_priority:
 			current_priority = target.blend_priority
 			blend = target.blend_override
+			
 		
 	return blend
 
@@ -229,7 +243,10 @@ func get_targets_offset(base_target: Vector2, targets_center: Vector2) -> Vector
 	current_grouping_position.x = _gerblesh.lerpi(base_target.x, targets_center.x, multi_target_smoothing)
 	current_grouping_position.y = _gerblesh.lerpi(base_target.y, targets_center.y, multi_target_smoothing)
 
+
 	return current_grouping_position - base_target
+	
+
 
 func check_state() -> State:
 	

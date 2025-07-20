@@ -44,6 +44,9 @@ func _ready():
 	start_button.focus_neighbor_top = focus_neighbor_top
 	erase_button.focus_neighbor_bottom = focus_neighbor_bottom
 	
+	material = material.duplicate()
+	material.set("shader_param/seed", randi_range(-1000,1000))
+	
 var selected: bool = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

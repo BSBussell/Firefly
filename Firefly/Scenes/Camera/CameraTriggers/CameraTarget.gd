@@ -15,8 +15,9 @@ extends Area2D
 ## the player, 1.0 is the averaged location.
 @export var blend_override: float = 0.3
 
-## Ignore all other camera behavior, snaps camera position to the target
-@export var snap_camera: bool = false
+
+## Update Base Camera Acceleration. 
+@export var target_snap: bool = false
 
 func enable_target():
 	

@@ -376,7 +376,6 @@ position = Vector2(150, 155)
 MusicPlayer = NodePath("../LevelAudio/Music")
 
 [node name="CameraTarget" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("14_rlc3w")]
-visible = false
 position = Vector2(153, 86)
 Player = NodePath("../Flyph")
 
@@ -532,6 +531,7 @@ libraries = {
 }
 
 [node name="FF_Tut" type="Area2D" parent="Events" node_paths=PackedStringArray("Text")]
+visible = false
 z_index = -1
 position = Vector2(946, -260)
 scale = Vector2(0.75, 0.75)

@@ -542,7 +542,6 @@ win_condition = 1
 [node name="VisualLayers" type="Node" parent="."]
 
 [node name="PP + FX" type="Node2D" parent="VisualLayers"]
-visible = false
 
 [node name="Moonlight" type="DirectionalLight2D" parent="VisualLayers/PP + FX"]
 rotation = -0.698132
@@ -916,7 +915,7 @@ bus = &"Ambience"
 [node name="Particles" parent="." instance=ExtResource("25_upldu")]
 
 [node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("9_2ctjn")]
-position = Vector2(2230, -2912)
+position = Vector2(73, 33)
 MusicPlayer = NodePath("../LevelAudio/Music")
 
 [node name="PlayerCam" parent="." node_paths=PackedStringArray("Player") instance=ExtResource("10_chrda")]
@@ -950,7 +949,6 @@ texture = ExtResource("4_a2277")
 [node name="TheBigOne" parent="Events" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("20_r20go")]
 position = Vector2(2318, -2848)
 collision_mask = 1
-script = ExtResource("27_vcrks")
 level = NodePath("../..")
 dialogue_file = "res://Assets/DialogueData/Signs/MTN/theBigOne.json"
 talk_target = NodePath("Marker2D")
@@ -1181,7 +1179,7 @@ STIFFNESS_ACTIVE = 50.0
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="CameraTargets/CameraRail/Area2D"]
 position = Vector2(21, -466)
-polygon = PackedVector2Array(-171, 393, -232, 493, 110, 630, 257, 512, 161, 118, 30, 138, 80, 244, 80, 460)
+polygon = PackedVector2Array(-171, 393, -169, 500, 110, 630, 257, 512, 161, 118, 30, 138, 80, 244, 80, 460)
 
 [node name="JarManager" type="Node2D" parent="." node_paths=PackedStringArray("gem_manager")]
 script = ExtResource("11_8kdbf")

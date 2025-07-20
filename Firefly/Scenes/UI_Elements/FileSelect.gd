@@ -22,8 +22,8 @@ func _unhandled_input(_event):
 		await animation_player.animation_finished
 		emit_signal("Closing")
 
-	if Input.is_action_just_pressed("ui_accept"):
-		print("Focus Owner:", get_viewport().gui_get_focus_owner())
+	#if Input.is_action_just_pressed("ui_accept"):
+		#print("Focus Owner:", get_viewport().gui_get_focus_owner())
 
 
 func load_in():

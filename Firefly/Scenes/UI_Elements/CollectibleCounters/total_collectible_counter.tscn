@@ -3,60 +3,18 @@
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_fpka2"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/CollectibleCounters/TotalCollectibleCounter.gd" id="2_amvrn"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="3_3hr1d"]
+[ext_resource type="Shader" path="res://Assets/Shaders/full_wobble.gdshader" id="3_11brw"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/CollectibleCounters/Glitter.gd" id="4_m5v6b"]
 
-[sub_resource type="Shader" id="Shader_5xd70"]
-code = "shader_type canvas_item;
-
-// Parameters for rounded rectangle
-uniform vec2 SIZE = vec2(0.4, 0.2); // Size of the rectangle
-uniform float RADIUS : hint_range(0.0, 0.5) = 0.1;         // Corner radius
-
-// Parameters for wave distortion
-uniform float waveFrequency : hint_range(0.0, 50.0) = 10.0; // Wave frequency
-uniform float waveAmplitude : hint_range(0.0, 0.5) = 0.02;  // Wave amplitude
-uniform float waveSpeed : hint_range(0.0, 10.0) = 2.0;      // Wave speed
-
-// Hard edges or smooth edges
-uniform bool hard_edges = true; // If true, edges are sharp (on/off)
-
-// Rounded rectangle SDF
-float rounded_rect_sdf(vec2 uv, vec2 size, float radius) {
-    vec2 d = abs(uv - vec2(0.5)) - size + vec2(radius);
-    return length(max(d, 0.0)) - radius;
-}
-
-// Wavy distortion
-float wave_distortion(vec2 uv, float frequency, float amplitude, float speed) {
-    return sin(uv.y * frequency + TIME * speed) * amplitude;
-}
-
-// Fragment shader
-void fragment() {
-    vec2 uv = UV;
-    
-    // Calculate the SDF for the rounded rectangle
-    float sdf = rounded_rect_sdf(uv, SIZE, RADIUS);
-    
-    // Apply wave distortion to the SDF
-    sdf += wave_distortion(uv, waveFrequency, waveAmplitude, waveSpeed);
-    
-    // Determine the fill (1 for inside, 0 for outside)
-    float fill = hard_edges ? step(0.0, -sdf) : smoothstep(0.0, 0.01, -sdf);
-    
-    // Blend the original texture color with the fill
-    vec4 originalColor = COLOR;
-    COLOR = vec4(originalColor.rgb, originalColor.a * fill);
-}"
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5cx44"]
-shader = SubResource("Shader_5xd70")
+shader = ExtResource("3_11brw")
 shader_parameter/SIZE = Vector2(0.45, 0.45)
 shader_parameter/RADIUS = 0.1
 shader_parameter/waveFrequency = 6.0
 shader_parameter/waveAmplitude = 0.01
 shader_parameter/waveSpeed = 2.0
 shader_parameter/hard_edges = true
+shader_parameter/seed = 0.0
 
 [sub_resource type="Shader" id="Shader_mu37q"]
 code = "shader_type canvas_item;

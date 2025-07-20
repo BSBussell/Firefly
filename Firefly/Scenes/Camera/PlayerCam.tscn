@@ -14,6 +14,7 @@
 size = Vector2(320, 160)
 
 [node name="CameraTarget" type="Marker2D"]
+visible = false
 script = ExtResource("1_hjjau")
 
 [node name="Cursor" type="Sprite2D" parent="."]

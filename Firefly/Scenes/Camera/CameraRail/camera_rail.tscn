@@ -32,6 +32,7 @@ blend_override = 2.08165e-12
 shape = SubResource("CircleShape2D_egwag")
 
 [node name="Sprite2D" type="Sprite2D" parent="FollowNode"]
+visible = false
 modulate = Color(100, 0, 0, 1)
 z_index = 1000
 texture = ExtResource("3_bsbyk")
