@@ -63,6 +63,7 @@ position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_4rmqn")
 
 [node name="Spotlight" type="PointLight2D" parent="."]
+position = Vector2(0, -2)
 color = Color(0.890196, 0.921569, 0.34902, 1)
 energy = 0.6
 range_layer_min = -99
@@ -76,7 +77,6 @@ texture = ExtResource("5_qok0a")
 script = ExtResource("6_kh6md")
 curve_in = SubResource("Curve_ujyhx")
 curve_out = SubResource("Curve_0g3ch")
-metadata/_edit_lock_ = true
 
 [node name="explode" type="CPUParticles2D" parent="."]
 position = Vector2(0, -11)

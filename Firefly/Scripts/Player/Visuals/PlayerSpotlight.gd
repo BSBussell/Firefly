@@ -1,4 +1,5 @@
 extends PointLight2D
+class_name PlayerLight
 
 # Animation Curves to use
 @export var curve_in: Curve

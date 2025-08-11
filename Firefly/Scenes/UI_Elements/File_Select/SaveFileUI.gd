@@ -45,7 +45,7 @@ func _ready():
 	erase_button.focus_neighbor_bottom = focus_neighbor_bottom
 	
 	material = material.duplicate()
-	material.set("shader_param/seed", randi_range(-1000,1000))
+	material.set("shader_parameter/seed", randi_range(-1000,1000))
 	
 var selected: bool = false
 

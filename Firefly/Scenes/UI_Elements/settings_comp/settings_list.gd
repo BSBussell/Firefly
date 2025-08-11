@@ -5,6 +5,7 @@ class_name SettingsMenu
 var BOOL_TOGGLE: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/bool_setting.tscn")
 var SLIDER: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/slider_setting.tscn")
 var CHOICE: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/choice_setting.tscn")
+var INPUT_BIND: PackedScene = preload("res://Scenes/UI_Elements/settings_comp/input_bind_setting.tscn")
 
 
 @onready var animation_player = $"../../AnimationPlayer"
@@ -71,20 +72,26 @@ func populate_setting(setting_list: Dictionary, current_cat: Button):
 
 		if setting_list[setting]["type"] == "boolean":
 
-			setting_node = BOOL_TOGGLE.instantiate()
+			setting_node = BOOL_TOGGLE.instantiate() as BaseSetting
 			setting_node.pass_json(setting_list[setting])
 
 			
 		elif setting_list[setting]["type"] == "slider":
 		
-			setting_node = SLIDER.instantiate()
+			setting_node = SLIDER.instantiate() as BaseSetting
 			setting_node.pass_json(setting_list[setting])
 
 			
 		elif setting_list[setting]["type"] == "choice":
 			
-			setting_node = CHOICE.instantiate()
+			setting_node = CHOICE.instantiate() as BaseSetting
 			setting_node.pass_json(setting_list[setting])
+			
+		elif setting_list[setting]["type"] == "input_bind":
+			
+			setting_node = INPUT_BIND.instantiate() as BaseSetting
+			setting_node.pass_json(setting_list[setting])
+			
 		
 		else:
 			_logger.warning("Setting Type Invalid: " + setting_list[setting]["type"])

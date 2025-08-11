@@ -1,4 +1,3 @@
-
 {
 	"Game_Settings": {
 		"text": "Game",
@@ -69,7 +68,7 @@
 				"min": -15,
 				"max": 6,
 				"step": 0.5
-		 	},
+	 		},
 			"Music": {
 				"label": "Music",
 				"description": "Control the Volume of the Music",
@@ -78,7 +77,7 @@
 				"min": -15,
 				"max": 6,
 				"step": 0.5
-		 	},
+	 		},
 			"SFX": {
 				"label": "SFX",
 				"description": "Control the Volume of the SFX",
@@ -87,7 +86,7 @@
 				"min": -15,
 				"max": 6,
 				"step": 0.5
-		 	},
+	 		},
 			"Ambience": {
 				"label": "Ambience",
 				"description": "Control the Volume of the Ambience",
@@ -96,24 +95,96 @@
 				"min": -15,
 				"max": 10,
 				"step": 0.5
-		 	}
+	 		}
+		}
+	},
+	"Control_Settings": {
+		"text": "Controls",
+		"id": 4,
+		"items": {
+			"move_left": {
+				"label": "Left",
+				"description": "Move the player character left",
+				"type": "input_bind",
+				"action_name": "Left"
+			},
+			"move_right": {
+				"label": "Right", 
+				"description": "Move the player character right",
+				"type": "input_bind",
+				"action_name": "Right"
+			},
+			"jump": {
+				"label": "Jump",
+				"description": "Make the player jump",
+				"type": "input_bind",
+				"action_name": "Jump"
+			},
+			"interact": {
+				"label": "Interact",
+				"description": "Interact with objects and NPCs",
+				"type": "input_bind",
+				"action_name": "interact"
+			},
+			"crouch": {
+				"label": "Crouch/Slide",
+				"description": "Crouch or slide",
+				"type": "input_bind",
+				"action_name": "Down"
+			},
+			"dive": {
+				"label": "Dive",
+				"description": "Dive down quickly",
+				"type": "input_bind",
+				"action_name": "Dive"
+			},
+			"glow_up": {
+				"label": "Glow Up",
+				"description": "Increase glow level",
+				"type": "input_bind",
+				"action_name": "Glow_Up"
+			},
+			"glow_down": {
+				"label": "Glow Down",
+				"description": "Decrease glow level",
+				"type": "input_bind",
+				"action_name": "Glow_Down"
+			},
+			"pause": {
+				"label": "Pause",
+				"description": "Pause the game",
+				"type": "input_bind",
+				"action_name": "Pause"
+			},
+			"reset": {
+				"label": "Respawn",
+				"description": "Force Flyph to Respawn at the mosto recently activated Shrine",
+				"type": "input_bind",
+				"action_name": "reset"
+			}
 		}
 	},
 	"Assist_Settings": {
 		"text": "Helpers",
-		"id": 3,
+		"id": 5,
 		"items": {
 			"input_assists": {
 				"label": "Input Helpers",
 				"description": "Assist with some inputs, such as upward wallhop climbs.",
 				"type": "boolean",
-				"config_key": "input_assists",
+				"config_key": "input_assists"
 			},
 			"slide_assist": {
 				"label": "Slide Boost Helper",
 				"description": "Sigificantly simplies a slide boost into just jumping out of a slide.",
 				"type": "boolean",
 				"config_key": "slide_assist"
+			},
+			"walljump_hold_into_up": {
+				"label": "Alternate Upward Walljump",
+				"description": "When enabled, holding into the wall triggers an upward walljump. When off, hold Up to go up.",
+				"type": "boolean",
+				"config_key": "walljump_hold_into_up"
 			},
 			"inf_jump": {
 				"label": "Infinite Jumps",

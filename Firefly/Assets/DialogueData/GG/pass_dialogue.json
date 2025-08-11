@@ -1,0 +1,9 @@
+{
+  "identifier": "gate_guardian_pass",
+  "dialogue": [
+    "You actually did it! You freed all those fireflies! OOH! I'm so excited for you to see my spot!",
+    "The tunnel is yours to explore. Good Luck! Hopefully you find this space just as magical as I do.",
+    "Just try to have fun, and don't get lost! It might feel a bit overwhelming at times, but if you've freed that many fireflies, I think you'll be just fine."
+  ],
+  "victory_dialogue": false
+}

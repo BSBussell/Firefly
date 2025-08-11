@@ -121,12 +121,34 @@ func load_file(path: String) -> void:
 func save_values():
 	
 	# Global Save Funcs
+	var keys_to_remove = []
 	for key in global_save_funcs.keys():
-		stored_values[key] = global_save_funcs[key].call()
+		if global_save_funcs[key] and global_save_funcs[key].is_valid():
+			stored_values[key] = global_save_funcs[key].call()
+		else:
+			# Mark invalid functions for removal
+			keys_to_remove.append(key)
+	
+	# Remove invalid global functions
+	for key in keys_to_remove:
+		global_save_funcs.erase(key)
+		global_load_funcs.erase(key)
+		print("Removed invalid global persistence functions for: ", key)
 	
 	# Local Save Funcs
+	keys_to_remove.clear()
 	for key in save_funcs.keys():
-		stored_values[key] = save_funcs[key].call()
+		if save_funcs[key] and save_funcs[key].is_valid():
+			stored_values[key] = save_funcs[key].call()
+		else:
+			# Mark invalid functions for removal
+			keys_to_remove.append(key)
+	
+	# Remove invalid local functions
+	for key in keys_to_remove:
+		save_funcs.erase(key)
+		load_funcs.erase(key)
+		print("Removed invalid persistence functions for: ", key)
 		
 	save_file()
 
@@ -134,18 +156,40 @@ func save_values():
 func load_values():
 	
 	# Load Global Values
+	var keys_to_remove = []
 	for key in global_load_funcs.keys():
 		
-		# If the keys dictionary is empty, skip it
+		# If the keys dictionary is empty skip it
 		if stored_values.has(key) and stored_values[key] != {}:
-			global_load_funcs[key].call(stored_values[key])
+			if global_load_funcs[key] and global_load_funcs[key].is_valid():
+				global_load_funcs[key].call(stored_values[key])
+			else:
+				# Mark invalid functions for removal
+				keys_to_remove.append(key)
+	
+	# Remove invalid global functions
+	for key in keys_to_remove:
+		global_save_funcs.erase(key)
+		global_load_funcs.erase(key)
+		print("Removed invalid global load functions for: ", key)
 	
 	# Load Local Values
+	keys_to_remove.clear()
 	for key in load_funcs.keys():
 		
 		# If the keys dictionary is empty, skip it
 		if stored_values.has(key) and stored_values[key] != {}:
-			load_funcs[key].call(stored_values[key])
+			if load_funcs[key] and load_funcs[key].is_valid():
+				load_funcs[key].call(stored_values[key])
+			else:
+				# Mark invalid functions for removal
+				keys_to_remove.append(key)
+	
+	# Remove invalid local functions
+	for key in keys_to_remove:
+		save_funcs.erase(key)
+		load_funcs.erase(key)
+		print("Removed invalid load functions for: ", key)
 			
 	#load_file(file_path)
 
@@ -191,5 +235,46 @@ func reset():
 	stored_values = {}
 	save_funcs = {}
 	load_funcs = {}
+
+## Clean up invalid function references
+func cleanup_invalid_functions():
+	
+	# Clean up global functions
+	var keys_to_remove = []
+	for key in global_save_funcs.keys():
+		if not global_save_funcs[key] or not global_save_funcs[key].is_valid():
+			keys_to_remove.append(key)
+	
+	for key in keys_to_remove:
+		global_save_funcs.erase(key)
+		global_load_funcs.erase(key)
+		print("Cleaned up invalid global functions for: ", key)
+	
+	# Clean up local functions
+	keys_to_remove.clear()
+	for key in save_funcs.keys():
+		if not save_funcs[key] or not save_funcs[key].is_valid():
+			keys_to_remove.append(key)
+	
+	for key in keys_to_remove:
+		save_funcs.erase(key)
+		load_funcs.erase(key)
+		print("Cleaned up invalid local functions for: ", key)
+
+## Unregister a specific persistent class
+func unregister_persistent_class(parent_name: String):
+	if save_funcs.has(parent_name):
+		save_funcs.erase(parent_name)
+	if load_funcs.has(parent_name):
+		load_funcs.erase(parent_name)
+	print("Unregistered persistent class: ", parent_name)
+
+## Unregister a specific global class
+func unregister_global_class(parent_name: String):
+	if global_save_funcs.has(parent_name):
+		global_save_funcs.erase(parent_name)
+	if global_load_funcs.has(parent_name):
+		global_load_funcs.erase(parent_name)
+	print("Unregistered global class: ", parent_name)
 	
 	

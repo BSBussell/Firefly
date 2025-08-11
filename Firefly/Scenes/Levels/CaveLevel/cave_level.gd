@@ -33,6 +33,11 @@ func local_ready():
 	
 	# Enable Specific Visuals that are left off in the editor for visibility
 	lighting.visible = true
+	
+func player_startup_logic():
+	
+	PLAYER.lock_h_dir(0,1)
+	return
 
 
 func on_death():

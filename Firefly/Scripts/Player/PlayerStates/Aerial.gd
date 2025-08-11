@@ -354,14 +354,14 @@ func handle_coyote_launch() -> void:
 		var params = parent.coyote_launch_params
 
 		var launch_velocity: Vector2 = params["launch_velocity"]
-		var gravity: int = params["gravity"]
+		var new_gravity: int = params["gravity"]
 		var squash: Vector2 = params["squash"]
 		
 		# If launch velocity is not downward we launch
 		if launch_velocity.y > 0:
 
 			# Call parent.launch with the params
-			parent.launch(launch_velocity, gravity, squash)
+			parent.launch(launch_velocity, new_gravity, squash)
 			parent.jumping = true
 
 			print("Coyote Launch: " + str(params["launch_velocity"]))
@@ -479,7 +479,7 @@ func get_gravity() -> float:
 
 	# Add a bit of float if we haven't shopped
 	if abs(parent.velocity.y) < 40 and Input.is_action_pressed("Jump") and not parent.crouchJumping and not parent.boostJumping:
-		gravity_to_apply *= 0.5
+		gravity_to_apply *= 0.4
 
 	return gravity_to_apply
 

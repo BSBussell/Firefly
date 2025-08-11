@@ -18,7 +18,7 @@ func _input(_event: InputEvent) -> void:
 		
 		# Reload the scene
 		get_tree().paused = false
-		await _loader.reset_game(NodePath("res://Scenes/Levels/TutorialLevel/tutorial.tscn"))
+		await _loader.reset_game(NodePath(_stats.first_level))
 
 		
 	var scale_factors = {
@@ -28,7 +28,6 @@ func _input(_event: InputEvent) -> void:
 		KEY_4: 1,
 		KEY_5: 1.25,
 		KEY_6: 1.5,
-		KEY_7: 2.,
 	}
 
 	for key in scale_factors.keys():
@@ -39,6 +38,12 @@ func _input(_event: InputEvent) -> void:
 			
 			_stats.INVALID_RUN = true
 			break
+			
+	if Input.is_key_pressed(KEY_7) and not _loader.loading:
+		_stats.POSITION = Vector2.ZERO
+		_stats.INVALID_RUN = true
+		_loader.load_level("res://Scenes/Levels/TutorialArea/startingArea.tscn")
+		_stats.CURRENT_LEVEL = "res://Scenes/Levels/TutorialArea/startingArea.tscn"
 
 	# Load Tutorial
 	if Input.is_key_pressed(KEY_8) and not _loader.loading:

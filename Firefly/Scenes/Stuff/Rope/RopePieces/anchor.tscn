@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://8d3l1o16hc1p"]
+[gd_scene load_steps=9 format=3 uid="uid://8d3l1o16hc1p"]
 
 [ext_resource type="Script" path="res://Scripts/Rope/SpitSegment.gd" id="1_wiwfe"]
 [ext_resource type="Texture2D" uid="uid://dp56qxmdv0vpc" path="res://Scenes/Stuff/Rope/RopePieces/spit_texture.tres" id="2_c3fp5"]
+[ext_resource type="Material" uid="uid://c3b5bi1da1omf" path="res://Scenes/Stuff/Rope/RopePieces/glossy_material.tres" id="2_m1jjm"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_ba257"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ctwun"]
@@ -16,6 +17,10 @@ _data = {
 }
 point_count = 2
 
+[sub_resource type="Curve" id="Curve_jkx7r"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.11519, 0.995848), 1.4, 0.0, 0, 0]
+point_count = 2
+
 [node name="Anchor" type="RigidBody2D" node_paths=PackedStringArray("spotlight", "path_point")]
 collision_layer = 256
 collision_mask = 514
@@ -28,14 +33,16 @@ linear_damp = 7.0
 angular_damp_mode = 1
 angular_damp = 7.0
 script = ExtResource("1_wiwfe")
-spotlight = NodePath("PointLight2D")
+spotlight = NodePath("PointLight2D2")
 path_point = NodePath("Path/PathFollow2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("2_m1jjm")
 position = Vector2(0, 4)
 texture = ExtResource("2_c3fp5")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
+material = ExtResource("2_m1jjm")
 position = Vector2(0, 12)
 texture = ExtResource("2_c3fp5")
 
@@ -46,10 +53,13 @@ shape = SubResource("CapsuleShape2D_h3dnq")
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(0, 8)
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
-color = Color(0.780392, 0.87451, 0.921569, 1)
-energy = 0.1
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+position = Vector2(0, 9)
+color = Color(0.211765, 0.772549, 0.956863, 1)
+range_z_min = -1
+range_z_max = 1
 texture = ExtResource("3_ba257")
+texture_scale = 0.1
 
 [node name="Path" type="Path2D" parent="."]
 curve = SubResource("Curve2D_fqdhe")
@@ -57,3 +67,13 @@ curve = SubResource("Curve2D_fqdhe")
 [node name="PathFollow2D" type="PathFollow2D" parent="Path"]
 rotation = 1.5708
 loop = false
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+position = Vector2(0, 8)
+amount = 1
+lifetime = 2.0
+emission_shape = 3
+emission_rect_extents = Vector2(2, 1)
+gravity = Vector2(2.08165e-12, 490)
+scale_amount_curve = SubResource("Curve_jkx7r")
+color = Color(0.1, 0.2, 0.3, 1)

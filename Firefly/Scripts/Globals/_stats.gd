@@ -1,6 +1,6 @@
 extends Node
 
-var first_level: String = "res://Scenes/Levels/TutorialLevel/tutorial.tscn"
+var first_level: String = "res://Scenes/Levels/TutorialArea/startingArea.tscn"
 
 var NAME: String = ""
 var CURRENT_LEVEL: String

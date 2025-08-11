@@ -1,3 +1,28 @@
-[gd_resource type="ShaderMaterial" format=3 uid="uid://c3b5bi1da1omf"]
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://c3b5bi1da1omf"]
+
+[ext_resource type="Shader" path="res://Scenes/Stuff/Rope/RopePieces/goopy.gdshader" id="1_e7d74"]
+[ext_resource type="Texture2D" uid="uid://lruo01jafdef" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit_norm.png" id="2_lv02g"]
+[ext_resource type="Texture2D" uid="uid://cy6akdfiw1aey" path="res://Assets/Graphics/Mechanics/Rope/glow_worm_spit_spec.png" id="3_vmqk4"]
 
 [resource]
+shader = ExtResource("1_e7d74")
+shader_parameter/use_luma_mask = false
+shader_parameter/luma_threshold = 0.2
+shader_parameter/mask_softness = 0.06
+shader_parameter/normal_strength = 4.0
+shader_parameter/spec_intensity = 4.0
+shader_parameter/min_roughness = 0.0
+shader_parameter/max_roughness = 0.0
+shader_parameter/refract_strength = 0.06
+shader_parameter/reflect_mix = 1.0
+shader_parameter/drip_speed = 1.2
+shader_parameter/drip_amount = 0.5
+shader_parameter/squish_amount = 0.4
+shader_parameter/flow_scale = 8.0
+shader_parameter/flow_amount = 1.0
+shader_parameter/gravity_dir = Vector2(0, 1)
+shader_parameter/rim_boost = 2.0
+shader_parameter/tip_start_y = 0.6
+shader_parameter/albedo_tint = Vector4(0.111, 0.6, 0.55, 1)
+shader_parameter/normal_map = ExtResource("2_lv02g")
+shader_parameter/spec_map = ExtResource("3_vmqk4")

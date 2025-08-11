@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://be0qo581a50eh"]
+
+[ext_resource type="Script" path="res://Scenes/UI_Elements/settings_comp/input_bind_setting.gd" id="1_8nv2x"]
+[ext_resource type="Texture2D" uid="uid://b2r7kxnggjora" path="res://Assets/Graphics/UI/inputs/KennyTiles/Plus.png" id="2_0kylm"]
+[ext_resource type="AudioStream" uid="uid://dvrqu1quotelj" path="res://Assets/SFX/UI/zapsplat_foley_bottle_glass_beer_knock_over_road_002_103732.mp3" id="2_k6l4y"]
+[ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="3_jf3yk"]
+
+[node name="InputBindSetting" type="HBoxContainer"]
+offset_right = 894.0
+offset_bottom = 120.0
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+script = ExtResource("1_8nv2x")
+
+[node name="SettingName" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+text = "Input Binding"
+vertical_alignment = 1
+
+[node name="BindingsContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 8
+
+[node name="AddBindingButton" type="Button" parent="."]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 2
+
+[node name="IconSprite" type="Sprite2D" parent="AddBindingButton"]
+texture_filter = 1
+position = Vector2(60, 60)
+texture = ExtResource("2_0kylm")
+
+[node name="Press" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_k6l4y")
+volume_db = -12.0
+bus = &"SFX"
+
+[node name="Focus" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_jf3yk")
+volume_db = -12.0
+pitch_scale = 2.0
+bus = &"SFX"

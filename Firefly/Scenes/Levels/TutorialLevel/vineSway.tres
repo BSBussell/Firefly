@@ -1,0 +1,20 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://c0wqxdboj8heb"]
+
+[ext_resource type="Shader" path="res://Core/wind.gdshader" id="1_lceut"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jfi36"]
+frequency = 0.0011
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7ka4v"]
+seamless = true
+noise = SubResource("FastNoiseLite_jfi36")
+
+[resource]
+shader = ExtResource("1_lceut")
+shader_parameter/render_noise = false
+shader_parameter/amplitude = 0.2
+shader_parameter/time_scale = 0.02
+shader_parameter/noise_scale = 0.001
+shader_parameter/rotation_strength = 0.2
+shader_parameter/rotation_pivot = Vector2(0.5, 2.08165e-12)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_7ka4v")

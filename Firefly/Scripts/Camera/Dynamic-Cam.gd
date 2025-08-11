@@ -103,7 +103,7 @@ func calculate_target_position(delta: float) -> Vector2:
 	var id = control.targets.hash()
 	if id != dict_hash:
 		
-		print("Resetting smoothing")
+		
 		dict_hash = id
 		smoothing_factor_2 = 0
 		cursor.modulate = "#00FFFF";

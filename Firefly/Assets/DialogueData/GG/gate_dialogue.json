@@ -1,0 +1,10 @@
+{
+  "identifier": "gate_guardian_blocked",
+  "dialogue": [
+    "So anyway... this tunnel leads somewhere really special. If I'm honest, I don't really think you're ready for it just yet.",
+    "It's not that I don't want you to go, but... well, it might be irresponsible of me to let you through right now.",
+    "If you want to come back later, when you got a bit more air under your wings, I might consider letting you in.",
+    "Hmmm... lets say you can come back when you have free'd a bunch of fireflies. That seems like a good test to make sure you're ready."
+  ],
+  "victory_dialogue": false
+}

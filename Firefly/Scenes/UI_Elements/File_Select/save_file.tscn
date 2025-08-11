@@ -13,13 +13,14 @@
 shader = ExtResource("1_beqda")
 shader_parameter/SIZE = Vector2(0.47, 0.46)
 shader_parameter/RADIUS = 0.1
+shader_parameter/ASPECT = 3.14
 shader_parameter/waveFrequency = 3.647
-shader_parameter/waveAmplitude = 0.015
-shader_parameter/waveSpeed = 1.0
-shader_parameter/hard_edges = true
-shader_parameter/seed = 0.0
+shader_parameter/waveAmplitude = 0.017
+shader_parameter/waveSpeed = 2.0
 shader_parameter/goopyness = 1.0
 shader_parameter/distortion_strength = 1.0
+shader_parameter/hard_edges = true
+shader_parameter/seed = 0.0
 
 [sub_resource type="Animation" id="Animation_5k3mx"]
 resource_name = "OptionExpansion"

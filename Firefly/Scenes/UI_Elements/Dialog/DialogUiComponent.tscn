@@ -7,15 +7,16 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nveax"]
 shader = ExtResource("2_xbrb5")
-shader_parameter/SIZE = Vector2(0.47, 0.45)
-shader_parameter/RADIUS = 0.05
+shader_parameter/SIZE = Vector2(0.46, 0.44)
+shader_parameter/RADIUS = 0.129
+shader_parameter/ASPECT = 1.95
 shader_parameter/waveFrequency = 2.941
-shader_parameter/waveAmplitude = 0.02
-shader_parameter/waveSpeed = 1.0
+shader_parameter/waveAmplitude = 0.086
+shader_parameter/waveSpeed = 0.927
+shader_parameter/goopyness = 0.921
+shader_parameter/distortion_strength = 0.5
 shader_parameter/hard_edges = true
 shader_parameter/seed = 2.08165e-12
-shader_parameter/goopyness = 0.6
-shader_parameter/distortion_strength = 0.5
 
 [sub_resource type="Animation" id="Animation_sdlgx"]
 length = 0.001
@@ -494,10 +495,10 @@ script = ExtResource("1_7ojih")
 material = SubResource("ShaderMaterial_nveax")
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.07
-anchor_top = 0.04
-anchor_right = 0.93
-anchor_bottom = 0.38
+anchor_left = 0.05
+anchor_top = 0.03
+anchor_right = 0.95
+anchor_bottom = 0.39
 offset_left = 0.999997
 offset_top = 5.0
 offset_right = 1.00005
@@ -508,7 +509,6 @@ theme = ExtResource("2_5wsxi")
 color = Color(0.235294, 0.2, 0.501961, 1)
 
 [node name="Label" type="RichTextLabel" parent="."]
-modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -520,7 +520,6 @@ offset_top = 5.0
 offset_right = 1.00005
 offset_bottom = 4.99998
 grow_horizontal = 2
-scale = Vector2(0.7, 0.7)
 pivot_offset = Vector2(768, 135)
 mouse_filter = 1
 theme = ExtResource("2_5wsxi")
@@ -528,8 +527,6 @@ bbcode_enabled = true
 text = "[center]Blah [color=yellow]Key Word[/color] blah... blah blah blah bala shell big snail test filling the thing up and using as [color=#aaa]much[/color][/center]"
 fit_content = true
 scroll_active = false
-visible_characters = 0
-visible_ratio = 0.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -540,7 +537,7 @@ speed_scale = 3.5
 [node name="SpriteAnchor" type="Control" parent="."]
 layout_mode = 1
 anchor_left = 0.5
-anchor_top = 0.358143
+anchor_top = 0.35
 anchor_right = 0.5
 anchor_bottom = 0.394444
 offset_left = -20.0

@@ -108,7 +108,7 @@ signal dead()
 # Visual Nodes
 @onready var animation: AnimatedSprite2D = $Visuals/SquishCenter/AnimatedSprite2D
 @onready var squish_node: SquishNode = $Visuals/SquishCenter
-@onready var spotlight: PointLight2D = $Visuals/Spotlight
+@onready var spotlight: PlayerLight = $Visuals/Spotlight
 @onready var light: PointLight2D = $Visuals/Spotlight
 @onready var glow_trail: Line2D = $Visuals/Trail
 @onready var back_wing: Line2D = $Visuals/SquishCenter/WingBody/BackWing
@@ -890,6 +890,8 @@ func disable_glow():
 	#glow_manager.reset_score()
 	glow_manager.GLOW_ENABLED = false
 
+
+
 ## Adds points to the players glow score
 func add_glow(amount: float) -> void:
 	glow_manager.add_score(amount)
@@ -897,6 +899,9 @@ func add_glow(amount: float) -> void:
 ## Force the glow to update score
 func force_glow_update() -> void:
 	glow_manager.calc_score()
+	
+func can_glow() -> bool:
+	return glow_manager.GLOW_ENABLED
 
 ## Set the players glow score
 func set_glow_score(amount: float) -> void:

@@ -7,6 +7,9 @@ class_name SpitSegment
 
 @onready var spit = $"."
 
+@onready var sprite_2d = $Sprite2D
+@onready var sprite_2d_2 = $Sprite2D2
+
 
 var root: Rope = null
 
@@ -55,6 +58,19 @@ func set_decor() -> void:
 
 func dim() -> void:
 	if spotlight:
-		spotlight.enabled = false
-		spotlight.queue_free()   
+		spotlight.energy = 0.5
+		#spotlight.enabled = false
+		#spotlight.queue_free()  
+		
+	
+	# Make the material unique to this node
+	sprite_2d.material = sprite_2d.material.duplicate()
+
+	# Now change the shader param
+	sprite_2d.material.set_shader_parameter("albedo_tint", Vector4(0.111, 0.2, 0.35, 1))
+	
+	sprite_2d_2.material = sprite_2d.material.duplicate()
+
+	# Now change the shader param
+	sprite_2d_2.material.set_shader_parameter("albedo_tint", Vector4(0.111, 0.2, 0.35, 1))
 	

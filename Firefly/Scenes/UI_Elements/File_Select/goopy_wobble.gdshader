@@ -1,70 +1,73 @@
 shader_type canvas_item;
 
-uniform vec2 SIZE = vec2(0.4, 0.2);
+/*  Half-extents in UV-space (0–1) before aspect correction */
+uniform vec2  SIZE   = vec2(0.4, 0.2);
+
+/*  Corner radius in UV units relative to the *height* (0.1 = 10 % of height) */
 uniform float RADIUS : hint_range(0.0, 0.5) = 0.1;
 
-uniform float waveFrequency : hint_range(0.0, 50.0) = 10.0;
-uniform float waveAmplitude : hint_range(0.0, 0.5) = 0.02;
-uniform float waveSpeed : hint_range(0.0, 10.0) = 2.0;
+/*  Hand the shader the node’s aspect ratio (width / height).             
+    You can fetch it from script and set the material parameter, e.g.:
+        material.set_shader_parameter("ASPECT", rect_size.x / rect_size.y); */
+uniform float ASPECT = 1.0;   // e.g. 1.77778 for 16:9, 0.75 for 3:4
 
-uniform bool hard_edges = true;
-uniform float seed = 0.0;
+/*  Wobble controls (unchanged) */
+uniform float waveFrequency       : hint_range(0.0, 50.0) = 10.0;
+uniform float waveAmplitude       : hint_range(0.0,  0.5) = 0.02;
+uniform float waveSpeed           : hint_range(0.0, 10.0) = 2.0;
+uniform float goopyness           : hint_range(0.0,  1.0) = 1.0;
+uniform float distortion_strength : hint_range(0.0,  1.0) = 1.0;
+uniform bool  hard_edges = true;
+uniform float seed       = 0.0;
 
-/// Blend: 0 = structured sine wobble, 1 = goopy chaos
-uniform float goopyness : hint_range(0.0, 1.0) = 1.0;
-
-/// How much either type of distortion affects the shape
-uniform float distortion_strength : hint_range(0.0, 1.0) = 1.0;
-
-
-// --- Noise helpers
-float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+/* ─────────────── simple noise helpers ─────────────── */
+float hash(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }
+float noise(vec2 p,float off){
+    vec2 i=floor(p), f=fract(p);
+    float a=hash(i+vec2(0,0)+off), b=hash(i+vec2(1,0)+off);
+    float c=hash(i+vec2(0,1)+off), d=hash(i+vec2(1,1)+off);
+    vec2 u=f*f*(3.0-2.0*f);
+    return mix(a,b,u.x)+(c-a)*u.y*(1.0-u.x)+(d-b)*u.x*u.y;
 }
 
-float noise(vec2 p, float seed_offset) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
+/* ───────── aspect-correct rounded-box SDF ────────── */
+float rounded_rect_sdf(vec2 uv, vec2 halfUV, float radiusUV, float aspect)
+{
+    /* stretch X so that 1 unit in X ~= 1 unit in Y */
+    vec2 scale = vec2(aspect, 1.0);
 
-    float a = hash(i + vec2(0.0, 0.0) + seed_offset);
-    float b = hash(i + vec2(1.0, 0.0) + seed_offset);
-    float c = hash(i + vec2(0.0, 1.0) + seed_offset);
-    float d = hash(i + vec2(1.0, 1.0) + seed_offset);
+    vec2 p = (uv - vec2(0.5)) * scale;      // centred, isotropic space
+    vec2 h = halfUV * scale;                // half-extents in same space
+    float r = radiusUV * scale.y;           // radius in same units
 
-    vec2 u = f * f * (3.0 - 2.0 * f);
-
-    return mix(a, b, u.x) +
-           (c - a) * u.y * (1.0 - u.x) +
-           (d - b) * u.x * u.y;
+    vec2 q = abs(p) - (h - vec2(r));
+    vec2 clamped  = max(q, vec2(0.0));
+    float outside = length(clamped);        // distance outside the core box
+    float inside  = min(max(q.x, q.y), 0.0);/* negative distance inside */
+    return outside + inside - r;
 }
 
-// --- Shape
-float rounded_rect_sdf(vec2 uv, vec2 size, float radius) {
-    vec2 d = abs(uv - vec2(0.5)) - size + vec2(radius);
-    return length(max(d, 0.0)) - radius;
+/* ───────── wobble mixer (unchanged) ───────── */
+float blended_distortion(vec2 uv,float f,float a,float s,float off){
+    float sine = sin(uv.y*f + TIME*s + off);
+    float n    = noise(uv*f + vec2(TIME*s,0.0), off);
+    float goop = (n-0.5)*2.0;
+    return mix(sine,goop,goopyness) * a * distortion_strength;
 }
 
-// --- Wobble mix function
-float blended_distortion(vec2 uv, float frequency, float amplitude, float speed, float seed_offset) {
-    float sine_wobble = sin(uv.y * frequency + TIME * speed + seed_offset);
-    
-    vec2 noise_input = uv * frequency + vec2(TIME * speed, 0.0);
-    float noise_val = noise(noise_input, seed_offset);
-    float goopy_wobble = (noise_val - 0.5) * 2.0;
-
-    float blended = mix(sine_wobble, goopy_wobble, goopyness);
-    return blended * amplitude * distortion_strength;
-}
-
-void fragment() {
+/* ───────── main ───────── */
+void fragment()
+{
     vec2 uv = UV;
 
-    float sdf = rounded_rect_sdf(uv, SIZE, RADIUS);
-    sdf += blended_distortion(uv, waveFrequency, waveAmplitude, waveSpeed, seed);
+    float sdf = rounded_rect_sdf(uv, SIZE, RADIUS, ASPECT);
+    sdf += blended_distortion(uv, waveFrequency,
+                                   waveAmplitude,
+                                   waveSpeed,
+                                   seed);
 
-    float fill = hard_edges
-        ? step(0.0, -sdf)
-        : smoothstep(0.0, 0.01, -sdf);
+    float alpha = hard_edges ? step(0.0,-sdf)
+                             : smoothstep(0.0,0.01,-sdf);
 
-    COLOR.a *= fill;
+    COLOR.a *= alpha;
 }

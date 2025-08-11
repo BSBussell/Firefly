@@ -1,0 +1,13 @@
+{
+  "identifier": "Controls Binding",
+  "dialogue": [
+	"A Bee Tip: If you you're struggling to hold up or down while moving, or wall jumping. Try binding [color=yellow]alternate buttons[/color] to up and down!",
+
+	"For example: On Controller by default ZL is bound to up, and ZR is bound to down, that way you can slide jump by just holding forward pressing ZR and jumping!",
+
+	"Instead of hunting for the perfect diagonal to hug the wall, just hold into the wall and walljump while holding ZL!!",
+	"This is less useful for the keyboard kreachers among us, but essential for upward walljumps on controller!"
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

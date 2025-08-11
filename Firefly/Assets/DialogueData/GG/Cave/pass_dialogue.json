@@ -1,0 +1,10 @@
+{
+    "identifier": "gate_guardian_pass",
+    "dialogue": [
+        "Oh really? You shattered a bunch of glass jars? Cool cool.",
+        "Ok ya, I'll let you pass, you're probably sick at this type of stuff if you couldn't break that much glass.",
+        "Just be careful ok, theres a big drop, and like speaking from experience, it's not fun to climb back up.",
+        "So Good Luck!"
+    ],
+    "victory_dialogue": false
+}

@@ -35,7 +35,11 @@ var def_settings: Dictionary = {
 # Helpers
 	"input_assist": true,
 	"slide_assist": true,
-	"inf_jump": false
+	"inf_jump": false,
+	"walljump_hold_into_up": false,
+
+# Input bindings (stored as serialized data)
+	"input_bindings": {}
 }
 
 var settings: Dictionary = def_settings
@@ -43,6 +47,126 @@ var settings: Dictionary = def_settings
 # Called when the node is added to the scene
 func _ready() -> void:
 	load_settings()
+	load_input_bindings()
+
+# Load input bindings from config and apply to InputMap
+func load_input_bindings() -> void:
+	var input_bindings = settings.get("input_bindings", {})
+	
+	for action_name in input_bindings.keys():
+		if not InputMap.has_action(action_name):
+			continue
+			
+		# Clear existing events for this action
+		InputMap.action_erase_events(action_name)
+		
+		# Add each stored event
+		var events_data = input_bindings[action_name]
+		for event_data in events_data:
+			var event = deserialize_input_event(event_data)
+			if event:
+				InputMap.action_add_event(action_name, event)
+
+# Save current InputMap bindings to config
+func save_input_bindings() -> void:
+	var input_bindings = {}
+	
+	# Get all actions and their events
+	for action_name in InputMap.get_actions():
+		# Skip UI actions - we don't want to let users rebind those
+		if action_name.begins_with("ui_"):
+			continue
+			
+		var events = InputMap.action_get_events(action_name)
+		var serialized_events = []
+		
+		for event in events:
+			if event is InputEventKey or event is InputEventJoypadButton or event is InputEventJoypadMotion:
+				serialized_events.append(serialize_input_event(event))
+		
+		if serialized_events.size() > 0:
+			input_bindings[action_name] = serialized_events
+	
+	settings["input_bindings"] = input_bindings
+	save_settings()
+
+# Serialize an InputEvent to a dictionary
+func serialize_input_event(event: InputEvent) -> Dictionary:
+	var data = {
+		"type": event.get_class()
+	}
+	
+	if event is InputEventKey:
+		var key_event = event as InputEventKey
+		data["keycode"] = key_event.keycode
+		data["physical_keycode"] = key_event.physical_keycode
+		data["key_label"] = key_event.key_label
+		data["unicode"] = key_event.unicode
+		data["ctrl_pressed"] = key_event.ctrl_pressed
+		data["shift_pressed"] = key_event.shift_pressed
+		data["alt_pressed"] = key_event.alt_pressed
+		data["meta_pressed"] = key_event.meta_pressed
+		
+	elif event is InputEventJoypadButton:
+		var joy_event = event as InputEventJoypadButton
+		data["button_index"] = joy_event.button_index
+		data["device"] = joy_event.device
+		
+	elif event is InputEventJoypadMotion:
+		var motion_event = event as InputEventJoypadMotion
+		data["axis"] = motion_event.axis
+		data["axis_value"] = motion_event.axis_value
+		data["device"] = motion_event.device
+	
+	return data
+
+# Deserialize a dictionary back to an InputEvent
+func deserialize_input_event(data: Dictionary) -> InputEvent:
+	var event_type = data.get("type", "")
+	
+	if event_type == "InputEventKey":
+		var event = InputEventKey.new()
+		event.keycode = data.get("keycode", 0)
+		event.physical_keycode = data.get("physical_keycode", 0)  
+		event.key_label = data.get("key_label", 0)
+		event.unicode = data.get("unicode", 0)
+		event.ctrl_pressed = data.get("ctrl_pressed", false)
+		event.shift_pressed = data.get("shift_pressed", false)
+		event.alt_pressed = data.get("alt_pressed", false)
+		event.meta_pressed = data.get("meta_pressed", false)
+		event.pressed = true
+		return event
+		
+	elif event_type == "InputEventJoypadButton":
+		var event = InputEventJoypadButton.new()
+		event.button_index = data.get("button_index", 0)
+		event.device = data.get("device", -1)
+		event.pressed = true
+		return event
+		
+	elif event_type == "InputEventJoypadMotion":
+		var event = InputEventJoypadMotion.new()
+		event.axis = data.get("axis", 0)
+		event.axis_value = data.get("axis_value", 0.0)
+		event.device = data.get("device", -1)
+		return event
+	
+	return null
+
+# Reset input bindings to defaults
+func reset_input_bindings_to_default() -> void:
+	settings["input_bindings"] = {}
+	save_settings()
+	
+	# Reload the project's default InputMap
+	# This is a bit tricky since we need to restore the original bindings
+	# For now, we'll just clear the config and let the game restart with defaults
+	_logger.info("Input bindings reset to default. Please restart the game.")
+
+# Connect a callable to input bindings changed
+func connect_to_input_changed(_function: Callable) -> void:
+	# We could emit a signal when input bindings change
+	pass
 
 # Load settings from the configuration file
 func load_settings() -> void:
