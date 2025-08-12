@@ -1,0 +1,13 @@
+{
+  "identifier": "GG_Tutorial",
+  "dialogue": [
+	"Oh. Hi. uh, This is my hole, w-what are you doing here? What do you want to pass?",
+	
+	"No, I haven't seen any parents come this way. Sorry, uh, I wish I knew more.",
+	"Yes, I am sure I would know if parents came this way. If you want to know, I'd try checking [color=yellow]the other way, try climbing up that thing at the start.[/color]",
+
+	"Ok, but, if you wanna visit my little tunnel, show me you've saved Fireflies from 35 jars. Then I might think about it"
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

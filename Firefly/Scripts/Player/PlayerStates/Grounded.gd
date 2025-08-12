@@ -35,6 +35,7 @@ func enter() -> void:
 	parent.crouchJumping = false
 	parent.wallJumping = false
 	parent.has_glided = false
+	parent.modulate = "#FFFFFF"
 	parent.launched = false
 	
 	parent.fastFell = parent.fastFalling

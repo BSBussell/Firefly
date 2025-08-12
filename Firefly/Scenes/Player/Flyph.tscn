@@ -690,7 +690,6 @@ font = ExtResource("10_nb4h7")
 font_size = 8
 
 [node name="Flyph" type="CharacterBody2D" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "SLIDING_STATE", "WALL_STATE", "GLIDING_STATE", "WATERED_STATE", "WORMED_STATE", "debug_info")]
-position = Vector2(160, 125)
 collision_layer = 5
 collision_mask = 34
 floor_constant_speed = true
@@ -717,6 +716,7 @@ turn_around_squash = Vector2(0.9, 1.1)
 death_squash = Vector2(0.5, 1.5)
 
 [node name="Collider" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_6vnjo")
 debug_color = Color(0.890196, 0.921569, 0.34902, 0.733333)
@@ -730,7 +730,6 @@ disabled = true
 debug_color = Color(0.733333, 0.764706, 0, 0.419608)
 
 [node name="Crouching_Collider" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -4.75)
 shape = SubResource("RectangleShape2D_seiic")
 disabled = true
@@ -796,8 +795,9 @@ num_segments = 4
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals/SquishCenter"]
 position = Vector2(0, -32)
 sprite_frames = SubResource("SpriteFrames_7w45f")
-animation = &"wall_jump"
+animation = &"falling"
 autoplay = "idle"
+frame = 4
 frame_progress = 1.0
 flip_h = true
 script = ExtResource("8_dying")
@@ -818,6 +818,7 @@ wing = NodePath("../SquishCenter/WingBody/BackWing")
 offset = Vector2(2.08165e-12, -10)
 
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
+position = Vector2(0, -7)
 color = Color(1, 0.980392, 0.803922, 1)
 energy = 0.6
 range_layer_min = -99
@@ -825,14 +826,13 @@ range_item_cull_mask = 3
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
 shadow_filter = 1
-shadow_filter_smooth = 10.0
+shadow_filter_smooth = 25.0
 shadow_item_cull_mask = 2
 texture = ExtResource("6_bo4q8")
 height = 50.0
 script = ExtResource("11_aonwn")
 curve_in = SubResource("Curve_grp02")
 curve_out = SubResource("Curve_5ulra")
-metadata/_edit_lock_ = true
 
 [node name="Particles" type="Node2D" parent="."]
 
@@ -1061,7 +1061,7 @@ position = Vector2(0, -8)
 position = Vector2(3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
-target_position = Vector2(2, 2.08165e-12)
+target_position = Vector2(3, 2.08165e-12)
 max_results = 1
 collision_mask = 18
 
@@ -1069,11 +1069,12 @@ collision_mask = 18
 position = Vector2(-3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
-target_position = Vector2(-2, 2.08165e-12)
+target_position = Vector2(-3, 2.08165e-12)
 max_results = 1
 collision_mask = 18
 
 [node name="VerticalSmoothing" type="Node2D" parent="Raycasts"]
+visible = false
 
 [node name="TopLeft" type="RayCast2D" parent="Raycasts/VerticalSmoothing"]
 position = Vector2(-3, -7.5)
@@ -1088,6 +1089,7 @@ target_position = Vector2(0, -5)
 collision_mask = 2
 
 [node name="HorizontalSmoothing" type="Node2D" parent="Raycasts"]
+visible = false
 
 [node name="BottomRight" type="RayCast2D" parent="Raycasts/HorizontalSmoothing"]
 position = Vector2(3, 7.5)
@@ -1132,6 +1134,7 @@ max_results = 6
 collision_mask = 2
 
 [node name="Colliders" type="Node2D" parent="Raycasts"]
+visible = false
 
 [node name="Stand_Room_Left" type="RayCast2D" parent="Raycasts/Colliders"]
 position = Vector2(-3, -1)

@@ -1,0 +1,11 @@
+{
+    "identifier": "gate_guardian_blocked",
+    "dialogue": [
+        "So anyway... I'm sure you want to see what's behind me. But, if I'm honest it's a little perilous.",
+        "It's not that I don't want you to go, but... well, I don't really trust that you'll be fine.",
+        "Well, if you really want to come in, I'll have to have some sort of requirment. HMM something original...",
+        "OH! Ok how about, you come back after you've broke a bunch of glass jars. There's some around here.",
+        "If you can break a bunch of glass jars I think I'll let you in."
+    ],
+    "victory_dialogue": false
+}

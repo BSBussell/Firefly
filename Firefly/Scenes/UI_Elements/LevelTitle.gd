@@ -14,8 +14,17 @@ func _ready():
 	title_text = context.Text
 	label.text = title_text
 	
-	# Wait a second then play animation
-	await get_tree().create_timer(1.0).timeout
+	
+	
+	if _globals.ACTIVE_PLAYER and not _globals.ACTIVE_PLAYER.is_on_floor():
+		# Wait until the player is on the floor
+		await get_tree().process_frame  # make sure physics has run at least once
+		while not _globals.ACTIVE_PLAYER.is_on_floor():
+			await get_tree().physics_frame
+		
+		# Optional delay before playing
+		await get_tree().create_timer(1.0).timeout
+		
 	animation_player.play("Drop-In")
 
 

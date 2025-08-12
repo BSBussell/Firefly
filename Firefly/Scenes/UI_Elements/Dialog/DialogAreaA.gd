@@ -26,9 +26,15 @@ func _ready():
 	
 	if talk_target:
 		sprite_center.position = talk_target.position
+	else:
+		sprite_center.position = self.position
 	
 	# Get the dialogue_ui
-	dialogue_ui = level.get_ui_component("DialogueUiComponent")
+	if level:
+		dialogue_ui = level.get_ui_component("DialogueUiComponent")
+	else:
+		printerr("YOU FORGOT TO ASSIGN A LEVEL TO THE DIALOG THING NERRDDD")
+		return
 	
 	
 	if dialogue_ui:

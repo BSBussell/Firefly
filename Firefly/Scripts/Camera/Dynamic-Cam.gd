@@ -5,15 +5,16 @@ extends State
 @export var Cursor_Color: Color
 
 ## The maximum speed the camera will move
-@export var Maximum_Speed: Vector2 = Vector2(25, 25)
+@export var Maximum_Speed: Vector2 = Vector2(20, 20)
 @export var Minimum_Speed: Vector2 = Vector2(5, 5)
 
 ## The default acceleration
-@export var BaseAcceleration: Vector2 = Vector2(0.75, 0.75)
+@export var BaseAcceleration: Vector2 = Vector2(0.6, 0.6)
 
 @onready var cursor = $"../../Cursor"
 @onready var control: PlayerCam 
 @onready var player: Flyph
+
 
 
 
@@ -55,6 +56,10 @@ func move_camera(delta):
 	
 	var target_position = calculate_target_position(delta)
 	
+	
+	
+	
+	
 	# Smoothly move the camera towards the target position
 	follow_speed.x = move_toward(follow_speed.x, Maximum_Speed.x, accel.x)
 	#min(Maximum_Speed.x, follow_speed.x + accel.x)
@@ -67,7 +72,7 @@ func move_camera(delta):
 	blend.y = 1 - pow(0.5, follow_speed.y * delta)
 	
 	# Gerblesh
-	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, blend.x)
+	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, blend.x)	
 	control.actual_cam_pos.y = _gerblesh.lerpi(control.actual_cam_pos.y, target_position.y, blend.y)
 	
 	control.global_position = control.actual_cam_pos.round()
@@ -81,14 +86,14 @@ var settled: bool = true
 var current_grouping_offset: Vector2 = Vector2.ZERO
 
 func calculate_target_position(delta: float) -> Vector2:
-
+	
 	var base_target: Vector2 = player.global_position - control.startingPos	
 	var position: Vector2 = base_target
 	var offset: Vector2 = Vector2.ZERO
 	
 	if not player.dying:
 		offset = calc_horiz_offset(delta)
-		position += offset
+		#position += offset
 	
 	
 	# Check if there are any targets to look at
@@ -97,11 +102,18 @@ func calculate_target_position(delta: float) -> Vector2:
 	# Check if the list of targets has changed
 	var id = control.targets.hash()
 	if id != dict_hash:
+		
+		
 		dict_hash = id
-		smoothing_factor_2 = 0.0
+		smoothing_factor_2 = 0
+		cursor.modulate = "#00FFFF";
+	else:
+		cursor.modulate = Cursor_Color
 	
 	
 	if targets_center != Vector2.ZERO:
+		
+		
 		
 		#var targets_offset: Vector2
 		var grouping_offset: Vector2
@@ -111,7 +123,7 @@ func calculate_target_position(delta: float) -> Vector2:
 		
 		# Lerp towards this new offset
 		current_grouping_offset = _gerblesh.lerpiVec(current_grouping_offset, grouping_offset, smoothing_factor_2)
-		
+		#current_grouping_offset = grouping_offset
 		
 	
 		
@@ -133,7 +145,15 @@ func calculate_target_position(delta: float) -> Vector2:
 		
 		
 	if not player.dying:
+		#print("DC: Targets Offset", targets_center)
+		#print("DC: Grouping Offset: ",current_grouping_offset)
+		#print("DC: Position: ", position)
+		# I want it to do this normally
 		position += current_grouping_offset
+		
+		for target in control.targets.values():
+			if target.target_snap:
+				position = targets_center
 	
 	return position
 
@@ -195,6 +215,7 @@ func get_targets_center() -> Vector2:
 	else:
 		return Vector2.ZERO  # Return a default position if no targets exist
 
+
 func get_targets_blend() -> float:
 	
 	var blend: float = 0.3
@@ -204,6 +225,7 @@ func get_targets_blend() -> float:
 		if current_priority < target.blend_priority:
 			current_priority = target.blend_priority
 			blend = target.blend_override
+			
 		
 	return blend
 
@@ -221,7 +243,10 @@ func get_targets_offset(base_target: Vector2, targets_center: Vector2) -> Vector
 	current_grouping_position.x = _gerblesh.lerpi(base_target.x, targets_center.x, multi_target_smoothing)
 	current_grouping_position.y = _gerblesh.lerpi(base_target.y, targets_center.y, multi_target_smoothing)
 
+
 	return current_grouping_position - base_target
+	
+
 
 func check_state() -> State:
 	

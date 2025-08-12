@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=7 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
 [ext_resource type="PackedScene" uid="uid://sjoth6oe4wr6" path="res://Scenes/Levels/SplashScreen/bee_splash.tscn" id="2_yiswl"]
@@ -7,23 +7,10 @@
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="4_5xpk0"]
 [ext_resource type="Script" path="res://Core/Game/GlobalThemer.gd" id="6_pxqfs"]
 
-[sub_resource type="Environment" id="Environment_xxxtd"]
-background_mode = 3
-tonemap_white = 1.2
-glow_levels/1 = 0.18
-glow_levels/2 = 0.39
-glow_levels/3 = 0.0
-glow_levels/5 = 0.74
-glow_levels/7 = 0.26
-glow_blend_mode = 0
-
 [node name="GameViewer" type="Node2D"]
 process_mode = 3
 script = ExtResource("1_42j4d")
 start_level = ExtResource("2_yiswl")
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_xxxtd")
 
 [node name="LevelLoader" type="SubViewportContainer" parent="."]
 offset_right = 320.0

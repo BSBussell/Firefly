@@ -5,6 +5,9 @@ var source_folder_path: String = "res://Assets/Playtest Saves/saves/"
 var save_folder_path: String = "user://saves/"
 
 func _ready():
+	
+	return
+	
 	# Ensure the source and save folders exist
 	ensure_folder_exists(source_folder_path)
 	ensure_folder_exists(save_folder_path)

@@ -122,6 +122,8 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 		parent.set_standing_collider()
 
+	
+	
 
 	# If we press jump again then we play the gliding state
 	if can_glide() and parent.attempt_jump():
@@ -133,7 +135,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 # We can glide if we cant coyote jump nemore or if we cant wall jump
 func can_glide() -> bool:
-	return coyote_time.time_left <= 0.0 and not (left_wj_grace.is_colliding() or right_wj_grace.is_colliding()) and not parent.launched and parent.   can_glide
+	return coyote_time.time_left <= 0.0 and not (left_wj_grace.is_colliding() or right_wj_grace.is_colliding()) and parent.can_glide
 
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
@@ -144,7 +146,16 @@ func process_physics(delta: float) -> PlayerState:
 
 	# Grace Jumps
 	handle_coyote(delta)
-	handle_grace_walljump()
+	
+	if (handle_grace_walljump()):
+		
+		# Reenable gliding
+		if parent.just_glode:
+			parent.has_glided = false
+			parent.modulate = "#FFFFFF"
+		
+		else:
+			return null
 
 	# For Short Hops
 	handle_sHop(delta)
@@ -225,7 +236,6 @@ func process_frame(delta):
 		fall_timer = min(fall_timer + delta, fall_timer_max)
 
 		var spriteBlend = min(fall_timer / fall_timer_max, 1)
-		print("Sprite Blend: ", spriteBlend)
 		var squishVal = Vector2()
 		squishVal.x = lerp(1.0, parent.falling_squash.x, spriteBlend)
 		squishVal.y =  lerp(1.0, parent.falling_squash.y, spriteBlend)
@@ -274,8 +284,10 @@ func animation_end() -> PlayerState:
 
 func handle_coyote(_delta):
 
+	var coyote_time_left: bool = coyote_time.time_left > 0.0
+
 	# If we are able to do a coyote jump
-	if coyote_time.time_left > 0.0 and not parent.launched or _config.get_setting("inf_jump"):
+	if coyote_time_left and not parent.launched or _config.get_setting("inf_jump"):
 
 		
 
@@ -300,6 +312,12 @@ func handle_coyote(_delta):
 				return
 
 			coyote_jump()
+	
+	else:
+		# If we have coyote_launch set turn it off presuming we can't coyote_launch
+		if parent.coyote_launch and not coyote_time_left:
+			parent.coyote_launch = false
+			parent.coyote_launch_params = {}
 
 
 #perform coyote jump
@@ -324,13 +342,43 @@ func coyote_jump():
 	# Jump SFX
 	jumping_sfx.play(0)
 
-func handle_grace_walljump() -> void:
+	handle_coyote_launch()
+
+
+func handle_coyote_launch() -> void:
+
+	# If we have a coyote launch
+	if parent.coyote_launch:
+
+		# Get the params
+		var params = parent.coyote_launch_params
+
+		var launch_velocity: Vector2 = params["launch_velocity"]
+		var new_gravity: int = params["gravity"]
+		var squash: Vector2 = params["squash"]
+		
+		# If launch velocity is not downward we launch
+		if launch_velocity.y > 0:
+
+			# Call parent.launch with the params
+			parent.launch(launch_velocity, new_gravity, squash)
+			parent.jumping = true
+
+			print("Coyote Launch: " + str(params["launch_velocity"]))
+
+		parent.coyote_launch = false
+		parent.coyote_launch_params = {}
+
+func handle_grace_walljump() -> bool:
 
 	# Get the direction of the walljump
 	var wj_dir = check_grace_walljump_dir()
 	
 	if wj_dir != 0:
-		WALL_STATE.handle_walljump(parent.vertical_axis, wj_dir)
+		
+		return WALL_STATE.handle_walljump(parent.vertical_axis, wj_dir)
+	
+	return false
 
 
 
@@ -431,7 +479,7 @@ func get_gravity() -> float:
 
 	# Add a bit of float if we haven't shopped
 	if abs(parent.velocity.y) < 40 and Input.is_action_pressed("Jump") and not parent.crouchJumping and not parent.boostJumping:
-		gravity_to_apply *= 0.5
+		gravity_to_apply *= 0.4
 
 	return gravity_to_apply
 

@@ -25,6 +25,7 @@ func update_sensor():
 	# Adjust the sensor's shape based on the camera's zoom
 	
 	var zoom_adjusted_size = _globals.RENDER_SIZE / cam.zoom
+	zoom_adjusted_size = zoom_adjusted_size
 	sensor_shape.shape.extents = zoom_adjusted_size * 0.5  # Assuming a rectangular shape
 
 	# Adjust the sensor's position to follow the camera's offset

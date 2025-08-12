@@ -168,46 +168,63 @@ func apply_airResistance(delta, direction):
 # Performs a wall jump if we can
 # Takes delta and the direction of the wall.
 # If not given we asasume we're on a wall and try to get the wall normal
-func handle_walljump(vc_direction, dir = 0):	
+func handle_walljump(vc_direction, dir = 0) -> bool:	
 	
 	# Attempt jump pretty much just checks if a jump has been buffered and removes that from the buffer if it has
 	if not parent.disable_walljump and parent.attempt_jump():
-	
 		# Which direction is away from the wall
 		var jump_dir: float = dir
-
 		# If dir is the default value, we need to get the wall normal
 		if jump_dir == 0:
 			jump_dir = parent.get_wall_normal().x
-			
-			
-		# Ok so if you are up on a walljump it'll launch you up
-		if vc_direction > 0:
-			
+		
+		# Resolve requests
+		var down_requested: bool = (vc_direction < 0 and not parent.crouchJumping)
+		var upward_requested: bool = false
+		# Determine which horizontal action is "into the wall" based on collider OR grace dir
+		var into_wall_action: String = ""
+		if dir != 0:
+			into_wall_action = "Left" if dir > 0 else "Right"
+		else:
+			into_wall_action = get_which_wall_collided()
+		
+		if _config.get_setting("walljump_hold_into_up"):
+			# Holding INTO the wall counts as upward walljump
+			if into_wall_action != "":
+				upward_requested = Input.is_action_pressed(into_wall_action)
+			else:
+				# Fallback to original Up behavior if we couldn't determine a side
+				upward_requested = vc_direction > 0
+		else:
+			# Default behavior: hold Up to go up
+			upward_requested = vc_direction > 0
+		
+		# Prioritize downward if requested
+		if down_requested:
 			set_walljump_flags(jump_dir)
 			walljump_fx(jump_dir)
-			
-			upward_walljump(jump_dir)
-			post_jump_buffer.start() 
-			
-		# Secret Downward WallJump :3
-		elif vc_direction < 0 and not parent.crouchJumping:
-			
-			set_walljump_flags(jump_dir)
-			walljump_fx(jump_dir)
-			
 			downward_walljump(jump_dir)
-			post_jump_buffer.start() 
-			
-		# Otherwise do a wall jump
+			post_jump_buffer.start()
+			return true
+		
+		# Otherwise upward if requested
+		if upward_requested:
+			set_walljump_flags(jump_dir)
+			walljump_fx(jump_dir)
+			upward_walljump(jump_dir)
+			post_jump_buffer.start()
+			return true
+		
+		# Otherwise do a neutral/away wall jump
 		# Some caveats, if we are launched, then we have to be holding into the wall
 		elif not parent.launched or (parent.launched and (sign(parent.horizontal_axis) == -jump_dir)):
-
 			set_walljump_flags(jump_dir)
 			walljump_fx(jump_dir)
-
 			away_walljump(jump_dir)
-			post_jump_buffer.start() 
+			post_jump_buffer.start()
+			return true
+	
+	return false
 
 func set_walljump_flags(jump_dir: float) -> void:
 	
@@ -331,11 +348,15 @@ func general_walljump(walljump_type: int, disable_drift: bool, jump_velocity: Ve
 	# Update Flags
 	parent.airDriftDisabled = disable_drift
 	
-	# The editor "warns" that im casting an enum to an int, 
-	# but when i make the parameter an enum it won't compile... 
-	# so i'll take the warning :3
-	parent.current_wj = walljump_type
-	
+	# Set enum safely from int
+	var mapped_wj = parent.WALLJUMPS.NEUTRAL
+	if walljump_type == parent.WALLJUMPS.UPWARD:
+		mapped_wj = parent.WALLJUMPS.UPWARD
+	elif walljump_type == parent.WALLJUMPS.DOWNWARD:
+		mapped_wj = parent.WALLJUMPS.DOWNWARD
+	else:
+		mapped_wj = parent.WALLJUMPS.NEUTRAL
+	parent.current_wj = mapped_wj
 	
 	# Preserve the velocity we had before the jump, with a multiplier (ususally 0)
 	if pre_wall_vel != 0:
@@ -355,12 +376,11 @@ func general_walljump(walljump_type: int, disable_drift: bool, jump_velocity: Ve
 	# Update Visuals
 	parent.animation.flip_h = facing
 	
-		
-	
 
-func get_which_wall_collided():
+func get_which_wall_collided() -> String:
 
 	if parent.get_wall_normal().x > 0.5:
 		return "Left"
 	elif parent.get_wall_normal().x < -0.5:
 		return "Right"
+	return ""

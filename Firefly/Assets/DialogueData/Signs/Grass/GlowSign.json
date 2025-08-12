@@ -1,23 +1,24 @@
 {
   "identifier": "Glow_Sign",
   "dialogue": [
-	"Ok, so I know most fireflies already know this, but I'm just writing it down for posterity right. So barebones, the faster we go the more we start to [color=yellow]GLOW![/color]",
+	"Ok, so you want to know more about Glowing? If you think you got it feel free to continue. But if you're hungry for the nitty gritty, I got the deets.",
 
-	"So, pretty much what happens is we zip around and zoom through the air, and as we do so the legends say our [color=yellow]Meter[/color] begins fillin' up.",
+	"So, pretty much we have this meter right, your probably see it in the corner. Everytime you accelerate quickly, either through jumping, sliding, boosting, etc. The meter begins to fill up.",
 
-	"Now, I might not know what a [color=yellow]meter[/color] is, but when I start movin' eventually I'm able to power on my [color=yellow]light[/color] for a few seconds.",
+	"When the meter fills up all the way you will begin glowing. This essentially upgrades all your movement, letting you jump further, faster, and well more recklessly. Its fun but precarious.",
 
-	"And while I'm [color=yellow]glowing[/color] it's like suddenly I'm able to move faster than I ever could before!",
+	"But that meter doesn't stay filled up. Over time, the meter will begin to decay, and when your meter hits 0 you will lose your current glow level.",
 
-	"It's always hard to explain to the larvae how to start [color=yellow]glowing[/color], some of the elders say I have to [color=yellow]'press shift'[/color] or whatever that means.",
+	"Oh yea, so there's two different levels of glowing. There is glow, and then there is [color=yellow]SUPER-GLOW.[/color]",
 
-	"But really it's just like moving your [color=yellow]eyebrows[/color]. It's just a muscle you gotta find and use.",
+	"You reach [color=yellow]SUPER-GLOW[/color] by continuing to accelerate even when you already have glow! [color=yellow]SUPER-GLOW[/color] is even faster than glow, but far more precarious.",
 
-	"OH! And the most important part, when I'm [color=yellow]glowing[/color], sometimes I've realized that if I can [color=yellow]keep moving[/color], I can keep [color=yellow]glowing[/color] for longer and longer.",
+	"If at any point you don't want to power down your glow, press [demote] and you will decrease one tier of glow, and the remaining glow will be chaneled into a burst of speed.",
 
-	"It's like some sort of feedback loop where the faster I go the more I can [color=yellow]glow[/color], and the more I [color=yellow]glow[/color] the faster I can go!",
+	"If you don't need or want that speed at the time then don't hold any direction and the energy will just be discarded.",
 
-	"So yeah, that's how fireflies [color=yellow]glow[/color]."
+	"If you would like glow to work where you have to toggle promotion, simply turn of Auto-Glow in settings. Then to upgrade to a tier of glowing you simple press [promote]."
+	
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

@@ -1,0 +1,8 @@
+{
+  "identifier": "ThePitWarning",
+  "dialogue": [
+	"[color=red]CAUTION:[/color] Steep Drop! Exercise extreme caution around pit."
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b1yvkgf4mxi26" path="res://Assets/Graphics/TileMaps/Deep_Forest_Resource/bg_treeline_1.png" id="5_m4lqk"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="6_l80cy"]
 [ext_resource type="Texture2D" uid="uid://b1fmfctkk6alf" path="res://Assets/Graphics/Particles/leaf.png" id="7_xa1ik"]
-[ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/forest_tile_map.tscn" id="8_pg4rs"]
+[ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/GrassLevel/forest_tile_map.tscn" id="8_pg4rs"]
 [ext_resource type="AudioStream" uid="uid://b0ayvmu2riw06" path="res://Assets/Music/Flyph Lost_1.wav" id="9_l5d0m"]
 [ext_resource type="AudioStream" uid="uid://cu2e2bu6ld7xt" path="res://Assets/SFX/ambience/forest_ambience_b.mp3" id="10_ehuoj"]
 [ext_resource type="AudioStream" uid="uid://cc71beoeqyxis" path="res://Assets/SFX/ambience/CaveEntrance.wav" id="11_iiypr"]

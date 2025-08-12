@@ -1,5 +1,6 @@
-[gd_scene load_steps=19 format=3 uid="uid://0h47qgdfafs"]
+[gd_scene load_steps=21 format=3 uid="uid://0h47qgdfafs"]
 
+[ext_resource type="Shader" path="res://Scenes/UI_Elements/File_Select/goopy_wobble.gdshader" id="1_beqda"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="1_kyvp3"]
 [ext_resource type="Script" path="res://Scenes/UI_Elements/File_Select/SaveFileUI.gd" id="2_e53p8"]
 [ext_resource type="AudioStream" uid="uid://cnuerb00ea5jy" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_002_75057.mp3" id="3_de0nn"]
@@ -7,6 +8,19 @@
 [ext_resource type="AudioStream" uid="uid://dpjkcsm43a70s" path="res://Assets/SFX/UI/zapsplat_foley_bottle_plastic_small_empty_drop_on_carpet_003_75058.mp3" id="4_33dsm"]
 [ext_resource type="AudioStream" uid="uid://c5fw4tvlujmfy" path="res://Assets/SFX/UI/zapsplat_multimedia_game_sound_glass_clink_003_72372.mp3" id="5_cbc1n"]
 [ext_resource type="AudioStream" uid="uid://dvrqu1quotelj" path="res://Assets/SFX/UI/zapsplat_foley_bottle_glass_beer_knock_over_road_002_103732.mp3" id="6_daaar"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ilgfk"]
+shader = ExtResource("1_beqda")
+shader_parameter/SIZE = Vector2(0.47, 0.46)
+shader_parameter/RADIUS = 0.1
+shader_parameter/ASPECT = 3.14
+shader_parameter/waveFrequency = 3.647
+shader_parameter/waveAmplitude = 0.017
+shader_parameter/waveSpeed = 2.0
+shader_parameter/goopyness = 1.0
+shader_parameter/distortion_strength = 1.0
+shader_parameter/hard_edges = true
+shader_parameter/seed = 0.0
 
 [sub_resource type="Animation" id="Animation_5k3mx"]
 resource_name = "OptionExpansion"
@@ -490,9 +504,9 @@ _data = {
 }
 
 [node name="SaveFile" type="PanelContainer" node_paths=PackedStringArray("file_label", "save_info", "jar_counter", "time_string", "name_entry", "name_field", "file_buttons", "file_buttons_spacer", "start_button", "erase_button", "focused_audio", "opened_audio", "start_audio", "button_focused_audio", "button_pressed_audio")]
-offset_top = 2.0
+material = SubResource("ShaderMaterial_ilgfk")
 offset_right = 762.0
-offset_bottom = 205.0
+offset_bottom = 203.0
 pivot_offset = Vector2(381, 101)
 size_flags_vertical = 3
 focus_neighbor_left = NodePath(".")
@@ -520,6 +534,7 @@ button_pressed_audio = NodePath("Audio/ButtonPressed")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme = ExtResource("1_kyvp3")
 theme_override_constants/separation = 60
 
 [node name="FileLabels" type="VBoxContainer" parent="HBoxContainer"]
@@ -535,7 +550,6 @@ horizontal_alignment = 1
 vertical_alignment = 2
 
 [node name="SaveInfo" type="HBoxContainer" parent="HBoxContainer/FileLabels"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 

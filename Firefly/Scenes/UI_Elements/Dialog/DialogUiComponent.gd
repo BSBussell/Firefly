@@ -72,11 +72,14 @@ func next_dialogue():
 	# Clear Text Animation
 	animation_player.play("wipe_text")
 	
+	await animation_player.animation_finished
+	
 	# Set the dialogue text, for smoother visuals replace with animation
 	set_text(current_dialogue_arr[current_loc])
 	
 	# Roate the diamond 
 	animated_sprite_2d.play("rotate")
+	
 	
 	# Show the text
 	animation_player.play("show_text")

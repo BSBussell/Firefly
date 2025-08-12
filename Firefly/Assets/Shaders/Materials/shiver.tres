@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cwqwjsch83wrl"]
+
+[ext_resource type="Shader" path="res://Assets/Shaders/shiver.gdshader" id="1_67ofd"]
+
+[resource]
+shader = ExtResource("1_67ofd")
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.03
+shader_parameter/maxStrength = 0.04
+shader_parameter/strengthScale = 50.0
+shader_parameter/interval = 0.5
+shader_parameter/distortion = 0.0
+shader_parameter/heightOffset = 0.0
+shader_parameter/offset = 0.0

@@ -8,5 +8,3 @@
 diffuse_texture = ExtResource("1_yy6fc")
 normal_texture = ExtResource("2_4ogan")
 specular_texture = ExtResource("3_rhnk5")
-specular_color = Color(0.890196, 0.921569, 0.34902, 1)
-specular_shininess = 0.99

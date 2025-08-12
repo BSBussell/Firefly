@@ -15,7 +15,6 @@ func _process(delta):
 
 	pivot_offset.x = size.x / 2
 	pivot_offset.y = size.y / 2
-	print("Offset:", pivot_offset)
 	time += delta * wobble_speed
 	var rot_deg = sin(time * TAU) * wobble_amplitude_rot
 	var scale_x = 1.0 + sin(time * TAU + PI/2) * wobble_amplitude_scale

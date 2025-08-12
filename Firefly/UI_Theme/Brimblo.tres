@@ -1,9 +1,8 @@
-[gd_resource type="Theme" load_steps=38 format=3 uid="uid://dtqfsbjdbbwas"]
+[gd_resource type="Theme" load_steps=36 format=3 uid="uid://dtqfsbjdbbwas"]
 
-[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_rvtbs"]
+[ext_resource type="FontFile" uid="uid://dj807xddb50qo" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night.ttf" id="1_12ctq"]
 [ext_resource type="StyleBox" uid="uid://ba6n0xamrag6i" path="res://UI_Theme/option_Style.tres" id="2_3epl8"]
-[ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="2_kv5i4"]
-[ext_resource type="FontFile" uid="uid://cjwi3vogik77s" path="res://Assets/Fonts/Fibberish v1.0/fibberish.ttf" id="3_qt4dg"]
+[ext_resource type="FontFile" uid="uid://b8g6u7uun321s" path="res://Assets/Fonts/Tomorrow Night/Tomorrow_Night_Cutout.ttf" id="2_uk6lm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkirc"]
 
@@ -172,9 +171,6 @@ shadow_color = Color(0, 0, 0, 0.0980392)
 shadow_size = 5
 shadow_offset = Vector2(2.08165e-12, 5)
 
-[sub_resource type="FontVariation" id="FontVariation_w02q8"]
-base_font = ExtResource("1_rvtbs")
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35d5h"]
 bg_color = Color(0.490196, 0.439216, 0.741176, 1)
 border_color = Color(0.235294, 0.2, 0.501961, 1)
@@ -184,14 +180,10 @@ corner_detail = 2
 shadow_offset = Vector2(2.08165e-12, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vlpyu"]
-bg_color = Color(0.490196, 0.439216, 0.741176, 1)
+bg_color = Color(0.211765, 0.772549, 0.956863, 1)
 border_width_left = 20
 border_width_right = 20
-border_color = Color(0.211765, 0.772549, 0.956863, 1)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
+border_color = Color(0.8, 0.8, 0.8, 0)
 corner_detail = 2
 expand_margin_left = 10.0
 expand_margin_top = 30.0
@@ -205,11 +197,7 @@ shadow_offset = Vector2(2.08165e-12, 15)
 bg_color = Color(0.490196, 0.439216, 0.741176, 1)
 border_width_left = 15
 border_width_right = 15
-border_color = Color(0.835294, 0.615686, 0.160784, 1)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
+border_color = Color(0.8, 0.8, 0.8, 0)
 corner_detail = 2
 expand_margin_left = 15.0
 expand_margin_top = 30.0
@@ -223,11 +211,7 @@ shadow_offset = Vector2(2.08165e-12, 15)
 bg_color = Color(0.490196, 0.439216, 0.741176, 1)
 border_width_left = 15
 border_width_right = 15
-border_color = Color(0.780392, 0.87451, 0.921569, 1)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
+border_color = Color(0.8, 0.8, 0.8, 0)
 corner_detail = 2
 expand_margin_left = 10.0
 expand_margin_top = 30.0
@@ -275,6 +259,7 @@ thickness = 5
 vertical = true
 
 [resource]
+default_font = ExtResource("1_12ctq")
 AnimatedToggle/colors/hover_modulate = Color(1, 1, 1, 1)
 AnimatedToggle/colors/modulate = Color(0.854902, 0.854902, 0.854902, 1)
 AnimatedToggle/constants/hover_scale = 25
@@ -284,7 +269,7 @@ BeeSplashText/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
 BeeSplashText/colors/font_outline_color = Color(0.490196, 0.439216, 0.741176, 1)
 BeeSplashText/constants/outline_size = 0
 BeeSplashText/font_sizes/font_size = 64
-BeeSplashText/fonts/font = ExtResource("1_rvtbs")
+BeeSplashText/fonts/font = ExtResource("1_12ctq")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 Button/colors/font_focus_color = Color(0.835294, 0.615686, 0.160784, 1)
@@ -302,7 +287,7 @@ Button/constants/h_separation = 4
 Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
 Button/font_sizes/font_size = 50
-Button/fonts/font = ExtResource("1_rvtbs")
+Button/fonts/font = ExtResource("1_12ctq")
 Button/styles/disabled = SubResource("StyleBoxEmpty_jkirc")
 Button/styles/focus = SubResource("StyleBoxEmpty_3ioor")
 Button/styles/hover = SubResource("StyleBoxEmpty_bogsa")
@@ -313,7 +298,7 @@ CounterLabel/base_type = &"Label"
 CounterLabel/colors/font_color = Color(1, 1, 1, 1)
 CounterLabel/constants/line_spacing = 3
 CounterLabel/font_sizes/font_size = 64
-CounterLabel/fonts/font = ExtResource("2_kv5i4")
+CounterLabel/fonts/font = ExtResource("2_uk6lm")
 FileButtons/base_type = &"PanelContainer"
 FileButtons/font_sizes/font_size = 40
 FileButtons/styles/panel = SubResource("StyleBoxFlat_0rjpp")
@@ -329,7 +314,7 @@ FileTime/font_sizes/font_size = 32
 GameTitle/base_type = &"Label"
 GameTitle/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
 GameTitle/font_sizes/font_size = 128
-GameTitle/fonts/font = ExtResource("1_rvtbs")
+GameTitle/fonts/font = ExtResource("1_12ctq")
 HScrollBar/icons/decrement = SubResource("ImageTexture_yx0on")
 HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_yx0on")
 HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_yx0on")
@@ -355,30 +340,30 @@ HeaderLarge/font_sizes/font_size = 128
 Label/colors/font_color = Color(1, 1, 1, 1)
 Label/colors/font_shadow_color = Color(0, 0, 0, 0)
 Label/font_sizes/font_size = 52
-Label/fonts/font = ExtResource("1_rvtbs")
+Label/fonts/font = ExtResource("1_12ctq")
 LevelTitle/base_type = &"Label"
 LevelTitle/colors/font_color = Color(0.890196, 0.921569, 0.34902, 1)
 LevelTitle/font_sizes/font_size = 64
-LevelTitle/fonts/font = ExtResource("1_rvtbs")
+LevelTitle/fonts/font = ExtResource("1_12ctq")
 LineEdit/colors/caret_color = Color(0.490196, 0.439216, 0.741176, 1)
 LineEdit/colors/font_color = Color(0.490196, 0.439216, 0.741176, 1)
 LineEdit/colors/font_placeholder_color = Color(0.490196, 0.439216, 0.741176, 0.486275)
 LineEdit/colors/selection_color = Color(0.501961, 0.501961, 0.501961, 0)
 LineEdit/constants/minimum_character_width = 10
 LineEdit/font_sizes/font_size = 35
-LineEdit/fonts/font = ExtResource("3_qt4dg")
+LineEdit/fonts/font = ExtResource("1_12ctq")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_1wwrg")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_vebhx")
 NameEntryButton/base_type = &"Button"
 NameEntryButton/colors/font_hover_color = Color(1, 1, 1, 1)
 NameEntryButton/font_sizes/font_size = 24
-NameEntryButton/fonts/font = ExtResource("1_rvtbs")
+NameEntryButton/fonts/font = ExtResource("1_12ctq")
 NameEntryButton/styles/hover = SubResource("StyleBoxFlat_v1mc2")
 NameEntryButton/styles/normal = SubResource("StyleBoxFlat_2witd")
 OptionButton/constants/arrow_margin = 2
 OptionButton/constants/modulate_arrow = 13
 OptionButton/constants/outline_size = 5
-OptionButton/fonts/font = SubResource("FontVariation_w02q8")
+OptionButton/fonts/font = ExtResource("1_12ctq")
 OptionButton/styles/disabled = ExtResource("2_3epl8")
 OptionButton/styles/disabled_mirrored = ExtResource("2_3epl8")
 OptionButton/styles/focus = ExtResource("2_3epl8")
@@ -398,19 +383,19 @@ PopupMenu/styles/panel = SubResource("StyleBoxFlat_h362d")
 PopupMenu/styles/separator = SubResource("StyleBoxLine_lpqex")
 ResultText/base_type = &"Label"
 ResultText/font_sizes/font_size = 128
-ResultText/fonts/font = ExtResource("1_rvtbs")
+ResultText/fonts/font = ExtResource("1_12ctq")
 RichTextLabel/font_sizes/normal_font_size = 36
-RichTextLabel/fonts/normal_font = ExtResource("1_rvtbs")
+RichTextLabel/fonts/normal_font = ExtResource("1_12ctq")
 ScrollContainer/styles/panel = SubResource("StyleBoxEmpty_m5ica")
 SettingHeader/base_type = &"Label"
 SettingHeader/colors/font_color = Color(1, 1, 1, 1)
 SettingHeader/font_sizes/font_size = 64
-SettingHeader/fonts/font = ExtResource("1_rvtbs")
+SettingHeader/fonts/font = ExtResource("1_12ctq")
 TextureProgressBar/constants/scale = 8
 TimerText/base_type = &"Label"
 TimerText/colors/font_color = Color(0.780392, 0.87451, 0.921569, 1)
 TimerText/font_sizes/font_size = 30
-TimerText/fonts/font = ExtResource("1_rvtbs")
+TimerText/fonts/font = ExtResource("1_12ctq")
 TooltipLabel/colors/font_color = Color(0.822821, 0.898925, 0.937149, 1)
 TooltipLabel/font_sizes/font_size = 16
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_fmqbl")
@@ -420,8 +405,8 @@ VScrollBar/styles/scroll = SubResource("StyleBoxLine_at48g")
 pause_counter_count/base_type = &"Label"
 pause_counter_count/colors/font_color = Color(1, 1, 1, 1)
 pause_counter_count/font_sizes/font_size = 48
-pause_counter_count/fonts/font = ExtResource("1_rvtbs")
+pause_counter_count/fonts/font = ExtResource("1_12ctq")
 pause_counter_text/base_type = &"Label"
 pause_counter_text/constants/line_spacing = 0
 pause_counter_text/font_sizes/font_size = 32
-pause_counter_text/fonts/font = ExtResource("1_rvtbs")
+pause_counter_text/fonts/font = ExtResource("1_12ctq")

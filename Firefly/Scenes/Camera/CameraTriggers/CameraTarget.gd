@@ -15,6 +15,10 @@ extends Area2D
 ## the player, 1.0 is the averaged location.
 @export var blend_override: float = 0.3
 
+
+## Update Base Camera Acceleration. 
+@export var target_snap: bool = false
+
 func enable_target():
 	
 	set_collision_layer_value(7, true)

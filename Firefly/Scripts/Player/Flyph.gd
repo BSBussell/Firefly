@@ -108,7 +108,7 @@ signal dead()
 # Visual Nodes
 @onready var animation: AnimatedSprite2D = $Visuals/SquishCenter/AnimatedSprite2D
 @onready var squish_node: SquishNode = $Visuals/SquishCenter
-@onready var spotlight: PointLight2D = $Visuals/Spotlight
+@onready var spotlight: PlayerLight = $Visuals/Spotlight
 @onready var light: PointLight2D = $Visuals/Spotlight
 @onready var glow_trail: Line2D = $Visuals/Trail
 @onready var back_wing: Line2D = $Visuals/SquishCenter/WingBody/BackWing
@@ -282,9 +282,17 @@ var horizontal_axis: float = 0
 # DEATH
 var dying: bool = false
 
+# Glide Variables
+var can_glide: bool = false
+var just_glode: bool = false
+
+
+# Coyote Launch Variables
+var coyote_launch_params: Dictionary = {}
+var coyote_launch: bool = false
 
 # Persistent Data:
-var can_glide: bool = false
+
 
 # I'm Being really annoying about this btw
 func _ready() -> void:
@@ -420,6 +428,7 @@ func set_input_axis(delta: float) -> void:
 		horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
 		vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
 
+	print(vertical_axis)
 	#if horizontal_axis == 0.5:
 		#horizontal_axis = 1.0
 	#elif horizontal_axis == -0.5:
@@ -881,6 +890,8 @@ func disable_glow():
 	#glow_manager.reset_score()
 	glow_manager.GLOW_ENABLED = false
 
+
+
 ## Adds points to the players glow score
 func add_glow(amount: float) -> void:
 	glow_manager.add_score(amount)
@@ -888,6 +899,9 @@ func add_glow(amount: float) -> void:
 ## Force the glow to update score
 func force_glow_update() -> void:
 	glow_manager.calc_score()
+	
+func can_glow() -> bool:
+	return glow_manager.GLOW_ENABLED
 
 ## Set the players glow score
 func set_glow_score(amount: float) -> void:

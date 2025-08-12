@@ -1,0 +1,18 @@
+{
+    "identifier": "Controls Binding",
+    "dialogue": [
+        "[color=red]Violet Tip #3:[/color] Little known trick about slide boosting, after you slide boost, you can carry the momentum a little further by sliding again as you land!",
+
+        "This might not seem like much, but what makes it really cool is that [color=red]you can then jump and slide boost again![/color]",
+
+        "SO! If you want to really fly through the bushes, you can slide boost, and then slide boost and then slideboost, and then well, you get the idea!",
+
+        "Once you get it down, its the only way you'll want to move around! Of course until you slam headfirst into a wall you thought you could clear...",
+
+        "Sometimes, I've found some nooks and crannies I would have only been able to reach by chaining together a couple slide boosts!",
+
+        "If you're having trouble getting the rhythm of the motion, trying practicing with these two gaps right next to this sign! They're spaced perfectly to slide boost twice in a row!"
+    ],
+    "sequential_dialogue": "",
+    "victory_dialogue": false
+}
