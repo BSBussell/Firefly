@@ -12,17 +12,16 @@ var def_settings: Dictionary = {
 
 	
 # Gameplay
-	
 	"auto_glow": false,
 	"show_speedometer": 0,
 	"show_timer": false,
 	"discord_timer": false,
-	
+	"skip_jar_reveal": false,
 	
 # Graphics
 	"fullscreen": true,
 	"resolution": 0,
-	"fps_target": 1,   
+	"fps_target": 1,
 	"vsync": true,
 	"game_zoom": 1.4,
 	
@@ -36,7 +35,7 @@ var def_settings: Dictionary = {
 	"input_assist": true,
 	"slide_assist": true,
 	"inf_jump": false,
-	"walljump_hold_into_up": false,
+	"walljump_hold_into_up": true,
 
 # Input bindings (stored as serialized data)
 	"input_bindings": {}
@@ -127,7 +126,7 @@ func deserialize_input_event(data: Dictionary) -> InputEvent:
 	if event_type == "InputEventKey":
 		var event = InputEventKey.new()
 		event.keycode = data.get("keycode", 0)
-		event.physical_keycode = data.get("physical_keycode", 0)  
+		event.physical_keycode = data.get("physical_keycode", 0)
 		event.key_label = data.get("key_label", 0)
 		event.unicode = data.get("unicode", 0)
 		event.ctrl_pressed = data.get("ctrl_pressed", false)

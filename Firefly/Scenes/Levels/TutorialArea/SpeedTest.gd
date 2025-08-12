@@ -160,3 +160,7 @@ func _exit_tree():
 func unregister_persistence() -> void:
 	# Remove this object's save/load functions from the persistence system
 	_persist.unregister_persistent_class(challenge_id)
+
+
+func _on_end_point_body_exited(body):
+	pass # Replace with function body.

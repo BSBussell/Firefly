@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8ydkhfwxisrf"]
+
+[ext_resource type="Script" path="res://Scenes/Stuff/SpeedTest/SpeedGate.gd" id="1_820f2"]
+[ext_resource type="PackedScene" uid="uid://hnp83ax6ysxd" path="res://Scenes/Stuff/SpeedTest/SpeedFly.tscn" id="2_adb12"]
+
+[node name="SpeedTest" type="Node2D"]
+script = ExtResource("1_820f2")
+grace_seconds = 1.0
+air_speed_factor = 1.1
+firefly_visual = ExtResource("2_adb12")
+firefly_max_speed = 600.0
+firefly_finish_time = 5.0

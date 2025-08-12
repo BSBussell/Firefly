@@ -58,9 +58,9 @@ func set_decor() -> void:
 
 func dim() -> void:
 	if spotlight:
-		spotlight.energy = 0.5
-		#spotlight.enabled = false
-		#spotlight.queue_free()  
+		
+		spotlight.enabled = false
+		spotlight.queue_free()  
 		
 	
 	# Make the material unique to this node

@@ -21,6 +21,12 @@
 				"description": "Show speed run timer while playing",
 				"type": "boolean",
 				"config_key": "show_timer"
+			},
+			"skip_jar_reveal": {
+				"label": "Skip Jar Reveal",
+				"description": "Skips the jar reveal cinematic when unlocking hidden jars.",
+				"type": "boolean",
+				"config_key": "skip_jar_reveal"
 			}
 		}
 	},
@@ -49,7 +55,7 @@
 			},
 			"framerate": {
 				"label": "FPS Limit",
-				"description": "Se the max Frameratee",
+				"description": "Set the max Frameratee",
 				"type": "choice",
 				"config_key": "fps_target",
 				"options": ["30", "60", "90", "120", "144", "165", "240", "NONE"]

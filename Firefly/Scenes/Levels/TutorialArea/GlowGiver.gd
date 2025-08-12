@@ -21,7 +21,7 @@ func _on_body_entered(body):
 		# hehe
 		player.horizontal_axis = -1
 		var new_velocity = player.velocity
-		new_velocity.x = -player.movement_data.GLOW_UPGRADE_BOOST * 5
+		new_velocity.x = -player.movement_data.GLOW_UPGRADE_BOOST * 4
 		new_velocity.y = player.jump_velocity
 		player.launch(new_velocity)
 		#player.give_boost(player.movement_data.GLOW_UPGRADE_BOOST)

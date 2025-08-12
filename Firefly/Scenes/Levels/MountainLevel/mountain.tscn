@@ -1,4 +1,4 @@
-[gd_scene load_steps=127 format=3 uid="uid://b8k3u2ibutssg"]
+[gd_scene load_steps=130 format=3 uid="uid://b8k3u2ibutssg"]
 
 [ext_resource type="Texture2D" uid="uid://b56sfw1mw5iv" path="res://Assets/Graphics/TileMaps/Mountain/background_sky.png" id="1_7m5tg"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="1_iqxgk"]
@@ -39,6 +39,7 @@
 [ext_resource type="PackedScene" uid="uid://bw3m3mutdqjbd" path="res://Scenes/Checkpoint/mountain_checkpoint.tscn" id="30_mc4or"]
 [ext_resource type="PackedScene" uid="uid://b5syfsbo715ra" path="res://Scenes/Collectibles/BlueJar.tscn" id="32_oig70"]
 [ext_resource type="Script" path="res://Scenes/Levels/MountainLevel/check_glide.gd" id="32_vvucd"]
+[ext_resource type="PackedScene" uid="uid://b8ydkhfwxisrf" path="res://Scenes/Stuff/SpeedTest/SpeedTest.tscn" id="33_4augd"]
 [ext_resource type="PackedScene" uid="uid://dahf17mect811" path="res://Scenes/Stuff/Log/mtn_plat_3.tscn" id="34_yetiq"]
 [ext_resource type="PackedScene" uid="uid://cxx8cxk47hjnl" path="res://Scenes/Stuff/Log/mtn_plat_2.tscn" id="35_av2vi"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="39_3mwtf"]
@@ -115,6 +116,15 @@ shader_parameter/opacity = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rvlin"]
 size = Vector2(86, 70)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lk5bl"]
+size = Vector2(20, 153)
+
+[sub_resource type="Curve2D" id="Curve2D_y101w"]
+_data = {
+"points": PackedVector2Array(121.955, -61.5655, -117.885, 61.566, -790, -401, 19.6069, -69.8004, -19.6069, 69.8004, -789, -227, -39.2137, 18.4304, 39.2137, -18.4304, -681, -183, -50.9778, 21.1754, 50.9778, -21.1754, -580, -49, -15.6855, -47.4486, 15.6855, 47.4486, -483, -25, -1.17641, 11.7641, 1.17641, -11.7641, -407, 11, -65.0948, 83.9174, 65.0948, -83.9174, -263, -1, -36.0766, -28.2339, 36.0766, 28.2339, -96, 13, -48.2329, 33.3317, 48.2329, -33.3317, 21, -17, -47.0565, -19.999, 47.0565, 19.999, 108, 32, 13.3327, 57.6442, -13.3327, -57.6442, 278, -22, -78.4274, 34.9002, 78.4274, -34.9002, 478, 16, 29.8024, 31.371, -29.8024, -31.371, 583, -79, -76.4668, 2.74496, 76.4668, -2.74496, 610, -131)
+}
+point_count = 14
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w5fqu"]
 size = Vector2(144.75, 138)
@@ -1099,6 +1109,33 @@ z_index = -1
 position = Vector2(-8.10001, 9)
 texture = ExtResource("22_wysd2")
 
+[node name="SpeedTest" parent="Events" node_paths=PackedStringArray("entry_area", "exit_area", "jars", "guide_path") instance=ExtResource("33_4augd")]
+position = Vector2(2153, -1303)
+entry_area = NodePath("Entry")
+exit_area = NodePath("Entry2")
+jars = NodePath("../../JarManager")
+challenge_id = "MountainRush!"
+guide_path = NodePath("Path2D")
+firefly_max_speed = 1000.0
+
+[node name="Entry" type="Area2D" parent="Events/SpeedTest"]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/SpeedTest/Entry"]
+position = Vector2(-853, -291.5)
+shape = SubResource("RectangleShape2D_lk5bl")
+
+[node name="Entry2" type="Area2D" parent="Events/SpeedTest"]
+position = Vector2(1274, 284)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/SpeedTest/Entry2"]
+position = Vector2(-853, -291.5)
+shape = SubResource("RectangleShape2D_lk5bl")
+
+[node name="Path2D" type="Path2D" parent="Events/SpeedTest"]
+curve = SubResource("Curve2D_y101w")
+
 [node name="CheckPoints" type="Node2D" parent="."]
 script = ExtResource("30_l82lc")
 
@@ -1119,6 +1156,9 @@ position = Vector2(993, -1616)
 
 [node name="CheckpointArea7" parent="CheckPoints" instance=ExtResource("30_mc4or")]
 position = Vector2(2638, -3936)
+
+[node name="CheckpointArea10" parent="CheckPoints" instance=ExtResource("30_mc4or")]
+position = Vector2(2788, -4416)
 
 [node name="CheckpointArea6" parent="CheckPoints" instance=ExtResource("30_mc4or")]
 position = Vector2(2441, -2784)
@@ -1192,6 +1232,8 @@ polygon = PackedVector2Array(-171, 393, -169, 500, 110, 630, 257, 512, 162, 112,
 [node name="JarManager" type="Node2D" parent="." node_paths=PackedStringArray("gem_manager")]
 script = ExtResource("11_8kdbf")
 gem_manager = NodePath("../GemManager")
+FLYJAR = ExtResource("27_ubtw2")
+BLUEJAR = ExtResource("32_oig70")
 
 [node name="FlyJar" parent="JarManager" instance=ExtResource("27_ubtw2")]
 z_index = -2

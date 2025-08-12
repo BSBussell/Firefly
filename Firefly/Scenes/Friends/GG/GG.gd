@@ -122,6 +122,9 @@ static var global_persistence_registered: bool = false
 
 var player: Flyph
 
+# Track whether we've already granted passage to avoid duplicate unlocks
+var pass_granted: bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Set the dialogue_file property for the parent class to use one of our files
@@ -147,16 +150,20 @@ func _ready():
 	initiate_dialogue.connect(_on_dialogue_initiated)
 	finish_dialogue.connect(_on_dialogue_finished)
 
-	# Check if player already has enough jars to pass and has talked to this guardian before
-	if get_requirement_jar_count() >= required_jars and has_talked_before:
-		# If so, emit the player_can_pass signal immediately
-		print('emitting')
-		player_can_pass.emit()
+	# If player already meets requirement, allow passage immediately (no need to talk)
+	if can_player_pass_now():
+		pass_granted = true
+		# Defer to end of current frame so other nodes can connect in their _ready
+		call_deferred("emit_signal", "player_can_pass")
 		
 	await _loader.finished_loading
 	player = _globals.ACTIVE_PLAYER
 
 func _process(delta):
+	# Auto-unlock as soon as requirement is met, even without talking
+	if not pass_granted and can_player_pass_now():
+		pass_granted = true
+		player_can_pass.emit()
 	
 	# If the player is to the right of the sprite :p
 	if player.global_position.x > self.global_position.x:
@@ -222,6 +229,10 @@ func get_requirement_jar_count() -> int:
 	# This can be customized per guardian type
 	return get_all_found_jars()  # Default to total jars for requirements
 
+# Utility: whether player currently meets the requirement
+func can_player_pass_now() -> bool:
+	return get_requirement_jar_count() >= required_jars
+
 # Persistence functions
 func save_guardian_data() -> Dictionary:
 	return {
@@ -279,6 +290,7 @@ func _on_dialogue_finished() -> void:
 	
 	if current_jars >= required_jars:
 		# Player has enough jars - emit pass signal
+		pass_granted = true
 		player_can_pass.emit()
 		print("Guardian allows passage! (", current_jars, "/", required_jars, " jars)")
 	else:
@@ -462,18 +474,27 @@ func connect_to_gate(gate_node: Node, unlock_method: String = "unlock") -> void:
 	"""Connect the guardian to a gate that should unlock when player can pass"""
 	if gate_node.has_method(unlock_method):
 		player_can_pass.connect(Callable(gate_node, unlock_method))
+		# If passage already granted, unlock immediately
+		if pass_granted or can_player_pass_now():
+			gate_node.call_deferred(unlock_method)
 	else:
 		printerr("Gate node doesn't have method: " + unlock_method)
 
 func connect_to_collider(collider: CollisionShape2D) -> void:
 	"""Connect to a collider that should disable when player can pass"""
 	player_can_pass.connect(func(): collider.disabled = true)
+	# If passage already granted, disable immediately
+	if pass_granted or can_player_pass_now():
+		collider.disabled = true
 
 func connect_to_animation(animation_player: AnimationPlayer, pass_animation: String = "open") -> void:
 	"""Connect to an animation that should play when player can pass"""
 	if animation_player.has_animation(pass_animation):
 		player_can_pass.connect(func(): animation_player.play(pass_animation))
+		# If passage already granted, play immediately
+		if pass_granted or can_player_pass_now():
+			animation_player.call_deferred("play", pass_animation)
 	else:
 		printerr("Animation player doesn't have animation: " + pass_animation)
 
-	
+

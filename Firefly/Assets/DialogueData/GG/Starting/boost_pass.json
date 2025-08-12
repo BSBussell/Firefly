@@ -1,9 +1,10 @@
 {
   "identifier": "GG_Tutorial",
   "dialogue": [
-	"Huh? Oh no, sorry I haven't seen any parents coming this way I think. Though the path does fork and have many entrances and exits, so maybe they came in through another way.",
-	"It's a fun little spot, takes a small amount of ~finess~ to navigate, but you seem like the type not to flee from such a challenge",
-	"Hmm, although, when I decided to protect this spot I made some rules ok. Just for your own safety. You gotta have enough fireflies before I'll let you in Ok?"
+	"Oh cool! You've found like 20 jars! That's cool, ok I guess I was just making a big fuss over nothing.",
+	"I'll let you in, but you just have to be careful. This place really is a bit of a maze. It's a wonderful maze, but a maze nonetheless.",
+	"Be sure to stay safe, and just a little secret from me. If you ever get lost, just start making all left turns, maze theory says you'll always find your way out that way.",
+  "Oh and I think it's clear last time I was there, but watch out for [color=blue]glow worms[/color]. They can be a bit, well, hungry if you get caught in their rope. Just uh, move quickly."
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

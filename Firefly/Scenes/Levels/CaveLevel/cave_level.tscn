@@ -308,7 +308,7 @@ height = 1.0
 metadata/_edit_lock_ = true
 
 [node name="ShadowFilter" type="CanvasModulate" parent="Lighting"]
-color = Color(0.0299333, 0.0285, 0.05, 1)
+color = Color(0.0898, 0.0855, 0.15, 1)
 metadata/_edit_lock_ = true
 
 [node name="Particles" type="Node" parent="."]
@@ -1352,10 +1352,10 @@ texture = ExtResource("14_td5wl")
 
 [node name="ColorRect3" type="ColorRect" parent="Lights"]
 material = SubResource("ShaderMaterial_oyh68")
-offset_left = 2218.0
-offset_top = 420.0
-offset_right = 2804.0
-offset_bottom = 991.0
+offset_left = 2170.0
+offset_top = 447.0
+offset_right = 2756.0
+offset_bottom = 1130.0
 rotation = 1.5708
 
 [node name="PointLight2D2" type="PointLight2D" parent="Lights/ColorRect3"]
