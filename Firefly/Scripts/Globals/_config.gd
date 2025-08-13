@@ -12,7 +12,7 @@ var def_settings: Dictionary = {
 
 	
 # Gameplay
-	"auto_glow": false,
+	"auto_glow": true,
 	"show_speedometer": 0,
 	"show_timer": false,
 	"discord_timer": false,
