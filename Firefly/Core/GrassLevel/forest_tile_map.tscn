@@ -900,14 +900,11 @@ texture = SubResource("CanvasTexture_ryca0")
 4:7/0/terrains_peering_bit/bottom_left_corner = 0
 4:7/0/terrains_peering_bit/left_side = 0
 4:7/0/metadata/_better_terrain = {
-0: [1],
+0: [1, 2, 3],
 3: [0],
 4: [0],
 7: [0],
-8: [1],
-11: [4],
-12: [4],
-15: [4],
+8: [1, 2, 3],
 "type": 1
 }
 5:7/0 = 0
@@ -928,14 +925,11 @@ texture = SubResource("CanvasTexture_ryca0")
 5:7/0/terrains_peering_bit/bottom_left_corner = 0
 5:7/0/terrains_peering_bit/left_side = 0
 5:7/0/metadata/_better_terrain = {
-0: [1],
+0: [1, 2, 3],
 3: [0],
 4: [0],
 7: [0],
-8: [1],
-11: [4],
-12: [4],
-15: [4],
+8: [1, 2, 3],
 "type": 1
 }
 16:7/0 = 0
@@ -3918,5 +3912,4 @@ layer_4/modulate = Color(0.402604, 0.402604, 0.402604, 1)
 layer_4/z_index = -100
 layer_4/tile_data = PackedInt32Array()
 layer_5/name = "Hazards"
-layer_5/z_index = 1
 layer_5/tile_data = PackedInt32Array()

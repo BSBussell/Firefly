@@ -41,15 +41,22 @@ func _ready():
 		# Make it exist
 		_jar_tracker.register_jar_exists(self)
 	
-
-func _on_area_entered(_area):
+func _on_body_entered(body):
+	var player: Flyph = body as Flyph
+	if not player: return
 
 	# And prevent the player from going into the thing again
 	set_deferred("monitoring", false)
 	set_deferred("monitorable", false)
 
+	
+
 	# Call Collection Logic
 	collect()
+	
+
+
+	
 
 func collect():
 	
@@ -71,4 +78,7 @@ func collect():
 # I am going to kms	
 func _exit_tree():
 	remove_from_group("Collectible")
+
+
+
 
