@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bn0ibiwauibvx"]
+[gd_scene load_steps=20 format=3 uid="uid://bn0ibiwauibvx"]
 
 [ext_resource type="Texture2D" uid="uid://c208mmxa0olv3" path="res://Scenes/Enemies/red-slime-spritesheet.png" id="1_pxwv7"]
 [ext_resource type="Script" path="res://Scenes/Enemies/walking_enemy.gd" id="1_w3xqf"]
@@ -7,44 +7,52 @@
 [ext_resource type="AudioStream" uid="uid://r4h4rsiyb1fd" path="res://Assets/SFX/slime/wet_squish_1.mp3" id="3_mxono"]
 [ext_resource type="Curve" uid="uid://150nk1os3gx8" path="res://Scenes/Player/bounce_curve_exagerated.tres" id="3_sdrd7"]
 [ext_resource type="AudioStream" uid="uid://cuojwghlwv8wb" path="res://Assets/SFX/slime/slime_pop.mp3" id="6_auxxk"]
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="8_dreny"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ba48j"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_71dik"]
 atlas = ExtResource("1_pxwv7")
-region = Rect2(0, 16, 16, 16)
+region = Rect2(0, 0, 16, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xlt2r"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_daqtd"]
 atlas = ExtResource("1_pxwv7")
-region = Rect2(16, 16, 16, 16)
+region = Rect2(16, 0, 16, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_c7jpk"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_7eamx"]
 atlas = ExtResource("1_pxwv7")
-region = Rect2(32, 16, 16, 16)
+region = Rect2(32, 0, 16, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6kmep"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_1o7iu"]
 atlas = ExtResource("1_pxwv7")
-region = Rect2(48, 16, 16, 16)
+region = Rect2(48, 0, 16, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5n0h8"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_2k7ar"]
 atlas = ExtResource("1_pxwv7")
-region = Rect2(64, 16, 16, 16)
+region = Rect2(64, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lf7me"]
+atlas = ExtResource("1_pxwv7")
+region = Rect2(80, 0, 16, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vrbk6"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ba48j")
+"texture": SubResource("AtlasTexture_71dik")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_xlt2r")
+"texture": SubResource("AtlasTexture_daqtd")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_c7jpk")
+"texture": SubResource("AtlasTexture_7eamx")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_6kmep")
+"texture": SubResource("AtlasTexture_1o7iu")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5n0h8")
+"texture": SubResource("AtlasTexture_2k7ar")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lf7me")
 }],
 "loop": true,
 "name": &"Walking",
@@ -58,6 +66,16 @@ height = 10.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lpitg"]
 size = Vector2(13, 9)
 
+[sub_resource type="Curve" id="Curve_y0nj0"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 1), 1.4, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_icyqj"]
+offsets = PackedFloat32Array(0.9, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+
 [node name="WalkingEnemy" type="CharacterBody2D"]
 collision_layer = 0
 collision_mask = 18
@@ -69,11 +87,11 @@ base_rebound_speed = 2.0
 bounce_curve = ExtResource("3_sdrd7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SquishNode"]
-position = Vector2(0, -8)
+position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_vrbk6")
 animation = &"Walking"
 autoplay = "Walking"
-frame_progress = 0.279129
+frame_progress = 0.85261
 speed_scale = 0.9
 
 [node name="Raycasts" type="Node2D" parent="."]
@@ -81,7 +99,7 @@ speed_scale = 0.9
 [node name="FrontRayCast" type="RayCast2D" parent="Raycasts"]
 position = Vector2(0, -5)
 target_position = Vector2(14, 0)
-collision_mask = 18
+collision_mask = 2
 collide_with_areas = true
 
 [node name="BelowRayCast" type="RayCast2D" parent="Raycasts"]
@@ -135,6 +153,23 @@ bus = &"SFX"
 
 [node name="BounceCoolDown" type="Timer" parent="."]
 wait_time = 5.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 10
+randomness = 1.0
+texture = ExtResource("8_dreny")
+emission_shape = 3
+emission_rect_extents = Vector2(4, 1)
+gravity = Vector2(2.08165e-12, -2)
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.5
+scale_amount_max = 0.5
+scale_amount_curve = SubResource("Curve_y0nj0")
+color = Color(1, 0, 0.301961, 1)
+color_ramp = SubResource("Gradient_icyqj")
 
 [connection signal="body_entered" from="Bouncy" to="Bouncy" method="_on_body_entered"]
 [connection signal="bounce" from="Bouncy" to="." method="_on_bouncy_bounce"]

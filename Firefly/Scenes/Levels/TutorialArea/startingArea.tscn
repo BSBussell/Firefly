@@ -39,10 +39,10 @@
 [ext_resource type="PackedScene" uid="uid://b5syfsbo715ra" path="res://Scenes/Collectibles/BlueJar.tscn" id="29_w86io"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="30_6rq7y"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="31_dhak4"]
-[ext_resource type="PackedScene" uid="uid://d2r3fdnd3npfh" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="31_h1x83"]
+[ext_resource type="PackedScene" uid="uid://d25ajjcfdx6ln" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="31_h1x83"]
 [ext_resource type="Script" path="res://Scripts/misc/JarManager.gd" id="32_5drsd"]
 [ext_resource type="Texture2D" uid="uid://co0mh2m065aja" path="res://Assets/Graphics/TileMaps/Forest_Tile_Set_Extended/Forest_Sign.png" id="32_tw5yo"]
-[ext_resource type="PackedScene" uid="uid://b8ydkhfwxisrf" path="res://Scenes/Stuff/SpeedTest/SpeedTest.tscn" id="36_hgqhr"]
+[ext_resource type="PackedScene" uid="uid://cecmdbw75boyg" path="res://Scenes/Stuff/SpeedTest/SpeedTest.tscn" id="36_hgqhr"]
 [ext_resource type="Script" path="res://Scripts/Level/ChangeLevel.gd" id="39_kgaof"]
 [ext_resource type="PackedScene" uid="uid://cqmn1d67osiw6" path="res://Core/spawn_point.tscn" id="43_6a8cf"]
 

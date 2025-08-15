@@ -1,0 +1,216 @@
+[gd_scene load_steps=23 format=3 uid="uid://cxa2jxewxd2w6"]
+
+[ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/DialogAreaA.gd" id="1_s2prs"]
+[ext_resource type="Texture2D" uid="uid://b5q0yne7t1218" path="res://Assets/Graphics/Characters/Fox/Red Panda Sprite Sheet.png" id="2_defq1"]
+[ext_resource type="Texture2D" uid="uid://duferf2i8exuw" path="res://Assets/Graphics/UI/target.png" id="3_1xf5f"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_mhpre"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3lc7y"]
+atlas = ExtResource("2_defq1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xd0xn"]
+atlas = ExtResource("2_defq1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jdt5v"]
+atlas = ExtResource("2_defq1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ab1jo"]
+atlas = ExtResource("2_defq1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a2bwu"]
+atlas = ExtResource("2_defq1")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p23bs"]
+atlas = ExtResource("2_defq1")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fw8oe"]
+atlas = ExtResource("2_defq1")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2jrg4"]
+atlas = ExtResource("2_defq1")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_et84y"]
+atlas = ExtResource("2_defq1")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_umguf"]
+atlas = ExtResource("2_defq1")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tcuce"]
+atlas = ExtResource("2_defq1")
+region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whvua"]
+atlas = ExtResource("2_defq1")
+region = Rect2(160, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xvbe3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3lc7y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xd0xn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jdt5v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ab1jo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a2bwu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p23bs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fw8oe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2jrg4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_et84y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_umguf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tcuce")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_whvua")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_eaf3s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteCenter/Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpriteCenter/Sprite2D:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 0.75)]
+}
+
+[sub_resource type="Animation" id="Animation_113au"]
+resource_name = "hide"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteCenter/Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1e-05, 0.75)]
+}
+
+[sub_resource type="Animation" id="Animation_1e7o7"]
+resource_name = "hover"
+length = 1.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteCenter/Sprite2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.75, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(2.08165e-12, -5), Vector2(2.08165e-12, 2.08165e-12)]
+}
+
+[sub_resource type="Animation" id="Animation_00fhf"]
+resource_name = "reveal"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteCenter/Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(2.08165e-12, 0.75), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3xf0a"]
+_data = {
+"RESET": SubResource("Animation_eaf3s"),
+"hide": SubResource("Animation_113au"),
+"hover": SubResource("Animation_1e7o7"),
+"reveal": SubResource("Animation_00fhf")
+}
+
+[node name="SillyFox" type="Area2D" node_paths=PackedStringArray("talk_target")]
+collision_layer = 0
+script = ExtResource("1_s2prs")
+talk_target = NodePath("Marker2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_xvbe3")
+autoplay = "default"
+frame_progress = 0.350674
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(3, -19)
+
+[node name="SpriteCenter" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="SpriteCenter"]
+texture_filter = 1
+scale = Vector2(1e-05, 0.75)
+texture = ExtResource("3_1xf5f")
+
+[node name="hover" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3xf0a")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.5
+texture = ExtResource("4_mhpre")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

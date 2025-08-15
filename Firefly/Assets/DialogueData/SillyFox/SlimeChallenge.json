@@ -1,0 +1,18 @@
+{
+  "identifier": "GG_Tutorial",
+  "dialogue": [
+    "Hello! Im Raps. What's your deal?",
+    "Oh, I see, so you're wings are damaged, and you can't find your parents.",
+    "Sorry I wish I could say I'd seen your parents come this way.",
+    "They might've even walked past me and I wouldn't have noticed.",
+	"I was too busy starting at this sLiMe pIt right in front of us.",
+    "Aren't they mesmerizing? Ok wait I got a really fun idea. hehe."
+	"Ok so, I'll give you something nice if you try to cross it.",
+    "but to make sure it isn't something easy, you gotta cross it, WITHOUT Touching the ground.",
+	"Yea, you'll be stepping in [color=red]slimes[/color]. hehe. I bet you'll bounce right off them",
+    "Try pressing down in mid-air in order to land faster on them and launcher higher.",
+    "It might help you out a little."
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

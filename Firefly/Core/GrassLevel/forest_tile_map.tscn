@@ -501,6 +501,11 @@ texture = SubResource("CanvasTexture_ryca0")
 8:3/0/physics_layer_1/angular_velocity = 0.0
 8:3/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 8:3/0/physics_layer_2/angular_velocity = 0.0
+8:3/0/metadata/_better_terrain = {
+4: [14],
+"symmetry": 3,
+"type": 14
+}
 14:3/0 = 0
 14:3/0/terrain_set = 0
 14:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
@@ -568,6 +573,12 @@ texture = SubResource("CanvasTexture_ryca0")
 8:4/0/physics_layer_1/angular_velocity = 0.0
 8:4/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 8:4/0/physics_layer_2/angular_velocity = 0.0
+8:4/0/metadata/_better_terrain = {
+4: [14],
+12: [14],
+"symmetry": 3,
+"type": 14
+}
 10:4/0 = 0
 10:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 10:4/0/physics_layer_0/angular_velocity = 0.0
@@ -638,6 +649,12 @@ texture = SubResource("CanvasTexture_ryca0")
 8:5/0/physics_layer_1/angular_velocity = 0.0
 8:5/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 8:5/0/physics_layer_2/angular_velocity = 0.0
+8:5/0/metadata/_better_terrain = {
+4: [14],
+12: [14],
+"symmetry": 3,
+"type": 14
+}
 13:5/0 = 0
 13:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 13:5/0/physics_layer_0/angular_velocity = 0.0
@@ -700,6 +717,11 @@ texture = SubResource("CanvasTexture_ryca0")
 8:6/0/physics_layer_1/angular_velocity = 0.0
 8:6/0/physics_layer_2/linear_velocity = Vector2(0, 0)
 8:6/0/physics_layer_2/angular_velocity = 0.0
+8:6/0/metadata/_better_terrain = {
+12: [14],
+"symmetry": 3,
+"type": 14
+}
 11:6/0 = 0
 11:6/0/terrain_set = 0
 11:6/0/terrain = 1
@@ -3889,6 +3911,8 @@ metadata/_better_terrain = {
 }], ["BKG_Slant", Color(0.141176, 0.662745, 0.509804, 1), 0, [11], {
 "coord": Vector2i(9, 1),
 "source_id": 3
+}], ["Branches", Color(0.730779, 0.631535, 0.481906, 1), 0, [], {
+"path": ""
 }]],
 "version": "0.2"
 }

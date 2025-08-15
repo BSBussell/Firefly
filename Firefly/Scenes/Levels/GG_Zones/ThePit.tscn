@@ -24,7 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="22_dnwc7"]
 [ext_resource type="Script" path="res://Scenes/Levels/GG_Zones/MusicSwapper.gd" id="25_3f874"]
 [ext_resource type="AudioStream" uid="uid://vvus5cbbrlee" path="res://Assets/Music/SmallZone/TwinklingTrees_NoTwinkle.wav" id="26_7yfoh"]
-[ext_resource type="PackedScene" uid="uid://d2r3fdnd3npfh" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="33_wq4ix"]
+[ext_resource type="PackedScene" uid="uid://d25ajjcfdx6ln" path="res://Scenes/UI_Elements/Dialog/DialogueArea.tscn" id="33_wq4ix"]
 [ext_resource type="Texture2D" uid="uid://co0mh2m065aja" path="res://Assets/Graphics/TileMaps/Forest_Tile_Set_Extended/Forest_Sign.png" id="34_tb504"]
 [ext_resource type="PackedScene" uid="uid://clggkoi3d6mub" path="res://Scenes/Checkpoint/checkpointManager.tscn" id="35_2y1ai"]
 [ext_resource type="Script" path="res://Scripts/Gems/GemsManager.gd" id="36_teeqm"]
