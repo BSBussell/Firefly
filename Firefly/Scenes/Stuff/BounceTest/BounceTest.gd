@@ -7,9 +7,8 @@ class_name BounceTest
 @export var challenge_id: String = "bounce_test_1"
 @export var camera_focus_duration: float = 3.0
 @export var reward_spawn: Marker2D
-@export var ground_touch_grace: float = 0.02
 @export var require_min_air_time: float = 0.0
-@export var bidirectional: bool = true
+# Bidirectional + state-machine ground check are now always TRUE (legacy options removed)
 
 # Primary signals
 signal cleared_challenge(challenge_id: String)                # legacy success signal
@@ -26,9 +25,14 @@ var state: BounceTest.State = BounceTest.State.IDLE
 
 var _armed_player_id: int = -1
 var _airborne_time: float = 0.0
-var _ground_touch_accum: float = 0.0
 var _start_gate: Area2D = null
 var _finish_gate: Area2D = null
+
+var _ground_states: Array = []   # cached ground-like states (Grounded, Sliding)
+
+var _prev_player_state: PlayerState = null
+var _prev_aerial_flag: bool = false
+var _frames_since_airborne: int = 0
 
 # --------------------------------------------------
 # Lifecycle
@@ -38,8 +42,9 @@ func _ready():
 		gate_1.body_entered.connect(_on_gate_1_entered)
 	if gate_2 and not gate_2.body_entered.is_connected(_on_gate_2_entered):
 		gate_2.body_entered.connect(_on_gate_2_entered)
-	if not bidirectional and gate_2:
-		gate_2.monitoring = false
+	# Always bidirectional: ensure both monitor
+	if gate_1: gate_1.monitoring = true
+	if gate_2: gate_2.monitoring = true
 	register_persistence()
 	load_completion_status()
 	set_physics_process(false)
@@ -48,18 +53,42 @@ func _physics_process(delta: float) -> void:
 	if not is_instance_valid(player):
 		_fail("lost player reference")
 		return
+	var cur: PlayerState = player.StateMachine.current_state if player.StateMachine else null
 	match state:
 		BounceTest.State.WAIT_AIR:
-			if not player.is_on_floor():
+			if cur and not _is_ground_state(cur):
 				_transition_to_airborne()
+				_frames_since_airborne = 0
 		BounceTest.State.AIRBORNE:
-			if player.is_on_floor():
-				_ground_touch_accum += delta
-				if _ground_touch_accum > ground_touch_grace:
-					_fail("touched ground beyond grace (%.3f > %.3f)" % [_ground_touch_accum, ground_touch_grace])
+			_frames_since_airborne += 1
+			if _did_true_land(cur):
+				_fail("true landing (%s)" % _state_name(cur))
 			else:
-				_ground_touch_accum = 0.0
 				_airborne_time += delta
+	# Update previous trackers after logic
+	_prev_player_state = cur
+	_prev_aerial_flag = player.aerial
+
+func _did_true_land(cur: PlayerState) -> bool:
+	if state != BounceTest.State.AIRBORNE:
+		return false
+	if cur == null:
+		return false
+	if not _is_ground_state(cur):
+		return false
+	# Must have been in a non-ground state previous frame
+	if _prev_player_state and _is_ground_state(_prev_player_state):
+		return false
+	# Require at least 1 frame of airborne to avoid arming-on-ground immediate fail
+	if _frames_since_airborne <= 0:
+		return false
+	# Use previous aerial flag (set by Aerial.enter) to ensure we actually left ground at some point
+	if not _prev_aerial_flag:
+		return false
+	# Consider a landing only when vertical velocity is downward or near zero
+	if player.velocity.y < -10.0:
+		return false
+	return true
 
 # --------------------------------------------------
 # Gate + Player Detection
@@ -92,24 +121,27 @@ func _gate_entered(body: Node, gate: Area2D) -> void:
 # Arming + Transitions
 # --------------------------------------------------
 func _arm_run(start_gate: Area2D) -> void:
-	if not bidirectional and start_gate != gate_1:
-		return
 	_start_gate = start_gate
 	_finish_gate = (gate_2 if start_gate == gate_1 else gate_1)
 	_armed_player_id = player.get_instance_id()
-	state = BounceTest.State.WAIT_AIR if player.is_on_floor() else BounceTest.State.AIRBORNE
+	# Cache ground states (do once when arming)
+	_ground_states.clear()
+	if player.GROUNDED_STATE: _ground_states.append(player.GROUNDED_STATE)
+	if player.SLIDING_STATE: _ground_states.append(player.SLIDING_STATE)
+	var cur: PlayerState = player.StateMachine.current_state if player.StateMachine else null
+	var airborne_now: bool = cur and not _is_ground_state(cur)
+	state = BounceTest.State.AIRBORNE if airborne_now else BounceTest.State.WAIT_AIR
 	_airborne_time = 0.0
-	_ground_touch_accum = 0.0
+	_frames_since_airborne = 0
 	if _finish_gate and not _finish_gate.monitoring:
 		_finish_gate.monitoring = true
 	set_physics_process(true)
 	_emit_started()
-	_logger.info("BounceTest %s: Armed start=%s finish=%s state=%s on_floor=%s" % [challenge_id, _gate_name(_start_gate), _gate_name(_finish_gate), str(state), str(player.is_on_floor())])
+	_logger.info("BounceTest %s: Armed start=%s finish=%s state=%s" % [challenge_id, _gate_name(_start_gate), _gate_name(_finish_gate), str(state)])
 
 func _transition_to_airborne() -> void:
 	state = BounceTest.State.AIRBORNE
 	_airborne_time = 0.0
-	_ground_touch_accum = 0.0
 	_logger.info("BounceTest %s: Transition -> AIRBORNE" % challenge_id)
 
 # --------------------------------------------------
@@ -154,15 +186,10 @@ func _reset() -> void:
 	set_physics_process(false)
 	_armed_player_id = -1
 	_airborne_time = 0.0
-	_ground_touch_accum = 0.0
 	_start_gate = null
 	_finish_gate = null
-	if bidirectional:
-		if gate_1: gate_1.monitoring = true
-		if gate_2: gate_2.monitoring = true
-	else:
-		if gate_1: gate_1.monitoring = true
-		if gate_2: gate_2.monitoring = false
+	if gate_1: gate_1.monitoring = true
+	if gate_2: gate_2.monitoring = true
 	_emit_reset()
 
 func _disable_triggers() -> void:
@@ -273,4 +300,18 @@ func _gate_name(g: Area2D) -> String:
 	if g == gate_2:
 		return "Gate2"
 	return g.name
+
+func _is_ground_state(st: PlayerState) -> bool:
+	if st == null:
+		return false
+	return st in _ground_states
+
+func _state_name(st: PlayerState) -> String:
+	if st == null:
+		return "<null>"
+	if st == player.GROUNDED_STATE:
+		return "Grounded"
+	if st == player.SLIDING_STATE:
+		return "Sliding"
+	return st.get_class()
 

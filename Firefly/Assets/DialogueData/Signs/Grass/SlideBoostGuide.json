@@ -1,0 +1,25 @@
+{
+  "identifier": "SlideBoostEZ",
+  "dialogue": [
+    "[color=red]Violets's Tips #2[/color] If you're having trouble with slide boosting, I have a handful of checks that might help you out.",
+
+    "First make sure you're holding the direction you want to launch when you jump. Yes, you have to do this while holding down.",
+
+    "This might be really hard on controllers, but pro-tip, you can actually bind a different button to down.",
+    
+    "You can do this through the settings menu by pausing! I heard there's a Bee out there who prefers [color=yellow]right trigger.[/color]",
+
+    "So you [color=yellow]hold the direction[/color] you want to go, hold your [color=yellow]slide button[/color], and then [color=yellow]jump![/color]",
+    
+    "That's only what 3 buttons total! It might be a lil tough but I bet you can get the rhythm down!",
+    
+    "And here's what they really don't want you to know. You can even slide when on flat ground!",
+    
+    "The only requirement, is that you're moving fast enough to be sliding. It just happens hills help you move that fast.",
+    
+    "Slide boosting on flat ground can help you find silly shortcuts, clearly not intended by those who laid the trail. So I highly endorse mastering the trick."
+    
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

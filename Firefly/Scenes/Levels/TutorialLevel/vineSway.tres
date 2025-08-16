@@ -12,7 +12,7 @@ noise = SubResource("FastNoiseLite_jfi36")
 [resource]
 shader = ExtResource("1_lceut")
 shader_parameter/render_noise = false
-shader_parameter/amplitude = 0.2
+shader_parameter/amplitude = 0.1
 shader_parameter/time_scale = 0.02
 shader_parameter/noise_scale = 0.001
 shader_parameter/rotation_strength = 0.2

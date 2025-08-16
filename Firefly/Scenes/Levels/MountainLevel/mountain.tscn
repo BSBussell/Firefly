@@ -1725,6 +1725,7 @@ curve = SubResource("Curve2D_mlp3s")
 [node name="Gg" parent="Friends" node_paths=PackedStringArray("level") instance=ExtResource("50_gw03a")]
 position = Vector2(2607, -2785)
 required_jars = 50
+show_level_jars_only = false
 level = NodePath("../..")
 
 [connection signal="body_entered" from="Events/TheBigOne" to="Events/TheBigOne" method="_on_body_entered"]

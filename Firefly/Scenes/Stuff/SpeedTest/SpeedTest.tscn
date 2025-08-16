@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cecmdbw75boyg"]
 
 [ext_resource type="Script" path="res://Scenes/Stuff/SpeedTest/SpeedGate.gd" id="1_820f2"]
-[ext_resource type="PackedScene" path="res://Scenes/Stuff/SpeedTest/SpeedFly.tscn" id="2_adb12"]
+[ext_resource type="PackedScene" uid="uid://c6ogwy1t0aqhb" path="res://Scenes/Stuff/SpeedTest/SpeedFly.tscn" id="2_adb12"]
 
 [node name="SpeedTest" type="Node2D"]
 script = ExtResource("1_820f2")

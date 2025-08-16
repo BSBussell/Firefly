@@ -1,11 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://rlrtgfd0qf8k"]
+[gd_scene load_steps=16 format=3 uid="uid://cjk060vuy84on"]
 
-[ext_resource type="Texture2D" uid="uid://dhugo8f08au0y" path="res://Assets/Graphics/Collectible/FlyJar.png" id="1_m3sud"]
-[ext_resource type="Script" path="res://Scripts/Collectibles/FlyJar.gd" id="1_thq2o"]
-[ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="2_u78lh"]
-[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="3_58wft"]
-[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_sikls"]
-[ext_resource type="AudioStream" uid="uid://n1jp21srkgrf" path="res://Scenes/glass_hit_2.mp3" id="4_6sys7"]
+[ext_resource type="Script" path="res://Scripts/Collectibles/FlyJar.gd" id="1_a3g2p"]
+[ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="2_f7dw3"]
+[ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="3_nphje"]
+[ext_resource type="AudioStream" uid="uid://n1jp21srkgrf" path="res://Scenes/glass_hit_2.mp3" id="4_mfqb6"]
+[ext_resource type="Texture2D" uid="uid://batkympulbkyb" path="res://Scenes/Collectibles/sunsphere.png" id="5_is585"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="6_lms4f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5d1v6"]
 
@@ -121,10 +121,11 @@ interpolation_mode = 2
 offsets = PackedFloat32Array(0.336066, 0.8, 1)
 colors = PackedColorArray(1, 1, 0, 1, 1, 1, 1, 0.670588, 1, 1, 1, 0)
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_buqjn"]
-diffuse_texture = ExtResource("1_m3sud")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5aegp"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_v5ec4"]
+diffuse_texture = ExtResource("5_is585")
 specular_color = Color(0.890196, 0.921569, 0.34902, 1)
-specular_shininess = 0.9
 
 [sub_resource type="Animation" id="Animation_1h70t"]
 resource_name = "Grab"
@@ -201,10 +202,22 @@ tracks/0/path = NodePath("Sprite2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.8, 1.5),
+"times": PackedFloat32Array(0, 0.75, 1.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, 5), Vector2(0, 0)]
+"values": [Vector2(0, 0), Vector2(2.08165e-12, 2), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PointLight2D:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.8),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_df1wb"]
@@ -216,7 +229,8 @@ _data = {
 [node name="FlyJar" type="Area2D" groups=["Collectible", "FlyJar"]]
 collision_layer = 68
 collision_mask = 17
-script = ExtResource("1_thq2o")
+script = ExtResource("1_a3g2p")
+blue = true
 blend_priority = 0
 blend_override = 0.15
 
@@ -241,7 +255,7 @@ one_shot = true
 speed_scale = 3.0
 explosiveness = 0.5
 randomness = 0.6
-texture = ExtResource("2_u78lh")
+texture = ExtResource("2_f7dw3")
 emission_shape = 3
 emission_rect_extents = Vector2(5, 5)
 direction = Vector2(0, -1)
@@ -265,7 +279,7 @@ one_shot = true
 speed_scale = 3.0
 explosiveness = 0.5
 randomness = 0.6
-texture = ExtResource("2_u78lh")
+texture = ExtResource("2_f7dw3")
 emission_shape = 3
 emission_rect_extents = Vector2(5, 5)
 spread = 0.0
@@ -288,7 +302,7 @@ one_shot = true
 speed_scale = 3.0
 explosiveness = 0.5
 randomness = 0.6
-texture = ExtResource("2_u78lh")
+texture = ExtResource("2_f7dw3")
 emission_shape = 3
 emission_rect_extents = Vector2(5, 5)
 direction = Vector2(0, 1)
@@ -313,7 +327,7 @@ one_shot = true
 speed_scale = 3.0
 explosiveness = 0.5
 randomness = 0.6
-texture = ExtResource("2_u78lh")
+texture = ExtResource("2_f7dw3")
 emission_shape = 3
 emission_rect_extents = Vector2(5, 5)
 direction = Vector2(-1, 0)
@@ -341,7 +355,7 @@ speed_scale = 2.0
 explosiveness = 0.5
 randomness = 0.6
 lifetime_randomness = 0.25
-texture = ExtResource("3_58wft")
+texture = ExtResource("3_nphje")
 emission_shape = 3
 emission_rect_extents = Vector2(8, 5)
 direction = Vector2(0, -1)
@@ -363,7 +377,7 @@ speed_scale = 2.0
 explosiveness = 0.5
 randomness = 0.6
 lifetime_randomness = 0.25
-texture = ExtResource("3_58wft")
+texture = ExtResource("3_nphje")
 emission_shape = 3
 emission_rect_extents = Vector2(8, 5)
 direction = Vector2(0, 1)
@@ -377,7 +391,7 @@ scale_amount_min = 0.2
 scale_amount_max = 0.4
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Explosion"]
-stream = ExtResource("4_6sys7")
+stream = ExtResource("4_mfqb6")
 volume_db = -5.0
 pitch_scale = 1.6
 bus = &"SFX"
@@ -406,14 +420,21 @@ color = Color(0.890196, 0.921569, 0, 1)
 color_ramp = SubResource("Gradient_a3cyy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, 3.23576)
-texture = SubResource("CanvasTexture_buqjn")
+material = SubResource("ShaderMaterial_5aegp")
+position = Vector2(1.28073e-12, 1.2305)
+texture = SubResource("CanvasTexture_v5ec4")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, 1)
 scale = Vector2(0.5, 0.5)
-color = Color(0.890196, 0.921569, 0.34902, 1)
-texture = ExtResource("3_sikls")
-height = 25.0
+texture = ExtResource("6_lms4f")
+texture_scale = 0.32
+height = 12.0
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_lms4f")
+texture_scale = 1.38
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -91,7 +91,7 @@ position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_vrbk6")
 animation = &"Walking"
 autoplay = "Walking"
-frame_progress = 0.85261
+frame_progress = 0.243441
 speed_scale = 0.9
 
 [node name="Raycasts" type="Node2D" parent="."]
