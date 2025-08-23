@@ -103,6 +103,7 @@ signal dead()
 
 @onready var standing_collider_pos = standing_collider.position
 @onready var standing_collider_shape = standing_collider.shape.size
+@onready var hazard_detector = $Physics/HazardDetector
 
 
 # Visual Nodes
@@ -475,6 +476,7 @@ func _physics_process(delta: float) -> void:
 	_logger.info("Flyph - Physics Process Started")
 	set_input_axis(delta)
 	update_buffer_timer(delta)
+	update_fastfall_prevention(delta)
 
 	# Stop the players 'world' on death :3
 	if not dying:
@@ -782,8 +784,8 @@ func auto_enter_tunnel():
 
 
 
-	var left_open: bool = not crouch_left.is_colliding() and not bottom_left.is_colliding()
-	var right_open: bool = not crouch_right.is_colliding() and not bottom_right.is_colliding()
+	var left_open: bool = crouch_left.is_colliding()
+	var right_open: bool = crouch_right.is_colliding()
 
 	var wall_on_left: bool = get_wall_normal().x > 0
 	var wall_on_right: bool = get_wall_normal().x < 0
@@ -1030,11 +1032,49 @@ func give_boost(boost_speed: float) -> void:
 var temp_gravity_active: bool = false
 var temp_gravtity: float = 0.0
 
+# Fast fall prevention system
+var fastfall_disabled: bool = false
+var fastfall_disable_timer: float = 0.0
+var fastfall_buffered: bool = false
+
 # Set a temporary gravity for launches/whatever else wants them
 func set_temp_gravity(grav: float):
 
 	temp_gravity_active = true
 	temp_gravtity = grav
+
+## Prevents fast falling for the specified duration
+## If the player presses down during this time, it buffers the fast fall
+func prevent_fastfall(duration: float) -> void:
+	fastfall_disabled = true
+	fastfall_disable_timer = duration
+	fastfall_buffered = false
+
+## Updates the fast fall prevention system
+func update_fastfall_prevention(delta: float) -> void:
+	if fastfall_disabled:
+		fastfall_disable_timer -= delta
+		
+		# Check if prevention period has ended
+		if fastfall_disable_timer <= 0.0:
+			fastfall_disabled = false
+			
+			# If fast fall was buffered during prevention, activate it now
+			if fastfall_buffered:
+				fastfall_buffered = false
+				fastFalling = true
+				if has_method("get_node"):
+					var anim_node = get_node_or_null("Visual/AnimatedSprite2D")
+					if anim_node:
+						anim_node.speed_scale = 2.0
+
+## Checks if fast fall input should be processed or buffered
+func should_process_fastfall_input() -> bool:
+	if fastfall_disabled:
+		# Buffer the fast fall input instead of processing it
+		fastfall_buffered = true
+		return false
+	return true
 
 ## Launches the player with the given velocity, and a specified gravity
 func launch(launch_velocity: Vector2, gravity: float = -1, squash: Vector2 = Vector2.ZERO):
@@ -1114,7 +1154,7 @@ func kill():
 	if StateMachine.current_state == WORMED_STATE or StateMachine.current_state == GLIDING_STATE:
 		StateMachine.change_state(AERIAL_STATE)
 
-	$Physics/HazardDetector.set_collision_mask_value(5, false)
+	hazard_detector.set_collision_mask_value(5, false)
 
 	# Restart and disable the glow mechanic
 	glow_manager.reset_glow()
@@ -1126,7 +1166,7 @@ func kill():
 	# Move the player / camera to the starting position
 	global_position = starting_position
 
-	$Physics/HazardDetector.set_collision_mask_value(5, true)
+	hazard_detector.set_collision_mask_value(5, true)
 
 	# Zero out the velocity
 	velocity = Vector2.ZERO

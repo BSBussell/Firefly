@@ -31,7 +31,7 @@ func connect_to_func(init_sig: Signal, end_sig: Signal):
 
 # Only enabled while the textbox is visible
 func _process(_delta):
-	if text_box.visible and Input.is_action_just_pressed("interact"):
+	if text_box.visible and (Input.is_action_just_pressed("interact") or Input.is_action_just_pressed("Jump")):
 		
 		current_loc += 1
 		if current_loc >= current_dialogue_arr.size():
@@ -51,6 +51,9 @@ func initiate_dialogue(text: Dictionary, repeat: bool) -> void:
 	current_dialogue_arr = text["dialogue"]
 	current_loc = 0
 	
+	if _config.get_setting("pause_on_interact"):
+		get_tree().paused = true
+	
 	# Set the dialogue text, for smoother visuals replace with animation
 	set_text(current_dialogue_arr[current_loc])
 	
@@ -60,6 +63,7 @@ func initiate_dialogue(text: Dictionary, repeat: bool) -> void:
 	await animation_player.animation_finished
 	animation_player.play("show_text")
 	await animation_player.animation_finished
+	
 	
 	# Enable Process Loop to look for button Presses
 	set_process(true)
@@ -74,6 +78,10 @@ func next_dialogue():
 	
 	await animation_player.animation_finished
 	
+	
+	if current_loc >= current_dialogue_arr.size():
+		return
+		
 	# Set the dialogue text, for smoother visuals replace with animation
 	set_text(current_dialogue_arr[current_loc])
 	
@@ -94,6 +102,8 @@ func finish_dialogue() -> void:
 		return
 		
 	dialogue_up = false
+	
+	get_tree().paused = false
 	
 	# For smoother visuals replace with animation
 	hoverAnim.stop()

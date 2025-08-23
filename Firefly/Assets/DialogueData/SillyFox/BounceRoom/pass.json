@@ -1,0 +1,10 @@
+{
+  "identifier": "SlimeChallenge",
+  "dialogue": [
+    "Well, look at you! Didn't think you'd actually make it.",
+    "Guess I owe you something nice after all.",
+    "Try not to get too cocky, alright?"
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

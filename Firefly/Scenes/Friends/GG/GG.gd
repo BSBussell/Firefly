@@ -44,17 +44,17 @@ extends DialogueArea2D
 
 ## Progress comments to specify our jar count
 @export var progress_comments: Array[String] = [
-	"Hmm, so you've saved {jar_count} fireflies! That's pretty awesome.",
-	"Ok so you found {jar_count} lightning bugs. That's ok.",
+	"Hmm, so you've saved {jar_count} fireflies!",
+	"Ok so you found {jar_count} lightning bugs.",
 	"Hmmm, it seems you're {remaining_jars} short.",
-	"Ok, you say you've found {jar_count} so far. I think that should be cool"
+	"Ok, you say you've found {jar_count} so far."
 ]
 
 @export var requirement_comments: Array[String] = [
 	"You just need to find {required_jars} in order for me to trust you to be safe in this area.",
-	"If you wanna see what's behind me, you gotta save {required_jars} fireflies first.",
-	"To prove you can handle it show me you've free'd {required_jars} fireflies. That should do the trick",
-	"But, with whats behind me, I need to see that you are able to collect {required_jars} fireflies before I feel responsible letting you through."
+	"If you wanna see what's behind me, you gotta save {required_jars} first.",
+	"To prove you can handle it show me you've free'd {required_jars}. That should be enough",
+	"With whats behind me, I need to see you collect {required_jars} before I feel responsible letting you through."
 ]
 
 @export var pass_on_talk: Array[String] = [
@@ -66,18 +66,18 @@ extends DialogueArea2D
 
 ## Comments for when the player has talked to other guardians || Leave empty to omit
 @export var other_guardian_comments: Array[String] = [
-	"Wait, you said you met someone else with a cool spot? That's... actually kinda cool. I think I would like to meet them. But, I gotta keep my spot safe, you know?",
-	"Oh yea, the others. Did they say anything about me? What are their spots like? I bet they got some neat nooks. Can you tell me about them?",
-	"Another guy with a spot asking you to free fireflies? Thats... kinda odd.",
+	"Wait, you said you met someone else named GG? That's... actually kinda cool. I think I would like to meet them. But, I gotta keep my spot safe, you know?",
+	"Oh yea, the other GG. Did they say anything about me? What are their spots like? I bet they got some neat nooks. Can you tell me about them?",
+	"Another GG with a spot asking you to free fireflies? Thats... kinda odd.",
 	"You found another like me? That makes sense, there are a lot of cool spots out there, so it makes sense that some one else would want to protect one."
 ]
 
 ## Meta comments when player has met multiple guardians || Leave empty to omit
 @export var multiple_guardian_comments: Array[String] = [
-	"Wait, you said MULTIPLE others?! That's... wow. We're like... a whole thing?",
-	"Whoa, you've met a whole bunch of us? This can't be a coincidence, right? What is going on.",
-	"Hold up, you found a LOT of protectors? Am I just a puppet of some greater design?",
-	"Multiple guardians? Woof, if I was in a different mood that might induce some existential crisis."
+	"Wait, you said MULTIPLE GGs?! That's... wow. We're like... a whole thing?",
+	"Whoa, you've met a whole bunch of GG's? This can't be a coincidence, right? What is going on.",
+	"Hold up, you found a LOT of GGs? Am I just a puppet of some greater design?",
+	"You're telling me there's a lot of GG's? Woof, if I was in a different mood that might induce some existential crisis."
 ]
 
 ## Closing messages for when the player can pass.
@@ -96,7 +96,7 @@ extends DialogueArea2D
 ]
 
 #GG stands for many things.
-# Just for the record I hope you dont assume the classname is GG's name
+# Just to be clear the classname isn't GG's name full name
 # See, the classname is more about the script function and
 # Results than about what GG stands for. 
 # For the record, theres a silly form of clue in this comment block

@@ -25,6 +25,7 @@ func spring_up_fx() -> void:
 	# collider.disabled = true
 	squish_node.squish(Vector2(1.5,0.5))
 	boing_.play(0)
+	
 	pass
 
 func spring_down_fx() -> void:
@@ -32,6 +33,10 @@ func spring_down_fx() -> void:
 
 	
 	print("SPring Down Fx?")
+	flyph.hazard_detector.set_collision_mask_value(5, false)
+	await get_tree().create_timer(0.125).timeout
+	flyph.hazard_detector.set_collision_mask_value(5, true)
+	
 	pass
 
 

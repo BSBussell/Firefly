@@ -667,21 +667,28 @@ speed_scale = 1.75
 
 [node name="Focused" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("3_de0nn")
+volume_db = -10.0
 bus = &"SFX"
 
 [node name="Opened" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("4_33dsm")
+volume_db = -10.0
 bus = &"SFX"
 
 [node name="Start" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("5_cbc1n")
+volume_db = -10.0
 bus = &"SFX"
 
 [node name="ButtonFocused" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("5_cbc1n")
+volume_db = -10.0
+bus = &"SFX"
 
 [node name="ButtonPressed" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("6_daaar")
+volume_db = -10.0
+bus = &"SFX"
 
 [connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

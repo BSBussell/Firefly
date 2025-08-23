@@ -2,30 +2,36 @@
 
 [ext_resource type="Texture2D" uid="uid://bdrta3oncmj8f" path="res://Assets/Graphics/Meter/back.png" id="1_s86km"]
 [ext_resource type="Texture2D" uid="uid://bk0bytm2irea5" path="res://Assets/Graphics/Meter/front_vines.png" id="2_eg2ve"]
+[ext_resource type="Shader" path="res://Scenes/Levels/TutorialArea/pixel_GodLight.gdshader" id="2_oti7r"]
 [ext_resource type="Texture2D" uid="uid://cunj6ke3xbe7r" path="res://Assets/Graphics/Meter/filling.png" id="3_rr7kc"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_51lu5"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/Meter.gd" id="4_qwq71"]
-[ext_resource type="Shader" path="res://Assets/Shaders/fog_light.gdshader" id="5_kq1cm"]
 [ext_resource type="AudioStream" uid="uid://dltcpm20f25wk" path="res://Assets/SFX/Player/Glow/fire_lit.mp3" id="5_xvpry"]
 [ext_resource type="AudioStream" uid="uid://b6ju3ueut1ptt" path="res://Assets/SFX/Player/Glow/fire_rumble.mp3" id="6_4gy3n"]
 [ext_resource type="Script" path="res://Scripts/CustomThemeing/ThemedTextureProgressBar.gd" id="7_q70ty"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_syw0g"]
 resource_local_to_scene = true
-shader = ExtResource("5_kq1cm")
-shader_parameter/angle = 0.27
+shader = ExtResource("2_oti7r")
+shader_parameter/angle = 0.47
 shader_parameter/position = 0.23
-shader_parameter/spread = 0.489
+shader_parameter/spread = 0.17
 shader_parameter/cutoff = -0.112
-shader_parameter/falloff = 0.351
-shader_parameter/edge_fade = 0.895
-shader_parameter/speed = 5.0
-shader_parameter/ray1_density = 5.0
-shader_parameter/ray2_density = 10.0
+shader_parameter/falloff = 1.0
+shader_parameter/edge_fade = 0.572
+shader_parameter/speed = 13.72
+shader_parameter/ray1_density = 0.59
+shader_parameter/ray2_density = 7.11
 shader_parameter/ray2_intensity = 1.0
-shader_parameter/color = Color(1, 1, 0, 1)
+shader_parameter/ray_color = Color(1, 1, 0, 1)
 shader_parameter/hdr = true
 shader_parameter/seed = 1248.0
+shader_parameter/pixelation = 1000.0
+shader_parameter/quantize_colors = true
+shader_parameter/color_levels = 3
+shader_parameter/dither = false
+shader_parameter/dither_strength = 1.0
+shader_parameter/opacity = 1.0
 
 [sub_resource type="Gradient" id="Gradient_8qie6"]
 offsets = PackedFloat32Array(0, 0.104167, 0.885417, 1)
@@ -57,12 +63,10 @@ z_index = 101
 material = SubResource("ShaderMaterial_syw0g")
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.91
-anchor_top = 0.97
-anchor_right = 1.0
-anchor_bottom = 1.25
-offset_right = 6.10352e-05
-offset_bottom = 5.14984e-05
+anchor_left = 0.842
+anchor_top = 1.0
+anchor_right = 1.1
+anchor_bottom = 1.4
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(1, -1)
@@ -82,7 +86,6 @@ grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(8, 8)
 pivot_offset = Vector2(12, 32)
-value = 100.0
 allow_greater = true
 allow_lesser = true
 fill_mode = 3
@@ -143,20 +146,20 @@ value = 100.0
 fill_mode = 3
 show_percentage = false
 
-[node name="Control" type="Control" parent="."]
+[node name="Control2" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchor_left = 0.976
+anchor_top = 0.77
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -40.0
 offset_top = -40.0
+offset_right = -40.0
+offset_bottom = -40.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Darkening" type="PointLight2D" parent="Control"]
-position = Vector2(-46, -219)
+[node name="Darkening" type="PointLight2D" parent="Control2"]
 scale = Vector2(4, 4)
 color = Color(0.890196, 0.921569, 0.34902, 1)
 energy = 0.0
@@ -165,8 +168,19 @@ range_z_min = 100
 range_z_max = 101
 texture = ExtResource("4_51lu5")
 
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.98
+anchor_top = 0.97
+anchor_right = 0.98
+anchor_bottom = 0.97
+offset_left = -47.6
+offset_top = 0.399969
+offset_right = -47.6
+offset_bottom = 0.399969
+
 [node name="Brighten" type="PointLight2D" parent="Control"]
-position = Vector2(-46, -6)
+position = Vector2(5, 0)
 scale = Vector2(4, 4)
 color = Color(0.890196, 0.921569, 0.34902, 1)
 energy = 0.3

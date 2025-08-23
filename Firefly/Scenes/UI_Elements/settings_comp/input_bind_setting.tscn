@@ -28,7 +28,6 @@ theme_override_constants/separation = 8
 custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 size_flags_horizontal = 8
-focus_mode = 2
 
 [node name="IconSprite" type="Sprite2D" parent="AddBindingButton"]
 texture_filter = 1

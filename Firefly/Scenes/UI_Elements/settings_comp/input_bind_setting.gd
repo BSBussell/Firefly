@@ -103,6 +103,19 @@ func setup_element():
 			print("Connected add binding button for action: ", action_name)
 		else:
 			print("Add binding button already connected for action: ", action_name)
+		
+		# Connect audio feedback for the Plus button
+		if not add_binding_button.focus_entered.is_connected(func(): focus.play()):
+			add_binding_button.focus_entered.connect(func(): focus.play())
+		if not add_binding_button.pressed.is_connected(func(): press.play()):
+			add_binding_button.pressed.connect(func(): press.play())
+		
+		# Connect visual focus feedback for the Plus button
+		
+		if not add_binding_button.focus_entered.is_connected(func(): add_binding_button.modulate = Color("#d59d29")):
+			add_binding_button.focus_entered.connect(func(): add_binding_button.modulate = Color("#d59d29"))  # Orange focus color
+		if not add_binding_button.focus_exited.is_connected(func(): add_binding_button.modulate = Color.WHITE):
+			add_binding_button.focus_exited.connect(func(): add_binding_button.modulate = Color.WHITE)
 
 func load_current_bindings():
 	current_bindings.clear()
@@ -163,6 +176,10 @@ func create_binding_button(event: InputEvent, index: int):
 	# Audio feedback
 	binding_button.focus_entered.connect(func(): focus.play())
 	binding_button.pressed.connect(func(): press.play())
+	
+	# Visual focus feedback
+	binding_button.focus_entered.connect(func(): binding_button.modulate = Color("#d59d29"))  # Orange focus color
+	binding_button.focus_exited.connect(func(): binding_button.modulate = Color.WHITE)
 
 func get_input_icons(event: InputEvent) -> Array[String]:
 	var icons: Array[String] = []
@@ -298,23 +315,36 @@ func _on_add_binding_pressed():
 
 func remove_binding(index: int):
 	if index >= 0 and index < current_bindings.size():
+		# Store if we need to restore focus (check if any binding button currently has focus)
+		var should_restore_focus = false
+		for button_container in binding_buttons:
+			if button_container and is_instance_valid(button_container):
+				var binding_button = button_container.get_node("BindingButton")
+				if binding_button.has_focus():
+					should_restore_focus = true
+					break
+		
 		# Remove from InputMap
 		InputMap.action_erase_event(action_name, current_bindings[index])
 		
 		# Remove from our array
 		current_bindings.remove_at(index)
 		
-	# Refresh UI
-	refresh_binding_ui()
-	
-	# Save input bindings to config
-	_config.save_input_bindings()
-	
-	# Emit signal for external listeners
-	binding_changed.emit(action_name, current_bindings)
-	
-	# Play sound effect
-	press.play()
+		# Refresh UI
+		refresh_binding_ui()
+		
+		# Restore focus to Plus button if a binding button had focus
+		if should_restore_focus:
+			add_binding_button.grab_focus()
+		
+		# Save input bindings to config
+		_config.save_input_bindings()
+		
+		# Emit signal for external listeners
+		binding_changed.emit(action_name, current_bindings)
+		
+		# Play sound effect
+		press.play()
 
 func start_input_capture(button: Button, _index: int):
 	awaiting_input = true
@@ -324,7 +354,7 @@ func start_input_capture(button: Button, _index: int):
 	add_binding_button.text = "..."
 	var add_sprite: Sprite2D = add_binding_button.get_node("IconSprite")
 	add_sprite.visible = false
-	add_binding_button.modulate = Color.YELLOW
+	add_binding_button.modulate = Color.YELLOW  # Override focus color with input capture color
 	
 	# Make sure we can receive input events
 	set_process_input(true)
@@ -422,6 +452,13 @@ func apply_new_binding(event: InputEvent):
 	# Refresh UI
 	refresh_binding_ui()
 	
+	# Focus the newly created binding button (which is the last one added)
+	if binding_buttons.size() > 0:
+		var last_button_container = binding_buttons[binding_buttons.size() - 1]
+		if last_button_container and is_instance_valid(last_button_container):
+			var new_binding_button = last_button_container.get_node("BindingButton")
+			new_binding_button.grab_focus()
+	
 	# Save input bindings to config
 	_config.save_input_bindings()
 	
@@ -434,21 +471,22 @@ func apply_new_binding(event: InputEvent):
 func cancel_input_capture():
 	stop_input_capture()
 	
-	# Reset add button appearance
+	# Reset add button appearance to normal state
 	add_binding_button.text = ""
 	var add_sprite: Sprite2D = add_binding_button.get_node("IconSprite")
 	add_sprite.visible = true
 	add_sprite.texture = load("res://Assets/Graphics/UI/inputs/KennyTiles/Plus.png")
 	add_sprite.scale = Vector2(4, 4)  # Maintain the larger scale
+	add_binding_button.modulate = Color.WHITE  # Reset to normal (focus color will reapply if focused)
 
 func stop_input_capture():
 	awaiting_input = false
 	current_editing_button = null
 	set_process_input(false)
 	
-	# Reset add button to show Plus icon
+	# Reset add button to show Plus icon and normal color
 	if add_binding_button:
-		add_binding_button.modulate = Color.WHITE
+		add_binding_button.modulate = Color.WHITE  # Reset to normal (focus color will reapply if focused)
 		add_binding_button.text = ""
 		var add_sprite: Sprite2D = add_binding_button.get_node("IconSprite")
 		add_sprite.visible = true
@@ -458,112 +496,105 @@ func stop_input_capture():
 	print("Stopped input capture for action: ", action_name)
 
 func update_focus_navigation():
-	# Update focus navigation for all binding buttons
+	# Build array of all focusable controls in horizontal order
 	var focusable_controls: Array[Control] = []
 	
-	# Add binding buttons (no more clear buttons)
+	# Add binding buttons first (left to right)
 	for button_container in binding_buttons:
 		if button_container and is_instance_valid(button_container):
 			var binding_button = button_container.get_node("BindingButton")
 			focusable_controls.append(binding_button)
 	
-	# Add the add binding button
+	# Add the Plus button last (rightmost)
 	focusable_controls.append(add_binding_button)
 	
-	# Set up horizontal focus chain (left/right navigation within this component)
+	# Set up horizontal navigation within this IBS
 	for i in range(focusable_controls.size()):
 		var current_control = focusable_controls[i]
 		
-		# Set up left/right navigation within the input binding component
+		# LEFT navigation with no wrapping to other IBS
 		if i > 0:
-			# Not the first button - can go left
 			var prev_control = focusable_controls[i - 1]
 			current_control.focus_neighbor_left = prev_control.get_path()
 		else:
-			# First button - clear left neighbor (will be set by settings system)
+			# First control - Left does nothing (no wrap to previous IBS)
 			current_control.focus_neighbor_left = ""
-			
+		
+		# RIGHT navigation with proper wrapping within IBS
 		if i < focusable_controls.size() - 1:
-			# Not the last button - can go right
 			var next_control = focusable_controls[i + 1]
 			current_control.focus_neighbor_right = next_control.get_path()
 		else:
-			# Last button - clear right neighbor (will be set by settings system)
+			# Last control (Plus button) - Right does nothing
 			current_control.focus_neighbor_right = ""
 		
-		# Clear up/down neighbors - these will be set by the settings system
+		# Clear up/down neighbors - will be set by settings system
 		current_control.focus_neighbor_top = ""
 		current_control.focus_neighbor_bottom = ""
-		
-		# Set up tab navigation (fallback)
-		if i < focusable_controls.size() - 1:
-			var next_control = focusable_controls[i + 1]
-			current_control.focus_next = next_control.get_path()
-		else:
-			current_control.focus_next = ""
-			
-		if i > 0:
-			var prev_control = focusable_controls[i - 1]
-			current_control.focus_previous = prev_control.get_path()
-		else:
-			current_control.focus_previous = ""
+	
+	# Special case: If Plus button isn't the only control, add reverse wrapping
+	# From Plus button, Left should wrap to rightmost binding
+	if focusable_controls.size() > 1:
+		var plus_button = focusable_controls[focusable_controls.size() - 1]  # Last control (Plus)
+		var rightmost_binding = focusable_controls[focusable_controls.size() - 2]  # Second to last (rightmost binding)
+		plus_button.focus_neighbor_left = rightmost_binding.get_path()
 
 # BaseSetting interface methods
 func get_focus_obj() -> Control:
-	# Return the first focusable control (leftmost button)
-	if binding_buttons.size() > 0:
-		var first_container = binding_buttons[0]
-		if first_container and is_instance_valid(first_container):
-			return first_container.get_node("BindingButton")
+	# Always return the Plus button as the primary focus target
+	# This ensures vertical navigation (Down from header, Up/Down between IBS) lands on Plus buttons
 	return add_binding_button
 
 func set_above_focus(above: Control):
-	# Set focus neighbor for ALL buttons in this component
-	for button_container in binding_buttons:
-		if button_container and is_instance_valid(button_container):
-			var binding_button = button_container.get_node("BindingButton")
-			if above:
-				binding_button.focus_neighbor_top = above.get_path()
-			else:
-				binding_button.focus_neighbor_top = ""
-	
-	# Also set for add button
+	# Only set up navigation for the Plus button (main focus target)
+	# All other buttons should NOT have vertical navigation to prevent focus leaking
 	if above:
 		add_binding_button.focus_neighbor_top = above.get_path()
 	else:
 		add_binding_button.focus_neighbor_top = ""
-
-func set_below_focus(below: Control):
-	# Set focus neighbor for ALL buttons in this component
+	
+	# Ensure binding buttons have no vertical navigation
 	for button_container in binding_buttons:
 		if button_container and is_instance_valid(button_container):
 			var binding_button = button_container.get_node("BindingButton")
-			if below:
-				binding_button.focus_neighbor_bottom = below.get_path()
-			else:
-				binding_button.focus_neighbor_bottom = ""
-	
-	# Also set for add button
+			binding_button.focus_neighbor_top = ""
+
+func set_below_focus(below: Control):
+	# Only set down navigation for the Plus button (main focus target)
+	# All other buttons should NOT have vertical navigation to prevent focus leaking
 	if below:
 		add_binding_button.focus_neighbor_bottom = below.get_path()
 	else:
 		add_binding_button.focus_neighbor_bottom = ""
+	
+	# Ensure binding buttons have no vertical navigation
+	for button_container in binding_buttons:
+		if button_container and is_instance_valid(button_container):
+			var binding_button = button_container.get_node("BindingButton")
+			binding_button.focus_neighbor_bottom = ""
 
 func set_left_focus(left: Control):
-	# Only set left focus for the leftmost button (first binding button or add button if no bindings)
-	var leftmost_control = get_focus_obj()
+	# Only set left focus for the leftmost control in the IBS
+	# This should be the first binding button, or Plus button if no bindings exist
+	var leftmost_control: Control = null
+	if binding_buttons.size() > 0:
+		var first_container = binding_buttons[0]
+		if first_container and is_instance_valid(first_container):
+			leftmost_control = first_container.get_node("BindingButton")
+	else:
+		leftmost_control = add_binding_button
+	
 	if leftmost_control and left:
 		leftmost_control.focus_neighbor_left = left.get_path()
 	elif leftmost_control:
 		leftmost_control.focus_neighbor_left = ""
 
 func set_right_focus(right: Control):
-	# Only set right focus for the rightmost button (add button or last binding button)
-	var rightmost_control = add_binding_button
-	if rightmost_control and right:
-		rightmost_control.focus_neighbor_right = right.get_path()
-	elif rightmost_control:
-		rightmost_control.focus_neighbor_right = ""
+	# Only set right focus for the rightmost control (Plus button)
+	if right:
+		add_binding_button.focus_neighbor_right = right.get_path()
+	else:
+		add_binding_button.focus_neighbor_right = ""
 
 func save_data() -> Dictionary:
 	return {"action_name": action_name}

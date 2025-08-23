@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=3 uid="uid://cxa2jxewxd2w6"]
 
-[ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/DialogAreaA.gd" id="1_s2prs"]
+[ext_resource type="Script" path="res://Scenes/Friends/Fox/ChallengeMeister.gd" id="1_n8nxh"]
 [ext_resource type="Texture2D" uid="uid://b5q0yne7t1218" path="res://Assets/Graphics/Characters/Fox/Red Panda Sprite Sheet.png" id="2_defq1"]
 [ext_resource type="Texture2D" uid="uid://duferf2i8exuw" path="res://Assets/Graphics/UI/target.png" id="3_1xf5f"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_mhpre"]
@@ -181,10 +181,9 @@ _data = {
 "reveal": SubResource("Animation_00fhf")
 }
 
-[node name="SillyFox" type="Area2D" node_paths=PackedStringArray("talk_target")]
+[node name="SillyFox" type="Area2D"]
 collision_layer = 0
-script = ExtResource("1_s2prs")
-talk_target = NodePath("Marker2D")
+script = ExtResource("1_n8nxh")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -16)

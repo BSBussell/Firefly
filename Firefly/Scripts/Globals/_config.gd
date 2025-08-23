@@ -17,6 +17,7 @@ var def_settings: Dictionary = {
 	"show_timer": false,
 	"discord_timer": false,
 	"skip_jar_reveal": false,
+	"pause_on_interact": true,
 	
 # Graphics
 	"fullscreen": true,

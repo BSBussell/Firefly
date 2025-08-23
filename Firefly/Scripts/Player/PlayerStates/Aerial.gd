@@ -105,7 +105,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 	_logger.info("Aerial State Input")
 
 	# If Fast Falling Input
-	if Input.is_action_just_pressed("Down"):
+	if Input.is_action_just_pressed("Down") and parent.should_process_fastfall_input():
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
 		if parent.temp_gravity_active:

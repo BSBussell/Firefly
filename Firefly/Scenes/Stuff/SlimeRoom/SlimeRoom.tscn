@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcdmdbw75boyj"]
+
+[ext_resource type="Script" path="res://Scripts/Challenges/SlimeRoom.gd" id="1_820f4"]
+
+[node name="SlimeRoom" type="Node2D"]
+script = ExtResource("1_820f4")
+challenge_id = "slime_room_1"
+challenge_name = "Slime Bouncer"
+challenge_description = "Bounce on all slimes without touching the ground!"
+goober_group_name = "SlimeRoomGoobers"
+require_all_goobers = true
+allow_repeat_bounces = false
+ground_grace_period = 0.3
+reset_on_ground = true
+highlight_completed_goobers = true
+completed_modulate = Color(0.5, 1, 0.5, 1)
+pending_modulate = Color(1, 1, 1, 1)
+
+[node name="RewardSpawn" type="Marker2D" parent="."]
+position = Vector2(0, -100)

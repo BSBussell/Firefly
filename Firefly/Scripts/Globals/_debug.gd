@@ -39,6 +39,10 @@ func _input(_event: InputEvent) -> void:
 			_stats.INVALID_RUN = true
 			break
 			
+	if Input.is_key_pressed(KEY_ENTER):
+		_globals.ACTIVE_PLAYER.can_glide = true
+		
+			
 	if Input.is_key_pressed(KEY_7) and not _loader.loading:
 		_stats.POSITION = Vector2.ZERO
 		_stats.INVALID_RUN = true

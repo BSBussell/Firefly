@@ -412,8 +412,13 @@ texture = SubResource("CanvasTexture_buqjn")
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(0.5, 0.5)
 color = Color(0.890196, 0.921569, 0.34902, 1)
+range_layer_min = -99
+range_item_cull_mask = 3
+shadow_filter = 1
+shadow_filter_smooth = 32.7
+shadow_item_cull_mask = 2
 texture = ExtResource("3_sikls")
-height = 25.0
+height = 50.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://ecdmdbw75boyk"]
+
+[ext_resource type="Script" path="res://Scripts/Challenges/BounceTestV2.gd" id="1_820f5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1abc3"]
+size = Vector2(32, 64)
+
+[node name="BounceTestV2" type="Node2D"]
+script = ExtResource("1_820f5")
+challenge_id = "bounce_test_v2_1"
+challenge_name = "Airborne Challenge"
+challenge_description = "Jump from gate to gate without touching the ground!"
+require_min_air_time = 0.5
+
+[node name="Gate1" type="Area2D" parent="."]
+position = Vector2(-150, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gate1"]
+shape = SubResource("RectangleShape2D_1abc3")
+
+[node name="Gate2" type="Area2D" parent="."]
+position = Vector2(150, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gate2"]
+shape = SubResource("RectangleShape2D_1abc3")
+
+[node name="RewardSpawn" type="Marker2D" parent="."]
+position = Vector2(0, -80)

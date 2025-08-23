@@ -14,7 +14,12 @@
 				"description": "Show speedometer while playing",
 				"type": "choice",
 				"config_key": "show_speedometer",
-				"options": ["off", "x", "y", "both"]
+				"options": [
+					"off",
+					"x",
+					"y",
+					"both"
+				]
 			},
 			"show_timer": {
 				"label": "Speed Run Timer",
@@ -27,6 +32,12 @@
 				"description": "Skips the jar reveal cinematic when unlocking hidden jars.",
 				"type": "boolean",
 				"config_key": "skip_jar_reveal"
+			},
+			"pause_on_interact": {
+				"label": "Pause On Interact",
+				"description": "Pauses gameplay while dialogue is open.",
+				"type": "boolean",
+				"config_key": "pause_on_interact"
 			}
 		}
 	},
@@ -42,10 +53,21 @@
 			},
 			"resolution": {
 				"label": "Window Scale",
-				 "description": "Set the Window Scale",
-				 "type": "choice",
-				 "config_key": "resolution",
-				 "options": ["1x", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x", "10x"]
+				"description": "Set the Window Scale",
+				"type": "choice",
+				"config_key": "resolution",
+				"options": [
+					"1x",
+					"2x",
+					"3x",
+					"4x",
+					"5x",
+					"6x",
+					"7x",
+					"8x",
+					"9x",
+					"10x"
+				]
 			},
 			"vsync": {
 				"label": "V-Sync Enabled",
@@ -58,7 +80,16 @@
 				"description": "Set the max Frameratee",
 				"type": "choice",
 				"config_key": "fps_target",
-				"options": ["30", "60", "90", "120", "144", "165", "240", "NONE"]
+				"options": [
+					"30",
+					"60",
+					"90",
+					"120",
+					"144",
+					"165",
+					"240",
+					"NONE"
+				]
 			}
 		}
 	},
@@ -74,7 +105,7 @@
 				"min": -15,
 				"max": 6,
 				"step": 0.5
-	 		},
+			},
 			"Music": {
 				"label": "Music",
 				"description": "Control the Volume of the Music",
@@ -83,7 +114,7 @@
 				"min": -15,
 				"max": 6,
 				"step": 0.5
-	 		},
+			},
 			"SFX": {
 				"label": "SFX",
 				"description": "Control the Volume of the SFX",
@@ -92,7 +123,7 @@
 				"min": -15,
 				"max": 6,
 				"step": 0.5
-	 		},
+			},
 			"Ambience": {
 				"label": "Ambience",
 				"description": "Control the Volume of the Ambience",
@@ -101,7 +132,7 @@
 				"min": -15,
 				"max": 10,
 				"step": 0.5
-	 		}
+			}
 		}
 	},
 	"Control_Settings": {
@@ -115,7 +146,7 @@
 				"action_name": "Left"
 			},
 			"move_right": {
-				"label": "Right", 
+				"label": "Right",
 				"description": "Move the player character right",
 				"type": "input_bind",
 				"action_name": "Right"
@@ -166,7 +197,7 @@
 				"label": "Respawn",
 				"description": "Force Flyph to Respawn at the mosto recently activated Shrine",
 				"type": "input_bind",
-				"action_name": "reset"
+				"action_name": "Kill"
 			}
 		}
 	},

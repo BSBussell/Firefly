@@ -51,6 +51,9 @@ extends PlayerState
 @export var boost_jump_multi: float = 11
 @export var nyoom_jump_multi: float = 9
 
+## Grace period for maintaining speeding_up state after input stops
+@export var speeding_up_grace_period: float = 0.2
+
 ## Height of jumping off a rope
 @export var swing_jump_height: float = 2.0
 @export var swing_jump_rise_time: float = 0.2
@@ -424,6 +427,8 @@ func jump():
 
 # Set to true if we are moving "downward" or speeding up in the swing
 var speeding_up: bool = false
+## Timer that tracks how long we've been in speeding_up grace period
+var speeding_up_grace_timer: float = 0.0
 
 var ret_force: float = 0.0
 
@@ -462,10 +467,21 @@ func swinging(delta, dir):
 	var target_period_multi: float = base_period_multi
 	var period_accel: float = base_period_accel
 	
+	# Check if player is actively inputting towards center
+	var actively_speeding_up = dir and sign(dir) != sign(relative_position.x) and relative_position.x != 0
+	actively_speeding_up = actively_speeding_up and sign(dir) == sign(return_force.x)
+	
+	# Update speeding_up state with grace period
+	if actively_speeding_up:
+		speeding_up = true
+		speeding_up_grace_timer = speeding_up_grace_period  # Reset grace timer
+	else:
+		# Count down grace timer
+		speeding_up_grace_timer -= delta
 		
-	# Pretty much if we're holding in direction of center
-	speeding_up = dir and sign(dir) != sign(relative_position.x) and relative_position.x != 0
-	speeding_up = speeding_up and sign(dir) == sign(return_force.x)
+		# Only stop speeding_up when grace period expires
+		if speeding_up_grace_timer <= 0.0:
+			speeding_up = false
 
 	# If we've moved down since last pool, and 
 	if speeding_up:

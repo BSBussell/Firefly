@@ -1,11 +1,14 @@
-[gd_scene load_steps=16 format=3 uid="uid://cjk060vuy84on"]
+[gd_scene load_steps=21 format=3 uid="uid://cjk060vuy84on"]
 
 [ext_resource type="Script" path="res://Scripts/Collectibles/FlyJar.gd" id="1_a3g2p"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="2_f7dw3"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="3_nphje"]
 [ext_resource type="AudioStream" uid="uid://n1jp21srkgrf" path="res://Scenes/glass_hit_2.mp3" id="4_mfqb6"]
-[ext_resource type="Texture2D" uid="uid://batkympulbkyb" path="res://Scenes/Collectibles/sunsphere.png" id="5_is585"]
+[ext_resource type="Texture2D" uid="uid://m4c7o4bssi68" path="res://Scenes/Collectibles/sunsphere_diffuse.png" id="5_2ot3g"]
+[ext_resource type="Shader" path="res://Scenes/Collectibles/SunSphere.gdshader" id="5_ey7vn"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="6_lms4f"]
+[ext_resource type="Texture2D" uid="uid://dpqjlmfllpc4v" path="res://Scenes/Collectibles/sunsphere_normal.png" id="6_tmrgo"]
+[ext_resource type="Texture2D" uid="uid://cnq4rktkjgjrk" path="res://Scenes/Collectibles/sunsphere_spec.png" id="7_iceaq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5d1v6"]
 
@@ -116,15 +119,52 @@ _data = {
 "Start": SubResource("Animation_807ua")
 }
 
+[sub_resource type="Curve" id="Curve_ae2er"]
+min_value = 2.13163e-14
+_data = [Vector2(0.1, 2.13163e-14), 0.0, 0.0, 0, 0, Vector2(1, 2.13163e-14), 0.0, 0.0, 0, 0]
+point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_nn3g0"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
 [sub_resource type="Gradient" id="Gradient_a3cyy"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0.336066, 0.8, 1)
-colors = PackedColorArray(1, 1, 0, 1, 1, 1, 1, 0.670588, 1, 1, 1, 0)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.670588, 1, 1, 1, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5aegp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iu16i"]
+shader = ExtResource("5_ey7vn")
+shader_parameter/use_luma_mask = false
+shader_parameter/luma_threshold = 0.2
+shader_parameter/mask_softness = 0.06
+shader_parameter/snap_texels = true
+shader_parameter/albedo_tint = Vector4(1, 1, 1, 1)
+shader_parameter/normal_strength = 1.0
+shader_parameter/spec_intensity = 4.0
+shader_parameter/min_roughness = 0.06
+shader_parameter/max_roughness = 0.582
+shader_parameter/band1_density = 0.194
+shader_parameter/band2_density = 0.05
+shader_parameter/band1_speed = 1.7
+shader_parameter/band2_speed = 2.9
+shader_parameter/band1_sharp = 1.0
+shader_parameter/band2_sharp = 12.0
+shader_parameter/anisotropy_strength = 0.7
+shader_parameter/sparkle_intensity = 0.9
+shader_parameter/sparkle_color = Color(1, 1, 0, 1)
+shader_parameter/sparkle_block_texels = 1.913
+shader_parameter/seed = 0.0
+shader_parameter/alpha_threshold = 0.178
+shader_parameter/normal_map = ExtResource("6_tmrgo")
+shader_parameter/spec_map = ExtResource("7_iceaq")
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_v5ec4"]
-diffuse_texture = ExtResource("5_is585")
+diffuse_texture = ExtResource("5_2ot3g")
+normal_texture = ExtResource("6_tmrgo")
+specular_texture = ExtResource("7_iceaq")
 specular_color = Color(0.890196, 0.921569, 0.34902, 1)
 
 [sub_resource type="Animation" id="Animation_1h70t"]
@@ -206,18 +246,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(2.08165e-12, 2), Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PointLight2D:energy")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.8),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_df1wb"]
@@ -403,38 +431,43 @@ libraries = {
 
 [node name="FireFlies" type="CPUParticles2D" parent="."]
 modulate = Color(6, 6, 2.5, 1)
-position = Vector2(0, 5)
-amount = 10
+amount = 50
 speed_scale = 0.8
 randomness = 1.0
-emission_shape = 1
-emission_sphere_radius = 8.3
-direction = Vector2(0, -1)
-gravity = Vector2(0, -50)
-orbit_velocity_min = -1.0
-orbit_velocity_max = 1.0
-damping_min = 10.0
-damping_max = 10.0
-scale_amount_max = 1.5
-color = Color(0.890196, 0.921569, 0, 1)
+texture = ExtResource("2_f7dw3")
+emission_shape = 2
+emission_sphere_radius = 17.0
+direction = Vector2(2.08165e-12, -1)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+angular_velocity_min = 10.0
+angular_velocity_max = 10.0
+orbit_velocity_curve = SubResource("Curve_ae2er")
+radial_accel_min = 10.0
+radial_accel_max = 10.0
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_min = 0.1
+scale_amount_max = 0.3
+scale_amount_curve = SubResource("Curve_nn3g0")
+color = Color(1, 1, 0, 1)
 color_ramp = SubResource("Gradient_a3cyy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_5aegp")
-position = Vector2(1.28073e-12, 1.2305)
+material = SubResource("ShaderMaterial_iu16i")
 texture = SubResource("CanvasTexture_v5ec4")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(0, 1)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_lms4f")
 texture_scale = 0.32
-height = 12.0
+height = 50.0
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
 scale = Vector2(0.5, 0.5)
+shadow_filter = 1
 texture = ExtResource("6_lms4f")
-texture_scale = 1.38
+texture_scale = 0.69
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

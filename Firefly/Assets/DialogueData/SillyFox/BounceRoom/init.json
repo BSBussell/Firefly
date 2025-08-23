@@ -1,0 +1,15 @@
+{
+  "identifier": "SlimeChallenge",
+  "dialogue": [
+    "Hello!! So, you've found the Slime Zone!!!",
+    "This place is where the slimes live and play, it's kinda super fun. They're all *squelching noises*",
+    "Ok wait, I got another AWESOMSE IDEA!!! I think you'll like this one!",
+	"SOO, you see how there are a buncha slimes all roung the platforms in thsi room?",
+    "I'd bet you one jar of fireflies that you can't jump on all of them without touching the ground.",
+	"hehe You should try it! I bet you'll do great! Especially after the sLiMe pIt outside hehe.",
+    "but to make sure it isn't something easy, you gotta cross it, WITHOUT Touching the ground.",
+    "Just, remember to press down in mid-air in order to boost your launch. I think that might help you reach some cool spots here."
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

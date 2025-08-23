@@ -1,0 +1,13 @@
+{
+  "identifier": "SlimeChallenge",
+  "dialogue": [
+    "Haha, that was a close one! The slimes got you, huh?",
+    "Don't worry, they're bouncier than they look. Happens to the best of us!",
+    "Maybe try aiming for the squishier ones next time. Or was that your plan all along?",
+    "You can always give it another shot. I promise I won't laugh... much.",
+    "Remember, pressing down in mid-air helps you land faster and bounce higher!",
+    "Come on, I know you can do it!"
+  ],
+  "sequential_dialogue": "",
+  "victory_dialogue": false
+}

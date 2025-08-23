@@ -12,7 +12,8 @@ class_name Meter
 @onready var fire_rumble = $Meter/FireRumble
 @onready var rays = $Rays
 @onready var brighten = $Control/Brighten
-@onready var darkening = $Control/Darkening
+@onready var darkening = $Control2/Darkening
+
 
 
 var actual_score: float = 0
@@ -47,9 +48,9 @@ func _process(delta):
 	darkening.energy = lerpf(1.0, 0.0, weight)
 	
 	# Interpolate godrays
-	var color = rays.material.get_shader_parameter("color")
+	var color = rays.material.get_shader_parameter("ray_color")
 	color.a = lerpf(0.0,1.0, weight)
-	rays.material.set_shader_parameter("color", color)
+	rays.material.set_shader_parameter("ray_color", color)
 	
 	if progress_bar.value >= progress_bar.max_value:
 		particle.emitting = true

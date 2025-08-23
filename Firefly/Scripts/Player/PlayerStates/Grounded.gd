@@ -252,6 +252,9 @@ func grounded_jump():
 	animation.play("free")
 
 	# Jump SFX
+	#var rng = RandomNumberGenerator.new()
+
+	#jumping_sfx.pitch_scale = rng.randf_range(0.8,1.0)
 	jumping_sfx.play(0)
 
 	# Squishy

@@ -287,7 +287,7 @@ Text = "- GlowWorm Caverns -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
-ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("5_by1im"), ExtResource("6_pkwh7"), ExtResource("7_h4wtv"), ExtResource("8_kstwy"), ExtResource("4_moxw1"), ExtResource("9_l1dvb"), ExtResource("9_v2hst")])
+ui_components = Array[PackedScene]([ExtResource("2_s8gsc"), ExtResource("3_sgdeh"), ExtResource("5_by1im"), ExtResource("6_pkwh7"), ExtResource("7_h4wtv"), ExtResource("8_kstwy"), ExtResource("9_l1dvb"), ExtResource("9_v2hst"), ExtResource("4_moxw1")])
 id = 1
 win_condition = 1
 

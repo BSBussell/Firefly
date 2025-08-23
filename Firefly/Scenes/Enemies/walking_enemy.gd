@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name goober
 
+signal Bounce
 
 @export var accel = 750
 @export var deccel = 550
@@ -11,6 +12,7 @@ class_name goober
 @onready var front_ray_cast = $Raycasts/FrontRayCast
 @onready var below_ray_cast = $Raycasts/BelowRayCast
 @onready var bounch: Spring = $Bouncy
+@onready var cpu_particles_2d = $CPUParticles2D
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -65,6 +67,10 @@ var stored_speed: float
 func _on_bouncy_bounce():
 	
 	velocity.x = velocity.x * -0.5
+	
+	cpu_particles_2d.emitting = true
+	
+	emit_signal("Bounce")
 	#bounce_cool_down.start()
 	
 	

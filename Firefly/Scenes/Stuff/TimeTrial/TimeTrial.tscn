@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcdmdbw75boyh"]
+
+[ext_resource type="Script" path="res://Scripts/Challenges/TimeTrial.gd" id="1_820f3"]
+[ext_resource type="PackedScene" uid="uid://c6ogwy1t0aqhb" path="res://Scenes/Stuff/SpeedTest/SpeedFly.tscn" id="2_adb13"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1abc2"]
+size = Vector2(32, 64)
+
+[node name="TimeTrial" type="Node2D"]
+script = ExtResource("1_820f3")
+challenge_id = "time_trial_1"
+challenge_name = "Sprint Challenge"
+challenge_description = "Reach the exit before time runs out!"
+trial_duration = 8.0
+grace_period = 1.0
+guide_visual = ExtResource("2_adb13")
+guide_fade_time = 0.5
+guide_finish_time = 0.8
+use_smooth_movement = true
+smooth_curve_strength = 0.4
+
+[node name="EntryArea" type="Area2D" parent="."]
+position = Vector2(-200, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntryArea"]
+shape = SubResource("RectangleShape2D_1abc2")
+
+[node name="ExitArea" type="Area2D" parent="."]
+position = Vector2(200, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitArea"]
+shape = SubResource("RectangleShape2D_1abc2")
+
+[node name="GuidePath" type="Path2D" parent="."]
+
+[node name="RewardSpawn" type="Marker2D" parent="."]
+position = Vector2(250, -50)

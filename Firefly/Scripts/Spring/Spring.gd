@@ -182,6 +182,8 @@ func spring_jump() -> void:
 	
 	# Use player launch function
 	flyph.launch(launch_velocity, launch_gravity, SPRING_SQUASH)
+
+	flyph.prevent_fastfall(0.1)
 	
 	
 	# If we're launching horizontally lock input to that direction for time

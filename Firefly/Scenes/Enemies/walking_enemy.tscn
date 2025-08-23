@@ -1,58 +1,65 @@
-[gd_scene load_steps=20 format=3 uid="uid://bn0ibiwauibvx"]
+[gd_scene load_steps=22 format=3 uid="uid://bn0ibiwauibvx"]
 
-[ext_resource type="Texture2D" uid="uid://c208mmxa0olv3" path="res://Scenes/Enemies/red-slime-spritesheet.png" id="1_pxwv7"]
 [ext_resource type="Script" path="res://Scenes/Enemies/walking_enemy.gd" id="1_w3xqf"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/SquishCenter.gd" id="2_vy3sh"]
 [ext_resource type="Script" path="res://Scenes/Enemies/Bouncy.gd" id="3_3na1u"]
 [ext_resource type="AudioStream" uid="uid://r4h4rsiyb1fd" path="res://Assets/SFX/slime/wet_squish_1.mp3" id="3_mxono"]
 [ext_resource type="Curve" uid="uid://150nk1os3gx8" path="res://Scenes/Player/bounce_curve_exagerated.tres" id="3_sdrd7"]
+[ext_resource type="Texture2D" uid="uid://c78wkglhqetbg" path="res://Assets/Graphics/Characters/townSlime/slime_move.png" id="4_of25e"]
 [ext_resource type="AudioStream" uid="uid://cuojwghlwv8wb" path="res://Assets/SFX/slime/slime_pop.mp3" id="6_auxxk"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="8_dreny"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_71dik"]
-atlas = ExtResource("1_pxwv7")
-region = Rect2(0, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_0i8q0"]
+atlas = ExtResource("4_of25e")
+region = Rect2(0, 72, 80, 72)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_daqtd"]
-atlas = ExtResource("1_pxwv7")
-region = Rect2(16, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_hau11"]
+atlas = ExtResource("4_of25e")
+region = Rect2(80, 72, 80, 72)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_7eamx"]
-atlas = ExtResource("1_pxwv7")
-region = Rect2(32, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mi7a"]
+atlas = ExtResource("4_of25e")
+region = Rect2(160, 72, 80, 72)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1o7iu"]
-atlas = ExtResource("1_pxwv7")
-region = Rect2(48, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kv7m"]
+atlas = ExtResource("4_of25e")
+region = Rect2(240, 72, 80, 72)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2k7ar"]
-atlas = ExtResource("1_pxwv7")
-region = Rect2(64, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvtjn"]
+atlas = ExtResource("4_of25e")
+region = Rect2(320, 72, 80, 72)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lf7me"]
-atlas = ExtResource("1_pxwv7")
-region = Rect2(80, 0, 16, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_8o8ok"]
+atlas = ExtResource("4_of25e")
+region = Rect2(400, 72, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y3e5a"]
+atlas = ExtResource("4_of25e")
+region = Rect2(480, 72, 80, 72)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vrbk6"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_71dik")
+"texture": SubResource("AtlasTexture_0i8q0")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_daqtd")
+"texture": SubResource("AtlasTexture_hau11")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_7eamx")
+"texture": SubResource("AtlasTexture_5mi7a")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1o7iu")
+"texture": SubResource("AtlasTexture_4kv7m")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2k7ar")
+"texture": SubResource("AtlasTexture_fvtjn")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lf7me")
+"texture": SubResource("AtlasTexture_8o8ok")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y3e5a")
 }],
 "loop": true,
 "name": &"Walking",
@@ -60,15 +67,19 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s5ues"]
-radius = 3.5
-height = 10.0
+radius = 5.0
+height = 14.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lpitg"]
-size = Vector2(13, 9)
+size = Vector2(18, 13.5)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_em5hc"]
+radius = 3.0
+height = 14.0
 
 [sub_resource type="Curve" id="Curve_y0nj0"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 1), 1.4, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 1), 1.4, 0.0, 0, 0, Vector2(0.9, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
 metadata/_snap_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_icyqj"]
@@ -78,7 +89,7 @@ metadata/_snap_enabled = true
 
 [node name="WalkingEnemy" type="CharacterBody2D"]
 collision_layer = 0
-collision_mask = 18
+collision_mask = 34
 script = ExtResource("1_w3xqf")
 
 [node name="SquishNode" type="Node2D" parent="."]
@@ -87,7 +98,7 @@ base_rebound_speed = 2.0
 bounce_curve = ExtResource("3_sdrd7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SquishNode"]
-position = Vector2(0, -16)
+position = Vector2(6, -12)
 sprite_frames = SubResource("SpriteFrames_vrbk6")
 animation = &"Walking"
 autoplay = "Walking"
@@ -99,17 +110,17 @@ speed_scale = 0.9
 [node name="FrontRayCast" type="RayCast2D" parent="Raycasts"]
 position = Vector2(0, -5)
 target_position = Vector2(14, 0)
-collision_mask = 2
+collision_mask = 34
 collide_with_areas = true
 
 [node name="BelowRayCast" type="RayCast2D" parent="Raycasts"]
 position = Vector2(12, -3)
 target_position = Vector2(0, 9)
-collision_mask = 18
+collision_mask = 34
 collide_with_areas = true
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-position = Vector2(0, -5)
+position = Vector2(-2.27374e-13, -6)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_s5ues")
 
@@ -125,21 +136,21 @@ MAX_JUMP_BOOST_HEIGHT = 3.5
 JUMP_BOOST_RISE_TIME = 0.4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bouncy"]
-position = Vector2(0, -6.5)
+position = Vector2(0, -7.25)
 shape = SubResource("RectangleShape2D_lpitg")
 
 [node name="HazardArea" type="Area2D" parent="."]
 collision_layer = 0
 
 [node name="Collider2" type="CollisionShape2D" parent="HazardArea"]
-position = Vector2(0, -5)
+position = Vector2(-2.27373e-13, -4)
 rotation = 1.5708
-shape = SubResource("CapsuleShape2D_s5ues")
+shape = SubResource("CapsuleShape2D_em5hc")
 debug_color = Color(0.986904, 0, 0.318713, 0.42)
 
 [node name="Pop" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_auxxk")
-volume_db = -1.0
+volume_db = -8.0
 bus = &"SFX"
 
 [node name="Walking" type="AudioStreamPlayer2D" parent="."]
@@ -155,20 +166,27 @@ bus = &"SFX"
 wait_time = 5.0
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-amount = 10
+position = Vector2(0, -6)
+emitting = false
+amount = 3
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
 randomness = 1.0
 texture = ExtResource("8_dreny")
-emission_shape = 3
-emission_rect_extents = Vector2(4, 1)
-gravity = Vector2(2.08165e-12, -2)
+direction = Vector2(2.08165e-12, -1)
+spread = 90.0
+gravity = Vector2(2.08165e-12, 200)
+initial_velocity_min = 54.0
+initial_velocity_max = 72.0
 angular_velocity_min = -90.0
 angular_velocity_max = 90.0
 angle_min = -45.0
 angle_max = 45.0
-scale_amount_min = 0.5
-scale_amount_max = 0.5
+scale_amount_min = 0.2
+scale_amount_max = 0.3
 scale_amount_curve = SubResource("Curve_y0nj0")
-color = Color(1, 0, 0.301961, 1)
+color = Color(1, 0.294118, 0.301961, 1)
 color_ramp = SubResource("Gradient_icyqj")
 
 [connection signal="body_entered" from="Bouncy" to="Bouncy" method="_on_body_entered"]

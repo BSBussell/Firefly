@@ -217,12 +217,15 @@ func handle_walljump(vc_direction, dir = 0) -> bool:
 		
 		# Otherwise do a neutral/away wall jump
 		# Some caveats, if we are launched, then we have to be holding into the wall
-		elif not parent.launched or (parent.launched and (sign(parent.horizontal_axis) == -jump_dir)):
+		#elif not parent.launched or (parent.launched and (sign(parent.horizontal_axis) == -jump_dir)):
+		else:
 			set_walljump_flags(jump_dir)
 			walljump_fx(jump_dir)
 			away_walljump(jump_dir)
 			post_jump_buffer.start()
 			return true
+	
+	if parent.disable_walljump: print('wtf?')
 	
 	return false
 

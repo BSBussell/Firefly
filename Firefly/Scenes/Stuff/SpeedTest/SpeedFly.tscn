@@ -20,6 +20,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [0.0, 5.8678]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2.5),
+"transitions": PackedFloat32Array(10, 0.176777),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.5, 1.5)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bidih"]
 _data = {
@@ -28,12 +40,8 @@ _data = {
 
 [node name="SpeedFly" type="Node2D"]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-self_modulate = Color(0.904437, 0.904437, 0, 1)
-rotation = 1.81159
-texture = ExtResource("1_0yixf")
-
-[node name="CPUParticles2D" type="CPUParticles2D" parent="Sprite2D"]
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+rotation = -1.17848
 amount = 16
 texture = ExtResource("2_jebh1")
 emission_shape = 1
@@ -51,13 +59,21 @@ scale_amount_min = 0.1
 scale_amount_max = 0.3
 color = Color(1, 1, 0, 1)
 
-[node name="PointLight2D" type="PointLight2D" parent="Sprite2D"]
+[node name="PointLight2D" type="PointLight2D" parent="."]
+rotation = -1.17848
 color = Color(0.890196, 0.921569, 0.34902, 1)
 texture = ExtResource("3_k4ef4")
 texture_scale = 0.3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.904437, 0.904437, 0, 1)
+rotation = 3.73067
+scale = Vector2(1.00847, 1.00847)
+texture = ExtResource("1_0yixf")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
 libraries = {
 "": SubResource("AnimationLibrary_bidih")
 }
-speed_scale = 2.0
+autoplay = "spin"
+speed_scale = 1.25

@@ -716,7 +716,6 @@ turn_around_squash = Vector2(0.9, 1.1)
 death_squash = Vector2(0.5, 1.5)
 
 [node name="Collider" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_6vnjo")
 debug_color = Color(0.890196, 0.921569, 0.34902, 0.733333)
@@ -1061,7 +1060,7 @@ position = Vector2(0, -8)
 position = Vector2(3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_dj0fv")
-target_position = Vector2(3, 2.08165e-12)
+target_position = Vector2(4, 2.08165e-12)
 max_results = 1
 collision_mask = 18
 
@@ -1069,7 +1068,7 @@ collision_mask = 18
 position = Vector2(-3, 0)
 enabled = false
 shape = SubResource("RectangleShape2D_whhcd")
-target_position = Vector2(-3, 2.08165e-12)
+target_position = Vector2(-4, 2.08165e-12)
 max_results = 1
 collision_mask = 18
 
@@ -1154,13 +1153,13 @@ visible = false
 [node name="CrouchLeft" type="RayCast2D" parent="Raycasts/AutoTunnel"]
 position = Vector2(-4, -1)
 target_position = Vector2(-3, 0)
-collision_mask = 2
+collision_mask = 1024
 hit_from_inside = true
 
 [node name="CrouchRight" type="RayCast2D" parent="Raycasts/AutoTunnel"]
 position = Vector2(3, -1)
 target_position = Vector2(3, 0)
-collision_mask = 2
+collision_mask = 1024
 hit_from_inside = true
 
 [node name="Audio" type="Node2D" parent="."]
@@ -1303,6 +1302,7 @@ down_accel = 20.0
 up_climb_friction = 10.0
 down_climb_friction = 16.5
 init_boosted_period_multi = 3.75
+speeding_up_grace_period = 0.1
 
 [node name="Gliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("AERIAL_STATE", "WALL_STATE", "GROUNDED_STATE", "SLIDING_STATE")]
 script = ExtResource("33_hf8q0")

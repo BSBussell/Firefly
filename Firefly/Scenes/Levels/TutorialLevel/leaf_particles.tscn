@@ -150,6 +150,36 @@ scale_amount_curve = SubResource("Curve_018uj")
 color = Color(0.0313726, 0.698039, 0.231373, 1)
 color_ramp = SubResource("Gradient_dxnem")
 
+[node name="Dust2" type="CPUParticles2D" parent="WallGround"]
+modulate = Color(1.5, 1.5, 1, 1)
+light_mask = 0
+position = Vector2(-68, -32)
+amount = 25
+lifetime = 0.25
+speed_scale = 0.15
+randomness = 1.0
+emission_shape = 3
+emission_rect_extents = Vector2(640, 576)
+direction = Vector2(1, 0.2)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 20)
+initial_velocity_min = 278.86
+initial_velocity_max = 278.86
+angular_velocity_min = -20.0
+angular_velocity_max = 20.0
+orbit_velocity_min = -0.15
+orbit_velocity_max = 0.15
+linear_accel_min = -0.54
+linear_accel_max = 26.56
+damping_min = 8.908
+damping_max = 8.908
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 1.2
+scale_amount_max = 1.3
+scale_amount_curve = SubResource("Curve_018uj")
+color_ramp = SubResource("Gradient_dxnem")
+
 [node name="Lines" type="CPUParticles2D" parent="WallGround"]
 modulate = Color(1.5, 1.5, 1, 1)
 light_mask = 0
