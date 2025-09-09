@@ -1,9 +1,10 @@
 {
   "identifier": "SlimeChallenge",
   "dialogue": [
-    "Well, look at you! Didn't think you'd actually make it.",
-    "Guess I owe you something nice after all.",
-    "Try not to get too cocky, alright?"
+    "WOO! You did it!",
+    "Ok, here's a jar of fireflies. You earned it.",
+    "Now I trust that you'll do well in The SLIME ZONE.",
+    "Good luck! GG should let you in now."
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

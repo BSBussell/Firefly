@@ -73,6 +73,10 @@ func setup_components() -> void:
 				PLAYER.global_position = point.global_position
 				PLAYER.set_respawn_point(point.global_position)
 				
+				if point.face_player_right:
+					PLAYER
+					
+				
 				spawn_point = point
 				break
 		

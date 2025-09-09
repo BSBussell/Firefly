@@ -11,6 +11,7 @@ signal challenge_succeeded(challenge_id: String, context: Dictionary)
 signal challenge_failed(challenge_id: String, reason: String, context: Dictionary)
 signal challenge_reset(challenge_id: String)
 signal challenge_progress_updated(challenge_id: String, progress_data: Dictionary)
+signal challenge_status_loaded(challenge_id: String, state: int, cleared: bool)
 
 # ——— Core Exports ———
 @export_group("Challenge Identity")
@@ -44,6 +45,10 @@ var player: Flyph = null
 var state: BaseChallenge.ChallengeState = BaseChallenge.ChallengeState.IDLE
 var cleared: bool = false
 var challenge_context: Dictionary = {}
+
+# Track a spawned-but-uncollected reward so we can restore it across loads
+var reward_pending: bool = false
+var _spawned_reward: FlyJar = null
 
 # Protected variables that subclasses can access
 var _trigger_areas: Array[Area2D] = []
@@ -86,6 +91,8 @@ func _ready() -> void:
 	register_persistence()
 	load_completion_status()
 	_setup_challenge()
+	# Emit initial status so listeners can sync on first load
+	emit_signal("challenge_status_loaded", challenge_id, state, cleared)
 
 func _physics_process(delta: float) -> void:
 	if state != BaseChallenge.ChallengeState.ACTIVE:
@@ -137,11 +144,15 @@ func succeed_challenge(success_context: Dictionary = {}) -> void:
 	full_context.merge(_on_challenge_succeed())
 	full_context.merge(success_context)
 	
-	await _spawn_reward_and_focus()
-	mark_as_completed()
-	
+	# Mark reward pending and spawn it. Completion is finalized on pickup.
+	reward_pending = true
+	_persist.save_values()
+
+	_spawned_reward = _spawn_reward_and_focus(true)
+	if _spawned_reward and not _spawned_reward.collected.is_connected(_on_reward_collected):
+		_spawned_reward.connect("collected", Callable(self, "_on_reward_collected"))
+
 	emit_challenge_succeeded(full_context)
-	emit_signal("cleared_challenge", challenge_id) # Legacy compatibility
 	
 	_logger.info("BaseChallenge %s: Succeeded with context: %s" % [challenge_id, str(full_context)])
 
@@ -207,7 +218,7 @@ func _disable_all_triggers() -> void:
 	
 	for area in _trigger_areas:
 		if is_instance_valid(area):
-			area.monitoring = false
+			area.set_deferred("monitoring", false)
 	
 	_disable_challenge_specific_triggers()
 	
@@ -219,41 +230,54 @@ func _restore_trigger_monitoring() -> void:
 	
 	for area in _trigger_areas:
 		if is_instance_valid(area):
-			area.monitoring = true
+			area.set_deferred("monitoring", true)
 	
 	if use_completion_visual:
 		modulate = Color.WHITE
 
 # ——— Reward System ———
 
-func _spawn_reward_and_focus() -> void:
+# Spawns reward and optionally focuses camera. Returns the spawned jar if applicable.
+func _spawn_reward_and_focus(focus: bool = true) -> FlyJar:
 	if not jars:
-		_logger.warn("BaseChallenge %s: No JarManager assigned for reward" % challenge_id)
-		return
+		printerr("BaseChallenge %s: No JarManager assigned for reward" % challenge_id)
+		return null
 	
 	var reward_pos: Vector2 = _get_reward_position()
+	var spawned_jar: FlyJar = null
 	
 	match reward_type:
 		RewardType.BLUE_JAR:
-			jars.create_bluejar(reward_pos)
+			spawned_jar = jars.create_bluejar(reward_pos)
 		RewardType.GOLD_JAR:
-			# Assuming there's a gold jar method
-			if jars.has_method("create_goldjar"):
-				jars.create_goldjar(reward_pos)
-			else:
-				jars.create_bluejar(reward_pos)
+			# Replace gold jar with default/yellow flyjar
+			spawned_jar = jars.create_flyjar(reward_pos)
 		RewardType.GEM:
 			# Handle gem spawning if needed
 			_logger.info("BaseChallenge %s: Gem reward not yet implemented" % challenge_id)
 		RewardType.CUSTOM:
 			_spawn_custom_reward(reward_pos)
-	
+
+	# If the jar creator returned null (legacy void), find jar near position
+	if spawned_jar == null:
+		var candidates: Array[Node] = []
+		candidates.append_array(get_tree().get_nodes_in_group("BlueJar"))
+		candidates.append_array(get_tree().get_nodes_in_group("FlyJar"))
+		for node in candidates:
+			var j: FlyJar = node as FlyJar
+			if j and j.global_position.distance_to(reward_pos) < 10.0:
+				spawned_jar = j
+				break
+
+	# Kick off camera focus asynchronously to avoid delaying signal connections
+	if not (skip_jar_focus or _config.get_setting("skip_jar_reveal") == true) and focus:
+		_async_focus_on_reward(reward_pos, spawned_jar)
+
+	return spawned_jar
+
+func _async_focus_on_reward(reward_pos: Vector2, jar: FlyJar) -> void:
 	await get_tree().process_frame
-	
-	if skip_jar_focus or _config.get_setting("skip_jar_reveal") == true:
-		return
-	
-	await _focus_camera_on_reward(reward_pos)
+	await _focus_camera_on_reward(reward_pos, jar)
 
 func _get_reward_position() -> Vector2:
 	if reward_spawn:
@@ -262,18 +286,17 @@ func _get_reward_position() -> Vector2:
 
 func _spawn_custom_reward(_pos: Vector2) -> void:
 	# Override in subclasses for custom reward types
-	_logger.warn("BaseChallenge %s: Custom reward spawn not implemented" % challenge_id)
+	printerr("BaseChallenge %s: Custom reward spawn not implemented" % challenge_id)
 
-func _focus_camera_on_reward(reward_pos: Vector2) -> void:
-	# Find the spawned jar near the reward position
-	var blue_jars: Array[Node] = get_tree().get_nodes_in_group("BlueJar")
-	var target_jar: FlyJar = null
-	
-	for jar_node in blue_jars:
-		var jar: FlyJar = jar_node as FlyJar
-		if jar and jar.global_position.distance_to(reward_pos) < 10.0:
-			target_jar = jar
-			break
+func _focus_camera_on_reward(reward_pos: Vector2, target_jar: FlyJar = null) -> void:
+	# If a jar reference is not provided, find a spawned jar near the reward position
+	if not target_jar:
+		var blue_jars: Array[Node] = get_tree().get_nodes_in_group("BlueJar")
+		for jar_node in blue_jars:
+			var jar: FlyJar = jar_node as FlyJar
+			if jar and jar.global_position.distance_to(reward_pos) < 10.0:
+				target_jar = jar
+				break
 	
 	if target_jar:
 		var camera_target: Area2D = _create_camera_target()
@@ -301,6 +324,7 @@ func _create_camera_target() -> Area2D:
 		camera_target.blend_priority = camera_blend_priority
 		camera_target.blend_override = camera_blend_override
 		camera_target.pull_strength = camera_pull_strength
+		camera_target.OnDistant = INF
 		camera_target.target_snap = true
 		camera_target.collision_layer = 0
 		camera_target.collision_mask = 0
@@ -321,7 +345,8 @@ func save_challenge_data() -> Dictionary:
 	var save_data: Dictionary = {
 		"completed": cleared,
 		"challenge_id": challenge_id,
-		"state": state
+		"state": state,
+		"reward_pending": reward_pending
 	}
 	
 	# Allow subclasses to add custom save data
@@ -333,14 +358,34 @@ func save_challenge_data() -> Dictionary:
 func load_challenge_data(save_data: Dictionary) -> void:
 	if save_data.has("completed"):
 		cleared = save_data["completed"]
-	
+
 	if save_data.has("state"):
 		var saved_state = save_data["state"]
 		if saved_state == BaseChallenge.ChallengeState.COMPLETED:
 			state = BaseChallenge.ChallengeState.COMPLETED
-	
+
+	if save_data.has("reward_pending"):
+		reward_pending = save_data["reward_pending"]
+
 	# Allow subclasses to load custom save data
 	_load_custom_save_data(save_data)
+
+	# Apply completion side-effects if loaded as completed
+	if cleared or state == BaseChallenge.ChallengeState.COMPLETED:
+		state = BaseChallenge.ChallengeState.COMPLETED
+		_disable_all_triggers()
+		_logger.info("BaseChallenge %s: Loaded completion state from save" % challenge_id)
+
+		# If a reward is pending (challenge succeeded earlier but jar not collected), respawn it without focus
+		if reward_pending and not cleared:
+			# Avoid double-connecting if a previous jar reference exists
+			if not is_instance_valid(_spawned_reward):
+				_spawned_reward = _spawn_reward_and_focus(false)
+			if _spawned_reward and not _spawned_reward.collected.is_connected(_on_reward_collected):
+				_spawned_reward.connect("collected", Callable(self, "_on_reward_collected"))
+
+	# Notify listeners that status has been loaded/initialized
+	emit_signal("challenge_status_loaded", challenge_id, state, cleared)
 
 func load_completion_status() -> void:
 	if cleared:
@@ -351,6 +396,13 @@ func load_completion_status() -> void:
 func mark_as_completed() -> void:
 	cleared = true
 	_persist.save_values()
+
+func _on_reward_collected(_jar: FlyJar) -> void:
+	# Finalize completion on reward pickup
+	reward_pending = false
+	mark_as_completed()
+	emit_signal("cleared_challenge", challenge_id) # Legacy compatibility
+	_logger.info("BaseChallenge %s: Reward collected, challenge fully cleared" % challenge_id)
 
 func unregister_persistence() -> void:
 	_persist.unregister_persistent_class(challenge_id)

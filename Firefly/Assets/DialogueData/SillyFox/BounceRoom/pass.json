@@ -1,9 +1,9 @@
 {
   "identifier": "SlimeChallenge",
   "dialogue": [
-    "Well, look at you! Didn't think you'd actually make it.",
-    "Guess I owe you something nice after all.",
-    "Try not to get too cocky, alright?"
+    "well dang, you did it...",
+    "Honestly, I didn't think anyone could do it.",
+    "well I guess I gotta find a way to make it harder for the next goober"
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

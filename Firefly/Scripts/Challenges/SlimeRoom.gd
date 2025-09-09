@@ -4,6 +4,7 @@ class_name SlimeRoom
 # ——— SlimeRoom-Specific Exports ———
 @export_group("Slime Challenge")
 @export var goober_group_name: String = "SlimeRoomGoobers"  # Group name for goobers to track
+@export var goober_light: PackedScene 				   # Optional light effect to instance on bounce
 @export var target_player: Flyph                           # The player to track (export for easy assignment)
 @export var require_all_goobers: bool = true               # If false, just need to bounce on any goober
 @export var allow_repeat_bounces: bool = false             # If true, can bounce on same goober multiple times
@@ -26,6 +27,7 @@ var challenge_active: bool = false                    # Whether we're actively t
 # Internal tracking
 var _goober_connections: Dictionary = {}              # Track signal connections
 var _original_modulates: Dictionary = {}              # Store original goober colors
+var _goober_lights: Dictionary = {}                  # Map goober -> instantiated light node
 
 # ——— Group Helper Methods ———
 
@@ -121,6 +123,12 @@ func _on_challenge_succeed() -> Dictionary:
 func _on_challenge_fail(reason: String) -> Dictionary:
 	challenge_active = false
 	
+	# Cleanup any spawned goober lights on fail
+	for light in _goober_lights.values():
+		if is_instance_valid(light):
+			light.queue_free()
+	_goober_lights.clear()
+	
 	return {
 		"reason": reason,
 		"bounced_count": bounced_goobers.size(),
@@ -133,6 +141,12 @@ func _on_challenge_reset() -> void:
 	bounced_goobers.clear()
 	ground_timer = 0.0
 	is_on_ground = false
+
+	# Also cleanup lights on reset to avoid leftovers between runs
+	for light in _goober_lights.values():
+		if is_instance_valid(light):
+			light.queue_free()
+	_goober_lights.clear()
 	_update_visual_feedback()
 
 func _validate_player_requirements() -> bool:
@@ -203,6 +217,14 @@ func _on_goober_bounced(bounced_goober: goober) -> void:
 	# Add to bounced list
 	if not bounced_goober in bounced_goobers:
 		bounced_goobers.append(bounced_goober)
+
+	# Instance goober light on first valid bounce
+	if goober_light and is_instance_valid(bounced_goober):
+		if not _goober_lights.has(bounced_goober) or not is_instance_valid(_goober_lights.get(bounced_goober, null)):
+			var light_instance := goober_light.instantiate()
+			if light_instance:
+				bounced_goober.add_child(light_instance)
+				_goober_lights[bounced_goober] = light_instance
 	
 	_update_visual_feedback()
 	
@@ -294,6 +316,11 @@ func _load_custom_save_data(save_data: Dictionary) -> void:
 func _exit_tree() -> void:
 	_disconnect_all_goobers()
 	_restore_original_colors()
+	# Cleanup lights on exit
+	for light in _goober_lights.values():
+		if is_instance_valid(light):
+			light.queue_free()
+	_goober_lights.clear()
 	super._exit_tree()
 
 # ——— Public API ———
@@ -331,6 +358,13 @@ func remove_goober(goober_to_remove: goober) -> void:
 	goober_to_remove.remove_from_group(goober_group_name)
 	bounced_goobers.erase(goober_to_remove)
 	_original_modulates.erase(goober_to_remove)
+
+	# Cleanup any associated light
+	if _goober_lights.has(goober_to_remove):
+		var light = _goober_lights[goober_to_remove]
+		if is_instance_valid(light):
+			light.queue_free()
+		_goober_lights.erase(goober_to_remove)
 	
 	_update_visual_feedback()
 	_logger.info("SlimeRoom %s: Removed goober from group, total count: %d" % [challenge_id, _get_goober_count()])

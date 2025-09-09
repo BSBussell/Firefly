@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://52vkpp5l5cdo"]
+[gd_scene load_steps=39 format=3 uid="uid://52vkpp5l5cdo"]
 
 [ext_resource type="Script" path="res://Scripts/Spring/Spring.gd" id="1_bfd0d"]
 [ext_resource type="Texture2D" uid="uid://c0o0qr43cv74f" path="res://Assets/Graphics/Mechanics/blue_spring.png" id="2_f2or3"]
@@ -237,11 +237,18 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3es8a"]
 size = Vector2(10, 8)
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_b3sj7"]
+random_pitch = 1.05
+streams_count = 1
+stream_0/stream = ExtResource("3_454p6")
+stream_0/weight = 1.0
+
 [node name="Spring" type="Area2D" node_paths=PackedStringArray("boing_", "sprite_2d")]
 collision_layer = 96
 script = ExtResource("1_bfd0d")
 boing_ = NodePath("Boing!")
 sprite_2d = NodePath("Sprite2D")
+IS_BLUE = true
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -1
@@ -259,7 +266,7 @@ position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_3es8a")
 
 [node name="Boing!" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_454p6")
+stream = SubResource("AudioStreamRandomizer_b3sj7")
 bus = &"SFX"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

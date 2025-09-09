@@ -429,11 +429,7 @@ func set_input_axis(delta: float) -> void:
 		horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
 		vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
 
-	print(vertical_axis)
-	#if horizontal_axis == 0.5:
-		#horizontal_axis = 1.0
-	#elif horizontal_axis == -0.5:
-		#horizontal_axis = -1.0
+	
 
 	# If we've just pressed an input then unlock the direction (so silly players
 	# can regain control if they want to)
@@ -1202,14 +1198,21 @@ func kill():
 func connect_to_death(method: Callable):
 
 	connect("dead", method)
+	
+var death_disabled: bool = false
+func disable_death() -> void:
+	death_disabled = true
+	
+func enable_death() -> void:
+	death_disabled = false
 
 # Ways of death:
 func _on_hazard_detector_area_entered(_area):
-	if not dying:
+	if not dying and not death_disabled:
 		kill()
 
 func _on_hazard_detector_body_entered(_body):
-	if not dying:
+	if not dying and not death_disabled:
 		kill()
 
 # Sets the given points as the players respawn point
@@ -1269,3 +1272,7 @@ func _on_rope_detector_body_entered(body):
 	var segment = body as SpitSegment
 	if segment and not stuck_segment and not dying:
 		enter_rope(segment)
+
+
+func face_player_right():
+	animation.flip_h = false

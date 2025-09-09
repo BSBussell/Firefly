@@ -1,4 +1,4 @@
-[gd_scene load_steps=132 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=142 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
 [ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -30,7 +30,9 @@
 [ext_resource type="AudioStream" uid="uid://nyfj11454aan" path="res://Assets/SFX/Player/Running.wav" id="19_pmf6f"]
 [ext_resource type="AudioStream" uid="uid://bahbkt2kqpg2w" path="res://Assets/SFX/Water/underWater.mp3" id="20_j21pw"]
 [ext_resource type="AudioStream" uid="uid://c86u0dij278a" path="res://Assets/SFX/Water/getting_out_of_water.mp3" id="21_g6yjb"]
+[ext_resource type="Script" path="res://Scenes/Player/JumpingSFX.gd" id="23_l7b0j"]
 [ext_resource type="AudioStream" uid="uid://dexpkegjbcfsv" path="res://Assets/SFX/Mechanics/rope/rope_creak.mp3" id="23_oxbt6"]
+[ext_resource type="AudioStream" uid="uid://fd4w1y25toyj" path="res://Assets/SFX/Player/jump_3.mp3" id="24_524w1"]
 [ext_resource type="Script" path="res://Scripts/Player/GlowManager.gd" id="25_5it1v"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerStates/Grounded.gd" id="28_u1lt2"]
 [ext_resource type="AudioStream" uid="uid://boqdipngdont3" path="res://Assets/SFX/Player/flap.mp3" id="29_0m3rd"]
@@ -685,6 +687,55 @@ size = Vector2(0, 10)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oeqmw"]
 size = Vector2(0, 6)
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_vob34"]
+random_pitch = 1.5
+streams_count = 1
+stream_0/stream = ExtResource("15_o0d2x")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_pr04r"]
+playback_mode = 1
+random_pitch = 1.25
+streams_count = 1
+stream_0/stream = ExtResource("12_m3poj")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_mi87u"]
+random_pitch = 1.15
+streams_count = 1
+stream_0/stream = ExtResource("24_524w1")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_aqeg8"]
+random_pitch = 1.25
+streams_count = 1
+stream_0/stream = ExtResource("17_r3q20")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7bswb"]
+random_pitch = 1.25
+streams_count = 1
+stream_0/stream = ExtResource("17_r3q20")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_5dbch"]
+random_pitch = 1.25
+streams_count = 1
+stream_0/stream = ExtResource("14_hplrh")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ncsgn"]
+random_pitch = 1.1
+streams_count = 1
+stream_0/stream = ExtResource("19_pmf6f")
+stream_0/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_evglp"]
+random_pitch = 1.25
+streams_count = 1
+stream_0/stream = ExtResource("19_5b1pc")
+stream_0/weight = 1.0
+
 [sub_resource type="LabelSettings" id="LabelSettings_iomiv"]
 font = ExtResource("10_nb4h7")
 font_size = 8
@@ -1165,45 +1216,53 @@ hit_from_inside = true
 [node name="Audio" type="Node2D" parent="."]
 
 [node name="LandingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("15_o0d2x")
+stream = SubResource("AudioStreamRandomizer_vob34")
 volume_db = -10.0
 pitch_scale = 1.5
 bus = &"SFX"
 
-[node name="JumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("12_m3poj")
-volume_db = -5.0
-pitch_scale = 0.66
+[node name="WallHitSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = SubResource("AudioStreamRandomizer_vob34")
+volume_db = -12.0
+pitch_scale = 2.0
 bus = &"SFX"
 
+[node name="JumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
+stream = SubResource("AudioStreamRandomizer_pr04r")
+volume_db = -7.0
+pitch_scale = 0.66
+bus = &"SFX"
+script = ExtResource("23_l7b0j")
+
 [node name="CrouchJumpingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("12_m3poj")
-volume_db = -5.0
-pitch_scale = 0.6
+stream = SubResource("AudioStreamRandomizer_mi87u")
+volume_db = -7.0
+pitch_scale = 0.7
 bus = &"SFX"
 
 [node name="SlidingSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("17_r3q20")
+stream = SubResource("AudioStreamRandomizer_aqeg8")
+volume_db = -5.0
 bus = &"SFX"
 
 [node name="WallSlideSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("17_r3q20")
+stream = SubResource("AudioStreamRandomizer_7bswb")
 pitch_scale = 2.0
 bus = &"SFX"
 
 [node name="WallJumpSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("14_hplrh")
+stream = SubResource("AudioStreamRandomizer_5dbch")
 volume_db = -7.0
 pitch_scale = 1.33
 bus = &"SFX"
 
 [node name="RunSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("19_pmf6f")
-volume_db = -5.0
+stream = SubResource("AudioStreamRandomizer_ncsgn")
+volume_db = -7.0
 bus = &"SFX"
 
 [node name="LightSplashSFX" type="AudioStreamPlayer2D" parent="Audio"]
-stream = ExtResource("19_5b1pc")
+stream = SubResource("AudioStreamRandomizer_evglp")
 volume_db = -5.0
 bus = &"SFX"
 

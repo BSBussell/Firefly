@@ -1,8 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://dtblwt5hi5l4c"]
+[gd_scene load_steps=18 format=3 uid="uid://dtblwt5hi5l4c"]
 
-[ext_resource type="Texture2D" uid="uid://cbwo3ot4bpeu5" path="res://Assets/Graphics/Checkpoint/checkpoint.png" id="1_u1gd0"]
 [ext_resource type="Script" path="res://Scripts/CheckPoints/checkpoint.gd" id="1_y2n64"]
-[ext_resource type="Texture2D" uid="uid://dsyq2nuyfu5bb" path="res://Assets/Graphics/Checkpoint/checkpointlit.png" id="2_ahown"]
+[ext_resource type="Texture2D" uid="uid://d0o80qayw33ih" path="res://Assets/Graphics/Checkpoint/checkpoint-asht.png" id="2_37j5x"]
+[ext_resource type="Texture2D" uid="uid://kjhjjna7wsw1" path="res://Assets/Graphics/Checkpoint/checkpoint-emptyt.png" id="2_k7udk"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="5_qok0a"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/PlayerSpotlight.gd" id="6_kh6md"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="7_ywx6k"]
@@ -11,14 +11,22 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_500oe"]
 size = Vector2(15, 18)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6oo6i"]
+atlas = ExtResource("2_37j5x")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k2qjl"]
+atlas = ExtResource("2_k7udk")
+region = Rect2(0, 0, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_4rmqn"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_u1gd0")
+"texture": SubResource("AtlasTexture_6oo6i")
 }, {
 "duration": 1.0,
-"texture": ExtResource("2_ahown")
+"texture": SubResource("AtlasTexture_k2qjl")
 }],
 "loop": false,
 "name": &"default",
@@ -38,13 +46,18 @@ _data = [Vector2(0, 0.651897), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.0963558, 0.0, 0
 point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_o7rym"]
-offsets = PackedFloat32Array(0.9, 0.995763)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+offsets = PackedFloat32Array(0, 0.5, 0.9, 0.995763)
+colors = PackedColorArray(0.890196, 0.921569, 0.34902, 1, 0.890196, 0.294118, 0.313726, 1, 0.890196, 0.294118, 0.313726, 1, 0, 0, 0, 0)
 metadata/_snap_enabled = true
 
 [sub_resource type="Curve" id="Curve_xfwur"]
-_data = [Vector2(0.6, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.2, 0.5), 0.0, 0.0456535, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_cddnv"]
+offsets = PackedFloat32Array(0, 0.7, 1)
+colors = PackedColorArray(0.890196, 0.921569, 0.34902, 1, 0.890196, 0.286275, 0.34902, 1, 1, 1, 1, 0)
 metadata/_snap_enabled = true
 
 [node name="CheckpointArea" type="Area2D"]
@@ -64,7 +77,7 @@ sprite_frames = SubResource("SpriteFrames_4rmqn")
 
 [node name="Spotlight" type="PointLight2D" parent="."]
 position = Vector2(0, -2)
-color = Color(0.890196, 0.921569, 0.34902, 1)
+color = Color(0.890196, 0.615686, 0.34902, 1)
 energy = 0.6
 range_layer_min = -99
 range_item_cull_mask = 3
@@ -105,22 +118,22 @@ color_ramp = SubResource("Gradient_o7rym")
 
 [node name="lightparticles" type="CPUParticles2D" parent="."]
 z_index = -1
-position = Vector2(0, -9)
+position = Vector2(0.5, -9)
 emitting = false
+amount = 24
 lifetime = 0.6
 speed_scale = 0.75
-texture = ExtResource("7_ywx6k")
-emission_shape = 3
-emission_rect_extents = Vector2(6, 1)
-gravity = Vector2(0, -100)
-angular_velocity_min = -61.06
-angular_velocity_max = 152.98
+emission_shape = 1
+emission_sphere_radius = 2.5
+gravity = Vector2(2.08165e-12, -60)
+angular_velocity_min = 300.0
+angular_velocity_max = 300.0
 angle_min = -45.0
 angle_max = 45.0
-scale_amount_min = 0.51
-scale_amount_max = 1.5
+scale_amount_min = 8.0
+scale_amount_max = 8.0
 scale_amount_curve = SubResource("Curve_xfwur")
-color = Color(0.890196, 0.921569, 0.34902, 1)
+color_ramp = SubResource("Gradient_cddnv")
 
 [node name="CheckPointLit" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_bqlvb")

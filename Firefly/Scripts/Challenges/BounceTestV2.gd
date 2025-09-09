@@ -87,9 +87,9 @@ func _validate_player_requirements() -> bool:
 
 func _disable_challenge_specific_triggers() -> void:
 	if gate_1:
-		gate_1.monitoring = false
+		gate_1.set_deferred("monitoring", false)
 	if gate_2:
-		gate_2.monitoring = false
+		gate_2.set_deferred("monitoring", false)
 
 # ——— Gate Event Handlers ———
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bn0ibiwauibvx"]
+[gd_scene load_steps=42 format=3 uid="uid://bn0ibiwauibvx"]
 
 [ext_resource type="Script" path="res://Scenes/Enemies/walking_enemy.gd" id="1_w3xqf"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/SquishCenter.gd" id="2_vy3sh"]
@@ -6,8 +6,73 @@
 [ext_resource type="AudioStream" uid="uid://r4h4rsiyb1fd" path="res://Assets/SFX/slime/wet_squish_1.mp3" id="3_mxono"]
 [ext_resource type="Curve" uid="uid://150nk1os3gx8" path="res://Scenes/Player/bounce_curve_exagerated.tres" id="3_sdrd7"]
 [ext_resource type="Texture2D" uid="uid://c78wkglhqetbg" path="res://Assets/Graphics/Characters/townSlime/slime_move.png" id="4_of25e"]
+[ext_resource type="Texture2D" uid="uid://us7u40j7cwl3" path="res://Assets/Graphics/Characters/townSlime/slime_idle1.png" id="5_etejh"]
 [ext_resource type="AudioStream" uid="uid://cuojwghlwv8wb" path="res://Assets/SFX/slime/slime_pop.mp3" id="6_auxxk"]
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="8_dreny"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0gak"]
+atlas = ExtResource("4_of25e")
+region = Rect2(0, 216, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1idps"]
+atlas = ExtResource("4_of25e")
+region = Rect2(80, 216, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6odrq"]
+atlas = ExtResource("4_of25e")
+region = Rect2(160, 216, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2uhia"]
+atlas = ExtResource("4_of25e")
+region = Rect2(240, 216, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rr5m2"]
+atlas = ExtResource("4_of25e")
+region = Rect2(320, 216, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_70teb"]
+atlas = ExtResource("4_of25e")
+region = Rect2(400, 216, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c5tqs"]
+atlas = ExtResource("4_of25e")
+region = Rect2(480, 216, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ol8yv"]
+atlas = ExtResource("4_of25e")
+region = Rect2(0, 288, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxh0f"]
+atlas = ExtResource("4_of25e")
+region = Rect2(80, 288, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5s51"]
+atlas = ExtResource("4_of25e")
+region = Rect2(160, 288, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_roxvq"]
+atlas = ExtResource("4_of25e")
+region = Rect2(240, 288, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bgsib"]
+atlas = ExtResource("4_of25e")
+region = Rect2(320, 288, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_et8eo"]
+atlas = ExtResource("4_of25e")
+region = Rect2(400, 288, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5tt0"]
+atlas = ExtResource("4_of25e")
+region = Rect2(480, 288, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fvo63"]
+atlas = ExtResource("5_etejh")
+region = Rect2(0, 288, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_08nqt"]
+atlas = ExtResource("5_etejh")
+region = Rect2(80, 288, 80, 72)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0i8q0"]
 atlas = ExtResource("4_of25e")
@@ -37,8 +102,79 @@ region = Rect2(400, 72, 80, 72)
 atlas = ExtResource("4_of25e")
 region = Rect2(480, 72, 80, 72)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hhrcc"]
+atlas = ExtResource("5_etejh")
+region = Rect2(0, 72, 80, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3pl2t"]
+atlas = ExtResource("5_etejh")
+region = Rect2(80, 72, 80, 72)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_vrbk6"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0gak")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1idps")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6odrq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2uhia")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rr5m2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_70teb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c5tqs")
+}],
+"loop": true,
+"name": &"Blue",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ol8yv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxh0f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p5s51")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_roxvq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bgsib")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_et8eo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a5tt0")
+}],
+"loop": true,
+"name": &"Green",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fvo63")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_08nqt")
+}],
+"loop": true,
+"name": &"GreenIdle",
+"speed": 6.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0i8q0")
@@ -62,8 +198,19 @@ animations = [{
 "texture": SubResource("AtlasTexture_y3e5a")
 }],
 "loop": true,
-"name": &"Walking",
-"speed": 5.0
+"name": &"Orange",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hhrcc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3pl2t")
+}],
+"loop": true,
+"name": &"OrangeIdle",
+"speed": 6.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s5ues"]
@@ -77,6 +224,12 @@ size = Vector2(18, 13.5)
 radius = 3.0
 height = 14.0
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_mjqd3"]
+random_pitch = 1.25
+streams_count = 1
+stream_0/stream = ExtResource("6_auxxk")
+stream_0/weight = 1.0
+
 [sub_resource type="Curve" id="Curve_y0nj0"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.1, 1), 1.4, 0.0, 0, 0, Vector2(0.9, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
@@ -89,7 +242,7 @@ metadata/_snap_enabled = true
 
 [node name="WalkingEnemy" type="CharacterBody2D"]
 collision_layer = 0
-collision_mask = 34
+collision_mask = 50
 script = ExtResource("1_w3xqf")
 
 [node name="SquishNode" type="Node2D" parent="."]
@@ -100,9 +253,9 @@ bounce_curve = ExtResource("3_sdrd7")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SquishNode"]
 position = Vector2(6, -12)
 sprite_frames = SubResource("SpriteFrames_vrbk6")
-animation = &"Walking"
-autoplay = "Walking"
-frame_progress = 0.243441
+animation = &"Blue"
+autoplay = "Orange"
+frame_progress = 0.525549
 speed_scale = 0.9
 
 [node name="Raycasts" type="Node2D" parent="."]
@@ -110,13 +263,13 @@ speed_scale = 0.9
 [node name="FrontRayCast" type="RayCast2D" parent="Raycasts"]
 position = Vector2(0, -5)
 target_position = Vector2(14, 0)
-collision_mask = 34
+collision_mask = 50
 collide_with_areas = true
 
 [node name="BelowRayCast" type="RayCast2D" parent="Raycasts"]
 position = Vector2(12, -3)
 target_position = Vector2(0, 9)
-collision_mask = 34
+collision_mask = 50
 collide_with_areas = true
 
 [node name="Collider" type="CollisionShape2D" parent="."]
@@ -141,6 +294,8 @@ shape = SubResource("RectangleShape2D_lpitg")
 
 [node name="HazardArea" type="Area2D" parent="."]
 collision_layer = 0
+monitoring = false
+monitorable = false
 
 [node name="Collider2" type="CollisionShape2D" parent="HazardArea"]
 position = Vector2(-2.27373e-13, -4)
@@ -149,14 +304,14 @@ shape = SubResource("CapsuleShape2D_em5hc")
 debug_color = Color(0.986904, 0, 0.318713, 0.42)
 
 [node name="Pop" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("6_auxxk")
+stream = SubResource("AudioStreamRandomizer_mjqd3")
 volume_db = -8.0
 bus = &"SFX"
 
 [node name="Walking" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_mxono")
-volume_db = -7.0
-pitch_scale = 0.7
+volume_db = -15.0
+pitch_scale = 1.3
 autoplay = true
 max_distance = 320.0
 attenuation = 3.86375
@@ -186,7 +341,6 @@ angle_max = 45.0
 scale_amount_min = 0.2
 scale_amount_max = 0.3
 scale_amount_curve = SubResource("Curve_y0nj0")
-color = Color(1, 0.294118, 0.301961, 1)
 color_ramp = SubResource("Gradient_icyqj")
 
 [connection signal="body_entered" from="Bouncy" to="Bouncy" method="_on_body_entered"]

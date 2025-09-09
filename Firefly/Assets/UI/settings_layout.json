@@ -41,6 +41,72 @@
 			}
 		}
 	},
+	"Control_Settings": {
+		"text": "Controls",
+		"id": 4,
+		"items": {
+			"move_left": {
+				"label": "Left",
+				"description": "Move the player character left",
+				"type": "input_bind",
+				"action_name": "Left"
+			},
+			"move_right": {
+				"label": "Right",
+				"description": "Move the player character right",
+				"type": "input_bind",
+				"action_name": "Right"
+			},
+			"jump": {
+				"label": "Jump",
+				"description": "Make the player jump",
+				"type": "input_bind",
+				"action_name": "Jump"
+			},
+			"interact": {
+				"label": "Interact",
+				"description": "Interact with objects and NPCs",
+				"type": "input_bind",
+				"action_name": "interact"
+			},
+			"crouch": {
+				"label": "Crouch/Slide",
+				"description": "Crouch or slide",
+				"type": "input_bind",
+				"action_name": "Down"
+			},
+			"dive": {
+				"label": "Dive",
+				"description": "Dive down quickly",
+				"type": "input_bind",
+				"action_name": "Dive"
+			},
+			"glow_up": {
+				"label": "Glow Up",
+				"description": "Increase glow level",
+				"type": "input_bind",
+				"action_name": "Glow_Up"
+			},
+			"glow_down": {
+				"label": "Glow Down",
+				"description": "Decrease glow level",
+				"type": "input_bind",
+				"action_name": "Glow_Down"
+			},
+			"pause": {
+				"label": "Pause",
+				"description": "Pause the game",
+				"type": "input_bind",
+				"action_name": "Pause"
+			},
+			"reset": {
+				"label": "Respawn",
+				"description": "Force Flyph to Respawn at the mosto recently activated Shrine",
+				"type": "input_bind",
+				"action_name": "Kill"
+			}
+		}
+	},
 	"Graphic_Settings": {
 		"text": "Graphics",
 		"id": 1,
@@ -135,69 +201,33 @@
 			}
 		}
 	},
-	"Control_Settings": {
-		"text": "Controls",
-		"id": 4,
+	"Camera_Settings": {
+		"text": "Camera",
+		"id": 3,
 		"items": {
-			"move_left": {
-				"label": "Left",
-				"description": "Move the player character left",
-				"type": "input_bind",
-				"action_name": "Left"
+			"camera_lookahead": {
+				"label": "Lookahead",
+				"description": "Shift camera ahead of player movement",
+				"type": "boolean",
+				"config_key": "camera_lookahead"
 			},
-			"move_right": {
-				"label": "Right",
-				"description": "Move the player character right",
-				"type": "input_bind",
-				"action_name": "Right"
+			"lookahead_distance": {
+				"label": "Lookahead Distance",
+				"description": "How far the camera looks ahead (1–5)",
+				"type": "slider",
+				"config_key": "lookahead_distance",
+				"min": 1,
+				"max": 5,
+				"step": 1
 			},
-			"jump": {
-				"label": "Jump",
-				"description": "Make the player jump",
-				"type": "input_bind",
-				"action_name": "Jump"
-			},
-			"interact": {
-				"label": "Interact",
-				"description": "Interact with objects and NPCs",
-				"type": "input_bind",
-				"action_name": "interact"
-			},
-			"crouch": {
-				"label": "Crouch/Slide",
-				"description": "Crouch or slide",
-				"type": "input_bind",
-				"action_name": "Down"
-			},
-			"dive": {
-				"label": "Dive",
-				"description": "Dive down quickly",
-				"type": "input_bind",
-				"action_name": "Dive"
-			},
-			"glow_up": {
-				"label": "Glow Up",
-				"description": "Increase glow level",
-				"type": "input_bind",
-				"action_name": "Glow_Up"
-			},
-			"glow_down": {
-				"label": "Glow Down",
-				"description": "Decrease glow level",
-				"type": "input_bind",
-				"action_name": "Glow_Down"
-			},
-			"pause": {
-				"label": "Pause",
-				"description": "Pause the game",
-				"type": "input_bind",
-				"action_name": "Pause"
-			},
-			"reset": {
-				"label": "Respawn",
-				"description": "Force Flyph to Respawn at the mosto recently activated Shrine",
-				"type": "input_bind",
-				"action_name": "Kill"
+			"camera_speed": {
+				"label": "Camera Speed",
+				"description": "How quickly the camera follows (1–5)",
+				"type": "slider",
+				"config_key": "camera_speed",
+				"min": 1,
+				"max": 5,
+				"step": 1
 			}
 		}
 	},

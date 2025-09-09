@@ -1,8 +1,12 @@
 extends Area2D
 
+@export var Gems: GemManager = null
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	
+	if Gems == null:
+		Gems = $"../../GemManager"
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -25,5 +29,8 @@ func _on_body_entered(body):
 		new_velocity.y = player.jump_velocity
 		player.launch(new_velocity)
 		#player.give_boost(player.movement_data.GLOW_UPGRADE_BOOST)
+		
+		# Show gimms now
+		Gems.show_gems()
 		
 		queue_free()

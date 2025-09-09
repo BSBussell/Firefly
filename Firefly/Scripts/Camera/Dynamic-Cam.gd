@@ -11,6 +11,42 @@ extends State
 ## The default acceleration
 @export var BaseAcceleration: Vector2 = Vector2(0.6, 0.6)
 
+@export_category("Follow/Blend")
+## Exponential base used to derive per-axis blend from follow speed
+@export var Blend_Exp_Base: float = 0.5
+## Round the final camera position to whole pixels
+@export var Round_Final_Position: bool = true
+
+@export_category("Lookahead")
+## Enable/disable horizontal lookahead offset
+@export var Use_Lookahead: bool = false
+## If player's abs X velocity >= this, start applying lookahead
+@export var Lookahead_Speed_Threshold: float = 152.0
+## Multiplier to determine max speed reference (threshold * multiplier)
+@export var Lookahead_Max_Speed_Multiplier: float = 1.5
+## Maximum horizontal offset applied by lookahead (pixels)
+@export var Lookahead_Max_Offset_X: float = 30.0
+## Blend rate when approaching the lookahead offset
+@export var Lookahead_Arrive_Blend: float = 0.025
+## Blend rate when returning from lookahead back to zero
+@export var Lookahead_Return_Blend: float = 0.05
+## Disable lookahead when the player is dying
+@export var Dying_Disables_Lookahead: bool = true
+
+@export_category("Target Grouping")
+## Speed at which multi-target blend approaches the desired blend
+@export var MultiTarget_Blend_Approach: float = 0.01
+## Speed at which grouping offset lerps toward its target when set changes
+@export var Grouping_Offset_Approach: float = 0.01
+## Reset grouping smoothing when the active target set changes
+@export var Reset_Smoothing_On_Target_Change: bool = true
+## Cursor color used briefly when target set changes
+@export var Target_Change_Debug_Color: Color = Color("#00FFFF")
+## Respect target_snap on active CameraTargets
+@export var Allow_Target_Snap: bool = true
+## Reset the group-blend weight to the new targets' preferred blend when the set changes
+@export var Reset_Group_Blend_On_Target_Change: bool = true
+
 @onready var cursor = $"../../Cursor"
 @onready var control: PlayerCam 
 @onready var player: Flyph
@@ -25,12 +61,34 @@ var follow_speed: Vector2 = Vector2.ZERO
 
 var current_target_offset: Vector2 = Vector2.ZERO
 
+# Cached base values and effective values for config-driven tuning
+var _base_max_speed: Vector2
+var _base_min_speed: Vector2
+var _base_accel: Vector2
+var Effective_Maximum_Speed: Vector2
+var Effective_Minimum_Speed: Vector2
+var Effective_BaseAcceleration: Vector2
+var _camera_speed_index: int = 3
+var _camera_speed_scale: float = 1.0
+
+func _ready():
+	# Cache base values from exports
+	_base_max_speed = Maximum_Speed
+	_base_min_speed = Minimum_Speed
+	_base_accel = BaseAcceleration
+	
+	# Listen for settings changes and initialize from config
+	_config.connect_to_config_changed(Callable(self, "config_changed"))
+	update_settings_from_config()
+
 
 func enter() -> void:
 	
 	
-	accel = BaseAcceleration
-	follow_speed = Minimum_Speed
+	# Refresh settings and apply effective values
+	update_settings_from_config()
+	accel = Effective_BaseAcceleration
+	follow_speed = Effective_Minimum_Speed
 	
 	control = parent as PlayerCam
 	player = control.Player
@@ -61,21 +119,24 @@ func move_camera(delta):
 	
 	
 	# Smoothly move the camera towards the target position
-	follow_speed.x = move_toward(follow_speed.x, Maximum_Speed.x, accel.x)
+	follow_speed.x = move_toward(follow_speed.x, Effective_Maximum_Speed.x, accel.x)
 	#min(Maximum_Speed.x, follow_speed.x + accel.x)
-	follow_speed.y = move_toward(follow_speed.y, Maximum_Speed.y, accel.y)
+	follow_speed.y = move_toward(follow_speed.y, Effective_Maximum_Speed.y, accel.y)
 	#min(Maximum_Speed.y, follow_speed.y + accel.y)
 	
 	# Calculate Blend
 	var blend: Vector2 = Vector2.ZERO
-	blend.x = 1 - pow(0.5, follow_speed.x * delta)
-	blend.y = 1 - pow(0.5, follow_speed.y * delta)
+	blend.x = 1 - pow(Blend_Exp_Base, follow_speed.x * delta)
+	blend.y = 1 - pow(Blend_Exp_Base, follow_speed.y * delta)
 	
 	# Gerblesh
 	control.actual_cam_pos.x = _gerblesh.lerpi(control.actual_cam_pos.x, target_position.x, blend.x)	
 	control.actual_cam_pos.y = _gerblesh.lerpi(control.actual_cam_pos.y, target_position.y, blend.y)
 	
-	control.global_position = control.actual_cam_pos.round()
+	if Round_Final_Position:
+		control.global_position = control.actual_cam_pos.round()
+	else:
+		control.global_position = control.actual_cam_pos
 	control.camera_2d.align()
 
 
@@ -84,6 +145,7 @@ var smoothing_factor_2: float = 0.0
 var dict_hash: int = 0
 var settled: bool = true
 var current_grouping_offset: Vector2 = Vector2.ZERO
+var _had_snap_last_frame: bool = false
 
 func calculate_target_position(delta: float) -> Vector2:
 	
@@ -91,9 +153,8 @@ func calculate_target_position(delta: float) -> Vector2:
 	var position: Vector2 = base_target
 	var offset: Vector2 = Vector2.ZERO
 	
-	if not player.dying:
+	if not (Dying_Disables_Lookahead and player.dying):
 		offset = calc_horiz_offset(delta)
-		#position += offset
 	
 	
 	# Check if there are any targets to look at
@@ -102,11 +163,12 @@ func calculate_target_position(delta: float) -> Vector2:
 	# Check if the list of targets has changed
 	var id = control.targets.hash()
 	if id != dict_hash:
-		
-		
 		dict_hash = id
-		smoothing_factor_2 = 0
-		cursor.modulate = "#00FFFF";
+		if Reset_Smoothing_On_Target_Change:
+			smoothing_factor_2 = 0
+		if Reset_Group_Blend_On_Target_Change:
+			multi_target_smoothing = get_targets_blend()
+		cursor.modulate = Target_Change_Debug_Color
 	else:
 		cursor.modulate = Cursor_Color
 	
@@ -119,7 +181,7 @@ func calculate_target_position(delta: float) -> Vector2:
 		var grouping_offset: Vector2
 		grouping_offset = get_targets_offset(position, targets_center)
 		
-		smoothing_factor_2 = move_toward(smoothing_factor_2, 1.0, 0.01)
+		smoothing_factor_2 = move_toward(smoothing_factor_2, 1.0, Grouping_Offset_Approach)
 		
 		# Lerp towards this new offset
 		current_grouping_offset = _gerblesh.lerpiVec(current_grouping_offset, grouping_offset, smoothing_factor_2)
@@ -135,7 +197,7 @@ func calculate_target_position(delta: float) -> Vector2:
 		dict_hash = 0
 		
 		# Reset the smoothing
-		smoothing_factor_2 = move_toward(smoothing_factor_2, 1.0, 0.01)
+		smoothing_factor_2 = move_toward(smoothing_factor_2, 1.0, Grouping_Offset_Approach)
 		
 		# Lerp towards our origin
 		current_grouping_offset = _gerblesh.lerpiVec(current_grouping_offset, Vector2.ZERO, smoothing_factor_2)
@@ -144,16 +206,20 @@ func calculate_target_position(delta: float) -> Vector2:
 		
 		
 		
-	if not player.dying:
+	if not (Dying_Disables_Lookahead and player.dying):
 		#print("DC: Targets Offset", targets_center)
 		#print("DC: Grouping Offset: ",current_grouping_offset)
 		#print("DC: Position: ", position)
 		# I want it to do this normally
 		position += current_grouping_offset
-		
+		if Use_Lookahead:
+			position += offset
+		var has_snap := false
 		for target in control.targets.values():
-			if target.target_snap:
+			if Allow_Target_Snap and target.target_snap:
 				position = targets_center
+				has_snap = true
+		_had_snap_last_frame = has_snap
 	
 	return position
 
@@ -170,13 +236,13 @@ func calc_horiz_offset(_delta: float) -> Vector2:
 	
 	# If moving quickly horizontally (and not when wall jumping)
 	if player_speed.x >= player.speed and not player.wallJumping:
-		
-		# This is player lowest form max speed * 1.5
-		var max_horiz_speed: float = 152 * 1.5
-		var horiz_offset: float = 30 * sign(player.velocity.x)
-		
+
+		# Establish max reference and target offset from designer knobs
+		var max_horiz_speed: float = Lookahead_Speed_Threshold * Lookahead_Max_Speed_Multiplier
+		var horiz_offset: float = Lookahead_Max_Offset_X * sign(player.velocity.x)
+
 		# Normalize our blending
-		var normed_blend = (player_speed.x - 152) / (max_horiz_speed - 152)
+		var normed_blend = (player_speed.x - Lookahead_Speed_Threshold) / (max_horiz_speed - Lookahead_Speed_Threshold)
 		
 		
 		# Using lerp to have us approach horiz offset as speed approaches max
@@ -184,13 +250,13 @@ func calc_horiz_offset(_delta: float) -> Vector2:
 		
 		
 		# Slowly move the offset to this
-		blend.x = 0.025
+		blend.x = Lookahead_Arrive_Blend
 		
 	
 	
 	# If we are returning to zero, ease into it
 	if current_target_offset != Vector2.ZERO and offset == Vector2.ZERO:
-		blend = Vector2(0.05, 0.05)
+		blend = Vector2(Lookahead_Return_Blend, Lookahead_Return_Blend)
 		
 	
 
@@ -236,7 +302,7 @@ func get_targets_offset(base_target: Vector2, targets_center: Vector2) -> Vector
 	var blend_max = get_targets_blend()
 	
 	# Update the smoothing factor
-	multi_target_smoothing = move_toward(multi_target_smoothing, blend_max, 0.01)
+	multi_target_smoothing = move_toward(multi_target_smoothing, blend_max, MultiTarget_Blend_Approach)
 	
 	# Smoothly transition the offset towards the new center
 	var current_grouping_position: Vector2 = Vector2.ZERO
@@ -251,3 +317,65 @@ func get_targets_offset(base_target: Vector2, targets_center: Vector2) -> Vector
 func check_state() -> State:
 	
 	return null
+
+
+# Settings integration
+func config_changed():
+	update_settings_from_config()
+
+func update_settings_from_config():
+	# Use lookahead toggle
+	var la = _config.get_setting("camera_lookahead")
+	if la != null:
+		Use_Lookahead = bool(la)
+	
+	# Camera speed (1-5)
+	var idx = int(_config.get_setting("camera_speed"))
+	if idx <= 0:
+		idx = 3
+	_camera_speed_index = clamp(idx, 1, 5)
+	_camera_speed_scale = _camera_speed_to_scale(_camera_speed_index)
+	
+	# Apply effective speeds
+	Effective_Maximum_Speed = _base_max_speed * _camera_speed_scale
+	Effective_Minimum_Speed = _base_min_speed * _camera_speed_scale
+	Effective_BaseAcceleration = _base_accel * _camera_speed_scale
+	# Update current accel immediately so changes take effect mid-run
+	accel = Effective_BaseAcceleration
+	
+	# Lookahead distance preset (1–5)
+	var dist_idx = int(_config.get_setting("lookahead_distance"))
+	if dist_idx <= 0:
+		dist_idx = 2
+	Lookahead_Max_Offset_X = _lookahead_index_to_offset(clamp(dist_idx, 1, 5))
+
+func _camera_speed_to_scale(idx: int) -> float:
+	match idx:
+		1:
+			return 0.75
+		2:
+			return 0.9
+		3:
+			return 1.0
+		4:
+			return 1.2
+		5:
+			return 1.5
+		_:
+			return 1.0
+
+func _lookahead_index_to_offset(idx: int) -> float:
+	# Map 1–5 to subtle → far
+	match idx:
+		1:
+			return 12.0
+		2:
+			return 18.0
+		3:
+			return 30.0
+		4:
+			return 40.0
+		5:
+			return 48.0
+		_:
+			return Lookahead_Max_Offset_X

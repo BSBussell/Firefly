@@ -7,12 +7,12 @@ extends Spring
 ## Returns true if we're blocking the spring
 func block_spring():
 
-	if not flyph.is_on_floor():
-		return false
+	#if not flyph.is_on_floor():
+		#return false
 
-	if flyph.prev_velocity_y == 0:
-		print("Blocked")
-		return true
+	#if flyph.prev_velocity_y == 0:
+		#print("Blocked")
+		#return true
 
 	return false
 
@@ -34,7 +34,9 @@ func spring_down_fx() -> void:
 	
 	print("SPring Down Fx?")
 	flyph.hazard_detector.set_collision_mask_value(5, false)
+	flyph.disable_death()
 	await get_tree().create_timer(0.125).timeout
+	flyph.enable_death()
 	flyph.hazard_detector.set_collision_mask_value(5, true)
 	
 	pass

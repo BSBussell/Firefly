@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://chip4nl4vbfsi"]
+[gd_scene load_steps=15 format=3 uid="uid://chip4nl4vbfsi"]
 
 [ext_resource type="Script" path="res://Scenes/UI_Elements/Dialog/DialogAreaA.gd" id="1_eyvv4"]
 [ext_resource type="Texture2D" uid="uid://duferf2i8exuw" path="res://Assets/Graphics/UI/target.png" id="2_f1lte"]
 [ext_resource type="Texture2D" uid="uid://d08yuvealhtm1" path="res://Assets/Graphics/Characters/HedgeHog/Hedgehog Sprite Sheet.png" id="3_n7s4n"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_7v6e0"]
 
 [sub_resource type="Animation" id="Animation_eaf3s"]
 length = 0.001
@@ -125,6 +126,7 @@ animations = [{
 }]
 
 [node name="Zacharias" type="Area2D" node_paths=PackedStringArray("talk_target")]
+process_mode = 3
 disable_mode = 2
 collision_layer = 68
 collision_mask = 17
@@ -153,6 +155,12 @@ position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_mur2u")
 autoplay = "default"
 flip_h = true
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 1, 0.705882, 1)
+energy = 0.4
+texture = ExtResource("4_7v6e0")
+texture_scale = 0.5
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

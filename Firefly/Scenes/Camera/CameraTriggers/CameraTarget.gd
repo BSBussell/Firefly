@@ -19,10 +19,25 @@ extends Area2D
 ## Update Base Camera Acceleration. 
 @export var target_snap: bool = false
 
+## Distance-based activation radius. If > 0, the target
+## becomes active when the player is within this distance.
+@export var OnDistant: float = 150.0
+
+var enabled: bool = true
+
+func _ready():
+	# Allow camera systems to find targets without relying on sensors
+	add_to_group("camera_targets")
+
 func enable_target():
-	
+	# Keep collision-layer behavior for backward compatibility
 	set_collision_layer_value(7, true)
+	enabled = true
 
 func disable_target():
-	
+	# Keep collision-layer behavior for backward compatibility
 	set_collision_layer_value(7, false)
+	enabled = false
+
+func is_enabled() -> bool:
+	return enabled

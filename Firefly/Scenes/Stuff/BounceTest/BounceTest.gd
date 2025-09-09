@@ -19,6 +19,8 @@ signal challenge_reset(challenge_id: String)
 
 var player: Flyph
 var cleared: bool = false
+var reward_pending: bool = false
+var _spawned_reward: FlyJar = null
 
 enum State { IDLE, WAIT_AIR, AIRBORNE, COMPLETED }
 var state: BounceTest.State = BounceTest.State.IDLE
@@ -134,7 +136,7 @@ func _arm_run(start_gate: Area2D) -> void:
 	_airborne_time = 0.0
 	_frames_since_airborne = 0
 	if _finish_gate and not _finish_gate.monitoring:
-		_finish_gate.monitoring = true
+		_finish_gate.set_deferred("monitoring", true)
 	set_physics_process(true)
 	_emit_started()
 	_logger.info("BounceTest %s: Armed start=%s finish=%s state=%s" % [challenge_id, _gate_name(_start_gate), _gate_name(_finish_gate), str(state)])
@@ -166,10 +168,13 @@ func _succeed() -> void:
 	state = BounceTest.State.COMPLETED
 	set_physics_process(false)
 	_disable_triggers()
-	await _spawn_jar_and_focus()
-	mark_as_completed()
+	reward_pending = true
+	_persist.save_values()
+	_spawned_reward = _spawn_jar_and_focus()
+	if _spawned_reward and not _spawned_reward.collected.is_connected(_on_reward_collected):
+		_spawned_reward.connect("collected", Callable(self, "_on_reward_collected"))
 	_emit_success()
-	emit_signal("cleared_challenge", challenge_id) # backward compatibility
+	# Fully clear on reward collection
 	_logger.info("BounceTest %s: SUCCESS air_time=%.3f" % [challenge_id, _airborne_time])
 
 func _fail(reason: String = "") -> void:
@@ -193,29 +198,33 @@ func _reset() -> void:
 	_emit_reset()
 
 func _disable_triggers() -> void:
-	if gate_1: gate_1.monitoring = false
-	if gate_2: gate_2.monitoring = false
+	if gate_1: gate_1.set_deferred("monitoring", false)
+	if gate_2: gate_2.set_deferred("monitoring", false)
 	monitoring = false
 	modulate = Color(0.6, 0.6, 0.6, 0.8)
 
 # --------------------------------------------------
 # Reward + Camera Focus
 # --------------------------------------------------
-func _spawn_jar_and_focus() -> void:
+func _spawn_jar_and_focus() -> FlyJar:
 	if not jars:
-		return
+		return null
 	var jar_pos: Vector2 = reward_spawn.global_position if reward_spawn else (_finish_gate.global_position if _finish_gate else global_position)
-	jars.create_bluejar(jar_pos)
-	await get_tree().process_frame
+	var new_jar: FlyJar = jars.create_bluejar(jar_pos)
+	if new_jar == null:
+		var blue_jars: Array[Node] = get_tree().get_nodes_in_group("BlueJar")
+		for j in blue_jars:
+			var jar_node: FlyJar = j as FlyJar
+			if jar_node and jar_node.global_position.distance_to(jar_pos) < 10.0:
+				new_jar = jar_node
+				break
 	if _config.get_setting("skip_jar_reveal") == true:
-		return
-	var blue_jars: Array[Node] = get_tree().get_nodes_in_group("BlueJar")
-	var new_jar: FlyJar = null
-	for j in blue_jars:
-		var jar_node: FlyJar = j as FlyJar
-		if jar_node and jar_node.global_position.distance_to(jar_pos) < 10.0:
-			new_jar = jar_node
-			break
+		return new_jar
+	_async_focus_on_reward(new_jar)
+	return new_jar
+
+func _async_focus_on_reward(new_jar: FlyJar) -> void:
+	await get_tree().process_frame
 	if new_jar:
 		var large_target: Area2D = _create_large_camera_target()
 		new_jar.add_child(large_target)
@@ -237,6 +246,7 @@ func _create_large_camera_target() -> Area2D:
 		camera_target.blend_priority = 10
 		camera_target.blend_override = 1.0
 		camera_target.pull_strength = 2000.0
+		camera_target.OnDistant = INF
 		camera_target.target_snap = true
 		camera_target.collision_layer = 0
 		camera_target.collision_mask = 0
@@ -252,21 +262,36 @@ func register_persistence() -> void:
 	_persist.register_persistent_class(challenge_id, save_callable, load_callable)
 
 func save_challenge_data() -> Dictionary:
-	return {"completed": cleared, "challenge_id": challenge_id}
+	return {"completed": cleared, "challenge_id": challenge_id, "reward_pending": reward_pending}
 
 func load_challenge_data(save_data: Dictionary) -> void:
 	if save_data.has("completed"):
 		cleared = save_data["completed"]
+	if save_data.has("reward_pending"):
+		reward_pending = save_data["reward_pending"]
 
 func load_completion_status() -> void:
 	if cleared:
 		state = BounceTest.State.COMPLETED
 		_disable_triggers()
 		_logger.info("BounceTest %s: already completed on load" % challenge_id)
+	elif reward_pending:
+		state = BounceTest.State.COMPLETED
+		_disable_triggers()
+		if not is_instance_valid(_spawned_reward):
+			_spawned_reward = _spawn_jar_and_focus()
+		if _spawned_reward and not _spawned_reward.collected.is_connected(_on_reward_collected):
+			_spawned_reward.connect("collected", Callable(self, "_on_reward_collected"))
 
 func mark_as_completed() -> void:
 	cleared = true
 	_persist.save_values()
+
+func _on_reward_collected(_jar: FlyJar) -> void:
+	reward_pending = false
+	mark_as_completed()
+	emit_signal("cleared_challenge", challenge_id) # backward compatibility
+	_logger.info("BounceTest %s: Reward collected, challenge fully cleared" % challenge_id)
 
 func _exit_tree() -> void:
 	unregister_persistence()
@@ -314,4 +339,3 @@ func _state_name(st: PlayerState) -> String:
 	if st == player.SLIDING_STATE:
 		return "Sliding"
 	return st.get_class()
-

@@ -16,6 +16,8 @@ extends PlayerState
 
 @onready var sliding_sfx = $"../../Audio/WallSlideSFX"
 @onready var wall_slide_dust = $"../../Particles/WallSlideDust"
+@onready var wall_hit_sfx = $"../../Audio/WallHitSFX"
+
 
 
 var cache_airdrift
@@ -31,6 +33,9 @@ func enter() -> void:
 
 	# Store the velocity we had before we hit the wall
 	pre_wall_vel = parent.prev_velocity_x
+	
+	wall_hit_sfx.play()
+	
 	
 	#if not parent.jumping:
 	parent.current_animation = parent.ANI_STATES.WALL_HUG

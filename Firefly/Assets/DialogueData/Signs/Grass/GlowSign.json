@@ -1,24 +1,32 @@
 {
   "identifier": "Glow_Sign",
   "dialogue": [
-	"Ok, so you want to know more about Glowing? If you think you got it feel free to continue. But if you're hungry for the nitty gritty, I got the deets.",
+	"Ok, so you want to know more about Glowing? If you think you got it, feel free to continue.",
+	"But if you're hungry for the nitty gritty, I got the deets.",
 
-	"So, pretty much we have this meter right, your probably see it in the corner. Everytime you accelerate quickly, either through jumping, sliding, boosting, etc. The meter begins to fill up.",
+	"See that meter in the corner? Every jump, slide, or boost makes it tick up.",
+	"When you accelerate quickly, the meter starts to fill.",
 
-	"When the meter fills up all the way you will begin glowing. This essentially upgrades all your movement, letting you jump further, faster, and well more recklessly. Its fun but precarious.",
+	"When the meter maxes out, you start glowing.",
+	"This enhances your movement.",
+	"You can jump further, move faster, and get a bit reckless.",
+	"It's fun but a little risky.",
 
-	"But that meter doesn't stay filled up. Over time, the meter will begin to decay, and when your meter hits 0 you will lose your current glow level.",
+	"But the meter doesn't stay full forever.",
+	"Over time, it decays, and if it hits zero, you lose your glow level.",
 
-	"Oh yea, so there's two different levels of glowing. There is glow, and then there is [color=yellow]SUPER-GLOW.[/color]",
+	"There are two glow levels: glow, and [color=yellow]SUPER-GLOW[/color].",
+	"[color=yellow]SUPER-GLOW[/color] is next-level speed and way more precarious.",
 
-	"You reach [color=yellow]SUPER-GLOW[/color] by continuing to accelerate even when you already have glow! [color=yellow]SUPER-GLOW[/color] is even faster than glow, but far more precarious.",
-
-	"If at any point you don't want to power down your glow, press [demote] and you will decrease one tier of glow, and the remaining glow will be chaneled into a burst of speed.",
-
-	"If you don't need or want that speed at the time then don't hold any direction and the energy will just be discarded.",
-
-	"If you would like glow to work where you have to toggle promotion, simply turn of Auto-Glow in settings. Then to upgrade to a tier of glowing you simple press [promote]."
+	"You reach [color=yellow]SUPER-GLOW[/color] by keeping up your acceleration even after glowing.",
 	
+	"If you want to power down your glow, press [demote].",
+	"This drops your glow by one tier and turns leftover energy into a speed burst.",
+
+	"If you don’t want that burst, just don’t hold any direction and the energy will fade.",
+
+	"Want to control glow upgrades yourself? Turn off Auto-Glow in settings.",
+	"Then just press [promote] to level up your glow."
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

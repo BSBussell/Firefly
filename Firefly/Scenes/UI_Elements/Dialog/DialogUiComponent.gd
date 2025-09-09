@@ -1,6 +1,8 @@
 extends UiComponent
 class_name DialogueUiComponent
 
+signal dialogue_closed()
+
 # Child node for displaying the dialogue text
 @onready var text_box: RichTextLabel = $Label
 @onready var animation_player = $AnimationPlayer
@@ -44,11 +46,12 @@ func _process(_delta):
 
 # Initiates Dialogue by setting text_bo
 func initiate_dialogue(text: Dictionary, repeat: bool) -> void:
-	
+
 	dialogue_up = true
-	
+
 	current_dialogue = text
-	current_dialogue_arr = text["dialogue"]
+	# Preprocess dialogue to enforce bubble length limits
+	current_dialogue_arr = _preprocess_dialogue_array(text["dialogue"], 84)
 	current_loc = 0
 	
 	if _config.get_setting("pause_on_interact"):
@@ -97,7 +100,7 @@ func next_dialogue():
 	
 
 func finish_dialogue() -> void:
-	
+
 	if not dialogue_up:
 		return
 		
@@ -117,9 +120,66 @@ func finish_dialogue() -> void:
 	if current_dialogue["victory_dialogue"]:
 		context.emit_win_signal()
 
+	# Notify listeners that the dialogue UI has fully closed
+	emit_signal("dialogue_closed")
+
 
 # Just a wrapper to make adding the centers ez
 func set_text(text: String):
-	
+
 	text = "[center]" + text + "[/center]"
 	text_box.text = text
+
+
+# Splits long lines into multiple bubbles of <= max_len characters.
+# Adds trailing ellipses ("...") to any bubble that is followed by another.
+func _split_text_to_bubbles(line: String, max_len: int = 84) -> Array:
+	var bubbles: Array = []
+	var ell := "..."
+	var remaining: String = line.strip_edges()
+
+	# Safety for very small limits
+	if max_len < ell.length():
+		bubbles.append(remaining)
+		return bubbles
+
+	while remaining.length() > max_len:
+		var cut_limit: int = max_len - ell.length()
+		if cut_limit <= 0:
+			break
+
+		var cut_pos: int = remaining.rfind(" ", cut_limit)
+		if cut_pos == -1 or cut_pos == 0:
+			# No space before limit; hard cut
+			cut_pos = cut_limit
+
+		var part: String = remaining.substr(0, cut_pos).strip_edges(false, true)
+		if part.length() == 0:
+			# Avoid empty segments; prevent infinite loop
+			break
+
+		bubbles.append(part + ell)
+		# Advance past the cut (and the space, if any)
+		var next_start: int = cut_pos
+		if cut_pos < remaining.length() and remaining[cut_pos] == " ":
+			next_start += 1
+		remaining = remaining.substr(next_start).strip_edges()
+
+	if remaining.length() > 0:
+		bubbles.append(remaining)
+
+	return bubbles
+
+
+# Applies splitting to each dialogue line and flattens the result
+func _preprocess_dialogue_array(dialogue_arr: Array, max_len: int = 84) -> Array:
+	var result: Array = []
+	for entry in dialogue_arr:
+		if typeof(entry) == TYPE_STRING:
+			var parts: Array = _split_text_to_bubbles(entry, max_len)
+			for p in parts:
+				result.append(p)
+		else:
+			# Preserve non-string entries as-is
+			result.append(entry)
+	return result

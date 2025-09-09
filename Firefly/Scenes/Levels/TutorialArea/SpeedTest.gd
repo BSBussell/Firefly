@@ -56,18 +56,20 @@ func _on_body_exited(_body):
 ## Create blue jar and temporarily focus camera on it
 func _create_jar_with_camera_focus(jar_position: Vector2):
 	# Create the jar first
-	await jars.create_bluejar(jar_position)
+	var created: FlyJar = jars.create_bluejar(jar_position)
+	# Ensure the node is in tree before searching
+	await get_tree().process_frame
 	print("Blue jar created at: ", jar_position)
 	
 	# Find the newly created jar
-	var blue_jars = get_tree().get_nodes_in_group("BlueJar")
-	var new_jar: FlyJar = null
-	
-	# Find the jar at our position (the one we just created)
-	for jar in blue_jars:
-		if jar.global_position.distance_to(jar_position) < 10.0:  # Close enough
-			new_jar = jar
-			break
+	var new_jar: FlyJar = created
+	if new_jar == null:
+		var blue_jars = get_tree().get_nodes_in_group("BlueJar")
+		# Find the jar at our position (the one we just created)
+		for jar in blue_jars:
+			if jar.global_position.distance_to(jar_position) < 10.0:  # Close enough
+				new_jar = jar
+				break
 	
 	if new_jar:
 		print("Found new jar, creating camera target")
@@ -109,6 +111,7 @@ func create_large_camera_target() -> Area2D:
 		camera_target.blend_priority = 10      # High priority
 		camera_target.blend_override = 1.0     # Strong blend toward jar
 		camera_target.pull_strength = 2000.0   # Strong pull weight
+		camera_target.OnDistant = INF          # Always active during focus
 		camera_target.target_snap = true      # Smooth movement
 		
 		# Ensure default is no presence

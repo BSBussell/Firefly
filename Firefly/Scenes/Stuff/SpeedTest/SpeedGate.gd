@@ -25,6 +25,7 @@ signal cleared_challenge(challenge_id: String)
 @export var firefly_max_speed: float = 1200.0
 @export var firefly_finish_time: float = 0.6       # Dash-to-end duration on success/fail
 @export var firefly_fade_time: float = 0.4         # Fade out duration
+@export var restart_cooldown: float = 0.5          # Seconds before a new start is allowed
 
 enum State { IDLE, ARMED, RUNNING, COMPLETED }
 
@@ -34,10 +35,13 @@ var below_timer: float = 0.0
 var speed_avg: float = 0.0
 
 var cleared: bool = false
+var reward_pending: bool = false
+var _spawned_reward: FlyJar = null
 
 var _guide_follow: PathFollow2D = null
 var _path_len: float = 0.0
 var _firefly_tween: Tween = null
+var _cooldown_until: float = 0.0
 
 func _ready() -> void:
 	if entry_area and not entry_area.body_entered.is_connected(_on_entry_entered):
@@ -84,17 +88,32 @@ func _physics_process(delta: float) -> void:
 func _on_entry_entered(body: Node) -> void:
 	if cleared or state == SpeedGate.State.COMPLETED:
 		return
+	# Cooldown: ignore if restarting too quickly
+	if Engine.get_process_time() < _cooldown_until:
+		return
 	var p: Flyph = body as Flyph
 	if p == null:
 		return
 
 	player = p
+	# If we re-enter while RUNNING, gracefully reset with fade-out then fade-in
+	if state == SpeedGate.State.RUNNING:
+		state = SpeedGate.State.ARMED
+		below_timer = 0.0
+		speed_avg = _current_speed(player)
+		set_physics_process(true)
+		_init_firefly_guide()
+		_reset_firefly_to_start(true, true)
+		# Apply cooldown so we don't instantly re-trigger start
+		_cooldown_until = Engine.get_process_time() + restart_cooldown
+		return
+
 	state = SpeedGate.State.ARMED
 	below_timer = 0.0              # start startup window now
 	speed_avg = _current_speed(player)
 	set_physics_process(true)
 	_init_firefly_guide()
-	_reset_firefly_to_start(true)
+	_reset_firefly_to_start(true, false)
 
 	# If already fast enough, start immediately
 	if _meets_threshold(player, speed_avg):
@@ -120,9 +139,11 @@ func _succeed() -> void:
 	set_physics_process(false)
 	_disable_triggers()
 	_firefly_finish_and_fade(true)
-	await _spawn_jar_and_focus()
-	mark_as_completed()
-	emit_signal("cleared_challenge", challenge_id)
+	reward_pending = true
+	_persist.save_values()
+	_spawned_reward = _spawn_jar_and_focus()
+	if _spawned_reward and not _spawned_reward.collected.is_connected(_on_reward_collected):
+		_spawned_reward.connect("collected", Callable(self, "_on_reward_collected"))
 
 func _fail() -> void:
 	state = SpeedGate.State.IDLE
@@ -131,6 +152,8 @@ func _fail() -> void:
 	player = null
 	speed_avg = 0.0
 	below_timer = 0.0
+	# Start cooldown so re-entry doesn't immediately restart
+	_cooldown_until = Engine.get_process_time() + restart_cooldown
 # ——— Reward + camera focus ———
 
 func _init_firefly_guide() -> void:
@@ -156,7 +179,7 @@ func _init_firefly_guide() -> void:
 		if vis:
 			_guide_follow.add_child(vis)
 
-func _reset_firefly_to_start(fade_in: bool) -> void:
+func _reset_firefly_to_start(fade_in: bool, fade_out_if_mid: bool) -> void:
 	_kill_firefly_tween()
 	if _path_len <= 0.0 and guide_path and guide_path.curve:
 		_path_len = guide_path.curve.get_baked_length()
@@ -164,14 +187,16 @@ func _reset_firefly_to_start(fade_in: bool) -> void:
 		_init_firefly_guide()
 	if _guide_follow == null:
 		return
-	var start_progress: float = 0.0
-	if entry_area and guide_path and guide_path.curve:
-		var local_entry: Vector2 = guide_path.to_local(entry_area.global_position)
-		start_progress = clamp(guide_path.curve.get_closest_offset(local_entry), 0.0, _path_len)
-	_guide_follow.progress = start_progress
+	var start_progress: float = _get_entry_progress()
 	var vis: CanvasItem = null
 	if _guide_follow.get_child_count() > 0:
 		vis = _guide_follow.get_child(0) as CanvasItem
+	# If we are far from the start and asked to, fade out, teleport, then fade in
+	if fade_out_if_mid and vis and abs(_guide_follow.progress - start_progress) > 1.0:
+		_fade_out_then_teleport_and_fade_in(start_progress)
+		return
+	# Otherwise, set position and handle optional fade-in
+	_guide_follow.progress = start_progress
 	if fade_in and vis:
 		var m: Color = vis.modulate
 		m.a = 0.0
@@ -182,6 +207,13 @@ func _reset_firefly_to_start(fade_in: bool) -> void:
 		var m2: Color = vis.modulate
 		m2.a = 1.0
 		vis.modulate = m2
+
+func _get_entry_progress() -> float:
+	var start_progress: float = 0.0
+	if entry_area and guide_path and guide_path.curve:
+		var local_entry: Vector2 = guide_path.to_local(entry_area.global_position)
+		start_progress = clamp(guide_path.curve.get_closest_offset(local_entry), 0.0, _path_len)
+	return start_progress
 
 func _dispose_firefly() -> void:
 	_kill_firefly_tween()
@@ -215,11 +247,30 @@ func _firefly_finish_and_fade(on_success: bool) -> void:
 		_dispose_firefly()
 	)
 
+func _fade_out_then_teleport_and_fade_in(target_progress: float) -> void:
+	_kill_firefly_tween()
+	var vis: CanvasItem = null
+	if _guide_follow and _guide_follow.get_child_count() > 0:
+		vis = _guide_follow.get_child(0) as CanvasItem
+	if vis == null:
+		_guide_follow.progress = target_progress
+		return
+	var tween: Tween = create_tween()
+	tween.tween_property(vis, "modulate:a", 0.0, firefly_fade_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.finished.connect(func() -> void:
+		_guide_follow.progress = target_progress
+		var m: Color = vis.modulate
+		m.a = 0.0
+		vis.modulate = m
+		var tween2: Tween = create_tween()
+		tween2.tween_property(vis, "modulate:a", 1.0, firefly_fade_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	)
+
 func _disable_triggers() -> void:
 	if entry_area:
-		entry_area.monitoring = false
+		entry_area.set_deferred("monitoring", false)
 	if exit_area:
-		exit_area.monitoring = false
+		exit_area.set_deferred("monitoring", false)
 	modulate = Color(0.6, 0.6, 0.6, 0.8)
 
 # ——— Speed logic ———
@@ -235,24 +286,27 @@ func _meets_threshold(p: Flyph, s: float) -> bool:
 
 # ——— Reward + camera focus ———
 
-func _spawn_jar_and_focus() -> void:
+func _spawn_jar_and_focus() -> FlyJar:
 	var jar_pos: Vector2 = reward_spawn.global_position if reward_spawn else global_position
-	jars.create_bluejar(jar_pos)
-	await get_tree().process_frame
+	var jar: FlyJar = jars.create_bluejar(jar_pos)
+	if jar == null:
+		var blue_jars: Array[Node] = get_tree().get_nodes_in_group("BlueJar")
+		for j in blue_jars:
+			var jar_node: FlyJar = j as FlyJar
+			if jar_node and jar_node.global_position.distance_to(jar_pos) < 10.0:
+				jar = jar_node
+				break
 
 	# If skipping jar reveal, do not create camera target / cinematic
 	if _config.get_setting("skip_jar_reveal") == true:
-		return
+		return jar
 
-	# Find the created jar near the spawn point
-	var blue_jars: Array[Node] = get_tree().get_nodes_in_group("BlueJar")
-	var new_jar: FlyJar = null
-	for j in blue_jars:
-		var jar_node: FlyJar = j as FlyJar
-		if jar_node and jar_node.global_position.distance_to(jar_pos) < 10.0:
-			new_jar = jar_node
-			break
+	# Kick off focus asynchronously to not delay signal connections
+	_async_focus_on_reward(jar_pos, jar)
+	return jar
 
+func _async_focus_on_reward(jar_pos: Vector2, new_jar: FlyJar) -> void:
+	await get_tree().process_frame
 	if new_jar:
 		var large_target: Area2D = _create_large_camera_target()
 		new_jar.add_child(large_target)
@@ -276,6 +330,7 @@ func _create_large_camera_target() -> Area2D:
 		camera_target.blend_priority = 10
 		camera_target.blend_override = 1.0
 		camera_target.pull_strength = 2000.0
+		camera_target.OnDistant = INF
 		camera_target.target_snap = true
 		camera_target.collision_layer = 0
 		camera_target.collision_mask = 0
@@ -290,22 +345,38 @@ func register_persistence() -> void:
 	_persist.register_persistent_class(challenge_id, save_callable, load_callable)
 
 func save_challenge_data() -> Dictionary:
-	return {"completed": cleared, "challenge_id": challenge_id}
+	return {"completed": cleared, "challenge_id": challenge_id, "reward_pending": reward_pending}
 
 func load_challenge_data(save_data: Dictionary) -> void:
 	if save_data.has("completed"):
 		cleared = save_data["completed"]
+	if save_data.has("reward_pending"):
+		reward_pending = save_data["reward_pending"]
 
 func load_completion_status() -> void:
 	if cleared:
 		state = SpeedGate.State.COMPLETED
 		_disable_triggers()
 		print("Speed gate already completed: ", challenge_id)
+	elif reward_pending:
+		state = SpeedGate.State.COMPLETED
+		_disable_triggers()
+		# Respawn pending reward without focus
+		if not is_instance_valid(_spawned_reward):
+			_spawned_reward = _spawn_jar_and_focus()
+		if _spawned_reward and not _spawned_reward.collected.is_connected(_on_reward_collected):
+			_spawned_reward.connect("collected", Callable(self, "_on_reward_collected"))
 
 func mark_as_completed() -> void:
 	cleared = true
 	_persist.save_values()
 	print("Speed gate completed and saved: ", challenge_id)
+
+func _on_reward_collected(_jar: FlyJar) -> void:
+	reward_pending = false
+	mark_as_completed()
+	emit_signal("cleared_challenge", challenge_id)
+	_logger.info("SpeedGate %s: Reward collected, challenge fully cleared" % challenge_id)
 
 func _exit_tree() -> void:
 	unregister_persistence()

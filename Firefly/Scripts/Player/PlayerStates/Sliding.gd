@@ -364,6 +364,11 @@ func boost_jump() -> void:
 
 	# Set boostJumping Flag
 	parent.boostJumping = true
+	
+	if parent.horizontal_axis == 0:
+		var launch_direction: int = -1 if parent.animation.flip_h else 	1
+		parent.lock_h_dir(launch_direction,0.4, true)
+		parent.horizontal_axis = launch_direction
 
 	## Jump Physics
 	# Jump Force

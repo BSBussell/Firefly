@@ -2,6 +2,7 @@ extends Area2D
 class_name Spring
 
 @export var boing_: AudioStreamPlayer2D
+@export var boing_pitch_mod: float = 1.3
 @export var sprite_2d: AnimatedSprite2D
 
 signal bounce()
@@ -43,8 +44,12 @@ var spring_jb_gravity: float
 # Prefix used for spring animation
 var prefix: String = ""
 
+var base_pitch: float
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
+	base_pitch = boing_.pitch_scale
 	
 	# Calculate Velocities and such at initialization
 	var spring_actual_height: float = MAX_SPRING_HEIGHT * 16
@@ -66,7 +71,7 @@ func _ready() -> void:
 
 
 ## Overwritten by subclasses
-func _on_body_entered(body: PhysicsBody2D) -> void:
+func _on_body_entered(body: Node) -> void:
 	
 	# If body is not a player do nothing
 	flyph = body as Flyph
@@ -153,7 +158,7 @@ func spring_jump() -> void:
 		momentum = _calc_jump_boost_momentum()
 		
 		# Make the SFX higher
-		boing_.pitch_scale = 1.3
+		boing_.pitch_scale = boing_pitch_mod
 		
 	# Otherwise we just bounce off the spring
 	else:
@@ -166,7 +171,7 @@ func spring_jump() -> void:
 		momentum = _calc_bounce_momentum()
 			
 		# Play audio at default pitch
-		boing_.pitch_scale = 1.0
+		boing_.pitch_scale = base_pitch
 		
 	
 	# Rotate the launch velocity to match the springs rotation

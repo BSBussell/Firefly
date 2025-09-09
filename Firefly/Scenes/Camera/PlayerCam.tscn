@@ -76,6 +76,12 @@ acceleration = 0.75
 [node name="Dynamic-Cam" type="Node" parent="StateMachine"]
 script = ExtResource("8_sq28j")
 Cursor_Color = Color(0.678431, 0.247059, 0.266667, 1)
+Use_Lookahead = true
+Lookahead_Speed_Threshold = 150.0
+Lookahead_Max_Speed_Multiplier = 1.6
+Lookahead_Max_Offset_X = 24.0
+Lookahead_Arrive_Blend = 0.012
+Lookahead_Return_Blend = 0.018
 
 [node name="FollowTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -88,6 +94,8 @@ script = ExtResource("9_0x2ov")
 [node name="Area2D" type="Area2D" parent="Sensor"]
 collision_layer = 8
 collision_mask = 64
+monitoring = false
+monitorable = false
 
 [node name="SensorShape" type="CollisionShape2D" parent="Sensor/Area2D"]
 shape = SubResource("RectangleShape2D_mqckl")

@@ -39,6 +39,9 @@ func _ready():
 	
 	if dialogue_ui:
 		dialogue_ui.connect_to_func(initiate_dialogue, finish_dialogue)
+		# Also listen for when the UI fully closes so we can finish immediately
+		if not dialogue_ui.dialogue_closed.is_connected(Callable(self, "_on_ui_dialogue_closed")):
+			dialogue_ui.dialogue_closed.connect(Callable(self, "_on_ui_dialogue_closed"))
 	else:
 		printerr("DialogueUiComponent not found in Level!")
 		
@@ -114,3 +117,8 @@ func _stop_dialogue() -> void:
 		emit_signal("finish_dialogue")
 		
 		in_dialogue = false
+
+## Called when the Dialogue UI reports it has closed naturally
+func _on_ui_dialogue_closed() -> void:
+	# Mirror the same behavior as exiting the area: end dialogue once
+	_stop_dialogue()

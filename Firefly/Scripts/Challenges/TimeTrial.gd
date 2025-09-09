@@ -17,6 +17,7 @@ class_name TimeTrial
 @export var guide_finish_time: float = 0.6        # Rush to end duration on success/fail
 @export var use_smooth_movement: bool = true       # Use bezier curve smoothing for guide movement
 @export var smooth_curve_strength: float = 0.3     # How pronounced the smoothing curve is (0.1-1.0)
+@export var restart_cooldown: float = 0.5          # Prevents instant restart spam
 
 # ——— TimeTrial State ———
 enum TrialState { WAITING, RUNNING, TIME_UP }
@@ -28,6 +29,11 @@ var grace_timer: float = 0.0
 var _guide_follow: PathFollow2D = null
 var _path_length: float = 0.0
 var _guide_tween: Tween = null
+var _cooldown_until: float = 0.0
+
+func _now() -> float:
+	# Seconds since engine start; used for cooldown comparisons
+	return float(Time.get_ticks_msec()) / 1000.0
 
 # ——— BaseChallenge Overrides ———
 
@@ -88,6 +94,7 @@ func _on_challenge_succeed() -> Dictionary:
 	var time_bonus: float = max(0.0, time_remaining)
 	
 	_guide_finish_and_fade(true)
+	_cooldown_until = _now() + restart_cooldown
 	
 	return {
 		"completion_time": completion_time,
@@ -99,6 +106,7 @@ func _on_challenge_succeed() -> Dictionary:
 
 func _on_challenge_fail(reason: String) -> Dictionary:
 	_guide_finish_and_fade(false)
+	_cooldown_until = _now() + restart_cooldown
 	
 	return {
 		"reason": reason,
@@ -114,9 +122,9 @@ func _on_challenge_reset() -> void:
 
 func _disable_challenge_specific_triggers() -> void:
 	if entry_area:
-		entry_area.monitoring = false
+		entry_area.set_deferred("monitoring", false)
 	if exit_area:
-		exit_area.monitoring = false
+		exit_area.set_deferred("monitoring", false)
 
 # ——— Area Event Handlers ———
 
@@ -126,8 +134,17 @@ func _on_entry_entered(body: Node) -> void:
 	
 	if state == BaseChallenge.ChallengeState.COMPLETED:
 		return
-	
-	# Start the challenge
+	# Cooldown guard
+	if _now() < _cooldown_until:
+		return
+
+	# If already running, fade out and restart guide from the beginning
+	if state == BaseChallenge.ChallengeState.ACTIVE and trial_state == TimeTrial.TrialState.RUNNING:
+		#_restart_mid_run_with_fade()
+		#_cooldown_until = _now() + restart_cooldown
+		return
+
+	# Start the challenge fresh
 	if not start_challenge(body as Flyph):
 		_logger.warn("TimeTrial %s: Failed to start challenge" % challenge_id)
 
@@ -167,14 +184,12 @@ func _init_guide() -> void:
 		if visual_instance:
 			_guide_follow.add_child(visual_instance)
 			
-			# Fade in the visual
+			# Prepare visual to fade in on start
 			var canvas_item: CanvasItem = visual_instance as CanvasItem
 			if canvas_item:
-				canvas_item.modulate.a = 1.0
-				_guide_tween = create_tween()
-				#_guide_tween.tween_property(canvas_item, "modulate:a", 1.0, guide_fade_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+				canvas_item.modulate.a = 0.0
 
-func _start_guide_movement() -> void:
+func _start_guide_movement(start_fade_in: bool = true) -> void:
 	if _guide_follow == null or _path_length <= 0.0:
 		return
 	
@@ -182,12 +197,19 @@ func _start_guide_movement() -> void:
 	_kill_guide_tween()
 	_guide_tween = create_tween()
 	
+	# Movement tween
 	if use_smooth_movement:
 		# Use a smooth ease curve for more natural movement
 		_guide_tween.tween_property(_guide_follow, "progress", _path_length, trial_duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	else:
 		# Linear movement (original behavior)
 		_guide_tween.tween_property(_guide_follow, "progress", _path_length, trial_duration).set_trans(Tween.TRANS_LINEAR)
+
+	# Optional fade in at the start (in parallel with movement)
+	if start_fade_in:
+		var visual_node: CanvasItem = _get_visual()
+		if visual_node:
+			_guide_tween.parallel().tween_property(visual_node, "modulate:a", 1.0, guide_fade_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 func _update_guide_progress() -> void:
 	if _guide_follow == null or _path_length <= 0.0:
@@ -229,16 +251,59 @@ func _guide_finish_and_fade(_success: bool) -> void:
 		_guide_tween.tween_property(_guide_follow, "progress", _path_length, guide_finish_time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	
 	# Fade out the visual
-	var _visual_node: CanvasItem = null
-	if _guide_follow.get_child_count() > 0:
-		_visual_node = _guide_follow.get_child(0) as CanvasItem
-	
-	#if visual_node:
-		#_guide_tween.parallel().tween_property(visual_node, "modulate:a", 0.0, guide_fade_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	var visual_node: CanvasItem = _get_visual()
+	if visual_node:
+		_guide_tween.parallel().tween_property(visual_node, "modulate:a", 0.0, guide_fade_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
 	_guide_tween.finished.connect(func() -> void:
 		_dispose_guide()
 	)
+
+func _restart_mid_run_with_fade() -> void:
+	# Reset timers
+	trial_state = TimeTrial.TrialState.RUNNING
+	time_remaining = trial_duration
+	grace_timer = 0.0
+	# Ensure guide exists
+	_init_guide()
+	if _guide_follow == null:
+		return
+	# Fade out, teleport to start, fade in, then restart movement
+	var visual_node: CanvasItem = _get_visual()
+	if visual_node == null:
+		_guide_follow.progress = 0.0
+		_start_guide_movement()
+		return
+	_kill_guide_tween()
+	var t: Tween = create_tween()
+	t.tween_property(visual_node, "modulate:a", 0.0, guide_fade_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	t.finished.connect(func() -> void:
+		_guide_follow.progress = 0.0
+		visual_node.modulate.a = 0.0
+		_clear_visual_trails()
+		var t2: Tween = create_tween()
+		t2.tween_property(visual_node, "modulate:a", 1.0, guide_fade_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		_start_guide_movement(false)
+	)
+
+func _get_visual() -> CanvasItem:
+	if _guide_follow and _guide_follow.get_child_count() > 0:
+		return _guide_follow.get_child(0) as CanvasItem
+	return null
+
+func _clear_visual_trails() -> void:
+	# Clear any Line2D trails under the visual to avoid long jump segments after teleport
+	if _guide_follow == null or _guide_follow.get_child_count() == 0:
+		return
+	var root: Node = _guide_follow.get_child(0)
+	var stack: Array = [root]
+	while stack.size() > 0:
+		var n: Node = stack.pop_back()
+		if n is Line2D:
+			var l: Line2D = n as Line2D
+			l.clear_points()
+		for c in n.get_children():
+			stack.push_back(c)
 
 func _dispose_guide() -> void:
 	_kill_guide_tween()

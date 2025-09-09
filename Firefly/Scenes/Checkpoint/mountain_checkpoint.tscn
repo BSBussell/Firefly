@@ -1,8 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://bw3m3mutdqjbd"]
+[gd_scene load_steps=18 format=3 uid="uid://bw3m3mutdqjbd"]
 
 [ext_resource type="Script" path="res://Scripts/CheckPoints/checkpoint.gd" id="1_p0xf2"]
-[ext_resource type="Texture2D" uid="uid://533onyyb0lnt" path="res://Assets/Graphics/Checkpoint/mountain_checkpoint.png" id="2_h05e8"]
-[ext_resource type="Texture2D" uid="uid://cgry7kaq3rrra" path="res://Assets/Graphics/Checkpoint/mountain_checkpointlit.png" id="3_0pklt"]
+[ext_resource type="Texture2D" uid="uid://caeuovgqndk8f" path="res://Assets/Graphics/Checkpoint/mountain_checkpoint_ash.png" id="2_j8830"]
+[ext_resource type="Texture2D" uid="uid://by2dvunuwedfl" path="res://Assets/Graphics/Checkpoint/mountain_checkpoint_no_ash.png" id="3_jjn2s"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="4_h8rcd"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/PlayerSpotlight.gd" id="5_dhpy1"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="6_s0lhl"]
@@ -11,22 +11,22 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_500oe"]
 size = Vector2(15, 18)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_txwab"]
-atlas = ExtResource("2_h05e8")
+[sub_resource type="AtlasTexture" id="AtlasTexture_3tn1l"]
+atlas = ExtResource("2_j8830")
 region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_akvq7"]
-atlas = ExtResource("3_0pklt")
+[sub_resource type="AtlasTexture" id="AtlasTexture_rdrnt"]
+atlas = ExtResource("3_jjn2s")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kkcj3"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_txwab")
+"texture": SubResource("AtlasTexture_3tn1l")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_akvq7")
+"texture": SubResource("AtlasTexture_rdrnt")
 }],
 "loop": true,
 "name": &"default",
@@ -41,18 +41,23 @@ point_count = 2
 _data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Curve" id="Curve_0dgg6"]
+[sub_resource type="Curve" id="Curve_tq2xi"]
 _data = [Vector2(0, 0.651897), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.0963558, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Gradient" id="Gradient_o7rym"]
-offsets = PackedFloat32Array(0.9, 0.995763)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+[sub_resource type="Gradient" id="Gradient_mw6bl"]
+offsets = PackedFloat32Array(0, 0.5, 0.9, 0.995763)
+colors = PackedColorArray(0.890196, 0.921569, 0.34902, 1, 0.890196, 0.294118, 0.313726, 1, 0.890196, 0.294118, 0.313726, 1, 0, 0, 0, 0)
 metadata/_snap_enabled = true
 
-[sub_resource type="Curve" id="Curve_xfwur"]
-_data = [Vector2(0.6, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+[sub_resource type="Curve" id="Curve_u3i1e"]
+_data = [Vector2(0.2, 0.5), 0.0, 0.0456535, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_ant7l"]
+offsets = PackedFloat32Array(0, 0.7, 1)
+colors = PackedColorArray(0.890196, 0.921569, 0.34902, 1, 0.890196, 0.286275, 0.34902, 1, 1, 1, 1, 0)
 metadata/_snap_enabled = true
 
 [node name="CheckpointArea" type="Area2D" groups=["Checkpoint"]]
@@ -86,6 +91,10 @@ curve_in = SubResource("Curve_ujyhx")
 curve_out = SubResource("Curve_0g3ch")
 metadata/_edit_lock_ = true
 
+[node name="CheckPointLit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_ryu0h")
+bus = &"SFX"
+
 [node name="explode" type="CPUParticles2D" parent="."]
 position = Vector2(0, -11)
 emitting = false
@@ -107,32 +116,28 @@ damping_max = 1.0
 angle_max = 90.0
 scale_amount_min = 0.2
 scale_amount_max = 0.9
-scale_amount_curve = SubResource("Curve_0dgg6")
+scale_amount_curve = SubResource("Curve_tq2xi")
 color = Color(0.890196, 0.921569, 0.34902, 1)
-color_ramp = SubResource("Gradient_o7rym")
+color_ramp = SubResource("Gradient_mw6bl")
 
 [node name="lightparticles" type="CPUParticles2D" parent="."]
 z_index = -1
-position = Vector2(0, -9)
+position = Vector2(0.5, -9)
 emitting = false
+amount = 24
 lifetime = 0.6
 speed_scale = 0.75
-texture = ExtResource("6_s0lhl")
-emission_shape = 3
-emission_rect_extents = Vector2(6, 1)
-gravity = Vector2(0, -100)
-angular_velocity_min = -61.06
-angular_velocity_max = 152.98
+emission_shape = 1
+emission_sphere_radius = 2.5
+gravity = Vector2(2.08165e-12, -60)
+angular_velocity_min = 300.0
+angular_velocity_max = 300.0
 angle_min = -45.0
 angle_max = 45.0
-scale_amount_min = 0.51
-scale_amount_max = 1.5
-scale_amount_curve = SubResource("Curve_xfwur")
-color = Color(0.890196, 0.921569, 0.34902, 1)
-
-[node name="CheckPointLit" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("7_ryu0h")
-bus = &"SFX"
+scale_amount_min = 8.0
+scale_amount_max = 8.0
+scale_amount_curve = SubResource("Curve_u3i1e")
+color_ramp = SubResource("Gradient_ant7l")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

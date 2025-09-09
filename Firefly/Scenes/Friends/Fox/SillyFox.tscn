@@ -181,9 +181,11 @@ _data = {
 "reveal": SubResource("Animation_00fhf")
 }
 
-[node name="SillyFox" type="Area2D"]
+[node name="SillyFox" type="Area2D" node_paths=PackedStringArray("talk_target")]
+process_mode = 3
 collision_layer = 0
 script = ExtResource("1_n8nxh")
+talk_target = NodePath("Marker2D")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -16)

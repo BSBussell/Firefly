@@ -3,9 +3,14 @@ class_name goober
 
 signal Bounce
 
+# Export enum that setes animated_sprite_2d's animation
+@export_enum("Orange", "Green", "Blue") var SlimeColor: String = "Orange"
+
+
 @export var accel = 750
 @export var deccel = 550
 @export var speed = 60.0
+@export var stop: bool = false
 
 @onready var animated_sprite_2d = $SquishNode/AnimatedSprite2D
 @onready var bounce_cool_down = $BounceCoolDown
@@ -13,6 +18,7 @@ signal Bounce
 @onready var below_ray_cast = $Raycasts/BelowRayCast
 @onready var bounch: Spring = $Bouncy
 @onready var cpu_particles_2d = $CPUParticles2D
+@onready var walking = $Walking
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -20,7 +26,12 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var facing_right = true
 
 func _ready():
-	pass
+	
+	if stop:
+		SlimeColor += "Idle"
+		walking.stop()
+		
+	animated_sprite_2d.animation = SlimeColor
 
 
 func _physics_process(delta):
@@ -31,15 +42,19 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-
-	var wall_in_front: bool = front_ray_cast.is_colliding()
-	var close_to_ledge: bool = !below_ray_cast.is_colliding() && is_on_floor()
-
-	if wall_in_front or close_to_ledge:
-		flip()
+	if not stop:
 	
-	accelerate(delta)
-	
+		
+		
+
+		var wall_in_front: bool = front_ray_cast.is_colliding()
+		var close_to_ledge: bool = !below_ray_cast.is_colliding() && is_on_floor()
+
+		if wall_in_front or close_to_ledge:
+			flip()
+		
+		accelerate(delta)
+		
 	move_and_slide()
 	
 	_logger.info("Goober - Physics Process End")

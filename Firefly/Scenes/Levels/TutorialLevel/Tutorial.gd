@@ -13,6 +13,7 @@ extends "res://Scripts/Level/Level.gd"
 # We have the player start without glow on this level
 func player_startup_logic():
 	
+	PLAYER.face_player_right()
 	return
 
 

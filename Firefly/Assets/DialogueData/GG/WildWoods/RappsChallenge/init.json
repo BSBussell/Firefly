@@ -1,0 +1,12 @@
+{
+  "identifier": "GG_Rapps_Init",
+  "dialogue": [
+    "Oh Hi! I just gotta let you know, Rapp's told me not to let anyone through",
+    "unless, they were able to 'finish their challenge'.",
+    "I wasn't given a lot more info, but you can talk to them down there.",
+    "I think it's something to do with that slime pit.",
+    "I saw them laughing at some squirrels bouncing on slimes earlier.",
+    "So, uh, good luck"
+  ],
+  "victory_dialogue": false
+}

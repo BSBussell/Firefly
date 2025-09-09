@@ -60,6 +60,8 @@ func _physics_process(delta):
 	# Calculating a smoothed velocity value constantly
 	_logger.info("CameraAnchor - Physics Process")
 	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
+	# Refresh distance-based camera targets before state updates
+	_refresh_distance_camera_targets()
 	state_machine.process_physics(delta)
 	_logger.info("CameraAnchor - Physics Process End")
 
@@ -68,6 +70,8 @@ func _process(delta):
 	
 	# Calculating a smoothed velocity value constantly
 	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
+	# Refresh distance-based camera targets before state updates
+	_refresh_distance_camera_targets()
 	state_machine.process(delta)
 
 
@@ -75,20 +79,40 @@ func _process(delta):
 # Dictionary to hold target positions with area instance IDs as keys
 var targets: Dictionary = {}
 
+func _refresh_distance_camera_targets():
+	# Rebuild active targets purely by distance each frame.
+	if Player == null:
+		return
+	var active: Dictionary = {}
+	for t in _get_all_camera_targets():
+		if not t.is_enabled():
+			continue
+		if t.OnDistant > 0.0 and Player.global_position.distance_to(t.global_position) <= t.OnDistant:
+			active[t.get_instance_id()] = t
+	# Swap in the freshly computed set
+	targets = active
+
+func _get_all_camera_targets() -> Array:
+	var list: Array = []
+	var root := get_tree().get_current_scene()
+	if root == null:
+		root = get_tree().get_root()
+	_collect_camera_targets(root, list)
+	return list
+
+func _collect_camera_targets(n: Node, out: Array) -> void:
+	var t: CameraTarget = n as CameraTarget
+	if t != null:
+		out.append(t)
+	for c in n.get_children():
+		_collect_camera_targets(c, out)
+
 # When an area is entered, add its position to the dictionary
 func _on_area_2d_area_entered(area: Area2D):
-	
-	# Cast and do stuff if working
-	var target: CameraTarget = area as CameraTarget
-	if target:
-		targets[target.get_instance_id()] = target
+	# Sensor is ignored; distance-based activation only
+	pass
 
 # When an area is exited, remove it from the dictionary
 func _on_area_2d_area_exited(area: Area2D):
-	
-	# Cast
-	var target: CameraTarget = area as CameraTarget
-	if target:
-		var area_id = target.get_instance_id()
-		if targets.has(area_id):
-			targets.erase(area_id)
+	# Sensor is ignored; distance-based activation only
+	pass

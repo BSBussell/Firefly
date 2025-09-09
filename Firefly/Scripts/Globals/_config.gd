@@ -11,8 +11,11 @@ var def_settings: Dictionary = {
 	
 
 	
-# Gameplay
+	# Gameplay
 	"auto_glow": true,
+	"camera_lookahead": true,
+	"camera_speed": 1,
+	"lookahead_distance": 3,
 	"show_speedometer": 0,
 	"show_timer": false,
 	"discord_timer": false,
@@ -244,4 +247,3 @@ func set_setting(key: String, value: Variant) -> void:
 ## Connect a callable to the config changed signal. KEEP IT LIGHT!!
 func connect_to_config_changed(function: Callable) -> void:
 	connect("config_changed", function)
-

@@ -39,37 +39,39 @@ func _ready():
 		
 		
 	
-func create_flyjar(jar_position: Vector2) -> void:
-	var flyjar = FLYJAR.instantiate()
+func create_flyjar(jar_position: Vector2) -> FlyJar:
+	var flyjar: FlyJar = FLYJAR.instantiate()
 	flyjar.global_position = jar_position
 	add_child(flyjar)
-	
-	
+
 	# Add to proper group and connect signals
 	flyjar.add_to_group("FlyJar")
 	flyjar.connect("collected", Callable(self, "yellow_jar_collected"))
-	
+
 	# Update counts
 	yellow_max += 1
-	
+
 	# Register with jar tracker after full setup
 	_jar_tracker.register_jar_exists(flyjar)
 
-func create_bluejar(jar_position: Vector2) -> void:
-	var bluejar = BLUEJAR.instantiate()
+	return flyjar
+
+func create_bluejar(jar_position: Vector2) -> FlyJar:
+	var bluejar: FlyJar = BLUEJAR.instantiate()
 	bluejar.global_position = jar_position
 	add_child(bluejar)
-	
-	
+
 	# Add to proper group and connect signals  
 	bluejar.add_to_group("BlueJar")
 	bluejar.connect("collected", Callable(self, "blue_jar_collected"))
-	
+
 	# Update counts
 	blue_max += 1
-	
+
 	# Register with jar tracker after full setup
 	_jar_tracker.register_jar_exists(bluejar)
+
+	return bluejar
 
 
 ## Emits a signal when all jars are collected
@@ -109,5 +111,4 @@ func connect_jar_listener(function: Callable):
 	var error = connect("YellowJarsCollected", function)
 	if error != OK:
 		print("Error connecting signal: ", error)
-
 

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://pxgphv3tc2d0"]
+
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="1_80ftc"]
+
+[node name="GooberLight" type="PointLight2D"]
+energy = 0.4
+texture = ExtResource("1_80ftc")
+texture_scale = 0.5

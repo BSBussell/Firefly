@@ -213,25 +213,25 @@ func process_frame(_delta):
 
 func update_direction() -> void:
 	# Direction Facing, don't update if we're walljumping up
-	if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
+	# if not (parent.wallJumping and parent.current_wj == parent.WALLJUMPS.UPWARD):
 		
-		if parent.horizontal_axis < 0 and not parent.animation.flip_h:
-			
-			rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
-			
-			parent.animation.flip_h = true
-			parent.squish_node.squish(parent.turn_around_squash)
-			parent.current_animation = parent.ANI_STATES.SWING
-			
+	if parent.horizontal_axis < 0 and not parent.animation.flip_h:
+		
+		rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
+		
+		parent.animation.flip_h = true
+		parent.squish_node.squish(parent.turn_around_squash)
+		parent.current_animation = parent.ANI_STATES.SWING
+		
 
-		elif parent.horizontal_axis > 0 and parent.animation.flip_h:
-			
-			rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
-			
-			parent.animation.flip_h = false
-			parent.squish_node.squish(parent.turn_around_squash)
-			
-			parent.current_animation = parent.ANI_STATES.SWING
+	elif parent.horizontal_axis > 0 and parent.animation.flip_h:
+		
+		rope_creak_sfx.play(rope_creak_sfx.get_playback_position())
+		
+		parent.animation.flip_h = false
+		parent.squish_node.squish(parent.turn_around_squash)
+		
+		parent.current_animation = parent.ANI_STATES.SWING
 	
 
 func particle_emission() -> void:

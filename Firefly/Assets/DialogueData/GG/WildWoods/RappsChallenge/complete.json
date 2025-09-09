@@ -1,0 +1,11 @@
+{
+  "identifier": "GG_Rapps_Complete",
+  "dialogue": [
+    "Oh cool, I saw Rapp's give you that jar",
+    "So, I guess you finished their challenge.",
+    "You can go on ahead now!",
+    "I think Rapp's said something about a harder challenge up ahead.",
+    "So, well, Good Luck!"
+  ],
+  "victory_dialogue": false
+}

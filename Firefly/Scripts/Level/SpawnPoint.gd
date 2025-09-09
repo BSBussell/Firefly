@@ -3,3 +3,5 @@ class_name SpawnPoints
 
 ## Descriptive Name of this spawn points location, used by loader to specify entry points
 @export var id: String
+
+@export var face_player_right: bool = false 
