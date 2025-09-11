@@ -71,6 +71,9 @@ func load_file() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body as Flyph:
 		
+		if body.is_actor:
+			return
+		
 		# Enable the Process Loop
 		set_process(true)
 		
@@ -118,7 +121,18 @@ func _stop_dialogue() -> void:
 		
 		in_dialogue = false
 
+	
+		
+	
+
 ## Called when the Dialogue UI reports it has closed naturally
 func _on_ui_dialogue_closed() -> void:
 	# Mirror the same behavior as exiting the area: end dialogue once
 	_stop_dialogue()
+	
+	# If "sequsequential_dialogue" isn't an empty string, load that file now
+	if dialogue_data.has("sequential_dialogue"):
+		var next_file: String = dialogue_data["sequential_dialogue"]
+		if next_file != "":
+			dialogue_file = next_file
+			load_file()

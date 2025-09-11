@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=3 uid="uid://cbgoqx8kcalop"]
+[gd_scene load_steps=90 format=3 uid="uid://cbgoqx8kcalop"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialLevel/Tutorial.gd" id="1_pdcac"]
 [ext_resource type="PackedScene" uid="uid://c5ahnw1ttou3g" path="res://Scenes/UI_Elements/LevelTitle.tscn" id="2_us1rr"]
@@ -49,6 +49,8 @@
 [ext_resource type="PackedScene" uid="uid://cakuh20awifnc" path="res://Scenes/Stuff/TimeTrial/theTablet.tscn" id="36_ku71l"]
 [ext_resource type="Shader" path="res://Scenes/Levels/TutorialArea/pixel_GodLight.gdshader" id="43_kj2c6"]
 [ext_resource type="Texture2D" uid="uid://brvh8xad51wpj" path="res://Assets/Graphics/Lightmaps/spotlight.webp" id="44_hvk04"]
+[ext_resource type="PackedScene" uid="uid://dyil8nko263a0" path="res://Scenes/Violettt/Purple.tscn" id="50_3qf7o"]
+[ext_resource type="Script" path="res://Scripts/misc/Cutscene.gd" id="50_driw5"]
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
 min_value = -0.5
@@ -443,7 +445,106 @@ shader_parameter/dither = false
 shader_parameter/dither_strength = 0.032
 shader_parameter/opacity = 1.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vpcle"]
+size = Vector2(19.5, 715.75)
+
+[sub_resource type="Animation" id="Animation_mluev"]
+resource_name = "cutscene"
+length = 5.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"set_cutscene_over"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CutsceneObs/Violet:horizontal_axis")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 1.6, 1.8, 4.9, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.1, 0.0, 0.0, 0.3, 0.3, 0.0]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CutsceneObs/CameraTarget")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"enable_target"
+}, {
+"args": [],
+"method": &"disable_target"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CutsceneObs/CameraTarget:blend_override")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.08165e-12, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_3kljq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CutsceneObs/Violet:horizontal_axis")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.08165e-12]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CutsceneObs/CameraTarget:blend_override")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.08165e-12]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wmhh3"]
+_data = {
+"RESET": SubResource("Animation_3kljq"),
+"cutscene": SubResource("Animation_mluev")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ow6qx"]
+radius = 50.0
+
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
+process_mode = 3
 script = ExtResource("1_pdcac")
 Text = "- Wild Woodlands -"
 PLAYER = NodePath("Flyph")
@@ -471,6 +572,7 @@ color = Color(0.235294, 0.2, 0.501961, 1)
 metadata/_edit_lock_ = true
 
 [node name="Parallax" type="ParallaxBackground" parent="."]
+process_mode = 3
 scroll_base_offset = Vector2(2.08165e-12, -40)
 scroll_base_scale = Vector2(1, 0.25)
 
@@ -615,6 +717,7 @@ color = Color(0.293123, 0.253495, 0.606704, 1)
 metadata/_edit_lock_ = true
 
 [node name="Particles" type="Node" parent="."]
+process_mode = 3
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="Particles"]
 position = Vector2(-3032, 255)
@@ -812,6 +915,7 @@ attenuation = 3.03143
 bus = &"Ambience"
 
 [node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("13_otwob")]
+process_mode = 1
 position = Vector2(216, 146)
 MusicPlayer = NodePath("../LevelAudio/Music")
 
@@ -1599,6 +1703,52 @@ id = "gg_pit"
 [node name="BlueJar" parent="." instance=ExtResource("26_uyh54")]
 position = Vector2(1150, -678)
 
+[node name="Cutscene" type="Node2D" parent="."]
+
+[node name="EnterViolet" type="Node2D" parent="Cutscene" node_paths=PackedStringArray("trigger_area", "anim_player")]
+script = ExtResource("50_driw5")
+trigger_area = NodePath("Start")
+anim_player = NodePath("AnimationPlayer")
+cutscene_animation_name = "cutscene"
+
+[node name="Start" type="Area2D" parent="Cutscene/EnterViolet"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cutscene/EnterViolet/Start"]
+position = Vector2(101, -404.125)
+shape = SubResource("RectangleShape2D_vpcle")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Cutscene/EnterViolet"]
+libraries = {
+"": SubResource("AnimationLibrary_wmhh3")
+}
+
+[node name="CutsceneObs" type="Node2D" parent="Cutscene/EnterViolet"]
+
+[node name="Violet" parent="Cutscene/EnterViolet/CutsceneObs" instance=ExtResource("50_3qf7o")]
+position = Vector2(-73, -80)
+is_actor = true
+
+[node name="Marker2D" type="Marker2D" parent="Cutscene/EnterViolet/CutsceneObs/Violet"]
+position = Vector2(0, -28)
+
+[node name="DialogueArea" parent="Cutscene/EnterViolet/CutsceneObs/Violet" node_paths=PackedStringArray("level", "talk_target") instance=ExtResource("26_vi2mq")]
+level = NodePath("../../../../..")
+dialogue_file = "res://Assets/DialogueData/Cutscenes/EnterViolet/Violet.json"
+talk_target = NodePath("../Marker2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cutscene/EnterViolet/CutsceneObs/Violet/DialogueArea"]
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_ow6qx")
+
+[node name="CameraTarget" type="Area2D" parent="Cutscene/EnterViolet/CutsceneObs"]
+position = Vector2(-29, -109)
+script = ExtResource("27_y6ox2")
+pull_strength = 100.0
+blend_override = 2.08165e-12
+target_snap = true
+OnDistant = 1000.0
+enabled = false
+
 [connection signal="body_entered" from="Events/Guide_Tut" to="Events/Guide_Tut" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/Guide_Tut" to="Events/Guide_Tut" method="_on_body_exited"]
 [connection signal="body_entered" from="Events/SpringLaunch" to="Events/SpringLaunch" method="_on_body_entered"]
@@ -1608,3 +1758,5 @@ position = Vector2(1150, -678)
 [connection signal="area_entered" from="LoadingZones/levelChangr4" to="LoadingZones/levelChangr4" method="_on_area_entered"]
 [connection signal="area_entered" from="LoadingZones/levelChangr3" to="LoadingZones/levelChangr3" method="_on_area_entered"]
 [connection signal="area_entered" from="LoadingZones/levelChangr2" to="LoadingZones/levelChangr2" method="_on_area_entered"]
+[connection signal="body_entered" from="Cutscene/EnterViolet/CutsceneObs/Violet/DialogueArea" to="Cutscene/EnterViolet/CutsceneObs/Violet/DialogueArea" method="_on_body_entered"]
+[connection signal="body_exited" from="Cutscene/EnterViolet/CutsceneObs/Violet/DialogueArea" to="Cutscene/EnterViolet/CutsceneObs/Violet/DialogueArea" method="_on_body_exited"]

@@ -276,9 +276,9 @@ var current_animation: ANI_STATES
 var prev_animation: ANI_STATES
 var restart_animation: bool = false
 
-# Input values
-var vertical_axis: float = 0
-var horizontal_axis: float = 0
+# Input values (export for animation player)
+@export var vertical_axis: float = 0
+@export var horizontal_axis: float = 0
 
 # DEATH
 var dying: bool = false

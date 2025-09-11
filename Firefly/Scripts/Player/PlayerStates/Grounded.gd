@@ -195,20 +195,27 @@ func update_run_effects(direction: float) -> void:
 
 				# Set animation and sfx
 				parent.current_animation = parent.ANI_STATES.RUNNING
-				run_sfx.play()
+				run_sfx.pitch_scale = 1.0
+				if not run_sfx.playing:
+					run_sfx.play()
 
 				# Start our Dust!
 				dash_dust.emitting = true
 				
 				parent.animation.speed_scale = 1.0
 
-			elif not at_run_threshold:
+			elif not at_run_threshold and parent.current_animation != parent.ANI_STATES.WALKING:
 				parent.current_animation = parent.ANI_STATES.WALKING
 				parent.animation.speed_scale = 1.0
+
+				run_sfx.pitch_scale = 0.75
+				run_sfx.play()
 				
-			elif parent.current_animation == parent.ANI_STATES.RUNNING and parent.velocity.x > parent.speed:
-				var weight: float = parent.velocity.x / (parent.speed * 3)
-				parent.animation.speed_scale = lerpf(1.0, 2 , weight)
+			elif parent.current_animation == parent.ANI_STATES.RUNNING:
+				var weight: float = (abs(parent.velocity.x) - 150 ) / (150 * 2)
+				var fx_scale = lerpf(1.0, 2.5 , weight)
+				run_sfx.pitch_scale = fx_scale - 0.1
+				parent.animation.speed_scale = fx_scale
 			else:
 				parent.animation.speed_scale = 1.0  
 

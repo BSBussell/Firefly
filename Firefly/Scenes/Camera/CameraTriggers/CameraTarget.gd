@@ -23,7 +23,7 @@ extends Area2D
 ## becomes active when the player is within this distance.
 @export var OnDistant: float = 150.0
 
-var enabled: bool = true
+@export var enabled: bool = true
 
 func _ready():
 	# Allow camera systems to find targets without relying on sensors

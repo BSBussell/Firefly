@@ -1,0 +1,189 @@
+[gd_scene load_steps=14 format=3 uid="uid://cjaukwyyvoq4r"]
+
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/Meter.gd" id="1_x5v43"]
+[ext_resource type="Shader" path="res://Scenes/Levels/TutorialArea/pixel_GodLight.gdshader" id="2_5ddi5"]
+[ext_resource type="Texture2D" uid="uid://bdrta3oncmj8f" path="res://Assets/Graphics/Meter/back.png" id="3_104ba"]
+[ext_resource type="Texture2D" uid="uid://bk0bytm2irea5" path="res://Assets/Graphics/Meter/front_vines.png" id="4_o2lqt"]
+[ext_resource type="Texture2D" uid="uid://cunj6ke3xbe7r" path="res://Assets/Graphics/Meter/filling.png" id="5_r8ygy"]
+[ext_resource type="Script" path="res://Scripts/CustomThemeing/ThemedTextureProgressBar.gd" id="6_mjtqe"]
+[ext_resource type="AudioStream" uid="uid://dltcpm20f25wk" path="res://Assets/SFX/Player/Glow/fire_lit.mp3" id="7_n8j1o"]
+[ext_resource type="AudioStream" uid="uid://b6ju3ueut1ptt" path="res://Assets/SFX/Player/Glow/fire_rumble.mp3" id="8_dh0ao"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="9_8drpy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_syw0g"]
+resource_local_to_scene = true
+shader = ExtResource("2_5ddi5")
+shader_parameter/angle = 0.47
+shader_parameter/position = 0.23
+shader_parameter/spread = 0.17
+shader_parameter/cutoff = -0.112
+shader_parameter/falloff = 1.0
+shader_parameter/edge_fade = 0.572
+shader_parameter/speed = 13.72
+shader_parameter/ray1_density = 0.59
+shader_parameter/ray2_density = 7.11
+shader_parameter/ray2_intensity = 1.0
+shader_parameter/ray_color = Color(1, 1, 0, 1)
+shader_parameter/hdr = true
+shader_parameter/seed = 1248.0
+shader_parameter/pixelation = 1000.0
+shader_parameter/quantize_colors = true
+shader_parameter/color_levels = 3
+shader_parameter/dither = false
+shader_parameter/dither_strength = 1.0
+shader_parameter/opacity = 1.0
+
+[sub_resource type="Gradient" id="Gradient_8qie6"]
+offsets = PackedFloat32Array(0, 0.104167, 0.885417, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.552941, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grjme"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khcve"]
+bg_color = Color(1, 1, 0, 1)
+corner_radius_top_left = 100
+corner_detail = 1
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+script = ExtResource("1_x5v43")
+increase_speed = 50.0
+decrease_speed = 90.0
+
+[node name="Rays" type="ColorRect" parent="."]
+z_index = 101
+material = SubResource("ShaderMaterial_syw0g")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.842
+anchor_top = 1.0
+anchor_right = 1.1
+anchor_bottom = 1.4
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(1, -1)
+
+[node name="Meter" type="TextureProgressBar" parent="."]
+z_index = 100
+texture_filter = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.98
+anchor_top = 0.97
+anchor_right = 0.98
+anchor_bottom = 0.97
+offset_left = -12.0
+offset_top = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(8, 8)
+pivot_offset = Vector2(12, 32)
+allow_greater = true
+allow_lesser = true
+fill_mode = 3
+texture_under = ExtResource("3_104ba")
+texture_over = ExtResource("4_o2lqt")
+texture_progress = ExtResource("5_r8ygy")
+tint_progress = Color(1.8, 1.8, 1, 1)
+script = ExtResource("6_mjtqe")
+metadata/_edit_use_anchors_ = true
+
+[node name="Particle" type="CPUParticles2D" parent="Meter"]
+modulate = Color(1.8, 1.8, 1, 1)
+z_index = -1
+position = Vector2(6.09999, 30.5)
+amount = 16
+lifetime = 1.1
+local_coords = true
+emission_shape = 3
+emission_rect_extents = Vector2(8, 1)
+gravity = Vector2(0, -50)
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+damping_min = 5.0
+damping_max = 5.0
+angle_min = -45.0
+angle_max = 45.0
+scale_amount_max = 2.0
+color = Color(0.960784, 0.898039, 0, 1)
+color_ramp = SubResource("Gradient_8qie6")
+
+[node name="FireLit" type="AudioStreamPlayer" parent="Meter"]
+stream = ExtResource("7_n8j1o")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="FireRumble" type="AudioStreamPlayer" parent="Meter"]
+stream = ExtResource("8_dh0ao")
+volume_db = -10.0
+pitch_scale = 0.8
+bus = &"SFX"
+
+[node name="Meter_flat" type="ProgressBar" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = -0.09
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_grjme")
+theme_override_styles/fill = SubResource("StyleBoxFlat_khcve")
+value = 100.0
+fill_mode = 3
+show_percentage = false
+
+[node name="Control2" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.976
+anchor_top = 0.77
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+offset_right = -40.0
+offset_bottom = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Darkening" type="PointLight2D" parent="Control2"]
+scale = Vector2(4, 4)
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.0
+blend_mode = 1
+range_z_min = 100
+range_z_max = 101
+texture = ExtResource("9_8drpy")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.98
+anchor_top = 0.97
+anchor_right = 0.98
+anchor_bottom = 0.97
+offset_left = -47.6
+offset_top = 0.399969
+offset_right = -47.6
+offset_bottom = 0.399969
+
+[node name="Brighten" type="PointLight2D" parent="Control"]
+position = Vector2(5, 0)
+scale = Vector2(4, 4)
+color = Color(0.890196, 0.921569, 0.34902, 1)
+energy = 0.3
+range_z_min = 100
+range_z_max = 101
+texture = ExtResource("9_8drpy")
