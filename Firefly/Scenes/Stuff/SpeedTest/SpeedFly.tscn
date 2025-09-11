@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://c6ogwy1t0aqhb"]
+[gd_scene load_steps=16 format=3 uid="uid://c6ogwy1t0aqhb"]
 
 [ext_resource type="Texture2D" uid="uid://bbuxf7pbx88pn" path="res://Assets/Graphics/Particles/pixelLight.png" id="1_0yixf"]
+[ext_resource type="Script" path="res://Scenes/Stuff/SpeedTest/SpeedFly.gd" id="1_b7qx4"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="2_jebh1"]
 [ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="3_k4ef4"]
 [ext_resource type="AudioStream" uid="uid://ctuy84w4jak4u" path="res://Assets/SFX/SpeedFly/zapsplat_sound_design_whoosh_dark_magical_wind_chimes_001_92991.mp3" id="3_tyynb"]
@@ -71,10 +72,11 @@ blend_mode = 1
 
 [sub_resource type="Gradient" id="Gradient_5krkw"]
 offsets = PackedFloat32Array(0.9, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+colors = PackedColorArray(1, 1, 1, 0.392157, 1, 1, 1, 0)
 metadata/_snap_enabled = true
 
 [node name="SpeedFly" type="Node2D"]
+script = ExtResource("1_b7qx4")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 amount = 32
@@ -138,7 +140,7 @@ end_cap_mode = 2
 script = ExtResource("5_yg73d")
 follow = NodePath("..")
 max_points = 8
-min_distance = 10.0
+min_distance = 50.0
 offset = Vector2(2.08165e-12, 2.08165e-12)
 pulse_enabled = false
 
@@ -154,18 +156,18 @@ end_cap_mode = 2
 script = ExtResource("5_yg73d")
 follow = NodePath("..")
 max_points = 8
-min_distance = 10.0
+min_distance = 50.0
 offset = Vector2(2.08165e-12, 2.08165e-12)
 base_width = 8.0
 
 [node name="Line2D2" type="Line2D" parent="." node_paths=PackedStringArray("follow")]
-modulate = Color(1, 1, 1, 0.266667)
 z_index = -10
 material = SubResource("CanvasItemMaterial_faui2")
 scale = Vector2(1.5412, 1.5412)
 points = PackedVector2Array(0, 0, -10, 2.08165e-12, -20, 2.08165e-12, -30, 2.08165e-12, -40, 2.08165e-12, -50, 2.08165e-12, -70, 2.08165e-12)
 width = 15.0
 width_curve = SubResource("Curve_77s8p")
+default_color = Color(1, 1, 1, 0.392157)
 gradient = SubResource("Gradient_5krkw")
 joint_mode = 2
 begin_cap_mode = 2
@@ -174,6 +176,6 @@ antialiased = true
 script = ExtResource("5_yg73d")
 follow = NodePath("..")
 max_points = 8
-min_distance = 10.0
+min_distance = 50.0
 pulse_enabled = false
 base_width = 15.0

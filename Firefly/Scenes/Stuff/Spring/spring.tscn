@@ -248,7 +248,6 @@ collision_layer = 96
 script = ExtResource("1_bfd0d")
 boing_ = NodePath("Boing!")
 sprite_2d = NodePath("Sprite2D")
-IS_BLUE = true
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 z_index = -1

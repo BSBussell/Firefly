@@ -33,11 +33,12 @@ func spring_down_fx() -> void:
 
 	
 	print("SPring Down Fx?")
-	flyph.hazard_detector.set_collision_mask_value(5, false)
-	flyph.disable_death()
-	await get_tree().create_timer(0.125).timeout
-	flyph.enable_death()
-	flyph.hazard_detector.set_collision_mask_value(5, true)
+	if flyph:
+		flyph.hazard_detector.set_collision_mask_value(5, false)
+		flyph.disable_death()
+		await get_tree().create_timer(0.125).timeout
+		flyph.enable_death()
+		flyph.hazard_detector.set_collision_mask_value(5, true)
 	
 	pass
 

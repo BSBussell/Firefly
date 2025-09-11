@@ -15,15 +15,20 @@ class_name Trail
 @export var pulse_phase: float = 0.0             # radians; shift the wave if you want
 @export var min_width: float = 0.5               # safety floor
 
+# When true, render in world/canvas space and ignore parent transforms and opacity.
+# When false, remain under parent so parent opacity/modulate can affect this trail.
+@export var use_top_level: bool = true
+
 var _time: float = 0.0
 var _fps_adjusted_length: int = 10
 
 func _ready() -> void:
-	# Draw in world/canvas space, not relative to parent.
-	set_as_top_level(true)
-	global_position = Vector2.ZERO
-	global_rotation = 0.0
-	global_scale = Vector2.ONE
+	# Optionally draw in world/canvas space, not relative to parent.
+	set_as_top_level(use_top_level)
+	if use_top_level:
+		global_position = Vector2.ZERO
+		global_rotation = 0.0
+		global_scale = Vector2.ONE
 
 	clear_points()
 
@@ -39,10 +44,11 @@ func _process(delta: float) -> void:
 	if !is_instance_valid(follow):
 		return
 
-	# Keep this node’s own transform neutral every frame.
-	global_position = Vector2.ZERO
-	global_rotation = 0.0
-	global_scale = Vector2.ONE
+	# Keep this node’s own transform neutral every frame when top-level.
+	if use_top_level:
+		global_position = Vector2.ZERO
+		global_rotation = 0.0
+		global_scale = Vector2.ONE
 
 	var p: Vector2 = follow.global_position + offset
 

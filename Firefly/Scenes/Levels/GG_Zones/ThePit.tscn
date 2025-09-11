@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://b2xi82gaq3bcg"]
+[gd_scene load_steps=59 format=3 uid="uid://b2xi82gaq3bcg"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialArea/startingArea.gd" id="1_22dri"]
 [ext_resource type="PackedScene" uid="uid://cu5uu6ykpiam" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.tscn" id="2_win8k"]
@@ -47,6 +47,20 @@ point_count = 3
 metadata/_snap_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_ddh3k"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.333333, 0.555556, 0.777778)
+colors = PackedColorArray(0, 0, 0, 1, 0.976471, 0.976471, 0.976471, 0, 0, 0, 0, 1)
+metadata/_snap_enabled = true
+metadata/_snap_count = 9
+
+[sub_resource type="Curve" id="Curve_q6nb8"]
+min_value = -0.5
+max_value = 0.5
+_data = [Vector2(0, -0.5), 0.0, 0.0, 0, 0, Vector2(0.5, 0.5), 0.0, 0.0, 0, 0, Vector2(1, -0.5), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_vuqy5"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0.333333, 0.555556, 0.777778)
 colors = PackedColorArray(0, 0, 0, 1, 0.976471, 0.976471, 0.976471, 0, 0, 0, 0, 1)
@@ -738,6 +752,66 @@ texture = ExtResource("12_xt7ec")
 metadata/_edit_lock_ = true
 
 [node name="Light Filter2" type="CanvasModulate" parent="Parallax"]
+color = Color(0.293123, 0.253495, 0.606704, 1)
+metadata/_edit_lock_ = true
+
+[node name="ParallaxFore" type="ParallaxBackground" parent="."]
+layer = 0
+scroll_base_offset = Vector2(2.08165e-12, 2.08165e-12)
+
+[node name="FireFlies2" type="ParallaxLayer" parent="ParallaxFore"]
+z_index = 100
+motion_scale = Vector2(1.5, 1.5)
+motion_mirroring = Vector2(400, 250)
+
+[node name="FireFlyParticles" type="CPUParticles2D" parent="ParallaxFore/FireFlies2"]
+modulate = Color(20, 19, 1, 1)
+position = Vector2(204, 61)
+amount = 2
+lifetime = 2.15
+speed_scale = 0.5
+randomness = 0.84
+local_coords = true
+emission_shape = 3
+emission_rect_extents = Vector2(320, 180)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 31.37
+initial_velocity_max = 31.37
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_q6nb8")
+scale_amount_min = 1.15
+scale_amount_max = 3.5
+color = Color(0.890196, 0.921569, 0.34902, 1)
+color_ramp = SubResource("Gradient_vuqy5")
+
+[node name="FireFlies" type="ParallaxLayer" parent="ParallaxFore"]
+z_index = 100
+motion_scale = Vector2(2, 2)
+motion_mirroring = Vector2(400, 250)
+
+[node name="FireFlyParticles" type="CPUParticles2D" parent="ParallaxFore/FireFlies"]
+modulate = Color(20, 19, 1, 1)
+position = Vector2(204, 61)
+amount = 3
+lifetime = 2.15
+speed_scale = 0.5
+randomness = 0.84
+local_coords = true
+emission_shape = 3
+emission_rect_extents = Vector2(320, 180)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 31.37
+initial_velocity_max = 31.37
+orbit_velocity_max = 0.25
+orbit_velocity_curve = SubResource("Curve_q6nb8")
+scale_amount_min = 1.32
+scale_amount_max = 4.32
+color = Color(0.890196, 0.921569, 0.34902, 1)
+color_ramp = SubResource("Gradient_vuqy5")
+
+[node name="Light Filter2" type="CanvasModulate" parent="ParallaxFore"]
 color = Color(0.293123, 0.253495, 0.606704, 1)
 metadata/_edit_lock_ = true
 
