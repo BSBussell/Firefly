@@ -20,6 +20,7 @@ var in_dialogue: bool = false
 var dialogue_ui: DialogueUiComponent
 
 func _ready():
+	super._ready()
 	
 	# Included to fix the context  I did not provide
 	await _loader.finished_loading
@@ -127,12 +128,17 @@ func _stop_dialogue() -> void:
 
 ## Called when the Dialogue UI reports it has closed naturally
 func _on_ui_dialogue_closed() -> void:
-	# Mirror the same behavior as exiting the area: end dialogue once
-	_stop_dialogue()
 	
+	# Only care for the signal if we're in this dialogue
+	if in_dialogue == false:
+		return
+
 	# If "sequsequential_dialogue" isn't an empty string, load that file now
 	if dialogue_data.has("sequential_dialogue"):
 		var next_file: String = dialogue_data["sequential_dialogue"]
 		if next_file != "":
 			dialogue_file = next_file
 			load_file()
+
+	# Mirror the same behavior as exiting the area: end dialogue once
+	_stop_dialogue()

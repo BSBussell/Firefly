@@ -210,7 +210,7 @@ func _spawn_jar_and_focus() -> FlyJar:
 	if not jars:
 		return null
 	var jar_pos: Vector2 = reward_spawn.global_position if reward_spawn else (_finish_gate.global_position if _finish_gate else global_position)
-	var new_jar: FlyJar = jars.create_bluejar(jar_pos)
+	var new_jar: FlyJar = await jars.create_bluejar(jar_pos)
 	if new_jar == null:
 		var blue_jars: Array[Node] = get_tree().get_nodes_in_group("BlueJar")
 		for j in blue_jars:

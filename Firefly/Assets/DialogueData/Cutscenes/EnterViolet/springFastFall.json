@@ -1,0 +1,19 @@
+{
+    "identifier": "Spring Tip",
+    "dialogue": [
+        "Ok, so you know how there are some springs scattered around here?",
+        "Well, maybe you already found my sign, but if you Fall Fast-ly onto a spring,",
+        "You'll bounce way further! This can help you climb up a wall way faster!",
+        "This works on all the bouncy friends you'll encounter too!",
+        "On top of this, if you slide boost into a spring,",
+        "You'll also get that same boost!",
+        "I'm not really sure how that works, but it can help you gain lotsa speed!",
+        "Ok and finally, you might've figured this out but",
+        "If you wall jump right after a spring, your speed will carry further!",
+        "There's a lot of different ways you can use springs to gain speed!",
+        "If you want some more movement tips, check back in with me!",
+        "I got loads more where that came from!"
+    ],
+    "sequential_dialogue": "res://Assets/DialogueData/Cutscenes/EnterViolet/neutralBoost.json",
+    "victory_dialogue": false
+}

@@ -14,6 +14,7 @@ class_name Meter
 @onready var brighten = $Control/Brighten
 @onready var darkening = $Control2/Darkening
 
+@onready var animation_player = $AnimationPlayer
 
 
 var actual_score: float = 0
@@ -21,10 +22,16 @@ var interpolated_score: float = 0
 
 var played_sound: bool = false
 
+var meter_visible: bool = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	context.PLAYER.connect_meter(Callable(self, "set_score"))
+	
+	if context.PLAYER.can_glow():
+		meter_visible = true
 
+	animation_player.play("Hide")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -42,6 +49,15 @@ func _process(delta):
 	progress_bar.value = interpolated_score
 	
 	var weight: float = interpolated_score/progress_bar.max_value
+	
+	# Handle Animation
+	
+	if context.PLAYER.can_glow() and not meter_visible:
+		meter_visible = true
+		animation_player.play("Show")
+	elif not context.PLAYER.can_glow() and meter_visible:
+		meter_visible = false
+		animation_player.play("Hide")
 	
 	# Setup lights
 	brighten.energy = lerpf(0, 0.3, weight)

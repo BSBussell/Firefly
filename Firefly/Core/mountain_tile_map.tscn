@@ -1,11 +1,10 @@
-[gd_scene load_steps=32 format=3 uid="uid://b5trsegh656lp"]
+[gd_scene load_steps=31 format=3 uid="uid://b5trsegh656lp"]
 
 [ext_resource type="Material" uid="uid://caguwajpyntq4" path="res://Core/GrassLevel/grass_Sway.tres" id="1_mxdmi"]
 [ext_resource type="Texture2D" uid="uid://c53fjuqaqmhnj" path="res://Assets/Graphics/TileMaps/Mountain/Tileset.png" id="1_tjhrr"]
 [ext_resource type="Material" uid="uid://c0wqxdboj8heb" path="res://Scenes/Levels/TutorialLevel/vineSway.tres" id="2_5jsl1"]
 [ext_resource type="Texture2D" uid="uid://jp1brnbmwuh6" path="res://Assets/Graphics/TileMaps/Mountain/SnowSet.png" id="3_35faj"]
 [ext_resource type="Material" uid="uid://cwqwjsch83wrl" path="res://Assets/Shaders/Materials/shiver.tres" id="3_ms5ym"]
-[ext_resource type="Texture2D" uid="uid://buvo8k4yo0t2" path="res://Assets/Graphics/TileMaps/Mountain/TileNormals.png" id="4_kycra"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_xy53w"]
 tile_data = PackedInt32Array(0, 1310720, 7, 65536, 1310720, 8, 1, 1376256, 7, 65537, 1376256, 8, 131073, 1376256, 9, 196609, 1376256, 10, 262145, 1376256, 11, 2, 1441792, 7, 65538, 1441792, 8, 131074, 1441792, 9, 196610, 1441792, 10, 262146, 1441792, 11, 3, 1507328, 7, 65539, 1507328, 8)
@@ -69,7 +68,6 @@ polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_w3emx"]
 diffuse_texture = ExtResource("1_tjhrr")
-normal_texture = ExtResource("4_kycra")
 texture_filter = 1
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_clvc5"]

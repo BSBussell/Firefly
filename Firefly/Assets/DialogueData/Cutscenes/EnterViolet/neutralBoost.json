@@ -1,0 +1,17 @@
+{
+    "identifier": "Neutral Boost Tip",
+    "dialogue": [
+        "Ok, so hopefully you've read the sign I put up in the grotto",
+        "Well, if you missed it, it tells you how slide boost-",
+        "Without a hill!",
+        "So, all you need is a little bit of momentum!",
+        "You see, as long as your not sliding downhill",
+        "You can slide boost!",
+        "So if your looking for ways to gain some speed, without a hill-",
+        "Just try sliding and then slide boosting!",
+        "If you want some more movement tips, check back in with me!",
+        "I got loads more where that came from!"
+    ],
+    "sequential_dialogue": "res://Assets/DialogueData/Cutscenes/EnterViolet/reverseBoost.json",
+    "victory_dialogue": false
+}

@@ -42,7 +42,12 @@ func _ready():
 func create_flyjar(jar_position: Vector2) -> FlyJar:
 	var flyjar: FlyJar = FLYJAR.instantiate()
 	flyjar.global_position = jar_position
-	add_child(flyjar)
+	
+	# Call deferred to avoid tree change errors
+	call_deferred("add_child", flyjar)
+
+	# Wait until the node is fully ready so its id/level_id are set
+	await flyjar.ready
 
 	# Add to proper group and connect signals
 	flyjar.add_to_group("FlyJar")
@@ -51,7 +56,7 @@ func create_flyjar(jar_position: Vector2) -> FlyJar:
 	# Update counts
 	yellow_max += 1
 
-	# Register with jar tracker after full setup
+	# Register with jar tracker after full setup (id is valid now)
 	_jar_tracker.register_jar_exists(flyjar)
 
 	return flyjar
@@ -59,7 +64,12 @@ func create_flyjar(jar_position: Vector2) -> FlyJar:
 func create_bluejar(jar_position: Vector2) -> FlyJar:
 	var bluejar: FlyJar = BLUEJAR.instantiate()
 	bluejar.global_position = jar_position
-	add_child(bluejar)
+
+	# Call deferred to avoid tree change errors
+	call_deferred("add_child", bluejar)
+
+	# Wait until the node is fully ready so its id/level_id are set
+	await bluejar.ready
 
 	# Add to proper group and connect signals  
 	bluejar.add_to_group("BlueJar")
@@ -68,7 +78,7 @@ func create_bluejar(jar_position: Vector2) -> FlyJar:
 	# Update counts
 	blue_max += 1
 
-	# Register with jar tracker after full setup
+	# Register with jar tracker after full setup (id is valid now)
 	_jar_tracker.register_jar_exists(bluejar)
 
 	return bluejar
@@ -111,4 +121,3 @@ func connect_jar_listener(function: Callable):
 	var error = connect("YellowJarsCollected", function)
 	if error != OK:
 		print("Error connecting signal: ", error)
-

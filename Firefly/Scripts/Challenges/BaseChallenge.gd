@@ -148,7 +148,7 @@ func succeed_challenge(success_context: Dictionary = {}) -> void:
 	reward_pending = true
 	_persist.save_values()
 
-	_spawned_reward = _spawn_reward_and_focus(true)
+	_spawned_reward = await _spawn_reward_and_focus(true)
 	if _spawned_reward and not _spawned_reward.collected.is_connected(_on_reward_collected):
 		_spawned_reward.connect("collected", Callable(self, "_on_reward_collected"))
 
@@ -248,10 +248,10 @@ func _spawn_reward_and_focus(focus: bool = true) -> FlyJar:
 	
 	match reward_type:
 		RewardType.BLUE_JAR:
-			spawned_jar = jars.create_bluejar(reward_pos)
+			spawned_jar = await jars.create_bluejar(reward_pos)
 		RewardType.GOLD_JAR:
 			# Replace gold jar with default/yellow flyjar
-			spawned_jar = jars.create_flyjar(reward_pos)
+			spawned_jar = await jars.create_flyjar(reward_pos)
 		RewardType.GEM:
 			# Handle gem spawning if needed
 			_logger.info("BaseChallenge %s: Gem reward not yet implemented" % challenge_id)
@@ -380,7 +380,7 @@ func load_challenge_data(save_data: Dictionary) -> void:
 		if reward_pending and not cleared:
 			# Avoid double-connecting if a previous jar reference exists
 			if not is_instance_valid(_spawned_reward):
-				_spawned_reward = _spawn_reward_and_focus(false)
+				_spawned_reward = await _spawn_reward_and_focus(false)
 			if _spawned_reward and not _spawned_reward.collected.is_connected(_on_reward_collected):
 				_spawned_reward.connect("collected", Callable(self, "_on_reward_collected"))
 

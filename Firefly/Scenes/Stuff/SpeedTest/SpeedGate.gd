@@ -288,7 +288,7 @@ func _meets_threshold(p: Flyph, s: float) -> bool:
 
 func _spawn_jar_and_focus() -> FlyJar:
 	var jar_pos: Vector2 = reward_spawn.global_position if reward_spawn else global_position
-	var jar: FlyJar = jars.create_bluejar(jar_pos)
+	var jar: FlyJar = await jars.create_bluejar(jar_pos)
 	if jar == null:
 		var blue_jars: Array[Node] = get_tree().get_nodes_in_group("BlueJar")
 		for j in blue_jars:

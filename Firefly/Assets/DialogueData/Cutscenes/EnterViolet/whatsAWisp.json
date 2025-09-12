@@ -22,6 +22,6 @@
         "If you wanna try feel free, there are many scattered around here. I think GG is hiding one somewhere around here, but I'm not sure where.",
         "If you need any tips, feel free to ask, theres a lot of tricks Ive learned to help me beat them."
     ],
-    "sequential_dialogue": "",
+    "sequential_dialogue": "res://Assets/DialogueData/Cutscenes/EnterViolet/moving.json",
     "victory_dialogue": false
 }

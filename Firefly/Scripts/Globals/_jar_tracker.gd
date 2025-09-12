@@ -43,7 +43,16 @@ func register_jar_exists(jar: FlyJar) -> void:
 
 func mark_jar_collected(jar_id: String) -> void:
 	if not _loader.loading:
-		known_jars[jar_id]["nabbed"] = true
+		# Ensure the jar entry exists before marking collected
+		if not known_jars.has(jar_id):
+			# Create a minimal record if registration was missed
+			var jar_data: Dictionary = {}
+			jar_data["nabbed"] = true
+			jar_data["level_id"] = _globals.ACTIVE_LEVEL.id
+			jar_data["blue"] = false
+			known_jars[jar_id] = jar_data
+		else:
+			known_jars[jar_id]["nabbed"] = true
 		
 		# Update the discord jar count	
 		_discord.update_jar_count()

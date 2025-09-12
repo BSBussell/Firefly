@@ -56,7 +56,7 @@ func _on_body_exited(_body):
 ## Create blue jar and temporarily focus camera on it
 func _create_jar_with_camera_focus(jar_position: Vector2):
 	# Create the jar first
-	var created: FlyJar = jars.create_bluejar(jar_position)
+	var created: FlyJar = await jars.create_bluejar(jar_position)
 	# Ensure the node is in tree before searching
 	await get_tree().process_frame
 	print("Blue jar created at: ", jar_position)

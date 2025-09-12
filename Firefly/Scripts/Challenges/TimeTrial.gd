@@ -241,7 +241,7 @@ func _on_exit_entered(body: Node) -> void:
 		# Grant easy reward and keep challenge available for hard stage
 		easy_cleared = true
 		easy_reward_pending = true
-		_easy_spawned_reward = _spawn_stage_reward(TimeTrial.Stage.EASY, true)
+		_easy_spawned_reward = await _spawn_stage_reward(TimeTrial.Stage.EASY, true)
 		if _easy_spawned_reward and not _easy_spawned_reward.collected.is_connected(_on_easy_reward_collected):
 			_easy_spawned_reward.connect("collected", Callable(self, "_on_easy_reward_collected"))
 		_persist.save_values()
@@ -541,7 +541,7 @@ func _respawn_easy_reward_pending() -> void:
 			_easy_spawned_reward.connect("collected", Callable(self, "_on_easy_reward_collected"))
 		return
 	
-	_easy_spawned_reward = _spawn_stage_reward(TimeTrial.Stage.EASY, false)
+		_easy_spawned_reward = await _spawn_stage_reward(TimeTrial.Stage.EASY, false)
 	if _easy_spawned_reward and not _easy_spawned_reward.collected.is_connected(_on_easy_reward_collected):
 		_easy_spawned_reward.connect("collected", Callable(self, "_on_easy_reward_collected"))
 
@@ -562,7 +562,7 @@ func _spawn_stage_reward(stage: TimeTrial.Stage, focus: bool = true) -> FlyJar:
 		reward_type = hard_reward_type
 		reward_spawn = (hard_reward_spawn if hard_reward_spawn else reward_spawn)
 
-	var jar := _spawn_reward_and_focus(focus)
+	var jar: FlyJar = await _spawn_reward_and_focus(focus)
 
 	# Restore defaults
 	reward_type = prev_type

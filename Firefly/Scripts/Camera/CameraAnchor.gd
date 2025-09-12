@@ -93,19 +93,9 @@ func _refresh_distance_camera_targets():
 	targets = active
 
 func _get_all_camera_targets() -> Array:
-	var list: Array = []
-	var root := get_tree().get_current_scene()
-	if root == null:
-		root = get_tree().get_root()
-	_collect_camera_targets(root, list)
-	return list
-
-func _collect_camera_targets(n: Node, out: Array) -> void:
-	var t: CameraTarget = n as CameraTarget
-	if t != null:
-		out.append(t)
-	for c in n.get_children():
-		_collect_camera_targets(c, out)
+	# Use the group that CameraTarget registers with in its _ready()
+	# Avoids expensive recursive traversal of the entire scene tree each frame.
+	return get_tree().get_nodes_in_group("camera_targets")
 
 # When an area is entered, add its position to the dictionary
 func _on_area_2d_area_entered(area: Area2D):

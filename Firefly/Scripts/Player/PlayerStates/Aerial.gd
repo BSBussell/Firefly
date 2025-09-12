@@ -473,7 +473,7 @@ func get_gravity() -> float:
 		gravity_to_apply = parent.ff_gravity
 
 	# Temp Gravity Overrides All
-	if parent.temp_gravity_active:
+	elif parent.temp_gravity_active:
 		gravity_to_apply = parent.temp_gravtity
 
 
