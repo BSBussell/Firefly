@@ -565,7 +565,6 @@ ui_components = Array[PackedScene]([ExtResource("3_urytp"), ExtResource("4_o3q10
 id = -1
 
 [node name="Lighting" type="Node2D" parent="."]
-visible = false
 
 [node name="Moonlight" type="DirectionalLight2D" parent="Lighting"]
 rotation = -0.698132

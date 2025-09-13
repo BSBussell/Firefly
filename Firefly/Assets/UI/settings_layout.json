@@ -32,12 +32,6 @@
 				"description": "Skips the jar reveal cinematic when unlocking hidden jars.",
 				"type": "boolean",
 				"config_key": "skip_jar_reveal"
-			},
-			"pause_on_interact": {
-				"label": "Pause On Interact",
-				"description": "Pauses gameplay while dialogue is open.",
-				"type": "boolean",
-				"config_key": "pause_on_interact"
 			}
 		}
 	},

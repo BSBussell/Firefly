@@ -63,10 +63,7 @@ func player_startup_logic():
 # And becasue of that we hide the gems
 func gem_startup_logic():
 	
-	if not spawn_point_id:
-		gem_manager.hide_gems()
-	else:
-		gem_manager.show_gems()
+	gem_manager.show_gems()
 
 func local_ready():
 
@@ -333,7 +330,7 @@ PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
 ui_components = Array[PackedScene]([ExtResource("2_u24pu"), ExtResource("3_vdje6"), ExtResource("4_db1sk"), ExtResource("5_jsywc"), ExtResource("6_hywq1"), ExtResource("7_y6lv4"), ExtResource("8_uusu8"), ExtResource("9_m64f7")])
-id = -3
+id = -4
 
 [node name="Lighting" type="Node2D" parent="."]
 visible = false

@@ -492,6 +492,7 @@ PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
 ui_components = Array[PackedScene]([ExtResource("2_win8k"), ExtResource("3_xhkco"), ExtResource("6_ae37k"), ExtResource("8_vpin2"), ExtResource("9_lgg1p"), ExtResource("5_o4ewo"), ExtResource("7_6u4sq"), ExtResource("4_k266o")])
+id = -2
 
 [node name="Lighting" type="Node2D" parent="."]
 

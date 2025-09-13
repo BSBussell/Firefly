@@ -23,7 +23,7 @@ func local_ready():
 	music.play(0)
 	ambience.play(0)
 
-	_discord.update_state("Explorin' the Tunnels")
+	_discord.update_state("Creepin' through Tunnels")
 	_discord.update_jar_count()
 	
 	# Enable Reverb Audio Filer

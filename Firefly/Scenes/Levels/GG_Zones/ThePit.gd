@@ -20,10 +20,7 @@ func player_startup_logic():
 # And becasue of that we hide the gems
 func gem_startup_logic():
 	
-	if not spawn_point_id:
-		gem_manager.hide_gems()
-	else:
-		gem_manager.show_gems()
+	gem_manager.show_gems()
 
 func local_ready():
 
@@ -35,7 +32,7 @@ func local_ready():
 	ambience.play(0)
 	#cave_entrance.play(0)
 
-	_discord.update_state("Visting a Pit")
+	_discord.update_state("Navigatin' a gorge")
 	_discord.update_jar_count()
 
 	_audio.set_level_effects([])
