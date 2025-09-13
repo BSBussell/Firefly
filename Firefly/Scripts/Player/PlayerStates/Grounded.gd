@@ -79,6 +79,13 @@ func enter() -> void:
 
 			# Also play the run sfx
 			run_sfx.play()
+			
+		elif abs(parent.velocity.x) > 0:
+			
+			parent.current_animation = parent.ANI_STATES.WALKING
+			dash_dust.emitting = true
+			
+			run_sfx.play()
 
 		# Otherwise just player the landing animation
 		else:
@@ -187,7 +194,7 @@ func update_run_effects(direction: float) -> void:
 		if parent.current_animation == parent.ANI_STATES.IDLE or parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING or parent.current_animation == parent.ANI_STATES.STANDING_UP:
 
 
-			# Making this a variable so its not computed twice (theres a good change the interpreter would've already done this :3)
+			# Making this a variable so its not computed twice (theres a good chance the interpreter would've already done this :3)
 			var at_run_threshold: bool = abs(parent.velocity.x) >= parent.run_threshold
 
 			# If we're running and not already in running
@@ -221,6 +228,14 @@ func update_run_effects(direction: float) -> void:
 
 	# Set to idle from walking
 	if not direction:
+		
+		# If character sliding, call this again using velocity to inform
+		# Animation direction
+		var at_run_threshold: bool = abs(parent.velocity.x) > 0
+		if at_run_threshold:
+			update_run_effects(sign(parent.velocity.x))
+			return
+		
 		if (parent.current_animation == parent.ANI_STATES.RUNNING or parent.current_animation == parent.ANI_STATES.WALKING) :
 			parent.current_animation = parent.ANI_STATES.IDLE
 			run_sfx.stop()
