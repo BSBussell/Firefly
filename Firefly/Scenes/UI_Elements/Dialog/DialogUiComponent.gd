@@ -14,6 +14,10 @@ var current_dialogue_arr: Array
 var current_loc: int = 0
 var dialogue_up: bool = false
 
+# Track the player we temporarily actorize during dialogue
+var _actorized_player: Flyph = null
+var _actorized_prev_state: bool = false
+
 # Called when the node enters the scene tree
 func _ready() -> void:
 	
@@ -53,9 +57,17 @@ func initiate_dialogue(text: Dictionary, repeat: bool) -> void:
 	# Preprocess dialogue to enforce bubble length limits
 	current_dialogue_arr = _preprocess_dialogue_array(text["dialogue"], 84)
 	current_loc = 0
-	
-	if _config.get_setting("pause_on_interact"):
-		get_tree().paused = true
+
+	# Instead of pausing the game, temporarily set the active player
+	# to actor mode so they don't accept input during dialogue.
+	if _globals.ACTIVE_PLAYER:
+		_actorized_player = _globals.ACTIVE_PLAYER
+		_actorized_prev_state = _actorized_player.is_actor
+		_actorized_player.is_actor = true
+		# Nudge input to neutral to avoid lingering movement
+		if _actorized_player.has_method("lock_h_dir"):
+			_actorized_player.lock_h_dir(0, 0.1)
+		_actorized_player.horizontal_axis = 0
 	
 	# Set the dialogue text, for smoother visuals replace with animation
 	set_text(current_dialogue_arr[current_loc])
@@ -105,8 +117,18 @@ func finish_dialogue() -> void:
 		return
 		
 	dialogue_up = false
-	
-	get_tree().paused = false
+
+	# Restore player control if we toggled actor mode here
+	if is_instance_valid(_actorized_player):
+		# Softly unlock and neutralize inputs to prevent accidental drift
+		if _actorized_player.has_method("lock_h_dir"):
+			_actorized_player.lock_h_dir(0, 0.15, true)
+		_actorized_player.horizontal_axis = 0
+		# Only revert actor flag if we enabled it
+		if not _actorized_prev_state:
+			_actorized_player.is_actor = false
+		_actorized_player = null
+		_actorized_prev_state = false
 	
 	# For smoother visuals replace with animation
 	hoverAnim.stop()
@@ -144,6 +166,30 @@ func _split_text_to_bubbles(line: String, max_len: int = 84) -> Array:
 		return bubbles
 
 	while remaining.length() > max_len:
+		# 1) Prefer cutting at phrase breaks within the allowed width.
+		#    We treat commas and periods (and common end punctuations) as breaks
+		#    and do NOT append ellipses when cutting on these.
+		var break_chars := [",", ".", "!", "?", ";", ":"]
+		var best_punct_pos := -1
+		for ch in break_chars:
+			var pos := remaining.rfind(ch, max_len)
+			if pos > best_punct_pos and pos > 0 and pos <= max_len:
+				best_punct_pos = pos
+
+		if best_punct_pos > 0:
+			# Include the punctuation in this bubble; no ellipsis
+			var part := remaining.substr(0, best_punct_pos + 1).strip_edges(false, true)
+			if part.length() == 0:
+				break
+			bubbles.append(part)
+			# Advance past punctuation and any following spaces
+			var next_start := best_punct_pos + 1
+			while next_start < remaining.length() and remaining[next_start] == " ":
+				next_start += 1
+			remaining = remaining.substr(next_start).strip_edges()
+			continue
+
+		# 2) Otherwise, fall back to word-boundary cut with ellipsis.
 		var cut_limit: int = max_len - ell.length()
 		if cut_limit <= 0:
 			break
@@ -153,17 +199,17 @@ func _split_text_to_bubbles(line: String, max_len: int = 84) -> Array:
 			# No space before limit; hard cut
 			cut_pos = cut_limit
 
-		var part: String = remaining.substr(0, cut_pos).strip_edges(false, true)
-		if part.length() == 0:
+		var part2: String = remaining.substr(0, cut_pos).strip_edges(false, true)
+		if part2.length() == 0:
 			# Avoid empty segments; prevent infinite loop
 			break
 
-		bubbles.append(part + ell)
+		bubbles.append(part2 + ell)
 		# Advance past the cut (and the space, if any)
-		var next_start: int = cut_pos
+		var next_start2: int = cut_pos
 		if cut_pos < remaining.length() and remaining[cut_pos] == " ":
-			next_start += 1
-		remaining = remaining.substr(next_start).strip_edges()
+			next_start2 += 1
+		remaining = remaining.substr(next_start2).strip_edges()
 
 	if remaining.length() > 0:
 		bubbles.append(remaining)

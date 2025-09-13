@@ -1,12 +1,12 @@
 {
     "identifier": "Controls Binding",
     "dialogue": [
-        "[color=red]Violet Tip #3:[/color] Here's another trick about slide boosting:",
-        "after you slide boost, you can carry the momentum a little further by sliding again as you land!",
+        "[color=#cd2d06]Violet Tip #3:[/color] Here's another trick about slide boosting:",
+        "after you [color=#f8c868]slide boost[/color], you can carry the momentum a little further by [color=#f8c868]sliding again[/color] as you land!",
         
-        "This might not seem like much, but here’s the cool part: [color=red]you can then jump and slide boost again![/color]",
+        "This might not seem like much, but here’s the cool part: [color=#f8c868]you can then jump and slide boost again![/color]",
         
-        "SO! Want to fly through the bushes? Slide boost, then boost again.",
+        "SO! Want to fly through the bushes? [color=#f8c868]Slide boost[/color], then [color=#f8c868]boost again[/color].",
         
         "Chain them together and, yeah, you get the idea!",
         
@@ -14,11 +14,11 @@
         
         "Of course, until you slam headfirst into a wall you thought you could clear...",
         
-        "Sometimes, I've found nooks and crannies I’d only reach by chaining a couple slide boosts!",
+        "Sometimes, I've found nooks and crannies I’d only reach by chaining a couple [color=#f8c868]slide boosts[/color]!",
         
-        "If you’re having trouble with the rhythm, try practicing with these two gaps right next to this sign!",
+        "If you’re having trouble with the rhythm, try practicing with [color=#f8c868]these two gaps[/color] right next to this sign!",
         
-        "They’re spaced perfectly to slide boost twice in a row!"
+        "They’re spaced perfectly to [color=#f8c868]slide boost twice in a row[/color]!"
     ],
     "sequential_dialogue": "",
     "victory_dialogue": false

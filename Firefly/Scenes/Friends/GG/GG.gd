@@ -26,10 +26,7 @@ extends DialogueArea2D
 
 ## Initial greetings for first-time meetings
 @export var initial_greetings: Array[String] = [
-	"Oh! Hi there! Uh... I wasn't expecting anyone. You can call me GG, uh I really like this place.",
-	"Hey! How did you get here?. I don't really get all that many visitors. People started calling me GG, so you can just call me that.",
-	"Oh wow, a person! Hi! Sorry, I'm not used to... people. Uh you can call me GG, this is my spot, what's up with you?",
-	"Hi! This is my corner, kinda. Well, I like it. You can call me GG. Nice to meet you!"
+	"Hi! This is my spot, kinda. Well, I like it. You can call me GG. Nice to meet you!"
 ]
 
 ## Greeting variants for returning players
@@ -39,7 +36,7 @@ extends DialogueArea2D
 	"Hey there again! I was just standing here thinking... ...well never mind. It's cool that you're still around.",
 	"Oh! Hi! I was just thinking about fireflies and... well, you!",
 	"What do you mean I'm still here? It's only been like 25 minutes since we last talked! What do you mean that doesn't make sense?",
-	"Hi! Been awhile! Did you know that everytime I talk to you I decide what to say next by picking straws? It helps with my anxiety."
+	"Hi! Been awhile! Everytime I talk to you I decide what to say next by picking straws? It helps with my anxiety."
 ]
 
 ## Progress comments to specify our jar count
@@ -66,18 +63,18 @@ extends DialogueArea2D
 
 ## Comments for when the player has talked to other guardians || Leave empty to omit
 @export var other_guardian_comments: Array[String] = [
-	"Wait, you said you met someone else named GG? That's... actually kinda cool. I think I would like to meet them. But, I gotta keep my spot safe, you know?",
-	"Oh yea, the other GG. Did they say anything about me? What are their spots like? I bet they got some neat nooks. Can you tell me about them?",
-	"Another GG with a spot asking you to free fireflies? Thats... kinda odd.",
-	"You found another like me? That makes sense, there are a lot of cool spots out there, so it makes sense that some one else would want to protect one."
+	"Hello Again! I had to run really fast to beat you here!",
+	"Hello! This is another one of my cozy spots! It's one of my favorites.",
+	"Hi again! phew I just got here. Is my timing great or what.",
+	"Hello, Yeah, This is another cool spot this ones cooler."
 ]
 
 ## Meta comments when player has met multiple guardians || Leave empty to omit
 @export var multiple_guardian_comments: Array[String] = [
-	"Wait, you said MULTIPLE GGs?! That's... wow. We're like... a whole thing?",
-	"Whoa, you've met a whole bunch of GG's? This can't be a coincidence, right? What is going on.",
-	"Hold up, you found a LOT of GGs? Am I just a puppet of some greater design?",
-	"You're telling me there's a lot of GG's? Woof, if I was in a different mood that might induce some existential crisis."
+	"Yes yes, I know we've met I'm here too. I'm quantum.",
+	"Hey! You found this spot too! You have a knack for finding my best spots!",
+	"Hi!! I'm here too... Please don't tell the union.",
+	"You know, you're starting to get faster? You're making me run for my money!"
 ]
 
 ## Closing messages for when the player can pass.
@@ -116,6 +113,7 @@ var last_known_jar_count: int = 0
 static var shared_guardian_data: Dictionary = {}
 static var shared_encounter_count: int = 0
 static var global_persistence_registered: bool = false
+static var first_gg_greeting_shown: bool = false
 
 # Instance-specific guardian type/name for tracking
 @export var guardian_type: String = "gate_guardian"
@@ -124,6 +122,8 @@ var player: Flyph
 
 # Track whether we've already granted passage to avoid duplicate unlocks
 var pass_granted: bool = false
+# Pending greeting (computed at dialogue start, prepended in add_dynamic_content)
+var next_greeting_line: String = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -185,7 +185,14 @@ func _exit_tree():
 func _start_dialogue() -> void:
 	in_dialogue = true
 	
-	# Track this guardian globally if first time talking
+	# Compute greeting BEFORE registering this guardian (so first-ever logic isn't invalidated)
+	var met_others_excl_current = get_other_gg_count_excluding_current()
+	var first_shown = GateGuardian.first_gg_greeting_shown
+	next_greeting_line = pick_greeting_line(first_shown, met_others_excl_current, has_talked_before)
+	if not first_shown and next_greeting_line != "":
+		GateGuardian.first_gg_greeting_shown = true
+
+	# Track this guardian globally if first time talking (after greeting selection)
 	if not has_talked_before:
 		GateGuardian.register_guardian_safely(guardian_id, guardian_type, global_position)
 	
@@ -268,6 +275,7 @@ static func save_shared_guardian_data() -> Dictionary:
 	save_data["_comment"] = "Shared guardian tracking data - be careful modifying this!"
 	save_data["shared_guardian_data"] = shared_guardian_data.duplicate(true)
 	save_data["shared_encounter_count"] = shared_encounter_count
+	save_data["first_gg_greeting_shown"] = first_gg_greeting_shown
 	return save_data
 
 static func load_shared_guardian_data(save_data: Dictionary) -> void:
@@ -275,6 +283,8 @@ static func load_shared_guardian_data(save_data: Dictionary) -> void:
 		shared_guardian_data = save_data["shared_guardian_data"]
 	if save_data.has("shared_encounter_count"):
 		shared_encounter_count = save_data["shared_encounter_count"]
+	if save_data.has("first_gg_greeting_shown"):
+		first_gg_greeting_shown = save_data["first_gg_greeting_shown"]
 
 # Signal handlers for dialogue events
 func _on_dialogue_initiated(_source_dialogue: Dictionary, _repeat: bool) -> void:
@@ -392,55 +402,36 @@ func add_dynamic_content(source_dialogue: Dictionary) -> Dictionary:
 	var remaining_jars = max(0, required_jars - requirement_jar_count)
 	var jar_type_text = "level" if show_level_jars_only else "total"
 	
-	# 1. GREETING (initial for first time, return greeting for subsequent visits)
-	if has_talked_before:
-		var greeting = return_greetings[randi() % return_greetings.size()]
-		dialogue_segments.append(greeting)
-	else:
-		# First time meeting - use initial greeting
-		var initial_greeting = initial_greetings[randi() % initial_greetings.size()]
-		dialogue_segments.append(initial_greeting)
-	
-	# 2. OTHER GUARDIAN COMMENTS (if player has met other guardians)
-	var other_guardian_count = get_other_guardian_count()
-	if other_guardian_count > 0:
-		var guardian_comment: String
-		if other_guardian_count == 1:
-			# Player has met one other guardian
-			guardian_comment = other_guardian_comments[randi() % other_guardian_comments.size()]
-		else:
-			# Player has met multiple other guardians
-			guardian_comment = multiple_guardian_comments[randi() % multiple_guardian_comments.size()]
-		
-		dialogue_segments.append(guardian_comment)
+	# 1. GREETING (prepend the single selected greeting, if any)
+	if next_greeting_line != "":
+		dialogue_segments.append(next_greeting_line)
+		next_greeting_line = ""
 	
 	# 3. CORE FILE DIALOGUE - add the core dialogue content
 	dialogue_segments.append_array(core_dialogue_array)
 	
 	# 4. PROGRESS UPDATE (add contextual jar status if relevant)
-	var should_show_progress = false
-	var progress_line = ""
 	
 	# Only show progress if we have less jars than required
 	# (The pass_on_talk case is now handled in combine_gate_and_pass_dialogues)
 	if requirement_jar_count < required_jars:
-		# Add progress comment
+		# Add progress and requirement comments as separate lines
 		var progress_comment = progress_comments[randi() % progress_comments.size()]
 		var requirement_comment = requirement_comments[randi() % requirement_comments.size()]
 
-		# Concat 
-		progress_line = progress_comment + " " + requirement_comment
-		should_show_progress = true
+		# Replace template variables in each line separately
+		progress_comment = progress_comment.replace("{jar_count}", str(display_jar_count))
+		progress_comment = progress_comment.replace("{required_jars}", str(required_jars))
+		progress_comment = progress_comment.replace("{remaining_jars}", str(remaining_jars))
+		progress_comment = progress_comment.replace("{jar_type}", jar_type_text)
 
-	# Add progress update if relevant
-	if should_show_progress:
-		# Replace template variables
-		progress_line = progress_line.replace("{jar_count}", str(display_jar_count))
-		progress_line = progress_line.replace("{required_jars}", str(required_jars))
-		progress_line = progress_line.replace("{remaining_jars}", str(remaining_jars))
-		progress_line = progress_line.replace("{jar_type}", jar_type_text)
-		
-		dialogue_segments.append(progress_line)
+		requirement_comment = requirement_comment.replace("{jar_count}", str(display_jar_count))
+		requirement_comment = requirement_comment.replace("{required_jars}", str(required_jars))
+		requirement_comment = requirement_comment.replace("{remaining_jars}", str(remaining_jars))
+		requirement_comment = requirement_comment.replace("{jar_type}", jar_type_text)
+
+		dialogue_segments.append(progress_comment)
+		dialogue_segments.append(requirement_comment)
 	
 	# Set the final dialogue array (no closing encouragement)
 	modified_dialogue["dialogue"] = dialogue_segments
@@ -469,6 +460,35 @@ func get_other_guardian_count() -> int:
 	
 	return count
 
+# Count other distinct GGs previously encountered (same guardian_type), excluding this instance
+func get_other_gg_count_excluding_current() -> int:
+	var shared_data = GateGuardian.get_shared_guardian_data()
+	var count = 0
+	for id in shared_data.keys():
+		if id == guardian_id:
+			continue
+		var gd = shared_data[id]
+		if gd.has("guardian_type") and gd["guardian_type"] == guardian_type:
+			count += 1
+	return count
+
+# Deterministic greeting selector based on brief
+func pick_greeting_line(first_shown: bool, met_others_excl_current: int, has_talked_this: bool) -> String:
+	# 1) First-ever GG encounter (absolute precedence to ensure one clear intro even if globals are stale)
+	if not first_shown and initial_greetings.size() > 0:
+		return initial_greetings[randi() % initial_greetings.size()]
+	# 2) Met > 1 other GGs
+	if met_others_excl_current > 1 and multiple_guardian_comments.size() > 0:
+		return multiple_guardian_comments[randi() % multiple_guardian_comments.size()]
+	# 3) Met exactly 1 other GG
+	if met_others_excl_current == 1 and other_guardian_comments.size() > 0:
+		return other_guardian_comments[randi() % other_guardian_comments.size()]
+	# 4) Return to this same GG
+	if has_talked_this and return_greetings.size() > 0:
+		return return_greetings[randi() % return_greetings.size()]
+	# 5) Otherwise, no special greeting
+	return ""
+
 # Utility functions to connect external objects to guardian signals
 func connect_to_gate(gate_node: Node, unlock_method: String = "unlock") -> void:
 	"""Connect the guardian to a gate that should unlock when player can pass"""
@@ -496,5 +516,3 @@ func connect_to_animation(animation_player: AnimationPlayer, pass_animation: Str
 			animation_player.call_deferred("play", pass_animation)
 	else:
 		printerr("Animation player doesn't have animation: " + pass_animation)
-
-

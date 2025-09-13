@@ -1,7 +1,7 @@
 {
   "identifier": "ADULTS_ONLY",
   "dialogue": [
-	"[color=red]Warning:[/color] The preceding area is inadvisable to cross without wings! Larva are not advised to continue! ~ Park Service"
+	"[color=#ff4f69]Warning:[/color] The preceding area is inadvisable to cross without wings! Larva are not advised to continue! ~ Park Service"
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

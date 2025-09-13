@@ -995,6 +995,7 @@ initial_velocity_max = 0.0
 position = Vector2(-6, -7)
 
 [node name="JumpDustSpawner" type="Marker2D" parent="Particles"]
+modulate = Color(8.04, 0.176, 0.024, 1)
 z_index = -1
 metadata/_edit_lock_ = true
 

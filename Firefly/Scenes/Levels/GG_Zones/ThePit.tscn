@@ -1,6 +1,6 @@
-[gd_scene load_steps=63 format=3 uid="uid://b2xi82gaq3bcg"]
+[gd_scene load_steps=62 format=3 uid="uid://b2xi82gaq3bcg"]
 
-[ext_resource type="Script" path="res://Scenes/Levels/TutorialArea/startingArea.gd" id="1_22dri"]
+[ext_resource type="Script" path="res://Scenes/Levels/GG_Zones/ThePit.gd" id="1_s3g1r"]
 [ext_resource type="PackedScene" uid="uid://cu5uu6ykpiam" path="res://Scenes/UI_Elements/Dialog/DialogUiComponent.tscn" id="2_win8k"]
 [ext_resource type="PackedScene" uid="uid://bpa4bjwojm2t3" path="res://Scenes/UI_Elements/CollectibleCounters/collectible_counter.tscn" id="3_xhkco"]
 [ext_resource type="PackedScene" uid="uid://dldtioocav27m" path="res://Scenes/UI_Elements/CollectibleCounters/total_collectible_counter.tscn" id="4_k266o"]
@@ -18,13 +18,13 @@
 [ext_resource type="PackedScene" uid="uid://d1rixulg6wmt8" path="res://Scenes/Levels/TutorialLevel/leaf_particles.tscn" id="16_g7dsv"]
 [ext_resource type="PackedScene" uid="uid://cpc5ssjndq6qc" path="res://Core/GrassLevel/forest_tile_map.tscn" id="16_tlxcd"]
 [ext_resource type="PackedScene" uid="uid://wd61d8yaaoal" path="res://Core/GrassLevel/forest_fake_wall.tscn" id="17_w25np"]
-[ext_resource type="AudioStream" uid="uid://b2pshmbc6lyep" path="res://Assets/Music/SmallZone/TwinklingTrees.wav" id="18_uiavw"]
+[ext_resource type="AudioStream" uid="uid://cs1p6s6evlxon" path="res://Assets/Music/SmallZone/ThePit/TwinklingTreesNoTwinkle.wav" id="19_0bvf4"]
 [ext_resource type="PackedScene" uid="uid://52vkpp5l5cdo" path="res://Scenes/Stuff/Spring/spring.tscn" id="19_4ppjf"]
 [ext_resource type="AudioStream" uid="uid://cu2e2bu6ld7xt" path="res://Assets/SFX/ambience/forest_ambience_b.mp3" id="19_m6axh"]
 [ext_resource type="PackedScene" uid="uid://bbae0lck5bmhv" path="res://Scenes/Player/Flyph.tscn" id="21_1r481"]
+[ext_resource type="AudioStream" uid="uid://3los1tpulslg" path="res://Assets/Music/SmallZone/ThePit/TwinklingTreesMarimba.wav" id="21_aj7wq"]
+[ext_resource type="Script" path="res://Scenes/Levels/GG_Zones/SyncWithAudio.gd" id="22_0r7vd"]
 [ext_resource type="PackedScene" uid="uid://chji8mvt4o3jg" path="res://Scenes/Camera/PlayerCam.tscn" id="22_dnwc7"]
-[ext_resource type="Script" path="res://Scenes/Levels/GG_Zones/MusicSwapper.gd" id="25_3f874"]
-[ext_resource type="AudioStream" uid="uid://vvus5cbbrlee" path="res://Assets/Music/SmallZone/TwinklingTrees_NoTwinkle.wav" id="26_7yfoh"]
 [ext_resource type="Script" path="res://Scripts/Challenges/TimeTrial.gd" id="28_cblfr"]
 [ext_resource type="PackedScene" uid="uid://c6ogwy1t0aqhb" path="res://Scenes/Stuff/SpeedTest/SpeedFly.tscn" id="29_43q47"]
 [ext_resource type="PackedScene" uid="uid://cakuh20awifnc" path="res://Scenes/Stuff/TimeTrial/theTablet.tscn" id="30_23xjq"]
@@ -79,10 +79,6 @@ metadata/_snap_enabled = true
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k2er5"]
 size = Vector2(86, 70)
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_51wml"]
-radius = 297.557
-height = 1178.87
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2qyum"]
 size = Vector2(20, 122)
@@ -490,16 +486,14 @@ metadata/_snap_enabled = true
 metadata/_snap_count = 9
 
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
-script = ExtResource("1_22dri")
+script = ExtResource("1_s3g1r")
 Text = "- The Grotto -"
 PLAYER = NodePath("Flyph")
 jar_manager = NodePath("JarsManager")
 gem_manager = NodePath("GemManager")
-ui_components = Array[PackedScene]([ExtResource("2_win8k"), ExtResource("3_xhkco"), ExtResource("4_k266o"), ExtResource("5_o4ewo"), ExtResource("6_ae37k"), ExtResource("8_vpin2"), ExtResource("9_lgg1p"), ExtResource("7_6u4sq")])
-id = -2
+ui_components = Array[PackedScene]([ExtResource("2_win8k"), ExtResource("3_xhkco"), ExtResource("6_ae37k"), ExtResource("8_vpin2"), ExtResource("9_lgg1p"), ExtResource("5_o4ewo"), ExtResource("7_6u4sq"), ExtResource("4_k266o")])
 
 [node name="Lighting" type="Node2D" parent="."]
-visible = false
 
 [node name="Moonlight" type="DirectionalLight2D" parent="Lighting"]
 rotation = -0.698132
@@ -706,13 +700,24 @@ smooth_transition = 0.02
 process_mode = 3
 
 [node name="Music" type="AudioStreamPlayer" parent="LevelAudio"]
-stream = ExtResource("26_7yfoh")
+stream = ExtResource("19_0bvf4")
 volume_db = -15.0
+autoplay = true
 bus = &"Music"
 
 [node name="Ambience" type="AudioStreamPlayer" parent="LevelAudio"]
 stream = ExtResource("19_m6axh")
 bus = &"Ambience"
+
+[node name="Marimba" type="AudioStreamPlayer2D" parent="LevelAudio" node_paths=PackedStringArray("backing")]
+position = Vector2(126, -1457)
+stream = ExtResource("21_aj7wq")
+volume_db = -15.0
+autoplay = true
+max_distance = 750.0
+bus = &"Music"
+script = ExtResource("22_0r7vd")
+backing = NodePath("../Music")
 
 [node name="Flyph" parent="." node_paths=PackedStringArray("MusicPlayer") instance=ExtResource("21_1r481")]
 position = Vector2(-100, -315)
@@ -784,18 +789,6 @@ position = Vector2(-9, -4)
 z_index = -50
 position = Vector2(-8.10001, 9)
 texture = ExtResource("34_tb504")
-
-[node name="Area2D" type="Area2D" parent="Events" node_paths=PackedStringArray("music_player")]
-position = Vector2(117, -748)
-script = ExtResource("25_3f874")
-enter_stream = ExtResource("18_uiavw")
-exit_stream = ExtResource("26_7yfoh")
-music_player = NodePath("../../LevelAudio/Music")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Area2D"]
-position = Vector2(-137, -549)
-rotation = -0.212936
-shape = SubResource("CapsuleShape2D_51wml")
 
 [node name="Challenge" type="Node2D" parent="."]
 
@@ -1043,7 +1036,5 @@ position = Vector2(326, -400)
 [connection signal="body_entered" from="Events/SpringLaunch2" to="Events/SpringLaunch2" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/SpringLaunch2" to="Events/SpringLaunch2" method="_on_body_exited"]
 [connection signal="finish_dialogue" from="Events/SpringLaunch2" to="Events/SpringLaunch2" method="_on_finish_dialogue"]
-[connection signal="body_entered" from="Events/Area2D" to="Events/Area2D" method="_on_body_entered"]
-[connection signal="body_exited" from="Events/Area2D" to="Events/Area2D" method="_on_body_exited"]
 [connection signal="area_entered" from="LoadingZones/Tutorial" to="LoadingZones/Tutorial" method="_on_area_entered"]
 [connection signal="area_entered" from="LoadingZones/Tutorial2" to="LoadingZones/Tutorial2" method="_on_area_entered"]

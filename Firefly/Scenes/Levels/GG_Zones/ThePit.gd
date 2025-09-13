@@ -5,6 +5,7 @@ extends "res://Scripts/Level/Level.gd"
 @onready var music = $LevelAudio/Music
 @onready var ambience = $LevelAudio/Ambience
 @onready var lighting = $Lighting
+@onready var marimba = $LevelAudio/Marimba
 
 
 
@@ -29,7 +30,8 @@ func local_ready():
 	print("Setting up Blah Level")
 
 	# Start playing the music
-	#music.play(0)
+	music.play(0)
+	#marimba.play(0)
 	ambience.play(0)
 	#cave_entrance.play(0)
 
