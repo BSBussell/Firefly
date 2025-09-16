@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ngkeeouv5yof"
-path="res://.godot/imported/neutralPoint.webp-18f36447fc4ceef32fde194f7d78b4ac.ctex"
+uid="uid://csxlyi336xiyj"
+path="res://.godot/imported/level1.png-d66ba810b80babb36f4a3390113cbe76.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Graphics/Lightmaps/neutralPoint.webp"
-dest_files=["res://.godot/imported/neutralPoint.webp-18f36447fc4ceef32fde194f7d78b4ac.ctex"]
+source_file="res://Assets/Graphics/Meter/level1.png"
+dest_files=["res://.godot/imported/level1.png-d66ba810b80babb36f4a3390113cbe76.ctex"]
 
 [params]
 
@@ -25,7 +25,7 @@ mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
-process/fix_alpha_border=false
+process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false

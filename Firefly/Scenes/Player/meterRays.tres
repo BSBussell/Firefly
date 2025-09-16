@@ -1,0 +1,26 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b8wlj2qfbeole"]
+
+[ext_resource type="Shader" path="res://Scenes/Levels/TutorialArea/pixel_GodLight.gdshader" id="1_f1e0d"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_f1e0d")
+shader_parameter/angle = 0.47
+shader_parameter/position = 0.23
+shader_parameter/spread = 0.17
+shader_parameter/cutoff = -0.112
+shader_parameter/falloff = 1.0
+shader_parameter/edge_fade = 0.572
+shader_parameter/speed = 13.72
+shader_parameter/ray1_density = 0.59
+shader_parameter/ray2_density = 7.11
+shader_parameter/ray2_intensity = 1.0
+shader_parameter/ray_color = Color(1, 1, 0, 0.588235)
+shader_parameter/hdr = true
+shader_parameter/seed = 1248.0
+shader_parameter/pixelation = 1000.0
+shader_parameter/quantize_colors = true
+shader_parameter/color_levels = 3
+shader_parameter/dither = false
+shader_parameter/dither_strength = 1.0
+shader_parameter/opacity = 1.0
