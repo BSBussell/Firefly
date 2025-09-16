@@ -42,6 +42,7 @@ _jar_tracker="*res://Scripts/Globals/_jar_tracker.gd"
 BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
 _discord="*res://Scripts/Globals/_discord.gd"
+_steam_manager="*res://Scripts/Globals/_steam_manager.gd"
 
 [debug]
 
@@ -274,3 +275,8 @@ textures/vram_compression/import_etc2_astc=true
 textures/default_filters/anisotropic_filtering_level=0
 environment/glow/upscale_mode=0
 viewport/hdr_2d=true
+
+[steam]
+
+initialization/app_id=4002900
+initialization/initialize_on_startup=true
