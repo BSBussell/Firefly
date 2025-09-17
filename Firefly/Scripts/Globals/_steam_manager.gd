@@ -1,5 +1,5 @@
 extends Node
-class_name _steam_manager
+class_name Steam_Manager
 
 ## SteamManager: Handles Steamworks initialization for GodotSteam v4.12.
 ## Provides overlay helpers, auto-detects dev mode fallbacks, and keeps logging

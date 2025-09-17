@@ -278,5 +278,5 @@ viewport/hdr_2d=true
 
 [steam]
 
-initialization/app_id=4002900
+initialization/app_id=4003620
 initialization/initialize_on_startup=true
