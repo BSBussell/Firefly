@@ -9,7 +9,7 @@ const BASE_UI_RENDER: Vector2i = Vector2i(1920, 1080)
 const MIN_ZOOM: float = 0.5
 const MAX_ZOOM: float = 1.4
 const ZOOM_STEP: float = 0.05
-const GAME_VIEWPORT_PADDING_SCALE: float = 1.4 
+const GAME_VIEWPORT_PADDING_SCALE: float = 1.4
 const LINUX_WINDOW_SERVERS: PackedStringArray = [
 	"Linux",
 	"FreeBSD",
@@ -18,6 +18,14 @@ const LINUX_WINDOW_SERVERS: PackedStringArray = [
 	"BSD"
 ]
 const FPS_PRESETS: Array[int] = [30, 60, 90, 120, 144, 165, 240, 0]
+const ASPECT_RATIO_VALUES: Array[Vector2i] = [ # Keep order in sync with settings_layout.json options
+	Vector2i(0, 0), # auto
+	Vector2i(16, 9),
+	Vector2i(16, 10),
+	Vector2i(4, 3),
+	Vector2i(21, 9),
+	Vector2i(32, 9)
+]
 
 signal res_changed
 
@@ -45,6 +53,9 @@ var window_size: Vector2i = Vector2i(1920, 1080)
 
 ## Captures safe-area offsets reported by the platform (e.g. macOS notch top inset)
 var fullscreen_safe_offset: Vector2i = Vector2i.ZERO
+
+## Stores leftover space when letterboxing/pillarboxing in fullscreen
+var fullscreen_padding: Vector2 = Vector2.ZERO
 
 ## The scale for the game res to the window size
 var window_scale: float = 1.0
@@ -92,11 +103,7 @@ func _ready() -> void:
 
 
 func _input(_event: InputEvent) -> void:
-	
-	
 		
-			
-
 	## All these handle is the zooming in and out of gam
 	if Input.is_action_pressed("scale_inc"):
 		
@@ -164,6 +171,7 @@ func set_windowed_scale(win_scale: float = -1.0) -> void:
 	update_window_size(win_scale)
 
 	# zoom_render in order to set the render resolution
+	fullscreen_padding = Vector2.ZERO
 	zoom_render(res_scale)
 
 	# If the player has zoomed in then update the resolution accordingly
@@ -199,11 +207,6 @@ func set_fullscreen_scale() -> void:
 	# Update Rendering size for various aspect ratios
 	update_aspect_ratio()
 	
-	window_scale = int(screen_size.x / base_aspect_ratio.x)
-
-	# Resize the games viewport scaling
-	# set_viewports_scale(window_scale)
-	rescale_game_viewport(window_scale)
 	rescale_ui_viewport(Vector2(screen_size))
 
 	zoom_render(res_scale)
@@ -233,7 +236,9 @@ func update_aspect_ratio() -> void:
 
 	# Find the screen size and then aspect ratio of the screen
 	var screen_size = get_usable_screen_size()
-	var aspect_ratio: float = float(screen_size.x) / float(screen_size.y)
+	var aspect_ratio: float = get_aspect_ratio_override_ratio()
+	if aspect_ratio <= 0.0:
+		aspect_ratio = float(screen_size.x) / float(screen_size.y)
 
 	# Set the base aspect ratio
 	base_aspect_ratio = BASE_RENDER
@@ -260,7 +265,10 @@ func update_gameview_res() -> void:
 
 	# adjust the viewport container to have game_res centered
 	var offset: Vector2 = (padded_size - game_res) * (window_scale / 2.0)
-	level_loader.position = -offset
+	var letterbox_offset: Vector2 = Vector2.ZERO
+	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+		letterbox_offset = fullscreen_padding * 0.5
+	level_loader.position = -offset + letterbox_offset
 
 
 ## Updates a themes font sizes for the window res
@@ -283,7 +291,6 @@ var scale_progress: float = 1.0
 
 # Target values
 var target_res: Vector2 = Vector2(BASE_RENDER)
-var target_scale: float = 1.0
 
 # Function for smoothly interpolate resolution scale increasing
 func res_interpolate(delta: float) -> void:
@@ -297,7 +304,8 @@ func res_interpolate(delta: float) -> void:
 	game_res = game_res.lerp(target_res, t)
 	_globals.RENDER_SIZE = game_res
 
-	window_scale = lerp(window_scale, target_scale, t)
+	window_scale = calculate_window_scale_for_dimensions(game_res)
+	update_fullscreen_padding()
 
 	update_gameview_res()
 	rescale_game_viewport(window_scale)
@@ -316,11 +324,7 @@ func smoothly_zoom_render(new_scale: float) -> void:
 
 	# Set our target res and scale
 	target_res = Vector2(base_aspect_ratio) * new_scale
-	target_scale = float(window_size.x) / float(target_res.x)
-	
-	# Add Extra Padding to the target scale
-	# target_scale += 0.15
-	
+
 	# Setup the interpolation
 	interpolating_res = true
 	scale_progress = 0.0
@@ -333,13 +337,9 @@ func zoom_render(new_scale: float) -> void:
 	game_res = Vector2(base_aspect_ratio) * new_scale
 	_globals.RENDER_SIZE = game_res
 
-	window_scale = float(window_size.x) / float(game_res.x)
-	
-	# Extra Padding
-	# window_scale += 0.15
-	
-	
-	
+	window_scale = calculate_window_scale_for_dimensions(game_res)
+	update_fullscreen_padding()
+
 	# Take the scale and game res and resize viewports
 	update_gameview_res()
 	rescale_game_viewport(window_scale)
@@ -354,6 +354,35 @@ func apply_viewport_offsets() -> void:
 		ui_loader.position = -Vector2(fullscreen_safe_offset)
 	else:
 		ui_loader.position = Vector2.ZERO
+
+
+func calculate_window_scale_for_dimensions(dimensions: Vector2) -> float:
+	if dimensions.x <= 0.0 or dimensions.y <= 0.0:
+		return window_scale
+	if window_size.x <= 0 or window_size.y <= 0:
+		return window_scale
+	var width_scale: float = float(window_size.x) / dimensions.x
+	var height_scale: float = float(window_size.y) / dimensions.y
+	var result: float = min(width_scale, height_scale)
+	return max(result, 0.001)
+
+
+func update_fullscreen_padding() -> void:
+	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+		fullscreen_padding = Vector2(window_size) - (game_res * window_scale)
+		fullscreen_padding.x = max(fullscreen_padding.x, 0.0)
+		fullscreen_padding.y = max(fullscreen_padding.y, 0.0)
+	else:
+		fullscreen_padding = Vector2.ZERO
+
+
+func get_aspect_ratio_override_ratio() -> float:
+	if current_aspect_override_index <= 0 or current_aspect_override_index >= ASPECT_RATIO_VALUES.size():
+		return 0.0
+	var dims: Vector2i = ASPECT_RATIO_VALUES[current_aspect_override_index]
+	if dims.y == 0:
+		return 0.0
+	return float(dims.x) / float(dims.y)
 
 
 ## Works on Apple Silicon Macbooks :/ (this is kinda bad idk how else id do this tbh)
@@ -376,6 +405,8 @@ func get_usable_screen_size() -> Vector2i:
 var config_scale: int = 3
 # if you have a worse screen just get fucked ig
 var win_scale_min: int = 3
+
+var current_aspect_override_index: int = 0
 	
 func config_changed() -> void:
 
@@ -385,8 +416,14 @@ func config_changed() -> void:
 	var fullscreen_setting: bool = _config.get_setting("fullscreen")
 	var fps_setting: int = _config.get_setting("fps_target")
 	var vsync_setting: bool = _config.get_setting("vsync")
+	var aspect_override_index: int = int(_config.get_setting("aspect_ratio_override"))
+	if aspect_override_index < 0 or aspect_override_index >= ASPECT_RATIO_VALUES.size():
+		aspect_override_index = 0
 	var scale_changed: bool = config_scale != (resolution_setting + win_scale_min)
 	var fullscreen_on: bool = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
+	var aspect_override_changed: bool = aspect_override_index != current_aspect_override_index
+	if aspect_override_changed:
+		current_aspect_override_index = aspect_override_index
 
 	# On fullscreen enabled
 	if fullscreen_setting and not fullscreen_on:
@@ -401,7 +438,7 @@ func config_changed() -> void:
 		set_windowed_scale(resolution_setting + win_scale_min)
 
 	# On adjusting window scale
-	elif (scale_changed) and not fullscreen_on: 
+	elif scale_changed and not fullscreen_on:
 		
 		# Linux window servers struggle to rescale the window without a "full screen flush"
 		# All odds given how like hand-coded my window scaling shit is, I imagine this is my own fault.
@@ -413,6 +450,13 @@ func config_changed() -> void:
 		set_windowed_scale(resolution_setting + win_scale_min)
 		
 		
+	if aspect_override_changed:
+		if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
+			set_fullscreen_scale()
+		elif not scale_changed:
+			config_scale = resolution_setting + win_scale_min
+			set_windowed_scale(resolution_setting + win_scale_min)
+
 	update_fps(fps_setting)
 		
 	

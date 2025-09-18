@@ -135,6 +135,20 @@
 				"type": "boolean",
 				"config_key": "vsync"
 			},
+			"aspect_ratio_override": {
+				"label": "Aspect Ratio Override",
+				"description": "Force the game to render at a specific aspect ratio",
+				"type": "choice",
+				"config_key": "aspect_ratio_override",
+				"options": [
+					"auto",
+					"16:9",
+					"16:10",
+					"4:3",
+					"21:9",
+					"32:9"
+				]
+			},
 			"framerate": {
 				"label": "FPS Limit",
 				"description": "Set the max Frameratee",

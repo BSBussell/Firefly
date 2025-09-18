@@ -167,5 +167,5 @@ func update_fps(config_val: int) -> void:
 		return
 	
 	current_fps_val = config_val	
-	Engine.set_max_fps(fps_key_map[current_fps_val])
+	Engine.set_max_fps(FPS_PRESETS[current_fps_val])
 	print("Web FPS updated to:", str(Engine.get_max_fps()))

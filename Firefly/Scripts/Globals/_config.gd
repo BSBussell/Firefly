@@ -28,6 +28,7 @@ var def_settings: Dictionary = {
 	"fps_target": 1,
 	"vsync": true,
 	"game_zoom": 1.4,
+	"aspect_ratio_override": 0,
 	
 # Audio
 	"master_vol": 0.0,
