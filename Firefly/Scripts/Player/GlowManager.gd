@@ -15,6 +15,7 @@ extends Node
 @onready var glow_aura = $"../Particles/GlowAura"
 @onready var promotion_fx = $"../Particles/PromotionFx"
 @onready var spotlight = $"../Visuals/Spotlight"
+@onready var glow_light = $"../Visuals/GlowLight"
 
 signal glow_meter_changed(new_value: float)
 signal glow_promote()
@@ -218,10 +219,12 @@ func glow_point_visual() -> void:
 	
 		if not spotlight.flickering:
 			spotlight.set_flicker(PLAYER.movement_data.BRIGHTNESS, PLAYER.movement_data.BRIGHTNESS - 0.3, 0.09)
+			glow_light.set_flicker(PLAYER.movement_data.GLOW_BRIGHTNESS, PLAYER.movement_data.BRIGHTNESS - 0.3, 0.09)
 	
 	else:
 		if spotlight.flickering:
 			spotlight.set_brightness(PLAYER.movement_data.BRIGHTNESS)
+			glow_light.set_brightness(PLAYER.movement_data.GLOW_BRIGHTNESS)
 	
 	## If we can power up, emit the "Glow Aura"
 	if glow_points == 100:

@@ -867,6 +867,27 @@ FLYPH = NodePath("../..")
 wing = NodePath("../SquishCenter/WingBody/BackWing")
 offset = Vector2(2.08165e-12, -10)
 
+[node name="GlowLight" type="PointLight2D" parent="Visuals"]
+texture_filter = 1
+position = Vector2(5.96046e-08, -10)
+scale = Vector2(0.78125, 1)
+color = Color(1, 0.882353, 0, 1)
+energy = 0.0
+range_z_min = -3024
+range_layer_min = -512
+range_layer_max = 512
+range_item_cull_mask = 1048575
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 1
+shadow_filter_smooth = 25.0
+shadow_item_cull_mask = 2
+texture = ExtResource("6_bo4q8")
+texture_scale = 0.07
+height = 50.0
+script = ExtResource("11_aonwn")
+curve_in = SubResource("Curve_grp02")
+curve_out = SubResource("Curve_5ulra")
+
 [node name="Spotlight" type="PointLight2D" parent="Visuals"]
 texture_filter = 1
 position = Vector2(0, -7)

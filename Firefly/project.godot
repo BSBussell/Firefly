@@ -43,6 +43,7 @@ BetterTerrain="*res://addons/better-terrain/BetterTerrain.gd"
 DiscordRPCLoader="*res://addons/discord-rpc-gd/nodes/discord_autoload.gd"
 _discord="*res://Scripts/Globals/_discord.gd"
 _steam_manager="*res://Scripts/Globals/_steam_manager.gd"
+_input_manager="*res://Scripts/Globals/_input_manager.gd"
 
 [debug]
 

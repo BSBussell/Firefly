@@ -21,6 +21,8 @@ class_name Trail
 
 var _time: float = 0.0
 var _fps_adjusted_length: int = 10
+var _last_anchor: Vector2 = Vector2.ZERO
+var _has_anchor: bool = false
 
 func _ready() -> void:
 	# Optionally draw in world/canvas space, not relative to parent.
@@ -31,12 +33,15 @@ func _ready() -> void:
 		global_scale = Vector2.ONE
 
 	clear_points()
+	_has_anchor = false
 
 	if is_instance_valid(follow):
 		var p0: Vector2 = follow.global_position + offset
 		# Prime with two identical points at the FRONT so index 0 is the head.
 		add_point(p0, 0)
 		add_point(p0, 0)
+		_last_anchor = p0
+		_has_anchor = true
 
 	_update_width(0.0)
 
@@ -52,15 +57,36 @@ func _process(delta: float) -> void:
 
 	var p: Vector2 = follow.global_position + offset
 
+	if get_point_count() == 0:
+		add_point(p, 0)
+		add_point(p, 0)
+		_last_anchor = p
+		_has_anchor = true
+	else:
+		if !_has_anchor:
+			_last_anchor = get_point_position(0)
+			_has_anchor = true
+		var should_add: bool = min_distance <= 0.0
+		if !should_add and _has_anchor:
+			should_add = _last_anchor.distance_to(p) >= min_distance
+		if should_add:
+			add_point(p, 0)
+			_last_anchor = p
+		else:
+			set_point_position(0, p)
+
 	# FPS-scaled target length (match player trail)
 	_fps_adjusted_length = int(max(length * (Engine.get_frames_per_second() / 60.0), 0.0))
-
-	# Always add one point per frame at the FRONT (head at index 0)
-	add_point(p, 0)
+	var target_length: int = _fps_adjusted_length
+	if max_points > 0:
+		target_length = min(target_length, max_points)
 
 	# Clamp length by trimming from the TAIL (remove from end)
-	while get_point_count() > _fps_adjusted_length:
+	while get_point_count() > target_length:
 		remove_point(get_point_count() - 1)
+
+	if get_point_count() == 0:
+		_has_anchor = false
 
 	# Animate width
 	_time += delta

@@ -16,11 +16,11 @@ func _on_body_entered(body):
 	var flyph: Flyph = body as Flyph
 	if flyph:
 		flyph.AERIAL_STATE.fall_timer = 0
-		flyph.spotlight.set_brightness(0)
+		flyph.light.set_brightness(0)
 
 
 func _on_body_exited(body):
 	var flyph: Flyph = body as Flyph
 	if flyph:
 		flyph.AERIAL_STATE.fall_timer = 0
-		flyph.spotlight.set_brightness(flyph.movement_data.BRIGHTNESS)
+		flyph.light.set_brightness(flyph.movement_data.BRIGHTNESS)

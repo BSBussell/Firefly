@@ -121,6 +121,10 @@ extends Resource
 @export var TRAIL_LENGTH: int = 0
 ## How bright the player's spotlight is
 @export var BRIGHTNESS: float = 0.8
+
+## How bright the glow light is
+@export var GLOW_BRIGHTNESS: float = 0.0
+
 ## How much we modulate the player's color by
 @export var GLOW: Color = Color(1.0, 1.0, 1.0)
 ## Wing length

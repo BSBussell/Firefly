@@ -109,8 +109,8 @@ signal dead()
 # Visual Nodes
 @onready var animation: AnimatedSprite2D = $Visuals/SquishCenter/AnimatedSprite2D
 @onready var squish_node: SquishNode = $Visuals/SquishCenter
-@onready var spotlight: PlayerLight = $Visuals/Spotlight
-@onready var light: PointLight2D = $Visuals/Spotlight
+@onready var glowlight: PlayerLight = $Visuals/GlowLight
+@onready var light: PlayerLight = $Visuals/Spotlight
 @onready var glow_trail: Line2D = $Visuals/Trail
 @onready var back_wing: Line2D = $Visuals/SquishCenter/WingBody/BackWing
 @onready var front_wing: Line2D = $Visuals/SquishCenter/WingBody/FrontWing
@@ -1007,6 +1007,7 @@ func calculate_properties():
 
 	# Visual: Setting Glow and such
 	light.set_brightness(movement_data.BRIGHTNESS)
+	glowlight.set_brightness(movement_data.GLOW_BRIGHTNESS)
 
 
 

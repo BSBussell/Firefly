@@ -11,7 +11,8 @@ extends "res://Scripts/Level/Level.gd"
 # We have the player start without glow on this level
 func player_startup_logic():
 	
-	PLAYER.spotlight.set_brightness(0)
+	if not spawn_point_id:
+		PLAYER.light.set_brightness(0)
 	
 		
 

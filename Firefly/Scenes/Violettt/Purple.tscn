@@ -1,4 +1,4 @@
-[gd_scene load_steps=143 format=3 uid="uid://dyil8nko263a0"]
+[gd_scene load_steps=145 format=3 uid="uid://dyil8nko263a0"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_k1vpk"]
 [ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_cpbdf"]
@@ -648,6 +648,14 @@ point_count = 2
 _data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="Curve" id="Curve_0a44a"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_fjmhv"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="Curve" id="Curve_e8pkx"]
 _data = [Vector2(0.00943396, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
@@ -892,6 +900,24 @@ height = 50.0
 script = ExtResource("17_ed5pd")
 curve_in = SubResource("Curve_grp02")
 curve_out = SubResource("Curve_5ulra")
+
+[node name="GlowLight" type="PointLight2D" parent="Visuals"]
+texture_filter = 1
+position = Vector2(0, -12)
+energy = 0.0
+range_layer_min = -99
+range_item_cull_mask = 3
+shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
+shadow_filter = 1
+shadow_filter_smooth = 25.0
+shadow_item_cull_mask = 2
+texture = ExtResource("16_njcer")
+texture_scale = 0.1
+height = 50.0
+script = ExtResource("17_ed5pd")
+curve_in = SubResource("Curve_0a44a")
+curve_out = SubResource("Curve_fjmhv")
 
 [node name="Particles" type="Node2D" parent="."]
 

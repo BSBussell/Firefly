@@ -651,7 +651,7 @@ scale = Vector2(3, 3)
 texture = ExtResource("2_8hfap")
 
 [node name="Mountains_2" type="ParallaxLayer" parent="VisualLayers/MountainLayer"]
-motion_scale = Vector2(0.6, 0.2)
+motion_scale = Vector2(0.6, 0.15)
 motion_offset = Vector2(200, 25)
 motion_mirroring = Vector2(1440, 13500)
 metadata/_edit_lock_ = true
@@ -750,7 +750,7 @@ color = Color(0.890196, 0.921569, 0.34902, 1)
 color_ramp = SubResource("Gradient_ddh3k")
 
 [node name="Mountains_3" type="ParallaxLayer" parent="VisualLayers/MountainLayer2"]
-motion_scale = Vector2(0.7, 0.25)
+motion_scale = Vector2(0.7, 0.2)
 motion_offset = Vector2(200, 25)
 motion_mirroring = Vector2(1440, 13500)
 metadata/_edit_lock_ = true
@@ -785,7 +785,7 @@ color = Color(0.890196, 0.921569, 0.34902, 1)
 color_ramp = SubResource("Gradient_ddh3k")
 
 [node name="Mountains_4" type="ParallaxLayer" parent="VisualLayers/MountainLayer2"]
-motion_scale = Vector2(0.8, 0.3)
+motion_scale = Vector2(0.8, 0.25)
 motion_offset = Vector2(200, 25)
 motion_mirroring = Vector2(1440, 13500)
 metadata/_edit_lock_ = true
