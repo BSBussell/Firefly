@@ -19,6 +19,7 @@ extends PlayerState
 @onready var sliding_sfx = $"../../Audio/SlidingSFX"
 @onready var landing_sfx = $"../../Audio/LandingSFX"
 @onready var crouch_jumping_sfx = $"../../Audio/CrouchJumpingSFX"
+@onready var _IM: InputManager = _input_manager
 
 # The window for preforming a boost jump
 @onready var crouch_jump_window = $"../../Timers/CrouchJumpWindow"
@@ -212,7 +213,7 @@ func state_status() -> PlayerState:
 		return AERIAL_STATE
 
 	# If we let go of down and are able to stand up
-	if not Input.is_action_pressed("Down") and AERIAL_STATE.have_stand_room() and not on_steep_ground():
+	if not _IM.is_down(&"Down") and AERIAL_STATE.have_stand_room() and not on_steep_ground():
 
 		# If we're sliding stop sliding
 		if in_slide_animation():

@@ -8,6 +8,7 @@ signal dialogue_closed()
 @onready var animation_player = $AnimationPlayer
 @onready var animated_sprite_2d = $SpriteAnchor/AnimatedSprite2D
 @onready var hoverAnim = $SpriteAnchor/hoverAnim
+@onready var _IM: InputManager = _input_manager
 
 var current_dialogue
 var current_dialogue_arr: Array
@@ -37,7 +38,7 @@ func connect_to_func(init_sig: Signal, end_sig: Signal):
 
 # Only enabled while the textbox is visible
 func _process(_delta):
-	if text_box.visible and (Input.is_action_just_pressed("interact") or Input.is_action_just_pressed("Jump")):
+	if text_box.visible and (_IM.was_pressed(&"interact") or _IM.was_pressed(&"Jump")):
 		
 		current_loc += 1
 		if current_loc >= current_dialogue_arr.size():

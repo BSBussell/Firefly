@@ -18,6 +18,8 @@ extends PlayerState
 @onready var wall_slide_dust = $"../../Particles/WallSlideDust"
 @onready var wall_hit_sfx = $"../../Audio/WallHitSFX"
 
+@onready var _IM: InputManager = _input_manager
+
 
 
 var cache_airdrift
@@ -67,7 +69,7 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 	
 	_logger.info("Flyph - Wall Processing Input")
-	if Input.is_action_just_pressed("Down"):
+	if _IM.was_pressed(&"Down"):
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
 
@@ -128,7 +130,8 @@ func apply_gravity(delta, _direction):
 	var silly_grav = AERIAL_STATE.get_gravity()
 
 	# If holding into wall and falling, slow our fall
-	if parent.velocity.y > 0 and Input.is_action_pressed(get_which_wall_collided()) and not parent.temp_gravity_active:  # Ensure we're moving downwards
+	var wall_action := get_which_wall_collided()
+	if parent.velocity.y > 0 and not wall_action.is_empty() and _IM.is_down(StringName(wall_action)) and not parent.temp_gravity_active:  # Ensure we're moving downwards
 		
 
 		# Play the sound effect
@@ -184,7 +187,7 @@ func handle_walljump(vc_direction, dir = 0) -> bool:
 			jump_dir = parent.get_wall_normal().x
 		
 		# Resolve requests
-		var down_requested: bool = (vc_direction < 0 and not parent.crouchJumping)
+		var down_requested: bool = (_IM.is_down(&"Down") or vc_direction < 0) and not parent.crouchJumping
 		var upward_requested: bool = false
 		# Determine which horizontal action is "into the wall" based on collider OR grace dir
 		var into_wall_action: String = ""
@@ -196,7 +199,7 @@ func handle_walljump(vc_direction, dir = 0) -> bool:
 		if _config.get_setting("walljump_hold_into_up"):
 			# Holding INTO the wall counts as upward walljump
 			if into_wall_action != "":
-				upward_requested = Input.is_action_pressed(into_wall_action)
+				upward_requested = _IM.is_down(StringName(into_wall_action))
 			else:
 				# Fallback to original Up behavior if we couldn't determine a side
 				upward_requested = vc_direction > 0
@@ -204,19 +207,19 @@ func handle_walljump(vc_direction, dir = 0) -> bool:
 			# Default behavior: hold Up to go up
 			upward_requested = vc_direction > 0
 		
-		# Prioritize downward if requested
-		if down_requested:
-			set_walljump_flags(jump_dir)
-			walljump_fx(jump_dir)
-			downward_walljump(jump_dir)
-			post_jump_buffer.start()
-			return true
-		
-		# Otherwise upward if requested
+		# Prioritize upward requests over downward
 		if upward_requested:
 			set_walljump_flags(jump_dir)
 			walljump_fx(jump_dir)
 			upward_walljump(jump_dir)
+			post_jump_buffer.start()
+			return true
+		
+		# Downward walljump fallback
+		if down_requested:
+			set_walljump_flags(jump_dir)
+			walljump_fx(jump_dir)
+			downward_walljump(jump_dir)
 			post_jump_buffer.start()
 			return true
 		

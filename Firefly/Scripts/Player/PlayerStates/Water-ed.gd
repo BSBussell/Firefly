@@ -323,7 +323,7 @@ func handle_sHop(_delta):
 	
 
 	# Otherwise if we let go of jump, decrease their velocity
-	if Input.is_action_just_released("Jump") and not dive_cool_down.is_stopped() and not short_dived:
+	if _input_manager.was_released(&"Jump") and not dive_cool_down.is_stopped() and not short_dived:
 
 			parent.velocity *= 0.8
 			short_dived = true

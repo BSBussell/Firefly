@@ -186,7 +186,7 @@ func _on_child_focus_exited() -> void:
 	return	
 	
 func user_pressed() -> bool:
-	var accept = Input.is_action_pressed("ui_accept")
+	var accept = _input_manager.is_down(&"ui_accept")
 	if accept:
 		print(accept)
 	return accept

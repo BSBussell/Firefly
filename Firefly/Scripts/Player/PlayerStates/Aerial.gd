@@ -28,6 +28,7 @@ extends PlayerState
 # Effects
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
+@onready var _IM: InputManager = _input_manager
 
 # Measuring the players fall speed for squish-matics
 var min_fall_speed = 0.0
@@ -105,7 +106,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 	_logger.info("Aerial State Input")
 
 	# If Fast Falling Input
-	if Input.is_action_just_pressed("Down") and parent.should_process_fastfall_input():
+	if _IM.was_pressed(&"Down") and parent.should_process_fastfall_input():
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
 		if parent.temp_gravity_active:
@@ -115,7 +116,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 	# If we are crouch jumping, let go of down, and have standing room.
 	var in_crouch = parent.current_animation == parent.ANI_STATES.CRAWL
-	if in_crouch and not Input.is_action_pressed("Down") and have_stand_room():
+	if in_crouch and not _IM.is_down(&"Down") and have_stand_room():
 
 		parent.crouchJumping = false
 		parent.current_animation = parent.ANI_STATES.FALLING
@@ -195,7 +196,7 @@ func state_status():
 
 
 		# If we're pressing down and have standing room go into a slide
-		if Input.is_action_pressed("Down") or not have_stand_room():
+		if _IM.is_down(&"Down") or not have_stand_room():
 			_logger.info("Aerial State -> Sliding State")
 			return SLIDING_STATE
 
@@ -406,7 +407,7 @@ func handle_sHop(_delta):
 		shopped = false
 
 	# Otherwise if we let go of jump, decrease their velocity
-	elif Input.is_action_just_released("Jump") or (parent.jumping and not Input.is_action_pressed("Jump")):
+	elif _IM.was_released(&"Jump") or (parent.jumping and not _IM.is_down(&"Jump")):
 
 		# If we aren't already below ff_velocity
 		if parent.velocity.y < parent.ff_velocity:
@@ -478,7 +479,7 @@ func get_gravity() -> float:
 
 
 	# Add a bit of float if we haven't shopped
-	if abs(parent.velocity.y) < 40 and Input.is_action_pressed("Jump") and not parent.crouchJumping and not parent.boostJumping:
+	if abs(parent.velocity.y) < 40 and _IM.is_down(&"Jump") and not parent.crouchJumping and not parent.boostJumping:
 		gravity_to_apply *= 0.4
 
 	return gravity_to_apply

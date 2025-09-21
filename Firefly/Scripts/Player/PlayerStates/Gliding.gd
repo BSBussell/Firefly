@@ -34,6 +34,7 @@ class_name Gliding
 @export var glide_speed_reduct: float = 10
 
 @onready var flap_sfx = $"../../Audio/FlapSFX"
+@onready var _IM: InputManager = _input_manager
 
 
 ## This is the max accel we can reach while gliding.
@@ -127,10 +128,10 @@ func exit() -> void:
 func process_input(_event: InputEvent) -> PlayerState:
 	
 	# Check if jump is realeased
-	if Input.is_action_just_released("Jump") or Input.is_action_just_pressed("Down"):
+	if _IM.was_released(&"Jump") or _IM.was_pressed(&"Down"):
 		
 		# Set Fast Fall Flags
-		if Input.is_action_just_pressed("Down"):
+		if _IM.was_pressed(&"Down"):
 			parent.fastFalling = true
 			parent.animation.speed_scale = 2.0
 			if parent.temp_gravity_active:
@@ -248,7 +249,7 @@ func state_status() -> PlayerState:
 
 
 		# If we're pressing down and have standing room go into a slide
-		if Input.is_action_pressed("Down") or not AERIAL_STATE.have_stand_room():
+		if _IM.is_down(&"Down") or not AERIAL_STATE.have_stand_room():
 			return SLIDING_STATE
 
 		# We just land otherwise

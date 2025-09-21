@@ -7,14 +7,16 @@ var _quicksave_velocity = Vector2(0, 0)
 var _quicksave_glow: int = 0
 var _quicksave_points: float = 0
 
+@onready var _IM: InputManager = _input_manager
+
 func _input(_event: InputEvent) -> void:
 	
-	if not Input.is_action_pressed("debug_mod"):
+	if not _IM.is_down(&"debug_mod"):
 		return
 		
 		
 	# Handle Resets
-	if Input.is_action_just_pressed("reset") and not _loader.loading:
+	if _IM.was_pressed(&"reset") and not _loader.loading:
 		
 		# Reload the scene
 		get_tree().paused = false
@@ -74,14 +76,14 @@ func _input(_event: InputEvent) -> void:
 		_stats.CURRENT_LEVEL = "res://Scenes/Levels/MountainLevel/mountain.tscn"
 		
 
-	if Input.is_action_just_pressed("QuickSave"):
+	if _IM.was_pressed(&"QuickSave"):
 		_quicksave_location = _globals.ACTIVE_PLAYER.get_global_position()
 		_quicksave_velocity = _globals.ACTIVE_PLAYER.velocity
 		_quicksave_glow = _globals.ACTIVE_PLAYER.get_glow_level()
 		_quicksave_points = _globals.ACTIVE_PLAYER.get_glow_score()
 		_stats.INVALID_RUN = true
 
-	if Input.is_action_just_pressed("QuickLoad"):
+	if _IM.was_pressed(&"QuickLoad"):
 		_globals.ACTIVE_PLAYER.global_position = _quicksave_location
 		_globals.ACTIVE_PLAYER.velocity = _quicksave_velocity
 		_globals.ACTIVE_PLAYER.glow_manager.change_state(_quicksave_glow)

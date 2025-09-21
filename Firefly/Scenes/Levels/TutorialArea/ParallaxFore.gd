@@ -11,7 +11,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	'''
-	if Input.is_action_just_pressed("Dive"):
+	if _input_manager.was_pressed(&"Dive"):
 		visible = not visible
 		fire_fly_particles.emitting = visible
 		fire_fly_particles2.emitting = visible
