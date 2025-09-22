@@ -261,7 +261,6 @@ func state_status() -> PlayerState:
 	
 	elif parent.is_on_wall_only():
 
-		_logger.info("Flyph Aerial State -> Wall State")
 		return WALL_STATE
 		
 	

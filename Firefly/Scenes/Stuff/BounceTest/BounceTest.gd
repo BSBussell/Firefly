@@ -99,7 +99,6 @@ func _on_body_entered(body: Node):
 	if body == _globals.ACTIVE_PLAYER:
 		player = body as Flyph
 		_armed_player_id = player.get_instance_id()
-		_logger.info("BounceTest %s: ACTIVE_PLAYER registered" % challenge_id)
 
 func _on_gate_1_entered(body: Node) -> void:
 	_gate_entered(body, gate_1)
@@ -139,12 +138,10 @@ func _arm_run(start_gate: Area2D) -> void:
 		_finish_gate.set_deferred("monitoring", true)
 	set_physics_process(true)
 	_emit_started()
-	_logger.info("BounceTest %s: Armed start=%s finish=%s state=%s" % [challenge_id, _gate_name(_start_gate), _gate_name(_finish_gate), str(state)])
 
 func _transition_to_airborne() -> void:
 	state = BounceTest.State.AIRBORNE
 	_airborne_time = 0.0
-	_logger.info("BounceTest %s: Transition -> AIRBORNE" % challenge_id)
 
 # --------------------------------------------------
 # Finish Evaluation
@@ -175,13 +172,11 @@ func _succeed() -> void:
 		_spawned_reward.connect("collected", Callable(self, "_on_reward_collected"))
 	_emit_success()
 	# Fully clear on reward collection
-	_logger.info("BounceTest %s: SUCCESS air_time=%.3f" % [challenge_id, _airborne_time])
 
 func _fail(reason: String = "") -> void:
 	if state == BounceTest.State.COMPLETED:
 		return
 	_emit_failed(reason)
-	_logger.info("BounceTest %s: FAIL %s" % [challenge_id, reason])
 	_reset()
 
 func _reset() -> void:
@@ -274,7 +269,6 @@ func load_completion_status() -> void:
 	if cleared:
 		state = BounceTest.State.COMPLETED
 		_disable_triggers()
-		_logger.info("BounceTest %s: already completed on load" % challenge_id)
 	elif reward_pending:
 		state = BounceTest.State.COMPLETED
 		_disable_triggers()
@@ -291,7 +285,6 @@ func _on_reward_collected(_jar: FlyJar) -> void:
 	reward_pending = false
 	mark_as_completed()
 	emit_signal("cleared_challenge", challenge_id) # backward compatibility
-	_logger.info("BounceTest %s: Reward collected, challenge fully cleared" % challenge_id)
 
 func _exit_tree() -> void:
 	unregister_persistence()

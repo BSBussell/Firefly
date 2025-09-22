@@ -18,7 +18,6 @@ var initial_difference: Vector2 = Vector2()
 # Called every frame when interpolating. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	_logger.info("Squish  - Process")
 	interpolation_time += delta
 	var t = min(interpolation_time / rebound_speed, 1.0)  # Clamp to [0, 1]
 	var curve_value = bounce_curve.sample(t)
@@ -30,7 +29,6 @@ func _process(delta):
 		# Stop calling process
 		set_process(false)
 
-	_logger.info("Squish  - Process Exit")
 
 # Set the scale for squash/stretch and start interpolating back to original scale
 func squish(new_scale: Vector2, new_speed: float = base_rebound_speed) -> void:

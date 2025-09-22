@@ -23,14 +23,12 @@ func _setup_challenge() -> void:
 		await get_tree().process_frame
 		start_challenge()
 	
-	_logger.info("DialogueChallenge %s: Setup complete, dialogue_area=%s" % [challenge_id, "assigned" if dialogue_area else "none"])
 
 func _on_challenge_start() -> void:
 	# Connect dialogue signals if not already connected
 	if dialogue_area and trigger_on_dialogue_finish and not dialogue_connected:
 		_connect_dialogue_signals()
 	
-	_logger.info("DialogueChallenge %s: Started, waiting for dialogue to finish" % challenge_id)
 
 func _process_challenge_logic(_delta: float) -> void:
 	# This challenge type is purely event-driven by dialogue completion
@@ -59,7 +57,6 @@ func _connect_dialogue_signals() -> void:
 	if not dialogue_area.finish_dialogue.is_connected(_on_dialogue_finished):
 		dialogue_area.finish_dialogue.connect(_on_dialogue_finished)
 		dialogue_connected = true
-		_logger.info("DialogueChallenge %s: Connected to dialogue finish signal" % challenge_id)
 
 func _disconnect_dialogue_signals() -> void:
 	if not dialogue_area or not dialogue_connected:
@@ -68,13 +65,11 @@ func _disconnect_dialogue_signals() -> void:
 	if dialogue_area.finish_dialogue.is_connected(_on_dialogue_finished):
 		dialogue_area.finish_dialogue.disconnect(_on_dialogue_finished)
 		dialogue_connected = false
-		_logger.info("DialogueChallenge %s: Disconnected from dialogue signals" % challenge_id)
 
 func _on_dialogue_finished() -> void:
 	if state == BaseChallenge.ChallengeState.COMPLETED:
 		return
 	
-	_logger.info("DialogueChallenge %s: Dialogue finished, completing challenge" % challenge_id)
 	
 	# Complete the challenge with dialogue context
 	var dialogue_name: String = ""

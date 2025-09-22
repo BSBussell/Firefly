@@ -28,7 +28,6 @@ func _input(_event):
 func _process(_delta):
 
 	pass	
-	_logger.info("Result - Process")
 	
 	var display_time = _stats.get_timer_debug_string()
 	var found_jars: int = _jar_tracker.total_num_found_jars()
@@ -36,7 +35,6 @@ func _process(_delta):
 
 	stats_label.text = "Time: %s\n Jars Found: %d/%d\n Total Deaths: %d" % [display_time, found_jars, known_jars, _stats.DEATHS]
 
-	_logger.info("Result - Process End")
 
 func show_Victory_Screen():
 	self.visible = true

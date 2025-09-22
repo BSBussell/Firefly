@@ -28,8 +28,6 @@ var pre_wall_vel: float = 0.0
 # Called on state entrance, setup
 func enter() -> void:
 	
-	if OS.is_debug_build():
-		_logger.info("Flyph - Wall State")
 
 	parent.animation.flip_h = 1 if parent.get_wall_normal().x > 0 else 0
 
@@ -52,7 +50,6 @@ func enter() -> void:
 	parent.squish_node.squish(Vector2(1.0 - squash_value, 1.0 + squash_value), squash_dur)
 	
 	# Spawn some wall hug dust
-	_logger.info("Flyph - Wall Escaped Enter")
 
 
 # Called before exiting the state, cleanup
@@ -68,12 +65,10 @@ func exit() -> void:
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
 	
-	_logger.info("Flyph - Wall Processing Input")
 	if _IM.was_pressed(&"Down"):
 		parent.fastFalling = true
 		parent.animation.speed_scale = 2.0
 
-	_logger.info("Flyph - Wall Done Processing Input")
 	return null
 
 # Processing Frames in this state, returns nil or new state
@@ -83,7 +78,6 @@ func process_frame(_delta: float) -> PlayerState:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 	
-	_logger.info("Flyph::Wall - Processing Physics")
 	apply_gravity(delta, parent.horizontal_axis)
 	handle_walljump(parent.vertical_axis)
 	AERIAL_STATE.handle_sHop(delta)
@@ -91,7 +85,6 @@ func process_physics(delta: float) -> PlayerState:
 	handle_acceleration(delta, parent.horizontal_axis)
 	apply_airResistance(delta, parent.horizontal_axis)
 	
-	_logger.info("Flyph::Wall - Finishing Processing Physics")
 	return state_status()
 	
 # What state are we returning.

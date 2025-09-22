@@ -119,7 +119,6 @@ func start_challenge(starting_player: Flyph = null, context: Dictionary = {}) ->
 		player = _globals.ACTIVE_PLAYER
 	
 	if not _validate_player_requirements():
-		_logger.warn("BaseChallenge %s: Cannot start - player validation failed" % challenge_id)
 		return false
 	
 	challenge_context = context.duplicate()
@@ -129,7 +128,6 @@ func start_challenge(starting_player: Flyph = null, context: Dictionary = {}) ->
 	_on_challenge_start()
 	emit_challenge_started(context)
 	
-	_logger.info("BaseChallenge %s: Started" % challenge_id)
 	return true
 
 func succeed_challenge(success_context: Dictionary = {}) -> void:
@@ -154,7 +152,6 @@ func succeed_challenge(success_context: Dictionary = {}) -> void:
 
 	emit_challenge_succeeded(full_context)
 	
-	_logger.info("BaseChallenge %s: Succeeded with context: %s" % [challenge_id, str(full_context)])
 
 func fail_challenge(reason: String, fail_context: Dictionary = {}) -> void:
 	if state == BaseChallenge.ChallengeState.COMPLETED:
@@ -166,7 +163,6 @@ func fail_challenge(reason: String, fail_context: Dictionary = {}) -> void:
 	
 	emit_challenge_failed(reason, full_context)
 	
-	_logger.info("BaseChallenge %s: Failed - %s" % [challenge_id, reason])
 	reset_challenge()
 
 func reset_challenge() -> void:
@@ -187,7 +183,6 @@ func reset_challenge() -> void:
 	if was_active:
 		emit_signal("challenge_reset", challenge_id)
 	
-	_logger.info("BaseChallenge %s: Reset to idle" % challenge_id)
 
 func update_challenge_progress(progress_data: Dictionary) -> void:
 	emit_signal("challenge_progress_updated", challenge_id, progress_data)
@@ -252,9 +247,6 @@ func _spawn_reward_and_focus(focus: bool = true) -> FlyJar:
 		RewardType.GOLD_JAR:
 			# Replace gold jar with default/yellow flyjar
 			spawned_jar = await jars.create_flyjar(reward_pos)
-		RewardType.GEM:
-			# Handle gem spawning if needed
-			_logger.info("BaseChallenge %s: Gem reward not yet implemented" % challenge_id)
 		RewardType.CUSTOM:
 			_spawn_custom_reward(reward_pos)
 
@@ -374,7 +366,6 @@ func load_challenge_data(save_data: Dictionary) -> void:
 	if cleared or state == BaseChallenge.ChallengeState.COMPLETED:
 		state = BaseChallenge.ChallengeState.COMPLETED
 		_disable_all_triggers()
-		_logger.info("BaseChallenge %s: Loaded completion state from save" % challenge_id)
 
 		# If a reward is pending (challenge succeeded earlier but jar not collected), respawn it without focus
 		if reward_pending and not cleared:
@@ -391,7 +382,6 @@ func load_completion_status() -> void:
 	if cleared:
 		state = BaseChallenge.ChallengeState.COMPLETED
 		_disable_all_triggers()
-		_logger.info("BaseChallenge %s: Loaded as completed" % challenge_id)
 
 func mark_as_completed() -> void:
 	cleared = true
@@ -402,7 +392,6 @@ func _on_reward_collected(_jar: FlyJar) -> void:
 	reward_pending = false
 	mark_as_completed()
 	emit_signal("cleared_challenge", challenge_id) # Legacy compatibility
-	_logger.info("BaseChallenge %s: Reward collected, challenge fully cleared" % challenge_id)
 
 func unregister_persistence() -> void:
 	_persist.unregister_persistent_class(challenge_id)

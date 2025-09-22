@@ -165,7 +165,6 @@ func reset_input_bindings_to_default() -> void:
 	# Reload the project's default InputMap
 	# This is a bit tricky since we need to restore the original bindings
 	# For now, we'll just clear the config and let the game restart with defaults
-	_logger.info("Input bindings reset to default. Please restart the game.")
 
 # Connect a callable to input bindings changed
 func connect_to_input_changed(_function: Callable) -> void:

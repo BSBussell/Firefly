@@ -64,30 +64,25 @@ func _update_dialogue_file() -> void:
 	if new_file != "" and new_file != dialogue_file:
 		dialogue_file = new_file
 		load_file()
-		_logger.info("ChallengeMeister: Updated dialogue to %s" % dialogue_file)
 
 # Challenge event handlers
 func _on_challenge_started(challenge_id: String, _context: Dictionary) -> void:
 	challenge_started = true
 	_update_dialogue_file()
-	_logger.info("ChallengeMeister: Challenge %s started" % challenge_id)
 
 func _on_challenge_succeeded(challenge_id: String, context: Dictionary) -> void:
 	challenge_completed = true
 	challenge_started = false
 	_update_dialogue_file()
 	emit_signal("challenge_passed", challenge_id, context)
-	_logger.info("ChallengeMeister: Challenge %s completed!" % challenge_id)
 
 func _on_challenge_failed(challenge_id: String, reason: String, _context: Dictionary) -> void:
 	challenge_started = false  # Reset to show initial dialogue again
 	_update_dialogue_file()
-	_logger.info("ChallengeMeister: Challenge %s failed: %s" % [challenge_id, reason])
 
 func _on_challenge_reset(challenge_id: String) -> void:
 	challenge_started = false
 	_update_dialogue_file()
-	_logger.info("ChallengeMeister: Challenge %s reset" % challenge_id)
 
 func _on_challenge_status_loaded(_challenge_id: String, state: int, cleared: bool) -> void:
 	challenge_completed = cleared or state == BaseChallenge.ChallengeState.COMPLETED
@@ -139,8 +134,6 @@ func _start_dialogue() -> void:
 	talk_count += 1
 	has_talked_before = true
 
-	if used_initial:
-		_logger.info("ChallengeMeister: Showing initial dialogue on first talk")
 
 	# Emit the dialogue to the UI
 	emit_signal("initiate_dialogue", data_to_use, false)

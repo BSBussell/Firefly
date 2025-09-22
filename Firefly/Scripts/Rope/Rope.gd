@@ -33,7 +33,6 @@ var segments: Array = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 
-	_logger.info("Rope - Ready")
 
 	create_joints()
 	if GlowWorm:
@@ -42,7 +41,6 @@ func _ready():
 	if not Swingable:
 		self_modulate = "#3e3b65bf"
 
-	_logger.info("Rope - Ready Finished")
 
 
 
@@ -125,7 +123,6 @@ func setup_Worm():
 	
 func activate(_segment: SpitSegment):
 	
-	_logger.info("Rope - Receiving Grabbed Signal")
 	
 	if GlowWorm:
 		if not worm_active:
@@ -148,21 +145,17 @@ func kill_worm():
 	
 func start_cooldown(time: float) -> void:
 	
-	_logger.info("Rope - Cooldown Function Started")
 	
 	for each: SpitSegment in segments:
 		each.set_deferred("collision_layer", 0)
 		
-	_logger.info("Rope - Cooldown Started")
 	
 	await get_tree().create_timer(time).timeout
 	
-	_logger.info("Rope - Cooldown Finished")
 
 
 	for each: SpitSegment in segments:
 		each.set_deferred("collision_layer", 1 << 8)
 	
-	_logger.info("Rope - Cooldown Finished")
 		
 	

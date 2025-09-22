@@ -94,7 +94,6 @@ func populate_setting(setting_list: Dictionary, current_cat: Button):
 			
 		
 		else:
-			_logger.warning("Setting Type Invalid: " + setting_list[setting]["type"])
 			continue
 			
  

@@ -46,7 +46,6 @@ func connect_signal(function: Callable):
 		print("Error connecting signal: ", err)
 
 func player_grabbed():
-	_logger.info("Segment - Emitting Grabbed Signal")
 	emit_signal("grabbed", self)
 	path_point.progress_ratio = 0.5 
 

@@ -22,7 +22,6 @@ var fps_adjusted_length: int = 10
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	_logger.info("Flyph - Trail Process")
 
 	fps_adjusted_length = max(length * (Engine.get_frames_per_second() / 60), 0)
 	
@@ -51,7 +50,6 @@ func _process(delta):
 		if t >= 1.0:
 			interpolating = false  # Stop interpolating
 	
-	_logger.info("Flyph - Trail Process End")
 
 func set_glow(new_color: Color, duration: float = 1.0) -> void:
 	goal_color = new_color

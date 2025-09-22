@@ -34,8 +34,6 @@ var slide_threshold = 100
 # Called on state entrance, setup
 func enter() -> void:
 
-	if OS.is_debug_build():
-		_logger.info("Flyph - Entering Sliding State")
 
 	# Reset the sliding flags
 	slidingDown = false

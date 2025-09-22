@@ -69,8 +69,6 @@ func enter() -> void:
 	
 	wet.emitting = false
 
-	if OS.is_debug_build():
-		_logger.info("Water State")
 
 	
 	if parent.velocity.y > 150:

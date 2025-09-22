@@ -97,8 +97,6 @@ func enter() -> void:
 	
 	
 	
-	if OS.is_debug_build():
-		_logger.info("Wormed State")
 
 	# We are not speeding up on grab
 	speeding_up = false
@@ -144,7 +142,6 @@ func enter() -> void:
 	parent.current_animation = parent.ANI_STATES.WALL_HUG
 	parent.restart_animation = true
 		
-	_logger.info("We have finished Enter")
 
 
 	
@@ -166,7 +163,6 @@ func exit() -> void:
 
 	parent.rotation = 0.0
 
-	_logger.info("Flyph - Worm Exit")
 
 	
 
@@ -174,7 +170,6 @@ func exit() -> void:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 
-	_logger.info("Wormed Process Physics")
 
 	var vertical_axis = -parent.vertical_axis
 	if climb_rope(delta, vertical_axis):
@@ -190,11 +185,9 @@ func process_physics(delta: float) -> PlayerState:
 	# Enable player jumping off rope
 	if handle_jump(delta):
 
-		_logger.info("Finished Wormed Process Physics - Jumping")
 
 		return AERIAL_STATE
 		
-	_logger.info("Finished Wormed Process Physics")
 
 	return null
 
@@ -203,13 +196,11 @@ func process_physics(delta: float) -> PlayerState:
 
 func process_frame(_delta):
 
-	_logger.info("Wormed Process Frame")
 
 	update_direction()
 	particle_emission()
 	update_sprite()
 
-	_logger.info("Finished Wormed Processing Frame")
 
 
 func update_direction() -> void:

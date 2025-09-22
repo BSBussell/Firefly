@@ -55,7 +55,6 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	_logger.info("Meter _process")
 
 	var multiplier = 1.0
 	if interpolated_score > actual_score:
@@ -117,7 +116,6 @@ func _process(delta):
 	if interpolated_score == actual_score:
 		set_process(false)
 
-	_logger.info("Meter Process End")
 
 func set_score(score: float):
 	

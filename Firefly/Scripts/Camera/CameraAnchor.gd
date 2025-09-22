@@ -58,12 +58,10 @@ func _unhandled_input(event):
 func _physics_process(delta):
 	
 	# Calculating a smoothed velocity value constantly
-	_logger.info("CameraAnchor - Physics Process")
 	smoothed_velocity = smoothed_velocity.lerp(Player.velocity, delta * velocity_smoothing)
 	# Refresh distance-based camera targets before state updates
 	_refresh_distance_camera_targets()
 	state_machine.process_physics(delta)
-	_logger.info("CameraAnchor - Physics Process End")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

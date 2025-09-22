@@ -376,7 +376,6 @@ func _on_reward_collected(_jar: FlyJar) -> void:
 	reward_pending = false
 	mark_as_completed()
 	emit_signal("cleared_challenge", challenge_id)
-	_logger.info("SpeedGate %s: Reward collected, challenge fully cleared" % challenge_id)
 
 func _exit_tree() -> void:
 	unregister_persistence()

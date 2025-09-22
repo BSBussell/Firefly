@@ -23,19 +23,16 @@ func _ready():
 
 func _process(_delta):
 	
-	_logger.info("Worm - Process Start")
 
 	if reversed:
 		point_light_2d.position.y = -8
 	else:
 		point_light_2d.position.y = -4
 
-	_logger.info("Worm - Process End")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 
-	_logger.info("Worm - Physics Process Start")
 
 	if active:
 		crawl(delta)
@@ -46,7 +43,6 @@ func _physics_process(delta):
 		else:
 			get_prev_segment()
 
-	_logger.info("Worm - Physics Process End")
 
 func setup_hunt(initial: SpitSegment, speed: float, dlay: float):
 	first_segment = initial

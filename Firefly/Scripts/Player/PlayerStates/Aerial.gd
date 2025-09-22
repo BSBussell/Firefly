@@ -46,8 +46,6 @@ var slide_fall: bool = false
 # Called on state entrance, setup
 func enter() -> void:
 
-	if OS.is_debug_build():
-		_logger.info("Flyph - Aerial State")
 
 	# Reset our flags/counters
 	shopped = false
@@ -97,13 +95,11 @@ func exit() -> void:
 		#parent.fastFalling = false
 		parent.animation.speed_scale = 1.0
 
-	_logger.info("Exiting Aerial State")
 
 
 # Processing input in this state, returns nil or new state
 func process_input(_event: InputEvent) -> PlayerState:
 
-	_logger.info("Aerial State Input")
 
 	# If Fast Falling Input
 	if _IM.was_pressed(&"Down") and parent.should_process_fastfall_input():
@@ -130,7 +126,6 @@ func process_input(_event: InputEvent) -> PlayerState:
 	if can_glide() and parent.attempt_jump():
 		return GLIDE_STATE
 
-	_logger.info("Aerial State Input End")
 
 	return null
 
@@ -141,7 +136,6 @@ func can_glide() -> bool:
 # Processing Physics in this state, returns nil or new state
 func process_physics(delta: float) -> PlayerState:
 
-	_logger.info("Flyph - Aerial State Physics")
 
 	apply_gravity(delta)
 
@@ -171,7 +165,6 @@ func process_physics(delta: float) -> PlayerState:
 	# Check if we've found a new min fall speed
 	min_fall_speed = min(min_fall_speed, parent.velocity.y)
 
-	_logger.info("Flyph - Aerial State Physics End")
 
 	# Get Potential exit state from state status
 	return state_status()
@@ -179,7 +172,6 @@ func process_physics(delta: float) -> PlayerState:
 
 func state_status():
 
-	_logger.info("Flyph - Aerial State Checking for State Transition")
 
 	# Make Sure we're still grounded after this
 	if parent.is_on_floor() and parent.velocity.y >= 0  :
@@ -197,26 +189,21 @@ func state_status():
 
 		# If we're pressing down and have standing room go into a slide
 		if _IM.is_down(&"Down") or not have_stand_room():
-			_logger.info("Aerial State -> Sliding State")
 			return SLIDING_STATE
 
 		# We just land otherwise
 		else:
-			_logger.info("Flyph Aerial State -> Grounded State")
 			return GROUNDED_STATE
 
 	# If we're on the wall
 	elif parent.is_on_wall_only():
 
-		_logger.info("Flyph Aerial State -> Wall State")
 		return WALL_STATE
 
 	# Contigency
 	if parent.velocity.x == 0 and not have_stand_room():
-		_logger.info("Contingency Aerial State -> Sliding State")
 		return SLIDING_STATE
 
-	_logger.info("Flyph Aerial State -> Null")
 	return null
 
 
@@ -229,7 +216,6 @@ var fall_timer_max: float = 1.5
 
 func process_frame(delta):
 
-	_logger.info("Aerial State Frame")
 
 	# Fall squishing :3
 	if parent.velocity.y > 0 and not parent.launched:
@@ -266,7 +252,6 @@ func process_frame(delta):
 	if grace_wj_dir == 0 and parent.current_animation != parent.ANI_STATES.WALL_JUMP:
 		parent.current_animation = parent.ANI_STATES.FALLING
 
-	_logger.info("Aerial State Frame End")
 
 ## Called when an animation ends. How we handle transitioning to different animations
 func animation_end() -> PlayerState:

@@ -50,13 +50,11 @@ func _get_goober_count() -> int:
 func _setup_challenge() -> void:
 	if target_player == null:
 		target_player = _globals.ACTIVE_PLAYER
-		_logger.warn("SlimeRoom %s: No target_player set, using ACTIVE_PLAYER" % challenge_id)
 	
 	_connect_goobers()
 	_store_original_colors()
 	_update_visual_feedback()
 	
-	_logger.info("SlimeRoom %s: Setup complete, tracking %d goobers" % [challenge_id, _get_goober_count()])
 
 func _on_challenge_start() -> void:
 	challenge_active = true
@@ -164,7 +162,6 @@ func _connect_goobers() -> void:
 			if not goober_instance.Bounce.is_connected(_on_goober_bounced):
 				goober_instance.Bounce.connect(_on_goober_bounced.bind(goober_instance))
 				_goober_connections[goober_instance] = true
-				_logger.info("SlimeRoom %s: Connected to goober %d" % [challenge_id, i])
 
 func _disconnect_all_goobers() -> void:
 	for goober_instance in _goober_connections.keys():
@@ -211,7 +208,6 @@ func _on_goober_bounced(bounced_goober: goober) -> void:
 	
 	# Check if this goober should count
 	if not allow_repeat_bounces and bounced_goober in bounced_goobers:
-		_logger.info("SlimeRoom %s: Repeat bounce ignored on goober" % challenge_id)
 		return
 	
 	# Add to bounced list
@@ -228,7 +224,6 @@ func _on_goober_bounced(bounced_goober: goober) -> void:
 	
 	_update_visual_feedback()
 	
-	_logger.info("SlimeRoom %s: Bounced on goober (%d/%d)" % [challenge_id, bounced_goobers.size(), _get_goober_count()])
 	
 	# Check if challenge is complete
 	if _is_challenge_complete():
@@ -255,7 +250,6 @@ func _reset_progress(reason: String) -> void:
 	if bounced_goobers.size() == 0:
 		return  # Nothing to reset
 	
-	_logger.info("SlimeRoom %s: Progress reset - %s" % [challenge_id, reason])
 	
 	bounced_goobers.clear()
 	_update_visual_feedback()
@@ -341,7 +335,6 @@ func add_goober(new_goober: goober) -> void:
 			_goober_connections[new_goober] = true
 	
 	_update_visual_feedback()
-	_logger.info("SlimeRoom %s: Added goober to group, total count: %d" % [challenge_id, _get_goober_count()])
 
 func remove_goober(goober_to_remove: goober) -> void:
 	var group_goobers: Array[goober] = _get_goobers_from_group()
@@ -367,7 +360,6 @@ func remove_goober(goober_to_remove: goober) -> void:
 		_goober_lights.erase(goober_to_remove)
 	
 	_update_visual_feedback()
-	_logger.info("SlimeRoom %s: Removed goober from group, total count: %d" % [challenge_id, _get_goober_count()])
 
 func get_bounced_count() -> int:
 	return bounced_goobers.size()

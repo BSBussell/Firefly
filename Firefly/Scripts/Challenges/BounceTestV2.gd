@@ -29,13 +29,11 @@ func _setup_challenge() -> void:
 		setup_area_monitoring(gate_2, _on_gate_2_entered)
 		gate_2.monitoring = true
 	
-	_logger.info("BounceTestV2 %s: Setup complete, gates ready" % challenge_id)
 
 func _on_challenge_start() -> void:
 	bounce_state = BounceTestV2.BounceState.WAITING_FOR_AIR
 	_ground_time = 0.0
 	
-	_logger.info("BounceTestV2 %s: Started, waiting for player to go airborne" % challenge_id)
 
 func _process_challenge_logic(delta: float) -> void:
 	if not is_instance_valid(player):
@@ -47,7 +45,6 @@ func _process_challenge_logic(delta: float) -> void:
 			if not player.is_on_floor():
 				bounce_state = BounceTestV2.BounceState.AIRBORNE
 				_ground_time = 0.0
-				_logger.info("BounceTestV2 %s: Player is now airborne" % challenge_id)
 		
 		BounceTestV2.BounceState.AIRBORNE:
 			if player.is_on_floor():
@@ -110,7 +107,6 @@ func _gate_entered(body: Node, gate: Area2D) -> void:
 		# Start the challenge
 		_start_gate = gate
 		_finish_gate = (gate_2 if gate == gate_1 else gate_1)
-		_logger.info("BounceTestV2 %s: Armed start=%s finish=%s" % [challenge_id, _gate_name(_start_gate), _gate_name(_finish_gate)])
 		start_challenge(player)
 		return
 	
