@@ -268,15 +268,15 @@ func water_jump():
 	var jump_force: float = parent.jump_velocity * WATER_JUMP_MULTI
 	
 	# Calculate the direction vector based on input
-	var input_direction: Vector2 = Vector2(-parent.horizontal_axis, parent.vertical_axis)
+	var input_direction: Vector2 = Vector2(-parent.horizontal_axis, -parent.vertical_axis)
 
 	# If no direction pressed we go up
 	if input_direction == Vector2.ZERO:
-		input_direction = Vector2(0, 1)
+		input_direction = Vector2(0, -1)
 		
 	# If we are going right we go up a tiny bit
 	elif input_direction.y == 0:
-		input_direction.y = 0.15 
+		input_direction.y = -0.15 
 		
 
 	# Normalize the direction vector

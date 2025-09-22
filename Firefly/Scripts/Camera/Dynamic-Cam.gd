@@ -214,7 +214,7 @@ func calculate_target_position(delta: float) -> Vector2:
 		position += current_grouping_offset
 		if Use_Lookahead:
 			position += offset
-		var has_snap := false
+		var has_snap = false
 		for target in control.targets.values():
 			if Allow_Target_Snap and target.target_snap:
 				position = targets_center

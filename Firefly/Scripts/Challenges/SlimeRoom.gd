@@ -221,7 +221,7 @@ func _on_goober_bounced(bounced_goober: goober) -> void:
 	# Instance goober light on first valid bounce
 	if goober_light and is_instance_valid(bounced_goober):
 		if not _goober_lights.has(bounced_goober) or not is_instance_valid(_goober_lights.get(bounced_goober, null)):
-			var light_instance := goober_light.instantiate()
+			var light_instance = goober_light.instantiate()
 			if light_instance:
 				bounced_goober.add_child(light_instance)
 				_goober_lights[bounced_goober] = light_instance

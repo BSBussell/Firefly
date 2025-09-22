@@ -4,16 +4,25 @@ class_name InputManager
 signal device_changed(name: String, is_gamepad: bool)
 signal action_set_changed(name: String)
 
-const NativeInputBackendScript := preload("res://Scripts/Globals/NativeInputBackend.gd")
+const NativeInputBackendScript: Script = preload("res://Scripts/Globals/NativeInputBackend.gd")
+const SteamInputBackendScript: Script = preload("res://Scripts/Globals/SteamInputBackend.gd")
 
 var _backend: InputBackend
+var _using_steam_backend: bool = false
 var _active_action_set: StringName = &"default"
 var _current_device_name: String = "keyboard_mouse"
 var _current_device_is_gamepad: bool = false
 
 func _ready() -> void:
-	_backend = NativeInputBackendScript.new()
 	set_process_input(true)
+	set_process(true)
+	_backend = _create_backend()
+	var steam_manager = _get_steam_manager()
+	if steam_manager:
+		if not steam_manager.is_connected("steam_ready", Callable(self, "_on_steam_ready")):
+			steam_manager.connect("steam_ready", Callable(self, "_on_steam_ready"), CONNECT_ONE_SHOT)
+		if not steam_manager.is_connected("steam_failed", Callable(self, "_on_steam_failed")):
+			steam_manager.connect("steam_failed", Callable(self, "_on_steam_failed"), CONNECT_ONE_SHOT)
 
 func get_actions() -> Array[StringName]:
 	return _backend.get_actions()
@@ -27,16 +36,16 @@ func was_pressed(action: StringName) -> bool:
 func was_released(action: StringName) -> bool:
 	return _backend.was_released(action)
 
-func axis(name: StringName = &"move") -> Vector2:
-	return _backend.axis(name)
+func axis(action_name: StringName = &"move") -> Vector2:
+	return _backend.axis(action_name)
 
-func set_action_set(name: StringName) -> void:
-	if name == _active_action_set:
+func set_action_set(action_set: StringName) -> void:
+	if action_set == _active_action_set:
 		return
 
-	_active_action_set = name
-	_backend.set_action_set(name)
-	emit_signal("action_set_changed", String(name))
+	_active_action_set = action_set
+	_backend.set_action_set(action_set)
+	emit_signal("action_set_changed", String(action_set))
 
 func get_glyph_paths_for(action: StringName) -> Array[String]:
 	return _backend.get_glyph_paths_for(action)
@@ -59,23 +68,27 @@ func open_controller_binding_panel() -> bool:
 func is_steam_active() -> bool:
 	return _backend.is_steam_active()
 
+func _process(delta: float) -> void:
+	if _backend:
+		_backend.update(delta)
+
 func _input(event: InputEvent) -> void:
 	if not _should_consider_event(event):
 		return
 
-	var info := _derive_device_info(event)
+	var info = _derive_device_info(event)
 	if info.is_empty():
 		return
 
-	var name: String = info["name"]
+	var device_name: String = info["name"]
 	var is_gamepad: bool = info["is_gamepad"]
 
-	if name == _current_device_name and is_gamepad == _current_device_is_gamepad:
+	if device_name == _current_device_name and is_gamepad == _current_device_is_gamepad:
 		return
 
-	_current_device_name = name
+	_current_device_name = device_name
 	_current_device_is_gamepad = is_gamepad
-	emit_signal("device_changed", name, is_gamepad)
+	emit_signal("device_changed", device_name, is_gamepad)
 
 func _should_consider_event(event: InputEvent) -> bool:
 	if event is InputEventJoypadMotion:
@@ -110,3 +123,45 @@ func _derive_device_info(event: InputEvent) -> Dictionary:
 		info["name"] = "action"
 		info["is_gamepad"] = false
 	return info
+
+func _create_backend() -> InputBackend:
+	var steam_manager: Steam_Manager = _get_steam_manager()
+	var steam_available: bool = Engine.has_singleton("Steam") and steam_manager != null and steam_manager.is_ready()
+	if steam_available:
+		_using_steam_backend = true
+		var steam_backend: InputBackend = SteamInputBackendScript.new()
+		steam_backend.set_action_set(_active_action_set)
+		return steam_backend
+	_using_steam_backend = false
+	var native_backend: InputBackend = NativeInputBackendScript.new()
+	native_backend.set_action_set(_active_action_set)
+	return native_backend
+
+func _switch_backend(new_backend: InputBackend) -> void:
+	if new_backend == null:
+		return
+	_backend = new_backend
+	_backend.set_action_set(_active_action_set)
+	_current_device_name = "keyboard_mouse"
+	_current_device_is_gamepad = false
+	_backend.update(0.0)
+
+func _on_steam_ready() -> void:
+	if _using_steam_backend or not Engine.has_singleton("Steam"):
+		return
+	_using_steam_backend = true
+	_switch_backend(SteamInputBackendScript.new())
+
+func _on_steam_failed(_error: String) -> void:
+	if not _using_steam_backend:
+		return
+	_using_steam_backend = false
+	_switch_backend(NativeInputBackendScript.new())
+
+func _get_steam_manager() -> Steam_Manager:
+	var main_loop: MainLoop = Engine.get_main_loop()
+	if main_loop is SceneTree:
+		var scene_tree: SceneTree = main_loop
+		var root: Node = scene_tree.root
+		return root.get_node_or_null("/root/_steam_manager") as Steam_Manager
+	return null

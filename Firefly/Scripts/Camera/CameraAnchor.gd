@@ -25,7 +25,7 @@ enum process {Physics, Draw}
 
 # Lol this is the dumbest way to do this but i'm so raw for it
 @onready var startingPos: Vector2 = Vector2(0, 10)
-@onready var actual_cam_pos := global_position
+@onready var actual_cam_pos = global_position
 
 @onready var sensor: Area2D = $Sensor/Area2D
 # If something is on screen that shouldn't be

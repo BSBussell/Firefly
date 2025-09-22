@@ -869,9 +869,9 @@ offset = Vector2(2.08165e-12, -10)
 
 [node name="GlowLight" type="PointLight2D" parent="Visuals"]
 texture_filter = 1
-position = Vector2(5.96046e-08, -10)
-scale = Vector2(0.78125, 1)
-color = Color(1, 0.882353, 0, 1)
+position = Vector2(2.38419e-07, -11.5)
+scale = Vector2(1.00446, 1.39509)
+color = Color(1, 0.584314, 0, 1)
 energy = 0.0
 range_z_min = -3024
 range_layer_min = -512

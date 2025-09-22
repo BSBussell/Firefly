@@ -80,7 +80,7 @@ func _setup_challenge() -> void:
 	printerr("TimeTrial %s: Setup complete, easy=%.1fs hard=%.1fs" % [challenge_id, easy_duration, hard_duration])
 	
 	# Debug the guide system setup
-	debug_guide_state()
+	#debug_guide_state()
 
 func _on_challenge_start() -> void:
 	# Decide which stage to run
@@ -103,7 +103,7 @@ func _on_challenge_start() -> void:
 	_start_guide_movement()
 	
 	# Debug guide state after start
-	debug_guide_state()
+	#debug_guide_state()
 	
 	var context: Dictionary = {
 		"stage": ("easy" if current_stage == TimeTrial.Stage.EASY else "hard"),
@@ -135,13 +135,13 @@ func _process_challenge_logic(delta: float) -> void:
 		TimeTrial.TrialState.TIME_UP:
 			grace_timer += delta
 			if grace_timer >= grace_period:
-				var stg := ("easy" if current_stage == TimeTrial.Stage.EASY else "hard")
+				var stg = ("easy" if current_stage == TimeTrial.Stage.EASY else "hard")
 				fail_challenge("Time expired (%s)" % stg)
 
 func _on_challenge_succeed() -> Dictionary:
 	var completion_time: float = trial_duration - time_remaining
 	var time_bonus: float = max(0.0, time_remaining)
-	var stage_str := ("easy" if current_stage == TimeTrial.Stage.EASY else "hard")
+	var stage_str = ("easy" if current_stage == TimeTrial.Stage.EASY else "hard")
 
 	_cooldown_until = _now() + restart_cooldown
 
@@ -253,8 +253,8 @@ func _on_exit_entered(body: Node) -> void:
 		reset_challenge()
 	else:
 		# Hard stage completion finishes the challenge and grants hard reward via BaseChallenge
-		var prev_reward_type := reward_type
-		var prev_reward_spawn := reward_spawn
+		var prev_reward_type = reward_type
+		var prev_reward_spawn = reward_spawn
 		reward_type = hard_reward_type
 		reward_spawn = (hard_reward_spawn if hard_reward_spawn else reward_spawn)
 		hard_cleared = true
@@ -532,9 +532,9 @@ func _load_custom_save_data(save_data: Dictionary) -> void:
 func _respawn_easy_reward_pending() -> void:
 	# Defer to make sure the scene tree is ready and JarManager is available
 	await get_tree().process_frame
-	var spawn_pos := (easy_reward_spawn.global_position if easy_reward_spawn else _get_reward_position())
+	var spawn_pos = (easy_reward_spawn.global_position if easy_reward_spawn else _get_reward_position())
 	# If an easy jar already exists near the spawn, reuse it
-	var existing := _find_existing_jar_near(spawn_pos)
+	var existing = _find_existing_jar_near(spawn_pos)
 	if existing:
 		_easy_spawned_reward = existing
 		if not _easy_spawned_reward.collected.is_connected(_on_easy_reward_collected):
@@ -553,8 +553,8 @@ func _on_easy_reward_collected(_jar: FlyJar) -> void:
 
 func _spawn_stage_reward(stage: TimeTrial.Stage, focus: bool = true) -> FlyJar:
 	# Temporarily swap reward settings to reuse BaseChallenge spawn+focus
-	var prev_type := reward_type
-	var prev_spawn := reward_spawn
+	var prev_type = reward_type
+	var prev_spawn = reward_spawn
 	if stage == TimeTrial.Stage.EASY:
 		reward_type = easy_reward_type
 		reward_spawn = (easy_reward_spawn if easy_reward_spawn else reward_spawn)

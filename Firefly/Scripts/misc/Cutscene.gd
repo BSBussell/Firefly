@@ -155,9 +155,9 @@ func _load_dialogue_file(path: String) -> Dictionary:
 	if path == null or path == "":
 		return {}
 	var data: Dictionary = {}
-	var file := FileAccess.open(path, FileAccess.READ)
+	var file = FileAccess.open(path, FileAccess.READ)
 	if file:
-		var json_string := file.get_as_text()
+		var json_string = file.get_as_text()
 		file.close()
 		var parsed = JSON.parse_string(json_string)
 		if typeof(parsed) == TYPE_DICTIONARY:
@@ -177,8 +177,8 @@ func queue_dialog_then_animation(dialogue_path: String = "", next_animation: Str
 		push_error("Cutscene.gd: DialogueUiComponent not available. Did you assign `level`?")
 		return
 
-	var use_path := dialogue_path if dialogue_path != "" else default_dialogue_path
-	var data := _load_dialogue_file(use_path)
+	var use_path = dialogue_path if dialogue_path != "" else default_dialogue_path
+	var data = _load_dialogue_file(use_path)
 	if data.is_empty():
 		push_error("Cutscene.gd: Dialogue data empty for path: " + str(use_path))
 		return
@@ -216,7 +216,7 @@ func queue_dialog_from_resource(res: Resource, next_animation: String = "") -> v
 		push_error("Cutscene.gd: Resource has no external file path.")
 		return
 
-	var file_path := res.resource_path
+	var file_path = res.resource_path
 	var text = FileAccess.get_file_as_string(file_path)
 	var data = JSON.parse_string(text)
 	if typeof(data) != TYPE_DICTIONARY:

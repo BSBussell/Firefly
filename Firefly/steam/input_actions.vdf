@@ -1,0 +1,185 @@
+"In Game Actions"
+{
+	"actions"
+	{
+		"gameplay"
+		{
+			"title" "#ActionSet_Gameplay"
+			"move"
+			{
+				"title" "#Action_move"
+				"type" "analog"
+				"input_mode" "joystick_move"
+			}
+			"Dive"
+			{
+				"title" "#Action_Dive"
+				"type" "button"
+			}
+			"Down"
+			{
+				"title" "#Action_Down"
+				"type" "button"
+			}
+			"Glow_Down"
+			{
+				"title" "#Action_Glow_Down"
+				"type" "button"
+			}
+			"Glow_Up"
+			{
+				"title" "#Action_Glow_Up"
+				"type" "button"
+			}
+			"Jump"
+			{
+				"title" "#Action_Jump"
+				"type" "button"
+			}
+			"Kill"
+			{
+				"title" "#Action_Kill"
+				"type" "button"
+			}
+			"Left"
+			{
+				"title" "#Action_Left"
+				"type" "button"
+			}
+			"Pause"
+			{
+				"title" "#Action_Pause"
+				"type" "button"
+			}
+			"QuickLoad"
+			{
+				"title" "#Action_QuickLoad"
+				"type" "button"
+			}
+			"QuickSave"
+			{
+				"title" "#Action_QuickSave"
+				"type" "button"
+			}
+			"Right"
+			{
+				"title" "#Action_Right"
+				"type" "button"
+			}
+			"Up"
+			{
+				"title" "#Action_Up"
+				"type" "button"
+			}
+			"debug_down"
+			{
+				"title" "#Action_debug_down"
+				"type" "button"
+			}
+			"debug_mod"
+			{
+				"title" "#Action_debug_mod"
+				"type" "button"
+			}
+			"debug_up"
+			{
+				"title" "#Action_debug_up"
+				"type" "button"
+			}
+			"interact"
+			{
+				"title" "#Action_interact"
+				"type" "button"
+			}
+			"reset"
+			{
+				"title" "#Action_reset"
+				"type" "button"
+			}
+			"scale_dec"
+			{
+				"title" "#Action_scale_dec"
+				"type" "button"
+			}
+			"scale_inc"
+			{
+				"title" "#Action_scale_inc"
+				"type" "button"
+			}
+			"ui_accept"
+			{
+				"title" "#Action_ui_accept"
+				"type" "button"
+			}
+			"ui_cancel"
+			{
+				"title" "#Action_ui_cancel"
+				"type" "button"
+			}
+			"ui_down"
+			{
+				"title" "#Action_ui_down"
+				"type" "button"
+			}
+			"ui_left"
+			{
+				"title" "#Action_ui_left"
+				"type" "button"
+			}
+			"ui_right"
+			{
+				"title" "#Action_ui_right"
+				"type" "button"
+			}
+			"ui_select"
+			{
+				"title" "#Action_ui_select"
+				"type" "button"
+			}
+			"ui_up"
+			{
+				"title" "#Action_ui_up"
+				"type" "button"
+			}
+		}
+	}
+	"localization"
+	{
+		"english"
+		{
+			"Title_Config1" "The Bee's Official Scheme"
+			"Description_Config1" "The controller layout preferred by Bee!"
+			"Title_Config2" "Bee's Controls"
+			"Description_Config2" "The controller layout preferred by Bee! Not an objective best but she likes it!"
+
+			"ActionSet_Gameplay" "Gameplay"
+			"Action_move" "Move"
+			"Action_Dive" "Dive"
+			"Action_Down" "Down"
+			"Action_Glow_Down" "Glow Down"
+			"Action_Glow_Up" "Glow Up"
+			"Action_Jump" "Jump"
+			"Action_Kill" "Kill"
+			"Action_Left" "Left"
+			"Action_Pause" "Pause"
+			"Action_QuickLoad" "Quick Load"
+			"Action_QuickSave" "Quick Save"
+			"Action_Right" "Right"
+			"Action_Up" "Up"
+			"Action_debug_down" "Debug Down"
+			"Action_debug_mod" "Debug Mod"
+			"Action_debug_up" "Debug Up"
+			"Action_interact" "Interact"
+			"Action_reset" "Reset"
+			"Action_scale_dec" "Scale Dec"
+			"Action_scale_inc" "Scale Inc"
+			"Action_ui_accept" "UI Accept"
+			"Action_ui_cancel" "UI Cancel"
+			"Action_ui_down" "UI Down"
+			"Action_ui_left" "UI Left"
+			"Action_ui_right" "UI Right"
+			"Action_ui_select" "UI Select"
+			"Action_ui_up" "UI Up"
+		}
+	}
+}

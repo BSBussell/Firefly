@@ -130,7 +130,7 @@ func apply_gravity(delta, _direction):
 	var silly_grav = AERIAL_STATE.get_gravity()
 
 	# If holding into wall and falling, slow our fall
-	var wall_action := get_which_wall_collided()
+	var wall_action = get_which_wall_collided()
 	if parent.velocity.y > 0 and not wall_action.is_empty() and _IM.is_down(StringName(wall_action)) and not parent.temp_gravity_active:  # Ensure we're moving downwards
 		
 

@@ -53,7 +53,7 @@ func _ready() -> void:
 	_steam = Engine.get_singleton(STEAM_SINGLETON)
 	_connect_overlay_signals()
 
-	var settings_info := _read_project_settings()
+	var settings_info = _read_project_settings()
 	if settings_info.auto_initialize:
 		await get_tree().process_frame
 		_initialized = _check_init_success()
@@ -77,7 +77,7 @@ func _ready() -> void:
 		_steam.setOverlayNotificationPosition(Steam.POSITION_BOTTOM_LEFT)
 		_steam.setOverlayNotificationInset(10, 10)  # inset from the corner (px)
 	else:
-		var error_message := "Steam failed to initialize. Is the Steam client running?"
+		var error_message = "Steam failed to initialize. Is the Steam client running?"
 		push_warning("[Steam] %s" % error_message)
 		emit_signal("steam_failed", error_message)
 
@@ -87,9 +87,7 @@ func _process(_delta: float) -> void:
 		return
 	_steam.run_callbacks()
 
-func _unhandled_key_input(event: InputEvent) -> void:
-	# Default behavior: let Steam client handle the overlay hotkey (configurable in Steam settings).
-	pass
+
 	
 
 func is_ready() -> bool:
@@ -170,7 +168,7 @@ func _check_init_success() -> bool:
 	return _steam.loggedOn()
 
 func _read_project_settings() -> ProjectSettingsInfo:
-	var info := ProjectSettingsInfo.new()
+	var info = ProjectSettingsInfo.new()
 	info.app_id = _get_ps_int([
 		"steam/initialization/app_id",
 		"steam/init/app_id",
@@ -203,14 +201,14 @@ func _should_attempt_dev_mode() -> bool:
 	return Engine.is_editor_hint() or OS.is_debug_build()
 
 func _ensure_runtime_appid_file() -> bool:
-	var app_id_text := str(DEFAULT_DEV_APP_ID)
+	var app_id_text = str(DEFAULT_DEV_APP_ID)
 	if FileAccess.file_exists(DEV_APPID_FILE):
 		var file: FileAccess = FileAccess.open(DEV_APPID_FILE, FileAccess.READ)
 		if file:
 			app_id_text = file.get_as_text().strip_edges()
 			file.close()
-	var output_path := _project_root_join(RUNTIME_APPID_FILE)
-	var output := FileAccess.open(output_path, FileAccess.WRITE)
+	var output_path = _project_root_join(RUNTIME_APPID_FILE)
+	var output = FileAccess.open(output_path, FileAccess.WRITE)
 	if output == null:
 		push_warning("[Steam] Could not write %s" % output_path)
 		return false
@@ -221,7 +219,7 @@ func _ensure_runtime_appid_file() -> bool:
 	return true
 
 func _project_root_join(filename: String) -> String:
-	var root_abs := ProjectSettings.globalize_path("res://")
+	var root_abs = ProjectSettings.globalize_path("res://")
 	if not root_abs.ends_with("/"):
 		root_abs += "/"
 	return root_abs + filename
@@ -230,8 +228,8 @@ func _log_user() -> void:
 	if not is_ready():
 		push_warning("[Steam] Steam not initialized.")
 		return
-	var suffix := " [dev appid]" if _dev_mode_used else ""
-	var message := "Logged in as %s (%s)%s" % [
+	var suffix = " [dev appid]" if _dev_mode_used else ""
+	var message = "Logged in as %s (%s)%s" % [
 		_steam.getPersonaName(),
 		_steam.getSteamID(),
 		suffix
@@ -252,7 +250,7 @@ func _connect_overlay_signals() -> void:
 		return
 	if not _steam.has_signal(SIGNAL_OVERLAY_TOGGLED):
 		return
-	var err := _steam.connect(SIGNAL_OVERLAY_TOGGLED, Callable(self, "_on_overlay_toggled"))
+	var err = _steam.connect(SIGNAL_OVERLAY_TOGGLED, Callable(self, "_on_overlay_toggled"))
 	if err == OK:
 		_overlay_signal_connected = true
 	else:

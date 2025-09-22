@@ -1,10 +1,10 @@
 extends RefCounted
 class_name InputBackend
 
-const BindingModelScript := preload("res://Scripts/Globals/BindingModel.gd")
+const BindingModelScript: Script = preload("res://Scripts/Globals/BindingModel.gd")
 
 static func build_binding_model(action: StringName, event: InputEvent, id: String, device: StringName, display_name: String) -> BindingModel:
-	var safe_event := event.duplicate(true) if event else null
+	var safe_event = event.duplicate(true) if event else null
 	return BindingModelScript.new(action, safe_event, id, device, display_name)
 
 func get_actions() -> Array[StringName]:
@@ -21,6 +21,9 @@ func was_released(_action: StringName) -> bool:
 
 func axis(_name: StringName = &"move") -> Vector2:
 	return Vector2.ZERO
+
+func update(_delta: float) -> void:
+	pass
 
 func set_action_set(_name: StringName) -> void:
 	pass
