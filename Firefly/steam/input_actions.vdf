@@ -1,148 +1,58 @@
 "In Game Actions"
 {
+	"ActionManifestVersion" "2"
 	"actions"
 	{
 		"gameplay"
 		{
 			"title" "#ActionSet_Gameplay"
-			"move"
+
+			"StickPadGyro"
 			{
-				"title" "#Action_move"
-				"type" "analog"
-				"input_mode" "joystick_move"
+				"move"
+				{
+					"title" "#Action_move"
+					"input_mode" "joystick_move"
+				}
 			}
-			"Dive"
+
+			"AnalogTrigger"
 			{
-				"title" "#Action_Dive"
-				"type" "button"
+				// empty for now (you can add throttle-like analogs later)
 			}
-			"Down"
+
+			"Button"
 			{
-				"title" "#Action_Down"
-				"type" "button"
-			}
-			"Glow_Down"
-			{
-				"title" "#Action_Glow_Down"
-				"type" "button"
-			}
-			"Glow_Up"
-			{
-				"title" "#Action_Glow_Up"
-				"type" "button"
-			}
-			"Jump"
-			{
-				"title" "#Action_Jump"
-				"type" "button"
-			}
-			"Kill"
-			{
-				"title" "#Action_Kill"
-				"type" "button"
-			}
-			"Left"
-			{
-				"title" "#Action_Left"
-				"type" "button"
-			}
-			"Pause"
-			{
-				"title" "#Action_Pause"
-				"type" "button"
-			}
-			"QuickLoad"
-			{
-				"title" "#Action_QuickLoad"
-				"type" "button"
-			}
-			"QuickSave"
-			{
-				"title" "#Action_QuickSave"
-				"type" "button"
-			}
-			"Right"
-			{
-				"title" "#Action_Right"
-				"type" "button"
-			}
-			"Up"
-			{
-				"title" "#Action_Up"
-				"type" "button"
-			}
-			"debug_down"
-			{
-				"title" "#Action_debug_down"
-				"type" "button"
-			}
-			"debug_mod"
-			{
-				"title" "#Action_debug_mod"
-				"type" "button"
-			}
-			"debug_up"
-			{
-				"title" "#Action_debug_up"
-				"type" "button"
-			}
-			"interact"
-			{
-				"title" "#Action_interact"
-				"type" "button"
-			}
-			"reset"
-			{
-				"title" "#Action_reset"
-				"type" "button"
-			}
-			"scale_dec"
-			{
-				"title" "#Action_scale_dec"
-				"type" "button"
-			}
-			"scale_inc"
-			{
-				"title" "#Action_scale_inc"
-				"type" "button"
-			}
-			"ui_accept"
-			{
-				"title" "#Action_ui_accept"
-				"type" "button"
-			}
-			"ui_cancel"
-			{
-				"title" "#Action_ui_cancel"
-				"type" "button"
-			}
-			"ui_down"
-			{
-				"title" "#Action_ui_down"
-				"type" "button"
-			}
-			"ui_left"
-			{
-				"title" "#Action_ui_left"
-				"type" "button"
-			}
-			"ui_right"
-			{
-				"title" "#Action_ui_right"
-				"type" "button"
-			}
-			"ui_select"
-			{
-				"title" "#Action_ui_select"
-				"type" "button"
-			}
-			"ui_up"
-			{
-				"title" "#Action_ui_up"
-				"type" "button"
+				"Dive"        "#Action_Dive"
+				"Down"        "#Action_Down"
+				"Glow_Down"   "#Action_Glow_Down"
+				"Glow_Up"     "#Action_Glow_Up"
+				"Jump"        "#Action_Jump"
+				"Kill"        "#Action_Kill"
+				"Left"        "#Action_Left"
+				"Pause"       "#Action_Pause"
+				"QuickLoad"   "#Action_QuickLoad"
+				"QuickSave"   "#Action_QuickSave"
+				"Right"       "#Action_Right"
+				"Up"          "#Action_Up"
+				"debug_down"  "#Action_debug_down"
+				"debug_mod"   "#Action_debug_mod"
+				"debug_up"    "#Action_debug_up"
+				"interact"    "#Action_interact"
+				"reset"       "#Action_reset"
+				"scale_dec"   "#Action_scale_dec"
+				"scale_inc"   "#Action_scale_inc"
+				"ui_accept"   "#Action_ui_accept"
+				"ui_cancel"   "#Action_ui_cancel"
+				"ui_down"     "#Action_ui_down"
+				"ui_left"     "#Action_ui_left"
+				"ui_right"    "#Action_ui_right"
+				"ui_select"   "#Action_ui_select"
+				"ui_up"       "#Action_ui_up"
 			}
 		}
 	}
+
 	"localization"
 	{
 		"english"

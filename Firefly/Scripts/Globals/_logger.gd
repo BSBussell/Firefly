@@ -2,13 +2,13 @@ extends Node
 class_name Logger
 
 # Logging Settings
-var log_calls = false
+var log_calls = true
 
 # Default Log File
 var log_name = "user://fire_log.txt"
 
 # How many log messages before the log file is saved
-var log_save_size: int = 1000
+var log_save_size: int = 10
 
 var _log_count: int = 0
 var log_file: FileAccess
