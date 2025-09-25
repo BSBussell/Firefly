@@ -660,7 +660,6 @@ win_condition = 1
 [node name="Lighting" type="Node2D" parent="."]
 
 [node name="Moonlight" type="DirectionalLight2D" parent="Lighting"]
-visible = false
 rotation = -0.698132
 color = Color(0.780392, 0.87451, 0.921569, 1)
 energy = 0.15
@@ -673,13 +672,10 @@ height = 1.0
 metadata/_edit_lock_ = true
 
 [node name="Moonlight2" type="DirectionalLight2D" parent="Lighting"]
-visible = false
 rotation = -0.698132
-enabled = false
+editor_only = true
 color = Color(0.780392, 0.87451, 0.921569, 1)
-energy = 0.0
 range_layer_min = -101
-shadow_enabled = true
 shadow_color = Color(0, 0, 0, 1)
 shadow_filter = 1
 shadow_filter_smooth = 15.0
@@ -687,7 +683,7 @@ height = 1.0
 metadata/_edit_lock_ = true
 
 [node name="ShadowFilter" type="CanvasModulate" parent="Lighting"]
-color = Color(0.294118, 0.254902, 0.607843, 1)
+color = Color(0.199454, 0.168166, 0.434339, 1)
 metadata/_edit_lock_ = true
 
 [node name="Parallax" type="ParallaxBackground" parent="."]
@@ -859,6 +855,10 @@ color_ramp = SubResource("Gradient_d3oo7")
 color = Color(0.293123, 0.253495, 0.606704, 1)
 metadata/_edit_lock_ = true
 
+[node name="TileParallax" type="CanvasLayer" parent="."]
+
+[node name="LevelTileMap" parent="TileParallax" instance=ExtResource("9_n6462")]
+
 [node name="Particles" type="Node" parent="."]
 process_mode = 3
 
@@ -1008,22 +1008,22 @@ level = NodePath("../..")
 
 [node name="SillyFox" parent="Friends" node_paths=PackedStringArray("challenge", "level") instance=ExtResource("22_so7p8")]
 position = Vector2(-1221, 320)
+challenge = NodePath("../../Challenges/BounceTest2")
 initial_challenge = "res://Assets/DialogueData/SillyFox/TheGap/theGapInit.json"
 challenge_fail = "res://Assets/DialogueData/SillyFox/TheGap/theGap_Fail.json"
 challenge_complete = "res://Assets/DialogueData/SillyFox/TheGap/theGap_Pass.json"
-dialogue_file = "res://Assets/DialogueData/SillyFox/SlimeChallenge.json"
-challenge = NodePath("../../Challenges/BounceTest2")
 level = NodePath("../..")
+dialogue_file = "res://Assets/DialogueData/SillyFox/SlimeChallenge.json"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Friends/SillyFox"]
 shape = SubResource("CircleShape2D_fa86s")
 
 [node name="Gg4" parent="Friends" node_paths=PackedStringArray("challenge", "level") instance=ExtResource("23_s453i")]
 position = Vector2(-1564, 280)
+challenge = NodePath("../../Challenges/BounceTest2")
 initial_challenge = "res://Assets/DialogueData/GG/WildWoods/RappsChallenge/init.json"
 challenge_fail = "res://Assets/DialogueData/GG/WildWoods/RappsChallenge/init.json"
 challenge_complete = "res://Assets/DialogueData/GG/WildWoods/RappsChallenge/complete.json"
-challenge = NodePath("../../Challenges/BounceTest2")
 level = NodePath("../..")
 
 [node name="LevelAudio" type="Node" parent="."]
@@ -1269,14 +1269,14 @@ texture = ExtResource("30_bbc3m")
 [node name="BounceTest2" type="Node2D" parent="Challenges" node_paths=PackedStringArray("gate_1", "gate_2", "jars", "reward_spawn")]
 position = Vector2(-1177, 286)
 script = ExtResource("34_yu5hc")
+gate_1 = NodePath("gate_left")
+gate_2 = NodePath("gate_left2")
 grace_seconds = 0.02
 challenge_id = "bounce_test"
 challenge_name = "Bounce Test"
-reward_type = 1
-gate_1 = NodePath("gate_left")
-gate_2 = NodePath("gate_left2")
 jars = NodePath("../../JarsManager")
 reward_spawn = NodePath("Marker2D")
+reward_type = 1
 
 [node name="gate_left" type="Area2D" parent="Challenges/BounceTest2"]
 position = Vector2(-1, 0)

@@ -541,10 +541,10 @@ smooth_transition = 0.02
 
 [node name="SillyFox" parent="Friends" node_paths=PackedStringArray("challenge", "level") instance=ExtResource("18_6hgj7")]
 position = Vector2(-146, -288)
+challenge = NodePath("../../Events/SlimeRoom")
 initial_challenge = "res://Assets/DialogueData/SillyFox/BounceRoom/init.json"
 challenge_fail = "res://Assets/DialogueData/SillyFox/BounceRoom/fail.json"
 challenge_complete = "res://Assets/DialogueData/SillyFox/BounceRoom/pass.json"
-challenge = NodePath("../../Events/SlimeRoom")
 level = NodePath("../..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Friends/SillyFox"]
@@ -589,14 +589,14 @@ update_scale = false
 
 [node name="SlimeRoom" parent="Events" node_paths=PackedStringArray("target_player", "jars") instance=ExtResource("22_5fsx8")]
 position = Vector2(-121, -310)
-completed_modulate = Color(2, 5, 2, 1)
 goober_group_name = "ChallengeGoobers"
 goober_light = ExtResource("24_ycr8n")
+target_player = NodePath("../../Flyph")
 allow_repeat_bounces = true
 ground_grace_period = 0.08
-reward_type = 1
-target_player = NodePath("../../Flyph")
+completed_modulate = Color(2, 5, 2, 1)
 jars = NodePath("../../JarsManager")
+reward_type = 1
 
 [node name="Zacharias" parent="Events" node_paths=PackedStringArray("level") instance=ExtResource("24_oba2a")]
 position = Vector2(547, -584)
@@ -606,11 +606,11 @@ dialogue_file = "res://Assets/DialogueData/Zach/zachWisdom.json"
 [node name="DialogueChallenge" type="Node2D" parent="Events/Zacharias" node_paths=PackedStringArray("dialogue_area", "jars")]
 position = Vector2(53, -1)
 script = ExtResource("25_ygw8s")
+dialogue_area = NodePath("..")
 auto_start_on_ready = true
 challenge_id = "zachs_lecture"
-reward_type = 1
-dialogue_area = NodePath("..")
 jars = NodePath("../../../JarsManager")
+reward_type = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Events/Zacharias"]
 shape = SubResource("CircleShape2D_3g61g")

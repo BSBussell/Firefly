@@ -1,4 +1,4 @@
-[gd_scene load_steps=142 format=3 uid="uid://bbae0lck5bmhv"]
+[gd_scene load_steps=143 format=3 uid="uid://bbae0lck5bmhv"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Flyph.gd" id="1_ikygr"]
 [ext_resource type="Resource" uid="uid://xq6m1gs1x8ve" path="res://Scenes/Player/Movement_Presets/DefaultMovement.tres" id="2_tlkrj"]
@@ -24,6 +24,7 @@
 [ext_resource type="AudioStream" uid="uid://b6jwf7oavshmg" path="res://Assets/SFX/Player/jump_2.mp3" id="14_hplrh"]
 [ext_resource type="AudioStream" uid="uid://drn56tacwbwh1" path="res://Assets/SFX/Player/Landing.wav" id="15_o0d2x"]
 [ext_resource type="Script" path="res://Scenes/Player/WingBody.gd" id="16_00e2f"]
+[ext_resource type="Texture2D" uid="uid://3tf00ylgy12u" path="res://Assets/Graphics/Lightmaps/FREE Textures Of Light Alpha/FREE Textures Of Light Alpha/256x256/256x256 textures (4).png" id="16_74vy2"]
 [ext_resource type="Script" path="res://Scenes/Player/WingTrail.gd" id="16_jvpc1"]
 [ext_resource type="AudioStream" uid="uid://dhvsjt5lta3gk" path="res://Assets/SFX/Player/Sliding.wav" id="17_r3q20"]
 [ext_resource type="AudioStream" uid="uid://bpm4t54vvm5l4" path="res://Assets/SFX/Water/lightSplash.mp3" id="19_5b1pc"]
@@ -881,7 +882,7 @@ shadow_color = Color(0, 0, 0, 1)
 shadow_filter = 1
 shadow_filter_smooth = 25.0
 shadow_item_cull_mask = 2
-texture = ExtResource("6_bo4q8")
+texture = ExtResource("16_74vy2")
 texture_scale = 0.07
 height = 50.0
 script = ExtResource("11_aonwn")
