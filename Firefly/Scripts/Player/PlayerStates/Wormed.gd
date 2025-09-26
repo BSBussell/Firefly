@@ -171,7 +171,7 @@ func exit() -> void:
 func process_physics(delta: float) -> PlayerState:
 
 
-	var vertical_axis = -parent.vertical_axis
+	var vertical_axis = parent.vertical_axis
 	if climb_rope(delta, vertical_axis):
 		return AERIAL_STATE
 
@@ -365,7 +365,7 @@ func jump():
 	var jump_y_vel: float = parent.jump_velocity
 	
 	# If holding down, then we have a negative multiplier to jump down from rope
-	var vertical_axis = -parent.vertical_axis
+	var vertical_axis = parent.vertical_axis
 	if vertical_axis < 0:
 		vertical_multi = -0.4
 	

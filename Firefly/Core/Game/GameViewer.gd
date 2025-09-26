@@ -30,7 +30,6 @@ signal res_changed
 # Our ViewPorts
 @onready var game_view_port: SubViewport = $LevelLoader/GameViewPort
 @onready var ui_view_port: SubViewport = $UILoader/UIViewPort
-@onready var _IM: InputManager = _input_manager
 
 # Our Theme Node
 @onready var global_themer: GlobalThemer = $UILoader/UIViewPort/GlobalThemer
@@ -99,12 +98,12 @@ func _input(_event: InputEvent) -> void:
 			
 
 	## All these handle is the zooming in and out of gam
-	if _IM.is_down(&"scale_inc"):
+	if Input.is_action_pressed(&"scale_inc"):
 		
 		res_scale = move_toward(res_scale, MAX_ZOOM, ZOOM_STEP)
 		smoothly_zoom_render(res_scale)	 
 
-	elif _IM.is_down(&"scale_dec"):
+	elif Input.is_action_pressed(&"scale_dec"):
 		
 		res_scale = move_toward(res_scale, MIN_ZOOM, ZOOM_STEP)
 		smoothly_zoom_render(res_scale)

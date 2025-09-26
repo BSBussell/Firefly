@@ -15,14 +15,14 @@ func _ready():
 
 func _unhandled_input(_event):
 	
-	if visible and _input_manager.is_down(&"ui_cancel"):
+	if visible and Input.is_action_pressed(&"ui_cancel"):
 		
 		animation_player.play("close")
 		
 		await animation_player.animation_finished
 		emit_signal("Closing")
 
-	#if _input_manager.was_pressed(&"ui_accept"):
+	#if Input.is_action_just_pressed(&"ui_accept"):
 		#print("Focus Owner:", get_viewport().gui_get_focus_owner())
 
 

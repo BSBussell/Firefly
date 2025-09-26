@@ -95,7 +95,7 @@ signal dead()
 # Glow Mechanic
 @onready var glow_manager: Glow_Manager = $GlowManager
 
-@onready var _IM: InputManager = _input_manager
+const MOVE_AXIS_DEADZONE: float = 0.15
 
 
 # Colliders
@@ -363,7 +363,7 @@ func player_load(save_data: Dictionary) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 
 	# Log if a jump is pressed
-	if _IM.was_pressed(&"Jump") and not is_actor:
+	if Input.is_action_just_pressed(&"Jump") and not is_actor:
 		jump_buffer = base_jump_buffer
 
 
@@ -371,14 +371,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	# For quickly chaning states
 	if OS.is_debug_build():
-		if _IM.was_pressed(&"debug_up"):
+		if Input.is_action_just_pressed(&"debug_up"):
 			glow_manager.promote()
-		if _IM.was_pressed(&"debug_down") and glow_manager.movement_level > 0:
+		if Input.is_action_just_pressed(&"debug_down") and glow_manager.movement_level > 0:
 			glow_manager.demote()
-		if _IM.was_pressed(&"reset"):
+		if Input.is_action_just_pressed(&"reset"):
 			calculate_properties()
 
-	if _IM.was_pressed(&"Kill"):
+	if Input.is_action_just_pressed(&"Kill"):
 		kill()
 
 	# Pass The Input to the State Machine
@@ -428,18 +428,17 @@ func set_input_axis(delta: float) -> void:
 	# is enough for my player to move considerably slower than like i want them to... so built in UCF???
 	# If we aren't an actor take user input
 	if not is_actor:
-		var move_axis: Vector2 = _IM.axis(&"move")
-		horizontal_axis = snappedf(move_axis.x, 0.5)
-		vertical_axis = snappedf(move_axis.y, 0.1) # idek if im gonna use this one lol
+		horizontal_axis = snappedf( Input.get_axis("Left", "Right"), 0.5 )
+		vertical_axis = snappedf(Input.get_axis("Down", "Up"), 0.1 ) # idek if im gonna use this one lol
 
 	
 
 	# If we've just pressed an input then unlock the direction (so silly players
 	# can regain control if they want to)
-	if _IM.was_pressed(&"Right") or _IM.was_pressed(&"Left"):
+	if Input.is_action_just_pressed(&"Right") or Input.is_action_just_pressed(&"Left"):
 			lock_dir = false
 			lock_time = 0
-	if soft_lock and (_IM.is_down(&"Right") or _IM.is_down(&"Left")):
+	if soft_lock and (Input.is_action_pressed(&"Right") or Input.is_action_pressed(&"Left")):
 			lock_dir = false
 			lock_time = 0
 

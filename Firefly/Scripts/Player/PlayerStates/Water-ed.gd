@@ -36,6 +36,12 @@ const WAVE_PARTICLE: PackedScene = preload("res://Scenes/Player/particles/waves.
 @onready var stand_room_left = $"../../Raycasts/Colliders/Stand_Room_Left"
 @onready var stand_room_right = $"../../Raycasts/Colliders/Stand_Room_Right"
 
+# Check if we should jump up
+@onready var step_max_left = $"../../Raycasts/HorizontalSmoothing/StepMaxLeft"
+@onready var step_max_right = $"../../Raycasts/HorizontalSmoothing/StepMaxRight"
+
+
+
 # Effects
 @onready var jump_dust = $"../../Particles/JumpDustSpawner"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
@@ -123,6 +129,8 @@ func enter() -> void:
 
 	# Enable Water Audio Filers
 	_audio.enable_underwater_fx()
+
+	handle_water_jump(0)
 	
 
 
@@ -266,15 +274,16 @@ func water_jump():
 	var jump_force: float = parent.jump_velocity * WATER_JUMP_MULTI
 	
 	# Calculate the direction vector based on input
-	var input_direction: Vector2 = Vector2(-parent.horizontal_axis, -parent.vertical_axis)
+	var input_direction: Vector2 = Vector2(-parent.horizontal_axis, parent.vertical_axis)
 
 	# If no direction pressed we go up
 	if input_direction == Vector2.ZERO:
-		input_direction = Vector2(0, -1)
+		input_direction = Vector2(0, 1)
 		
 	# If we are going right we go up a tiny bit
-	elif input_direction.y == 0:
-		input_direction.y = -0.15 
+	elif (input_direction.x < 0 and step_max_right.is_colliding()) or (input_direction.x > 0 and step_max_left.is_colliding()):
+		input_direction.y = 1 
+		
 		
 
 	# Normalize the direction vector
@@ -321,7 +330,7 @@ func handle_sHop(_delta):
 	
 
 	# Otherwise if we let go of jump, decrease their velocity
-	if _input_manager.was_released(&"Jump") and not dive_cool_down.is_stopped() and not short_dived:
+	if Input.is_action_just_released(&"Jump") and not dive_cool_down.is_stopped() and not short_dived:
 
 			parent.velocity *= 0.8
 			short_dived = true

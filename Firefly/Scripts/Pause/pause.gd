@@ -16,7 +16,6 @@ signal Unpaused
 # Buttons
 @onready var resume_button = $VBoxContainer/Items/Top/ResumeButton
 
-@onready var _IM: InputManager = _input_manager
 
 
 # Sliders
@@ -65,7 +64,7 @@ func define_dependencies() -> void:
 func _input(_event):
 	
 	# Handle Pausing
-	if _IM.was_pressed(&"Pause"):
+	if Input.is_action_just_pressed(&"Pause"):
 		toggle_pause()
 
 func toggle_pause():

@@ -22,7 +22,6 @@ extends PlayerState
 @onready var landing_sfx = $"../../Audio/LandingSFX"
 @onready var jumping_sfx = $"../../Audio/JumpingSFX"
 @onready var run_sfx = $"../../Audio/RunSFX"
-@onready var _IM: InputManager = _input_manager
 
 
 
@@ -110,7 +109,7 @@ func process_input(_event: InputEvent) -> PlayerState:
 
 	# Crawling Shit
 	# When we press down we crouch
-	if _IM.is_down(&"Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
+	if Input.is_action_pressed(&"Down") and parent.current_animation != parent.ANI_STATES.CRAWL:
 		return SLIDING_STATE
 
 	return null
