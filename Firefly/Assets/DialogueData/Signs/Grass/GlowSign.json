@@ -19,14 +19,14 @@
 	"[color=yellow]SUPER-GLOW[/color] is next-level speed and way more precarious.",
 
 	"You reach [color=yellow]SUPER-GLOW[/color] by keeping up your acceleration even after glowing.",
-	
-	"If you want to power down your glow, press [demote].",
+
+	"If you want to power down your glow, press {Glow_Down}.",
 	"This drops your glow by one tier and turns leftover energy into a speed burst.",
 
 	"If you don’t want that burst, just don’t hold any direction and the energy will fade.",
 
 	"Want to control glow upgrades yourself? Turn off Auto-Glow in settings.",
-	"Then just press [promote] to level up your glow."
+	"Then just press {Glow_Up} to level up your glow."
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

@@ -4,7 +4,7 @@ class_name DialogueUiComponent
 signal dialogue_closed()
 
 # Child node for displaying the dialogue text
-@onready var text_box: RichTextLabel = $Label
+@onready var text_box: ButtonPromptLabel = $Label
 @onready var animation_player = $AnimationPlayer
 @onready var animated_sprite_2d = $SpriteAnchor/AnimatedSprite2D
 @onready var hoverAnim = $SpriteAnchor/hoverAnim
@@ -44,6 +44,9 @@ func _process(_delta):
 			finish_dialogue()
 		else:
 			next_dialogue()
+	
+	var font_size: int = text_box.theme.get_font_size("normal_font_size", "RichTextLabel")
+	text_box.PROMPT_SCALE = font_size / 9
 
 
 
@@ -151,6 +154,7 @@ func set_text(text: String):
 
 	text = "[center]" + text + "[/center]"
 	text_box.text = text
+	text_box.rebuild_prompts()
 
 
 # Splits long lines into multiple bubbles of <= max_len characters.

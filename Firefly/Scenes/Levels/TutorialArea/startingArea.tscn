@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=3 uid="uid://ccyco0v3cf4lp"]
+[gd_scene load_steps=89 format=3 uid="uid://ccyco0v3cf4lp"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialArea/startingArea.gd" id="1_26y2y"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="2_jmpln"]
@@ -48,6 +48,8 @@
 [ext_resource type="PackedScene" uid="uid://cakuh20awifnc" path="res://Scenes/Stuff/TimeTrial/theTablet.tscn" id="37_o16rc"]
 [ext_resource type="Script" path="res://Scripts/Level/ChangeLevel.gd" id="39_kgaof"]
 [ext_resource type="PackedScene" uid="uid://cqmn1d67osiw6" path="res://Core/spawn_point.tscn" id="43_6a8cf"]
+[ext_resource type="Texture2D" uid="uid://bbca1h0o1n8ir" path="res://addons/button_prompts_for_godot/Textures/key_blank.png" id="48_tyyg8"]
+[ext_resource type="Script" path="res://addons/button_prompts_for_godot/Scripts/sprite_button_prompt.gd" id="49_rlpcw"]
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
 min_value = -0.5
@@ -934,9 +936,17 @@ offset_top = -68.0
 offset_right = 14.0
 offset_bottom = -35.0
 scale = Vector2(2, 2)
-text = "Tap 'A'
+text = "Tap 
 To Jump!"
 label_settings = SubResource("LabelSettings_rvygm")
+metadata/_edit_lock_ = true
+
+[node name="ButtonPromptSprite" type="Sprite2D" parent="Events/TutorialDropsIns/Crouch_Tut/Label"]
+position = Vector2(42.5, 5.5)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("48_tyyg8")
+script = ExtResource("49_rlpcw")
+ACTION = "Jump"
 
 [node name="Nice!" type="AnimationPlayer" parent="Events/TutorialDropsIns/Crouch_Tut"]
 libraries = {
@@ -1049,9 +1059,16 @@ offset_top = -68.0
 offset_right = 130.0
 offset_bottom = -21.0
 scale = Vector2(2, 2)
-text = "Hold Down
+text = "Hold 
 To SLIDE!"
 label_settings = SubResource("LabelSettings_x4187")
+
+[node name="ButtonPromptSprite" type="Sprite2D" parent="Events/TutorialDropsIns/UP_WJ_Tut2/Label"]
+position = Vector2(47.3333, 4.66667)
+scale = Vector2(0.225, 0.225)
+texture = ExtResource("48_tyyg8")
+script = ExtResource("49_rlpcw")
+ACTION = "Down"
 
 [node name="Nice!" type="AnimationPlayer" parent="Events/TutorialDropsIns/UP_WJ_Tut2"]
 libraries = {
