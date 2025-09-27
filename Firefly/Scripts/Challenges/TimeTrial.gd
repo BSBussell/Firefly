@@ -97,8 +97,6 @@ func _on_challenge_start() -> void:
 	# Power tablets on while the challenge is active
 	_set_tablets_powered(true)
 	
-	printerr("TimeTrial %s: Challenge starting - stage: %s, duration: %.2f" % [challenge_id, ("easy" if current_stage == TimeTrial.Stage.EASY else "hard"), trial_duration])
-	
 	await _init_guide()  # Wait for guide initialization
 	_start_guide_movement()
 	
