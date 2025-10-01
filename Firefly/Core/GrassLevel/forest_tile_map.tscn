@@ -573,7 +573,7 @@ texture = SubResource("CanvasTexture_ryca0")
 8:3/0/physics_layer_3/angular_velocity = 0.0
 8:3/0/metadata/_better_terrain = {
 4: [14],
-"symmetry": 3,
+"symmetry": 8,
 "type": 14
 }
 14:3/0 = 0
@@ -656,7 +656,7 @@ texture = SubResource("CanvasTexture_ryca0")
 8:4/0/metadata/_better_terrain = {
 4: [14],
 12: [14],
-"symmetry": 3,
+"symmetry": 8,
 "type": 14
 }
 10:4/0 = 0
@@ -744,7 +744,7 @@ texture = SubResource("CanvasTexture_ryca0")
 8:5/0/metadata/_better_terrain = {
 4: [14],
 12: [14],
-"symmetry": 3,
+"symmetry": 8,
 "type": 14
 }
 13:5/0 = 0
@@ -820,9 +820,7 @@ texture = SubResource("CanvasTexture_ryca0")
 8:6/0/physics_layer_3/linear_velocity = Vector2(0, 0)
 8:6/0/physics_layer_3/angular_velocity = 0.0
 8:6/0/metadata/_better_terrain = {
-12: [14],
-"symmetry": 3,
-"type": 14
+"type": -2
 }
 11:6/0 = 0
 11:6/0/terrain_set = 0
@@ -3692,9 +3690,9 @@ texture = SubResource("CanvasTexture_oglam")
 1:1/0/terrains_peering_bit/bottom_right_corner = 0
 1:1/0/terrains_peering_bit/bottom_side = 0
 1:1/0/metadata/_better_terrain = {
-0: [12, 13],
+0: [12],
 3: [11],
-4: [12, 13],
+4: [12],
 "type": 12
 }
 2:1/0 = 0
@@ -3719,6 +3717,7 @@ texture = SubResource("CanvasTexture_oglam")
 4: [11],
 7: [11],
 8: [12, 13],
+"symmetry": 1,
 "type": 12
 }
 3:1/0 = 0
@@ -3736,9 +3735,10 @@ texture = SubResource("CanvasTexture_oglam")
 3:1/0/terrains_peering_bit/bottom_left_corner = 0
 3:1/0/terrains_peering_bit/left_side = 0
 3:1/0/metadata/_better_terrain = {
-4: [12, 13],
+4: [12],
 7: [11],
-8: [12, 13],
+8: [12],
+"symmetry": 0,
 "type": 12
 }
 5:1/0 = 0
@@ -3786,6 +3786,7 @@ texture = SubResource("CanvasTexture_oglam")
 0: [12],
 3: [11],
 4: [12],
+"symmetry": 0,
 "type": 13
 }
 10:1/0 = 0
@@ -3806,6 +3807,7 @@ texture = SubResource("CanvasTexture_oglam")
 4: [12],
 7: [11],
 8: [12],
+"symmetry": 0,
 "type": 13
 }
 12:1/0 = 0
@@ -3863,9 +3865,10 @@ texture = SubResource("CanvasTexture_oglam")
 1:2/0/metadata/_better_terrain = {
 0: [11],
 3: [11],
-4: [12, 13],
-12: [12, 13],
+4: [13, 12],
+12: [13, 12],
 15: [11],
+"symmetry": 2,
 "type": 12
 }
 2:2/0 = 0
@@ -3919,6 +3922,7 @@ texture = SubResource("CanvasTexture_oglam")
 8: [11],
 11: [11],
 12: [12, 13],
+"symmetry": 2,
 "type": 12
 }
 9:2/0 = 0
@@ -3939,6 +3943,7 @@ texture = SubResource("CanvasTexture_oglam")
 0: [12],
 12: [12],
 15: [11],
+"symmetry": 0,
 "type": 13
 }
 10:2/0 = 0
@@ -3959,6 +3964,7 @@ texture = SubResource("CanvasTexture_oglam")
 8: [12],
 11: [11],
 12: [12],
+"symmetry": 0,
 "type": 13
 }
 12:2/0 = 0
@@ -4012,9 +4018,10 @@ texture = SubResource("CanvasTexture_oglam")
 1:3/0/terrains_peering_bit/top_side = 0
 1:3/0/terrains_peering_bit/top_right_corner = 0
 1:3/0/metadata/_better_terrain = {
-0: [12, -1, 13],
-12: [12, -1, 13],
+0: [-1, 12],
+12: [-1, 12],
 15: [11],
+"symmetry": 0,
 "type": 12
 }
 2:3/0 = 0
@@ -4034,11 +4041,12 @@ texture = SubResource("CanvasTexture_oglam")
 2:3/0/terrains_peering_bit/top_side = 0
 2:3/0/terrains_peering_bit/top_right_corner = 0
 2:3/0/metadata/_better_terrain = {
-0: [13, 12],
-8: [-1, 13, 12],
+0: [12, 13],
+8: [-1, 12, 13],
 11: [11],
 12: [11],
 15: [11],
+"symmetry": 1,
 "type": 12
 }
 3:3/0 = 0
@@ -4056,9 +4064,10 @@ texture = SubResource("CanvasTexture_oglam")
 3:3/0/terrains_peering_bit/top_left_corner = 0
 3:3/0/terrains_peering_bit/top_side = 0
 3:3/0/metadata/_better_terrain = {
-8: [12, 13],
+8: [12],
 11: [11],
-12: [12, 13],
+12: [12],
+"symmetry": 0,
 "type": 12
 }
 5:3/0 = 0
@@ -4265,8 +4274,8 @@ texture = SubResource("CanvasTexture_oglam")
 1:6/0/terrains_peering_bit/top_side = 0
 1:6/0/terrains_peering_bit/top_right_corner = 0
 1:6/0/metadata/_better_terrain = {
-0: [12, 11],
-4: [12, 11],
+0: [11, 12],
+4: [11, 12],
 7: [11],
 8: [11],
 11: [11],
@@ -4295,8 +4304,8 @@ texture = SubResource("CanvasTexture_oglam")
 2:6/0/metadata/_better_terrain = {
 0: [11],
 3: [11],
-4: [12, 11],
-8: [12, 11],
+4: [11, 12],
+8: [11, 12],
 11: [11],
 12: [11],
 15: [11],
@@ -4375,13 +4384,13 @@ texture = SubResource("CanvasTexture_oglam")
 1:7/0/terrains_peering_bit/top_left_corner = 0
 1:7/0/terrains_peering_bit/top_side = 0
 1:7/0/metadata/_better_terrain = {
-0: [12, 11],
+0: [11, 12],
 3: [11],
 4: [11],
 7: [11],
 8: [11],
 11: [11],
-12: [12, 11],
+12: [11, 12],
 "type": 12
 }
 2:7/0 = 0
@@ -4407,8 +4416,8 @@ texture = SubResource("CanvasTexture_oglam")
 3: [11],
 4: [11],
 7: [11],
-8: [12, 11],
-12: [12, 11],
+8: [11, 12],
+12: [11, 12],
 15: [11],
 "type": 12
 }
