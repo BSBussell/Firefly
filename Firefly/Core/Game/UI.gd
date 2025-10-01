@@ -7,6 +7,10 @@ class_name UiLoader
 signal FinishedLoading
 
 
+# Current safe area insets (left, top, right, bottom) in pixels.
+var safe_area_insets: Vector4i = Vector4i.ZERO
+
+
 # The level that is loaded
 var currentLevel: Level
 
@@ -76,6 +80,10 @@ func load_ui(context: Level) -> void:
 	emit_signal("FinishedLoading")
 		
 		
+
+func update_safe_area(insets: Vector4i) -> void:
+	safe_area_insets = insets
+	# TODO: wire these values into specific UI layouts once requirements are finalized.
 
 ## Method for grabbing components
 func get_component(comp_key: String):

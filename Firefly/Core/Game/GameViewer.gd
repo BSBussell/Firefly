@@ -18,6 +18,22 @@ const LINUX_WINDOW_SERVERS: PackedStringArray = [
 	"BSD"
 ]
 const FPS_PRESETS: Array[int] = [30, 60, 90, 120, 144, 165, 240, 0]
+const SAFE_AREA_DEBUG: bool = false
+## Treat reported top insets >= this as a guaranteed notch (macOS menu bar is 24-32px)
+const NOTCH_TOP_INSET_THRESHOLD: int = 64
+## If top inset is between fallback and threshold, validate via aspect-ratio heuristics
+const NOTCH_FALLBACK_TOP_INSET: int = 32
+const NOTCH_ASPECT_RATIO_MAX: float = 1.60
+
+class SafeAreaInfo extends RefCounted:
+	var offset: Vector2i = Vector2i.ZERO
+	var size: Vector2i = Vector2i.ZERO
+	var insets: Vector4i = Vector4i.ZERO
+
+	func clear() -> void:
+		offset = Vector2i.ZERO
+		size = Vector2i.ZERO
+		insets = Vector4i.ZERO
 
 signal res_changed
 
@@ -45,6 +61,9 @@ var window_size: Vector2i = Vector2i(1920, 1080)
 
 ## Captures safe-area offsets reported by the platform (e.g. macOS notch top inset)
 var fullscreen_safe_offset: Vector2i = Vector2i.ZERO
+
+## Stores full safe-area details for the active display (left, top, right, bottom)
+var fullscreen_safe_area: SafeAreaInfo = SafeAreaInfo.new()
 
 ## The scale for the game res to the window size
 var window_scale: float = 1.0
@@ -350,28 +369,33 @@ func connect_to_res_changed(function: Callable) -> void:
 
 
 func apply_viewport_offsets() -> void:
-	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		ui_loader.position = -Vector2(fullscreen_safe_offset)
-	else:
-		ui_loader.position = Vector2.ZERO
+	ui_loader.position = Vector2.ZERO
+	if SAFE_AREA_DEBUG:
+		print("[GameViewer] apply_viewport_offsets reset offsets, safe_area=", fullscreen_safe_area.insets)
 
 
-## Works on Apple Silicon Macbooks :/ (this is kinda bad idk how else id do this tbh)
+## Safe-area detection for macOS notch displays and menu bars
 func get_usable_screen_size() -> Vector2i:
-
-
 	var current_screen: int = DisplayServer.window_get_current_screen()
 	var screen_size: Vector2i = DisplayServer.screen_get_size(current_screen)
+	var screen_origin: Vector2i = DisplayServer.screen_get_position(current_screen)
+	var window_mode: DisplayServer.WindowMode = DisplayServer.window_get_mode()
 	fullscreen_safe_offset = Vector2i.ZERO
+	fullscreen_safe_area.clear()
 
+	if SAFE_AREA_DEBUG:
+		var aspect_ratio: float = 0.0 if screen_size.y == 0 else float(screen_size.x) / float(screen_size.y)
+		print("[GameViewer] get_usable_screen_size screen=", current_screen, " origin=", screen_origin, " size=", screen_size, " mode=", window_mode, " aspect_ratio=", aspect_ratio)
+
+	var usable_size: Vector2i = screen_size
 	if OS.get_name() == "macOS":
-		var usable_rect: Rect2i = DisplayServer.screen_get_usable_rect(current_screen)
-		if usable_rect.size != Vector2i.ZERO:
-			fullscreen_safe_offset = usable_rect.position
-			if DisplayServer.window_get_mode() != DisplayServer.WINDOW_MODE_FULLSCREEN:
-				screen_size = usable_rect.size
+		usable_size = apply_mac_safe_area(current_screen, screen_origin, screen_size, window_mode)
 
-	return screen_size
+	if SAFE_AREA_DEBUG:
+		print("[GameViewer] return screen_size=", usable_size, " fullscreen_safe_offset=", fullscreen_safe_offset, " insets=", fullscreen_safe_area.insets)
+	if is_instance_valid(ui_loader):
+		ui_loader.update_safe_area(fullscreen_safe_area.insets)
+	return usable_size
 	
 var config_scale: int = 3
 # if you have a worse screen just get fucked ig
@@ -436,3 +460,54 @@ func update_fps(config_val: int) -> void:
 	current_fps_val = config_val	
 		
 	Engine.set_max_fps(FPS_PRESETS[current_fps_val])
+
+
+
+func is_notched_screen(screen_size: Vector2i, safe_area: SafeAreaInfo) -> bool:
+	var top_inset: int = safe_area.insets.y
+	if top_inset <= 0:
+		return false
+	if top_inset >= NOTCH_TOP_INSET_THRESHOLD:
+		return true
+	if top_inset < NOTCH_FALLBACK_TOP_INSET:
+		return false
+	if screen_size.y == 0:
+		return false
+	var aspect_ratio: float = float(screen_size.x) / float(screen_size.y)
+	return aspect_ratio <= NOTCH_ASPECT_RATIO_MAX
+
+
+func apply_mac_safe_area(current_screen: int, screen_origin: Vector2i, screen_size: Vector2i, window_mode: DisplayServer.WindowMode) -> Vector2i:
+	var usable_rect: Rect2i = DisplayServer.screen_get_usable_rect(current_screen)
+	if SAFE_AREA_DEBUG:
+		print("[GameViewer][macOS] usable_rect position=", usable_rect.position, " size=", usable_rect.size)
+	if usable_rect.size == Vector2i.ZERO:
+		return screen_size
+
+	var local_offset: Vector2i = usable_rect.position - screen_origin
+	var safe_size: Vector2i = usable_rect.size
+	var left_inset: int = max(local_offset.x, 0)
+	var top_inset: int = max(local_offset.y, 0)
+	var right_inset: int = max(0, screen_size.x - (local_offset.x + safe_size.x))
+	var bottom_inset: int = max(0, screen_size.y - (local_offset.y + safe_size.y))
+	var inset_vector: Vector4i = Vector4i(left_inset, top_inset, right_inset, bottom_inset)
+
+	fullscreen_safe_offset = Vector2i(left_inset, top_inset)
+	fullscreen_safe_area.offset = fullscreen_safe_offset
+	fullscreen_safe_area.size = safe_size
+	fullscreen_safe_area.insets = inset_vector
+
+	if SAFE_AREA_DEBUG:
+		print("[GameViewer][macOS] safe_offset=", fullscreen_safe_offset, " safe_size=", safe_size, " insets=", inset_vector)
+
+	var notched_display: bool = is_notched_screen(screen_size, fullscreen_safe_area)
+	var constrain_to_safe_area: bool = safe_size != Vector2i.ZERO and (window_mode != DisplayServer.WINDOW_MODE_FULLSCREEN or notched_display)
+	if SAFE_AREA_DEBUG:
+		print("[GameViewer][macOS] notched_display=", notched_display, " constrain_to_safe_area=", constrain_to_safe_area)
+
+	if constrain_to_safe_area:
+		return safe_size
+
+	fullscreen_safe_offset = Vector2i.ZERO
+	fullscreen_safe_area.clear()
+	return screen_size
