@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/CheckPoints/checkpoint.gd" id="1_y2n64"]
 [ext_resource type="Texture2D" uid="uid://d0o80qayw33ih" path="res://Assets/Graphics/Checkpoint/checkpoint-asht.png" id="2_37j5x"]
 [ext_resource type="Texture2D" uid="uid://kjhjjna7wsw1" path="res://Assets/Graphics/Checkpoint/checkpoint-emptyt.png" id="2_k7udk"]
-[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="5_qok0a"]
+[ext_resource type="Texture2D" uid="uid://c0lwp3j3aoptm" path="res://Assets/Graphics/Lightmaps/FREE Textures Of Light Alpha/FREE Textures Of Light Alpha/256x256/256x256 textures (53).png" id="4_gxmc1"]
 [ext_resource type="Script" path="res://Scripts/Player/Visuals/PlayerSpotlight.gd" id="6_kh6md"]
 [ext_resource type="Texture2D" uid="uid://bh4ifsauhlnhp" path="res://Assets/Graphics/Particles/Star1.png" id="7_ywx6k"]
 [ext_resource type="AudioStream" uid="uid://dltcpm20f25wk" path="res://Assets/SFX/Player/Glow/fire_lit.mp3" id="8_bqlvb"]
@@ -76,7 +76,7 @@ position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_4rmqn")
 
 [node name="Spotlight" type="PointLight2D" parent="."]
-position = Vector2(0, -2)
+position = Vector2(0, -8)
 color = Color(0.890196, 0.615686, 0.34902, 1)
 energy = 0.6
 range_layer_min = -99
@@ -86,7 +86,7 @@ shadow_color = Color(0, 0, 0, 1)
 shadow_filter = 2
 shadow_filter_smooth = 10.0
 shadow_item_cull_mask = 2
-texture = ExtResource("5_qok0a")
+texture = ExtResource("4_gxmc1")
 script = ExtResource("6_kh6md")
 curve_in = SubResource("Curve_ujyhx")
 curve_out = SubResource("Curve_0g3ch")
