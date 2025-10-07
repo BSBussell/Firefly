@@ -573,7 +573,7 @@ texture = SubResource("CanvasTexture_ryca0")
 8:3/0/physics_layer_3/angular_velocity = 0.0
 8:3/0/metadata/_better_terrain = {
 4: [14],
-"symmetry": 8,
+"symmetry": 3,
 "type": 14
 }
 14:3/0 = 0
@@ -656,7 +656,7 @@ texture = SubResource("CanvasTexture_ryca0")
 8:4/0/metadata/_better_terrain = {
 4: [14],
 12: [14],
-"symmetry": 8,
+"symmetry": 3,
 "type": 14
 }
 10:4/0 = 0
@@ -744,7 +744,7 @@ texture = SubResource("CanvasTexture_ryca0")
 8:5/0/metadata/_better_terrain = {
 4: [14],
 12: [14],
-"symmetry": 8,
+"symmetry": 3,
 "type": 14
 }
 13:5/0 = 0

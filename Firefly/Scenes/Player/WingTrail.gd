@@ -160,7 +160,7 @@ func aerial_rising_wings(delta) -> Vector2:
 
 func aerial_falling_wings(delta) -> Vector2:
 	# Based on the velocity, have the wings extend outwards to emulate inertia
-	var velocity_offset = Vector2(0, max(-player.velocity.length() * 0.06, -5.5))
+	var velocity_offset = Vector2(0, max(-player.velocity.length() * 0.06, -10.5))
 	var long_offset: Vector2 = base_point + resting_position + velocity_offset + bob_offset(delta, 6 if offset == 0 else 10, 1.0)
 	return constrain_length(long_offset, base_point)
 
