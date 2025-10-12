@@ -20,6 +20,7 @@ var base_point: Vector2 # globals cheese :3
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	
 	time_passed = offset
 	
 	_initialize_points()

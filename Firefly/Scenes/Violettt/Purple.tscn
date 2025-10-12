@@ -1432,6 +1432,11 @@ one_shot = true
 wait_time = 0.05
 one_shot = true
 
+[node name="WallJumpCoolDown" type="Timer" parent="Timers"]
+wait_time = 4.0
+one_shot = true
+autostart = true
+
 [node name="Debug" type="Node2D" parent="."]
 visible = false
 

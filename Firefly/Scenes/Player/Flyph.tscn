@@ -1353,12 +1353,13 @@ SLIDING_STATE = NodePath("../Sliding")
 coyote_time = NodePath("../../Timers/CoyoteTime")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 
-[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "SLIDING_STATE", "jump_buffer", "post_jump_buffer")]
+[node name="Wall" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "SLIDING_STATE", "jump_buffer", "post_jump_buffer", "walljump_cooldown")]
 script = ExtResource("30_24240")
 GROUNDED_STATE = NodePath("../Grounded")
 SLIDING_STATE = NodePath("../Sliding")
 jump_buffer = NodePath("../../Timers/JumpBuffer")
 post_jump_buffer = NodePath("../../Timers/PostJumpBuffer")
+walljump_cooldown = NodePath("../../Timers/WallJumpCoolDown")
 
 [node name="Sliding" type="Node" parent="StateMachine" node_paths=PackedStringArray("GROUNDED_STATE", "AERIAL_STATE", "jump_buffer", "post_jump_buffer", "coyote_time")]
 script = ExtResource("31_f37eu")
@@ -1422,6 +1423,11 @@ one_shot = true
 [node name="CrouchJumpWindow" type="Timer" parent="Timers"]
 wait_time = 0.05
 one_shot = true
+
+[node name="WallJumpCoolDown" type="Timer" parent="Timers"]
+wait_time = 0.125
+one_shot = true
+autostart = true
 
 [node name="Debug" type="Node2D" parent="."]
 

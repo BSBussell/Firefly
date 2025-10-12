@@ -1,5 +1,7 @@
 extends PlayerState
 
+
+
 @export_subgroup("TRANSITIONAL STATES")
 @export var GROUNDED_STATE: PlayerState = null
 @onready var AERIAL_STATE: PlayerState = $"../Aerial"
@@ -9,6 +11,7 @@ extends PlayerState
 @export_subgroup("Input Assists")
 @export var jump_buffer: Timer
 @export var post_jump_buffer: Timer
+@export var walljump_cooldown: Timer
 
 @onready var wall_jump_sfx = $"../../Audio/WallJumpSFX"
 
@@ -23,6 +26,7 @@ var pre_wall_vel: float = 0.0
 
 # Called on state entrance, setup
 func enter() -> void:
+	
 	
 
 	parent.animation.flip_h = 1 if parent.get_wall_normal().x > 0 else 0
@@ -166,6 +170,10 @@ func apply_airResistance(delta, direction):
 # Takes delta and the direction of the wall.
 # If not given we asasume we're on a wall and try to get the wall normal
 func handle_walljump(vc_direction, dir = 0) -> bool:	
+	
+	
+	if walljump_cooldown.time_left > 0: 
+		return false
 	
 	# Attempt jump pretty much just checks if a jump has been buffered and removes that from the buffer if it has
 	if not parent.disable_walljump and parent.attempt_jump():
@@ -375,6 +383,9 @@ func general_walljump(walljump_type: int, disable_drift: bool, jump_velocity: Ve
 
 	# Update Visuals
 	parent.animation.flip_h = facing
+	
+	
+	walljump_cooldown.start()
 	
 
 func get_which_wall_collided() -> String:

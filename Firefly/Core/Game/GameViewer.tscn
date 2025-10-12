@@ -1,11 +1,32 @@
-[gd_scene load_steps=7 format=3 uid="uid://ccr2xe8e6ns1a"]
+[gd_scene load_steps=11 format=3 uid="uid://ccr2xe8e6ns1a"]
 
 [ext_resource type="Script" path="res://Core/Game/GameViewer.gd" id="1_42j4d"]
 [ext_resource type="PackedScene" uid="uid://sjoth6oe4wr6" path="res://Scenes/Levels/SplashScreen/bee_splash.tscn" id="2_yiswl"]
+[ext_resource type="Shader" path="res://Core/Game/LumetriColor.gdshader" id="3_8i0uf"]
 [ext_resource type="Script" path="res://Core/Game/LevelLoader.gd" id="3_oejcr"]
 [ext_resource type="Script" path="res://Core/Game/UI.gd" id="4_4g62g"]
 [ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="4_5xpk0"]
+[ext_resource type="Texture2D" uid="uid://cq7qjgncj1wyo" path="res://Assets/ColorGrading/LUTMaybe.cube-s16.png" id="4_75icl"]
 [ext_resource type="Script" path="res://Core/Game/GlobalThemer.gd" id="6_pxqfs"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y1mye"]
+shader = ExtResource("3_8i0uf")
+shader_parameter/grading_enable = true
+shader_parameter/wb_enable = false
+shader_parameter/wb_temperature_K = 12000.0
+shader_parameter/wb_tint = 0.0
+shader_parameter/exposure = 0.13
+shader_parameter/contrast = 0.22
+shader_parameter/highlights = 0.11
+shader_parameter/shadows = -0.19
+shader_parameter/whites = -0.2
+shader_parameter/blacks = -0.0159999
+shader_parameter/saturation = 1.2
+
+[sub_resource type="Environment" id="Environment_lj7hs"]
+background_mode = 3
+adjustment_enabled = true
+adjustment_color_correction = ExtResource("4_75icl")
 
 [node name="GameViewer" type="Node2D"]
 process_mode = 3
@@ -13,6 +34,7 @@ script = ExtResource("1_42j4d")
 start_level = ExtResource("2_yiswl")
 
 [node name="LevelLoader" type="SubViewportContainer" parent="."]
+material = SubResource("ShaderMaterial_y1mye")
 offset_right = 320.0
 offset_bottom = 180.0
 scale = Vector2(4.286, 4.286)
@@ -56,3 +78,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_5xpk0")
 script = ExtResource("6_pxqfs")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lj7hs")
