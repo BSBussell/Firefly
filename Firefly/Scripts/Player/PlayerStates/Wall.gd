@@ -292,8 +292,7 @@ func upward_walljump(jump_dir: float) -> void:
 
 	general_walljump(type, drift, velocity, velocity_multi, jump_dir, facing)
 	
-	if _config.get_setting("input_assists"):
-		parent.lock_h_dir(-jump_dir, 0.3, true)
+	
 	
 	
 

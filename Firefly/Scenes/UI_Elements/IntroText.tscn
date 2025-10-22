@@ -1,0 +1,692 @@
+[gd_scene load_steps=22 format=3 uid="uid://cq71a1178svds"]
+
+[ext_resource type="Script" path="res://Scenes/UI_Elements/IntroText.gd" id="1_nsvc1"]
+[ext_resource type="Theme" uid="uid://dtqfsbjdbbwas" path="res://UI_Theme/Brimblo.tres" id="2_85wnr"]
+[ext_resource type="Texture2D" uid="uid://nu843xwmgkla" path="res://Assets/Graphics/Lightmaps/FREE Textures Of Light Alpha/FREE Textures Of Light Alpha/256x256/256x256 textures (5).png" id="3_m3dyt"]
+[ext_resource type="Texture2D" uid="uid://c4t5d3l03xeuo" path="res://Assets/Graphics/Lightmaps/FREE Textures Of Light Alpha/FREE Textures Of Light Alpha/256x256/256x256 textures (9).png" id="4_g7jjs"]
+[ext_resource type="Texture2D" uid="uid://ngkeeouv5yof" path="res://Assets/Graphics/Lightmaps/neutralPoint.webp" id="5_rlquf"]
+[ext_resource type="Shader" path="res://Scenes/Levels/introCutscene/introScene.gdshader" id="11_efhgn"]
+[ext_resource type="Shader" path="res://Scenes/UI_Elements/topDownWobble.gdshader" id="12_2ekkn"]
+
+[sub_resource type="Shader" id="Shader_x6r65"]
+code = "shader_type canvas_item;
+
+group_uniforms MainStars;
+//Main star adjustments: Color, movement direction, shine, brightnessStar, periodicity, size, and quantity.
+uniform sampler2D gradientA;
+uniform float horizontalMovement: hint_range(-2.0, 2.0, 0.1) = 0.1;
+uniform float verticalMovement: hint_range(-2.0, 2.0, 0.1) = 0.1;
+uniform float frequencyStar: hint_range(0.0, 1.0, 0.01) = 0.1;
+uniform float sizeStar: hint_range(10.0, 2000.0, 1.0) = 100.0;
+uniform float brightnessStar: hint_range(1.0, 5.0, 1.0) = 3.0;
+uniform float shineFrequencyStar: hint_range(1.0, 20.0, 1.0) = 8.0;
+uniform float transparencyStar: hint_range(0.0, 1.0, 0.01) = 0.0;
+uniform int starIterations: hint_range(1, 10, 1) = 3;
+group_uniforms BackgroundStars;
+//Background star adjustments
+uniform sampler2D gradientB;
+uniform float frequencyBgStar: hint_range(0.950, 1.0, 0.001) = 0.996;
+uniform float shineFrequencyBgStar: hint_range(0.0, 5.0, 1.0) = 1.0;
+uniform float transparencyBgStar: hint_range(0.0, 1.0, 0.01) = 0.0;
+group_uniforms Background;
+//Background color and transparency
+uniform vec4 colorBackground: source_color = vec4(0.05, 0.04, 0.20, 1.0);
+uniform float transparencyBackground: hint_range(0.0, 1.0, 0.01) = 0.0;
+group_uniforms Noise;
+//Seeding for different noise generation, mainly to eliminate background star patterns
+uniform float seed: hint_range(0.0, 100.0, 1.0) = 0.0;
+
+float rand(vec2 st) {
+	return fract(sin(dot(st.xy, vec2(seed+12.9898,78.233))) * 43758.5453123);
+	}
+
+float remap(float prob, float starValue) {
+	return (starValue - prob)/(1.0-prob);
+	} 
+
+void fragment() {
+	float prob = 1.0 - frequencyStar;
+	float travelx = TIME*horizontalMovement;
+	float travely = TIME*verticalMovement;
+	float color = 0.0;
+	COLOR = vec4(colorBackground.rgb, 1.0 - transparencyBackground);
+
+	for(int i = 1; i < 1 + starIterations; i++) {
+		float size = sizeStar/float(i);
+		vec2 pos = vec2(floor((1.0 / size * FRAGCOORD.x)+travelx), floor((1.0 / size * FRAGCOORD.y)+travely));
+		float starValue = rand(pos);
+
+		if (starValue > prob)
+		{
+			vec2 center = size * pos + vec2(size, size) * 0.5;
+			float t = 0.9 + 0.2 * sin(TIME * shineFrequencyStar + (starValue - prob) / (1.0 - prob) * 45.0);
+			vec2 modifiedCoords = vec2(FRAGCOORD.x + travelx*size, FRAGCOORD.y + travely*size);
+			color = 1.0 - distance(modifiedCoords, center) / (0.5 * size);
+			color = t*t*brightnessStar/float(i) / (clamp(distance(modifiedCoords.y, center.y), 0.5, size/2.0-1.0)) / (clamp(distance(modifiedCoords.x, center.x), 0.5, size/2.0-1.0));
+			vec4 colormapA = texture(gradientA, vec2(remap(prob, starValue)));
+			COLOR += colormapA * color * (1.0 - transparencyStar);
+		}
+	}
+
+	if (rand(SCREEN_UV.xy / 20.0) > frequencyBgStar)
+		{
+			float r = rand(SCREEN_UV.xy);
+			color = r * (0.85 * sin(TIME * shineFrequencyBgStar * (r * 5.0) + 720.0 * r) + 0.95);
+			vec4 colormapB = texture(gradientB, vec2(r));
+			COLOR += color * colormapB * (1.0 - transparencyBgStar);
+		}
+	}"
+
+[sub_resource type="Gradient" id="Gradient_0wa8l"]
+offsets = PackedFloat32Array(0.998576)
+colors = PackedColorArray(1, 1, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h0o35"]
+gradient = SubResource("Gradient_0wa8l")
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q0xp7"]
+gradient = SubResource("Gradient_0wa8l")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_srdei"]
+shader = SubResource("Shader_x6r65")
+shader_parameter/horizontalMovement = -1.0
+shader_parameter/verticalMovement = 2.98024e-08
+shader_parameter/frequencyStar = 0.05
+shader_parameter/sizeStar = 150.0
+shader_parameter/brightnessStar = 3.0
+shader_parameter/shineFrequencyStar = 8.0
+shader_parameter/transparencyStar = 1.0
+shader_parameter/starIterations = 3
+shader_parameter/gradientA = SubResource("GradientTexture2D_h0o35")
+shader_parameter/frequencyBgStar = 0.996
+shader_parameter/shineFrequencyBgStar = 1.0
+shader_parameter/transparencyBgStar = 1.0
+shader_parameter/gradientB = SubResource("GradientTexture2D_q0xp7")
+shader_parameter/colorBackground = Color(0.376471, 0.501961, 0.47451, 1)
+shader_parameter/transparencyBackground = 0.0
+shader_parameter/seed = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pyvmh"]
+shader = SubResource("Shader_x6r65")
+shader_parameter/horizontalMovement = -1.0
+shader_parameter/verticalMovement = 2.98024e-08
+shader_parameter/frequencyStar = 1.0
+shader_parameter/sizeStar = 2000.0
+shader_parameter/brightnessStar = 5.0
+shader_parameter/shineFrequencyStar = 8.0
+shader_parameter/transparencyStar = 1.0
+shader_parameter/starIterations = 3
+shader_parameter/gradientA = SubResource("GradientTexture2D_h0o35")
+shader_parameter/frequencyBgStar = 1.0
+shader_parameter/shineFrequencyBgStar = 1.0
+shader_parameter/transparencyBgStar = 1.0
+shader_parameter/gradientB = SubResource("GradientTexture2D_q0xp7")
+shader_parameter/colorBackground = Color(0.376471, 0.501961, 0.47451, 1)
+shader_parameter/transparencyBackground = 1.0
+shader_parameter/seed = 0.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8j2k4"]
+blend_mode = 1
+
+[sub_resource type="Animation" id="Animation_cia64"]
+resource_name = "FadeIn"
+length = 15.0
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Label:visible_ratio")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../CanvasLayer/ColorRect:material:shader_parameter/transparencyBackground")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 11, 15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Label/Control:anchor_top")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.2, 0.21]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Label/Control:anchor_left")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-1.0, 1.2]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:modulate")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(5, 8, 11, 15),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Label:modulate")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(11, 15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("..")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(15),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"unpause"
+}]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Label/TextureRect:modulate")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(2, 3, 5, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0.890196, 0.792157, 0, 0), Color(0.890196, 0.792157, 0, 0.164706), Color(0.890196, 0.792157, 0, 0.164706), Color(0.890196, 0.792157, 0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../CanvasLayer2/ColorRect:material:shader_parameter/transparencyStar")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 3, 8, 11, 15),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.34, 0.34, 1.0]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../CanvasLayer/ColorRect:material:shader_parameter/transparencyBgStar")
+tracks/9/interp = 2
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 3, 8, 11, 15),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.0, 0.0, 1.0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("../CanvasLayer/ColorRect:material:shader_parameter/transparencyStar")
+tracks/10/interp = 2
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 3, 8, 11, 15),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 1.0, 0.34, 0.34, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_yrins"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../CanvasLayer/ColorRect:material:shader_parameter/transparencyBackground")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Label/Control:anchor_left")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Label/Control:anchor_top")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.2]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Label/TextureRect:modulate")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.890196, 0.792157, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../CanvasLayer2/ColorRect:material:shader_parameter/transparencyStar")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../CanvasLayer/ColorRect:material:shader_parameter/transparencyBgStar")
+tracks/5/interp = 2
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../CanvasLayer/ColorRect:material:shader_parameter/transparencyStar")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Label:visible_ratio")
+tracks/7/interp = 2
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../Label:modulate")
+tracks/8/interp = 2
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath(".:modulate")
+tracks/9/interp = 2
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("../Wipe:material:shader_parameter/progress")
+tracks/10/interp = 2
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.08165e-12]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("../Wipe:color")
+tracks/11/interp = 2
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.235294, 0.2, 0.501961, 1)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("../ColorRect:material:shader_parameter/progress")
+tracks/12/interp = 2
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("../Label/Control/PointLight2D:enabled")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("../Label/Control/PointLight2D2:enabled")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_5jp0a"]
+resource_name = "RaiseCurtain"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Wipe:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.08165e-12, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Wipe:color")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.4, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.235294, 0.2, 0.501961, 1), Color(0.235294, 0.2, 0.501961, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2sbq0"]
+resource_name = "Close"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ColorRect:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Label/Control/PointLight2D:enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Label/Control/PointLight2D2:enabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5cmvj"]
+_data = {
+"Close": SubResource("Animation_2sbq0"),
+"FadeIn": SubResource("Animation_cia64"),
+"RESET": SubResource("Animation_yrins"),
+"RaiseCurtain": SubResource("Animation_5jp0a")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b8tlf"]
+shader = ExtResource("11_efhgn")
+shader_parameter/use_sprite_alpha = true
+shader_parameter/invert = true
+shader_parameter/progress = 0.0
+shader_parameter/center_screen_uv = Vector2(0.36, 0.95)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a50sl"]
+shader = ExtResource("12_2ekkn")
+shader_parameter/progress = 2.08165e-12
+shader_parameter/waveFrequency1 = 0.0
+shader_parameter/waveFrequency2 = 0.0
+shader_parameter/waveAmplitude1 = 0.0
+shader_parameter/waveAmplitude2 = 0.0
+shader_parameter/waveSpeed1 = 0.0
+shader_parameter/waveSpeed2 = 0.0
+shader_parameter/waveLength1 = 0.1
+shader_parameter/waveLength2 = 0.1
+shader_parameter/noiseScale = 2.5
+shader_parameter/noiseSpeed = 1.2
+
+[node name="EntryText" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nsvc1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="CanvasModulate" type="CanvasModulate" parent="CanvasLayer"]
+color = Color(0.235294, 0.2, 0.501961, 1)
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_srdei")
+anchors_preset = -1
+anchor_right = 1.1
+anchor_bottom = 1.1
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.376471, 0.501961, 0.47451, 1)
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="CanvasModulate" type="CanvasModulate" parent="CanvasLayer2"]
+color = Color(0.235294, 0.2, 0.501961, 1)
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer2"]
+material = SubResource("ShaderMaterial_pyvmh")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.376471, 0.501961, 0.47451, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.15
+anchor_right = 0.95
+anchor_bottom = 0.374
+grow_horizontal = 2
+theme = ExtResource("2_85wnr")
+theme_type_variation = &"LevelTitle"
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_font_sizes/font_size = 0
+text = "Mood setting text that gives
+a strong first impression"
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="Control" type="Control" parent="Label"]
+z_index = 10
+layout_mode = 1
+anchor_left = -1.0
+anchor_top = 0.2
+anchor_right = 11.8791
+anchor_bottom = 1.0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PointLight2D" type="PointLight2D" parent="Label/Control"]
+texture = ExtResource("3_m3dyt")
+texture_scale = 20.0
+
+[node name="PointLight2D2" type="PointLight2D" parent="Label/Control"]
+texture = ExtResource("4_g7jjs")
+texture_scale = 5.0
+
+[node name="TextureRect" type="TextureRect" parent="Label"]
+modulate = Color(0.890196, 0.792157, 0, 0)
+material = SubResource("CanvasItemMaterial_8j2k4")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.03
+anchor_right = 1.03
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_rlquf")
+
+[node name="Label2" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.735
+anchor_right = 0.9
+anchor_bottom = 0.735
+offset_top = -120.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_85wnr")
+theme_type_variation = &"LevelTitle"
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_font_sizes/font_size = 0
+text = "mysterious short addon"
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Label2"]
+modulate = Color(0.890196, 0.792157, 0, 0.164706)
+material = SubResource("CanvasItemMaterial_8j2k4")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.1
+anchor_right = 1.1
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_rlquf")
+
+[node name="TextAnimation" type="AnimationPlayer" parent="."]
+root_node = NodePath("../Label2")
+libraries = {
+"": SubResource("AnimationLibrary_5cmvj")
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_b8tlf")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.2, 0.501961, 1)
+
+[node name="Wipe" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_a50sl")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.235294, 0.2, 0.501961, 1)
+
+[connection signal="animation_finished" from="TextAnimation" to="." method="_on_text_animation_animation_finished"]
