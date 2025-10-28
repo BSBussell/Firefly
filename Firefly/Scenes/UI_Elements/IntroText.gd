@@ -32,6 +32,6 @@ func _on_text_animation_animation_finished(anim_name):
 		animation_player.play("FadeIn")
 		fade_in = true
 	elif anim_name == "FadeIn":
-		await get_tree().create_timer(12.0).timeout
+		await get_tree().create_timer(6.0).timeout
 		animation_player.play("Close")
 	

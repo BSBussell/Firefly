@@ -128,6 +128,46 @@ shader_parameter/seed = 0.0
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8j2k4"]
 blend_mode = 1
 
+[sub_resource type="Animation" id="Animation_2sbq0"]
+resource_name = "Close"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../ColorRect:material:shader_parameter/progress")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Label/Control/PointLight2D:enabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Label/Control/PointLight2D2:enabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
 [sub_resource type="Animation" id="Animation_cia64"]
 resource_name = "FadeIn"
 length = 15.0
@@ -478,46 +518,6 @@ tracks/1/keys = {
 "values": [Color(0.235294, 0.2, 0.501961, 1), Color(0.235294, 0.2, 0.501961, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_2sbq0"]
-resource_name = "Close"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../ColorRect:material:shader_parameter/progress")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 2),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 1.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../Label/Control/PointLight2D:enabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("../Label/Control/PointLight2D2:enabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5cmvj"]
 _data = {
 "Close": SubResource("Animation_2sbq0"),
@@ -598,8 +598,8 @@ theme = ExtResource("2_85wnr")
 theme_type_variation = &"LevelTitle"
 theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
 theme_override_font_sizes/font_size = 0
-text = "Mood setting text that gives
-a strong first impression"
+text = "Somewhere between the soil
+and stars,"
 visible_characters = 0
 visible_ratio = 0.0
 
@@ -648,7 +648,7 @@ theme = ExtResource("2_85wnr")
 theme_type_variation = &"LevelTitle"
 theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
 theme_override_font_sizes/font_size = 0
-text = "mysterious short addon"
+text = "Two FireFlies Begin to fly"
 vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="Label2"]
