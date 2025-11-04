@@ -26,44 +26,43 @@ extends DialogueArea2D
 
 ## Initial greetings for first-time meetings
 @export var initial_greetings: Array[String] = [
-	"Hi! This is my spot, kinda. Well, I like it. You can call me GG. Nice to meet you!"
+	"Hi! This is my spot, kinda. You can call me GG. Nice to meet ya!"
 ]
 
 ## Greeting variants for returning players
 @export var return_greetings: Array[String] = [
-	"Oh hey! You're back! Uh... I mean of course you are. Most people I meet don't just leave and never come back so why would you have done so?",
-	"Oh my gosh! It's you my favorite firefly individual! I mean you're the only one I know, but I think that counts for something probably.",
-	"Hey there again! I was just standing here thinking... ...well never mind. It's cool that you're still around.",
+	"Oh hey! You're back! I mean of course you are.",
+	"Oh! My favorite firefly! You're the only one I know, but it still means something!",
+	"Hey again! I was just standing here thinking... ...well never mind.",
 	"Oh! Hi! I was just thinking about fireflies and... well, you!",
-	"What do you mean I'm still here? It's only been like 25 minutes since we last talked! What do you mean that doesn't make sense?",
-	"Hi! Been awhile! Everytime I talk to you I decide what to say next by picking straws? It helps with my anxiety."
+	"Hello!! To help with my anxiety I decide what to say next by picking straws!"
 ]
 
 ## Progress comments to specify our jar count
 @export var progress_comments: Array[String] = [
-	"Hmm, so you've saved {jar_count} fireflies!",
-	"Ok so you found {jar_count} lightning bugs.",
+	"Hmm, so you saved {jar_count}!",
+	"Ok so you found {jar_count}.",
 	"Hmmm, it seems you're {remaining_jars} short.",
-	"Ok, you say you've found {jar_count} so far."
+	"Ok, you say you've found {jar_count}."
 ]
 
 @export var requirement_comments: Array[String] = [
-	"You just need to find {required_jars} in order for me to trust you to be safe in this area.",
-	"If you wanna see what's behind me, you gotta save {required_jars} first.",
-	"To prove you can handle it show me you've free'd {required_jars}. That should be enough",
-	"With whats behind me, I need to see you collect {required_jars} before I feel responsible letting you through."
+	"You just need to find {required_jars} to trust you.",
+	"To see what's behind me, you gotta save {required_jars}.",
+	"To prove you can handle it show me you've free'd {required_jars}.",
+	"I gotta see {required_jars} jars to responsibly let you through."
 ]
 
 @export var pass_on_talk: Array[String] = [
-	"Oh wow! Usually I ask people to collect {required_jars} fireflies before I let them through, but you already did that! So, uh, yeah I guess can go through now.",
-	"Wow, you already have {required_jars} fireflies! That's awesome! You can go through now.",
-	"Hey, you already have {required_jars} fireflies! That's great! Have fun exploring my spot!",
+	"Oh wow! Usually I ask for {required_jars} fireflies, but you already did that!",
+	"Wow, you have {required_jars} jars! You can go through now.",
+	"Hey, you already have {required_jars} jars! Have fun exploring my spot!",
 	"Oh ya, you've already free'd {required_jars} fireflies! You can defintely handle what's ahead!"
 ]
 
 ## Comments for when the player has talked to other guardians || Leave empty to omit
 @export var other_guardian_comments: Array[String] = [
-	"Hello Again! I had to run really fast to beat you here!",
+	"Hello! I had to run really fast to beat you here!",
 	"Hello! This is another one of my cozy spots! It's one of my favorites.",
 	"Hi again! phew I just got here. Is my timing great or what.",
 	"Hello, Yeah, This is another cool spot this ones cooler."
@@ -77,20 +76,6 @@ extends DialogueArea2D
 	"You know, you're starting to get faster? You're making me run for my money!"
 ]
 
-## Closing messages for when the player can pass.
-@export var closing_you_did_it: Array[String] = [
-	"Good luck! Keep on saving more fireflies!",
-	"Thanks for stopping by! I'll miss you. Not a lot of people here to talk to, so like, it's cool when you're here.",
-	"Ok well, let me know if you find any cool spots out there. Uh, not that I'll leave this one, but you know, it'd be cool to hear about them."
-]
-
-## Closinf messages for when the player can't pass.
-@export var closing_encouragements: Array[String] = [
-	"Good luck! Keep on saving more fireflies!",
-	"Thanks for stopping by! I'll miss you. Not a lot of people here to talk to, so like, it's cool when you're here.",
-	"Ok well, let me know if you find any cool spots out there. Uh, not that I'll leave this one, but you know, it'd be cool to hear about them.",
-	"By the way each conversation we have is scripted ahead of time, and I just roll a dice to decide what I talk about."
-]
 
 #GG stands for many things.
 # Just to be clear the classname isn't GG's name full name

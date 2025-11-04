@@ -1,10 +1,11 @@
 {
   "identifier": "GG_Tutorial",
   "dialogue": [
-	"Oh cool! You've found like 20 jars! That's cool, ok I guess I was just making a big fuss over nothing.",
-	"I'll let you in, but you just have to be careful. This place really is a bit of a maze. It's a wonderful maze, but a maze nonetheless.",
-	"Be sure to stay safe, and just a little secret from me. If you ever get lost, just start making all left turns, maze theory says you'll always find your way out that way.",
-  "Oh and I think it's clear last time I was there, but watch out for [color=#36c5f4]glow worms[/color]. They can be a bit, well, hungry if you get caught in their rope. Just uh, move quickly."
+	"Whoa! You've got 20 jars! Guess I worried for nothing.",
+	"I'll let you in, just be careful. It's a wonderful maze, but still a maze!",
+	"If you ever get lost, just start making all left turns, trust me.",
+  "Oh and I think it's clear, but watch out for [color=#36c5f4]glow worms[/color].", 
+  "They can be a bit, well, hungry. If you get caught in their rope. Just uh, move quickly."
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

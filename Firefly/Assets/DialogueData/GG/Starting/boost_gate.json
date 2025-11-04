@@ -1,9 +1,10 @@
 {
   "identifier": "GG_Tutorial",
   "dialogue": [
-	"Huh? Oh no, sorry I haven't seen any parents coming this way I think. Though the path does fork and have many entrances and exits, so maybe they came in through another way.",
-	"It's a fun little spot, takes a small amount of ~finess~ to navigate, but you seem like the type not to flee from such a challenge",
-	"Hmm, although, when I decided to protect this spot I made some rules ok. Just for your own safety. You gotta have [color=#f8c868]enough fireflies[/color] before I'll let you in Ok?"
+    "Huh?",
+    "Sorry, I haven’t seen any parents here. But there’s lots of twists and paths...", 
+    "It’s a neat spot. Takes a little finesse, but you look up for it.",
+    "One rule though: for safety, you need [color=#f8c868]enough fireflies[/color] before I can let you in."
   ],
   "sequential_dialogue": "",
   "victory_dialogue": false

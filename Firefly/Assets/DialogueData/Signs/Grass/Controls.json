@@ -1,24 +1,13 @@
 {
     "identifier": "Controls Binding",
     "dialogue": [
-        "[color=#cd2d06]Violet Tip #3:[/color] Here's another trick about slide boosting:",
-        "after you [color=#f8c868]slide boost[/color], you can carry the momentum a little further by [color=#f8c868]sliding again[/color] as you land!",
-        
-        "This might not seem like much, but here’s the cool part: [color=#f8c868]you can then jump and slide boost again![/color]",
-        
-        "SO! Want to fly through the bushes? [color=#f8c868]Slide boost[/color], then [color=#f8c868]boost again[/color].",
-        
-        "Chain them together and, yeah, you get the idea!",
-        
-        "Once you get it down, it’s the only way you'll want to move around!",
-        
-        "Of course, until you slam headfirst into a wall you thought you could clear...",
-        
-        "Sometimes, I've found nooks and crannies I’d only reach by chaining a couple [color=#f8c868]slide boosts[/color]!",
-        
-        "If you’re having trouble with the rhythm, try practicing with [color=#f8c868]these two gaps[/color] right next to this sign!",
-        
-        "They’re spaced perfectly to [color=#f8c868]slide boost twice in a row[/color]!"
+        "[color=#cd2d06]Violet Tip #3:[/color] Slide boosting chaining!",
+        "After a [color=#f8c868]slide boost[/color], you can keep speed by [color=#f8c868]sliding[/color] when you land!",
+        "Then when sliding, jump and [color=#f8c868]boost again[/color]!",
+        "You can chain slide boosts to build speed and zip through bushes!",
+        "Just don’t get reckless with it, or you might hit something and lose your speed.",
+        "If you can cross the gaps above you find an area thats perfect for practicing!",
+        "Good luck!"
     ],
     "sequential_dialogue": "",
     "victory_dialogue": false
