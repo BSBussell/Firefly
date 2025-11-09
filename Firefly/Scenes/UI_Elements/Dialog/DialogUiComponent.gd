@@ -22,7 +22,7 @@ var _actorized_prev_state: bool = false
 func _ready() -> void:
 	
 	# Initially hide the dialogue box
-	animation_player.play("hide_bubble")
+	animation_player.play("RESET")
 	
 	# Disable process loop while hidden
 	set_process(false)
@@ -44,6 +44,9 @@ func _process(_delta):
 			finish_dialogue()
 		else:
 			next_dialogue()
+	
+	if text_box.visible and Input.is_action_just_released("ui_cancel"):
+		finish_dialogue()
 	
 	var font_size: int = text_box.theme.get_font_size("normal_font_size", "RichTextLabel")
 	text_box.PROMPT_SCALE = font_size / 9

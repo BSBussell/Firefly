@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cgjun0654y5tj"]
+[gd_scene load_steps=15 format=3 uid="uid://cgjun0654y5tj"]
 
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_mipx8"]
 [ext_resource type="Texture2D" uid="uid://cip5u06l4ir2v" path="res://Assets/Graphics/Particles/ring.png" id="2_26410"]
 [ext_resource type="Script" path="res://Scenes/Player/particles/ring_direction.gd" id="3_oe3tu"]
+[ext_resource type="Texture2D" uid="uid://cowopgmei7pv4" path="res://Assets/Graphics/Particles/speed_particle.png" id="4_b3lal"]
+[ext_resource type="Script" path="res://Scenes/Player/particles/SpeedLines.gd" id="5_ffaj3"]
 
 [sub_resource type="Gradient" id="Gradient_w02w3"]
 offsets = PackedFloat32Array(0.185792, 1)
@@ -21,6 +23,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("Lines:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_bkega"]
@@ -58,10 +72,22 @@ tracks/2/path = NodePath("ringEmitter:emitting")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.075),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("Lines:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ggwju"]
@@ -72,14 +98,29 @@ _data = {
 
 [sub_resource type="Curve" id="Curve_j7ud5"]
 max_value = 2.0
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.6, 0.8), 0.0, 0.0, 0, 0, Vector2(1, 1.6), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 1.4), 0.0, 0.0, 0, 0]
 point_count = 3
 metadata/_snap_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_lw451"]
-offsets = PackedFloat32Array(0, 0.1, 0.6, 1)
-colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.490196, 1, 1, 1, 0.490196, 1, 1, 1, 0)
+offsets = PackedFloat32Array(0, 0.1, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.294118, 1, 1, 1, 0)
 metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_qwcs8"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 258.581, 0, 0, Vector2(1e-05, 0), 222.817, 222.817, 0, 0, Vector2(1, 100), 139.1, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_c3em7"]
+_data = [Vector2(0, 0), 1.4, 0.0, 0, 0, Vector2(0.1, 1), -0.506657, -0.506657, 0, 0, Vector2(1, 0), -0.631071, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="Curve" id="Curve_7otq3"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 1, Vector2(0.987745, 1), 0.0, 0.0, 1, 0]
+point_count = 2
 
 [node name="CrouchJumpDust" type="CPUParticles2D"]
 emitting = false
@@ -109,23 +150,46 @@ libraries = {
 autoplay = "free"
 
 [node name="ringEmitter" type="CPUParticles2D" parent="."]
-position = Vector2(0, -9)
+z_index = 4
+position = Vector2(0, -12)
 emitting = false
 amount = 2
-lifetime = 0.4
+lifetime = 0.27
 one_shot = true
 explosiveness = 0.2
 texture = ExtResource("2_26410")
 direction = Vector2(-1, 2.08165e-12)
 spread = 0.0
 gravity = Vector2(2.08165e-12, 2.08165e-12)
-initial_velocity_min = 34.0
-initial_velocity_max = 34.0
+initial_velocity_min = 3.0
+initial_velocity_max = 3.0
 angle_min = -90.0
 angle_max = -90.0
-scale_amount_min = 0.4
-scale_amount_max = 0.4
+scale_amount_min = 0.7
+scale_amount_max = 0.7
 scale_amount_curve = SubResource("Curve_j7ud5")
-color = Color(1, 1, 1, 0.784314)
 color_ramp = SubResource("Gradient_lw451")
 script = ExtResource("3_oe3tu")
+
+[node name="Lines" type="CPUParticles2D" parent="."]
+z_index = 100
+position = Vector2(0, -8)
+emitting = false
+amount = 6
+lifetime = 0.2
+texture = ExtResource("4_b3lal")
+emission_shape = 3
+emission_rect_extents = Vector2(1, 8)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+damping_min = 5.0
+damping_max = 7.0
+damping_curve = SubResource("Curve_qwcs8")
+scale_amount_min = 0.5
+scale_amount_max = 0.5
+split_scale = true
+scale_curve_x = SubResource("Curve_c3em7")
+scale_curve_y = SubResource("Curve_7otq3")
+script = ExtResource("5_ffaj3")
