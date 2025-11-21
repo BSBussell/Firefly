@@ -1261,5 +1261,8 @@ func _on_rope_detector_body_entered(body):
 		enter_rope(segment)
 
 
+func face_player_left():
+	animation.flip_h = true
+
 func face_player_right():
 	animation.flip_h = false

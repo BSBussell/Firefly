@@ -1,0 +1,10 @@
+{
+	"identifier": "Enter Flyph",
+	"dialogue": [
+		"[color=#c7dfeb]It hurts too much to use them[/color]",
+		"[color=#c7dfeb]I guess I should go somewhere high so they can find me[/color]"
+		
+	],
+	"sequential_dialogue": "",
+	"victory_dialogue": false
+}

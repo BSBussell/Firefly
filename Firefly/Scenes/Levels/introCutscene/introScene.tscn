@@ -323,10 +323,10 @@ tracks/2/path = NodePath("Camera/bat:position")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 20.6, 21, 21.2, 21.4, 21.6, 22, 22.1, 22.2, 22.3, 22.7, 22.8, 22.9, 23.3, 23.4, 23.6, 23.7, 27.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11.3137, 1, 11.3137, 1, 11.3137, 1, 1, 1),
+"times": PackedFloat32Array(0, 20.6, 21, 21.2, 21.4, 21.6, 22, 22.1, 22.2, 22.3, 22.7, 22.8, 22.9, 23.3, 23.4, 23.6, 23.7, 23.9, 24.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 11.3137, 1, 11.3137, 1, 11.3137, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(97, 43), Vector2(97, 43), Vector2(90.0714, 30.6428), Vector2(90.071, 29.643), Vector2(7.17284, -117.287), Vector2(48.622, -94.881), Vector2(2.08165e-12, -130), Vector2(2.08165e-12, -135), Vector2(2.08165e-12, -128), Vector2(0, -130), Vector2(-47, -110), Vector2(-47, -115), Vector2(-47, -110), Vector2(-47, -115), Vector2(-47, -110), Vector2(-47, -110), Vector2(-60, -115), Vector2(-10, -115)]
+"values": [Vector2(97, 43), Vector2(97, 43), Vector2(90.0714, 30.6428), Vector2(90.071, 29.643), Vector2(7.17284, -117.287), Vector2(48.622, -94.881), Vector2(2.08165e-12, -130), Vector2(2.08165e-12, -135), Vector2(2.08165e-12, -128), Vector2(0, -130), Vector2(-47, -110), Vector2(-47, -115), Vector2(-47, -110), Vector2(-47, -115), Vector2(-47, -110), Vector2(-47, -110), Vector2(2.08165e-12, 2.08165e-12), Vector2(2.08165e-12, -100), Vector2(2.08165e-12, -100)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -647,7 +647,7 @@ is_actor = true
 MusicPlayer = NodePath("../LevelAudio/Music")
 
 [node name="Camera" type="Camera2D" parent="."]
-position = Vector2(-5175, -65)
+position = Vector2(-5411.76, 100)
 offset = Vector2(2.08165e-12, -25)
 process_callback = 0
 limit_smoothed = true
@@ -840,6 +840,7 @@ position = Vector2(97, 43)
 sprite_frames = SubResource("SpriteFrames_j65e3")
 autoplay = "default"
 frame_progress = 0.864491
+flip_h = true
 
 [node name="DeParent" type="Node2D" parent="."]
 

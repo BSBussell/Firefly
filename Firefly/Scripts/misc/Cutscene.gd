@@ -245,3 +245,5 @@ func queue_dialog_from_resource(res: Resource, next_animation: String = "") -> v
 # Editor-friendly wrapper: uses exported defaults so you don't have to type args
 func play_default_dialog_then_animation() -> void:
 	await queue_dialog_then_animation(default_dialogue_path, String(default_next_animation))
+
+

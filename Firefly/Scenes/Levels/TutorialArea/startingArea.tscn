@@ -1,4 +1,4 @@
-[gd_scene load_steps=128 format=3 uid="uid://ccyco0v3cf4lp"]
+[gd_scene load_steps=135 format=3 uid="uid://ccyco0v3cf4lp"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/TutorialArea/startingArea.gd" id="1_26y2y"]
 [ext_resource type="PackedScene" uid="uid://mohrwc5amu2o" path="res://Scenes/UI_Elements/pause.tscn" id="2_jmpln"]
@@ -54,6 +54,9 @@
 [ext_resource type="PackedScene" uid="uid://dtblwt5hi5l4c" path="res://Scenes/Checkpoint/checkpoint.tscn" id="48_t4a7l"]
 [ext_resource type="Texture2D" uid="uid://bbca1h0o1n8ir" path="res://addons/button_prompts_for_godot/Textures/key_blank.png" id="48_tyyg8"]
 [ext_resource type="Script" path="res://addons/button_prompts_for_godot/Scripts/sprite_button_prompt.gd" id="49_rlpcw"]
+[ext_resource type="Script" path="res://Scripts/misc/Cutscene.gd" id="55_17dp6"]
+[ext_resource type="JSON" path="res://Assets/DialogueData/Cutscenes/EnterFlyph/Flyph.json" id="56_fvkq5"]
+[ext_resource type="JSON" path="res://Assets/DialogueData/Cutscenes/EnterFlyph/ThatBat.json" id="57_5lix8"]
 
 [sub_resource type="Curve" id="Curve_qfi4m"]
 min_value = -0.5
@@ -922,6 +925,109 @@ shader_parameter/dither = false
 shader_parameter/dither_strength = 0.5
 shader_parameter/opacity = 1.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vx30r"]
+size = Vector2(144, 20)
+
+[sub_resource type="Animation" id="Animation_acl2i"]
+resource_name = "Jump"
+length = 3.5
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(3.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [ExtResource("56_fvkq5"), ""],
+"method": &"queue_dialog_from_resource"
+}]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../Flyph")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [Vector2(2.08165e-12, -300), -1.0, Vector2(0.5, 1.5)],
+"method": &"launch"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../Flyph:horizontal_axis")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="Animation" id="Animation_w3dl4"]
+resource_name = "startDialog"
+length = 2.6
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(2.6),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [ExtResource("57_5lix8"), "Jump"],
+"method": &"queue_dialog_from_resource"
+}]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../../Flyph")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [],
+"method": &"face_player_left"
+}, {
+"args": [],
+"method": &"face_player_right"
+}, {
+"args": [],
+"method": &"face_player_left"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../../Flyph:horizontal_axis")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_70plk"]
+_data = {
+"Jump": SubResource("Animation_acl2i"),
+"startDialog": SubResource("Animation_w3dl4")
+}
+
 [node name="World" type="Node2D" node_paths=PackedStringArray("PLAYER", "jar_manager", "gem_manager")]
 script = ExtResource("1_26y2y")
 Text = "- The Grotto -"
@@ -1595,6 +1701,8 @@ scale_amount_curve = SubResource("Curve_6fm3s")
 color = Color(0.0313726, 0.698039, 0.231373, 1)
 color_ramp = SubResource("Gradient_ueh4n")
 
+[node name="Node2D" type="Node2D" parent="TileMapParallax/TreeTiles"]
+
 [node name="BackgroundTiles" type="CanvasLayer" parent="TileMapParallax"]
 layer = -1
 follow_viewport_enabled = true
@@ -2179,7 +2287,7 @@ libraries = {
 
 [node name="UP_WJ_Tut9" type="Area2D" parent="Events/TutorialDropsIns"]
 z_index = -1
-position = Vector2(-150, 204)
+position = Vector2(-152, 160)
 scale = Vector2(0.75, 0.75)
 collision_layer = 4
 collision_mask = 4
@@ -2191,6 +2299,7 @@ position = Vector2(-126.667, -28)
 shape = SubResource("RectangleShape2D_ixq8d")
 
 [node name="Label" type="Label" parent="Events/TutorialDropsIns/UP_WJ_Tut9"]
+visible = false
 offset_left = -57.0
 offset_top = -68.0
 offset_right = 130.0
@@ -2603,6 +2712,9 @@ position = Vector2(-4229, -1088)
 position = Vector2(142, 15)
 enabled = false
 
+[node name="FlyJar12" parent="JarsManager" instance=ExtResource("23_g8pcv")]
+position = Vector2(-2907, -764)
+
 [node name="DeathZones" type="Node2D" parent="."]
 
 [node name="CameraTargets" type="Node2D" parent="."]
@@ -2759,8 +2871,26 @@ id = "tunnel"
 position = Vector2(-63, -1876)
 id = "thePit"
 
-[node name="FlyJar" parent="." instance=ExtResource("23_g8pcv")]
-position = Vector2(-2904, -768)
+[node name="Cutscenes" type="Node2D" parent="."]
+
+[node name="Intro" type="Node2D" parent="Cutscenes" node_paths=PackedStringArray("level", "trigger_area", "anim_player")]
+position = Vector2(-24, 816)
+script = ExtResource("55_17dp6")
+cutscene_id = "EnterFlyph"
+level = NodePath("../..")
+trigger_area = NodePath("Area2D")
+anim_player = NodePath("AnimationPlayer")
+cutscene_animation_name = "startDialog"
+
+[node name="Area2D" type="Area2D" parent="Cutscenes/Intro"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cutscenes/Intro/Area2D"]
+shape = SubResource("RectangleShape2D_vx30r")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Cutscenes/Intro"]
+libraries = {
+"": SubResource("AnimationLibrary_70plk")
+}
 
 [connection signal="body_entered" from="Events/RestoreSquish" to="Events/RestoreSquish" method="_on_body_entered"]
 [connection signal="body_exited" from="Events/RestoreSquish" to="Events/RestoreSquish" method="_on_body_exited"]
