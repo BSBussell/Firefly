@@ -50,6 +50,10 @@ func enter() -> void:
 	parent.squish_node.squish(Vector2(1.0 - squash_value, 1.0 + squash_value), squash_dur)
 	
 	# Spawn some wall hug dust
+	
+	# If we are moving downward reset
+	if parent.velocity.y > 0:
+		parent.velocity.y = 0
 
 
 # Called before exiting the state, cleanup

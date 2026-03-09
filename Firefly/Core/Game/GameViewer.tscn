@@ -19,7 +19,7 @@ shader_parameter/exposure = 0.13
 shader_parameter/contrast = 0.22
 shader_parameter/highlights = 0.11
 shader_parameter/shadows = -0.19
-shader_parameter/whites = -0.2
+shader_parameter/whites = 0.0210001
 shader_parameter/blacks = -0.0159999
 shader_parameter/saturation = 1.2
 
@@ -46,7 +46,6 @@ disable_3d = true
 handle_input_locally = false
 snap_2d_transforms_to_pixel = true
 snap_2d_vertices_to_pixel = true
-use_hdr_2d = true
 canvas_item_default_texture_filter = 0
 canvas_item_default_texture_repeat = 1
 audio_listener_enable_2d = true
