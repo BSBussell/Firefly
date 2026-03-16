@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_d7rfe"]
 [ext_resource type="Texture2D" uid="uid://cip5u06l4ir2v" path="res://Assets/Graphics/Particles/ring.png" id="2_gyg2o"]
-[ext_resource type="Script" path="res://Scenes/Player/particles/ring_direction.gd" id="3_oor6s"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/ParticleUtilities/ring_direction.gd" id="3_oor6s"]
 
 [sub_resource type="Gradient" id="Gradient_w02w3"]
 offsets = PackedFloat32Array(0.185792, 1)

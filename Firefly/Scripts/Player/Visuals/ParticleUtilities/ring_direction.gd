@@ -5,7 +5,11 @@ var player: Flyph
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	
 	player = _globals.ACTIVE_PLAYER
+	
+	
 	var velocity = player.velocity
 	
 	var angle_deg = 20 if velocity.x > 0 else -20

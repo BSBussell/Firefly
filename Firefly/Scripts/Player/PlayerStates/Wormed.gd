@@ -376,6 +376,8 @@ func jump():
 		swing_multi = boost_jump_multi if not parent.boostJumping else nyoom_jump_multi
 
 		parent.set_temp_gravity(boost_sj_gravity)
+		
+		parent.spawn_rings()
 
 		jump_y_vel = boost_sj_velocity
 

@@ -2,9 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_mipx8"]
 [ext_resource type="Texture2D" uid="uid://cip5u06l4ir2v" path="res://Assets/Graphics/Particles/ring.png" id="2_26410"]
-[ext_resource type="Script" path="res://Scenes/Player/particles/ring_direction.gd" id="3_oe3tu"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/ParticleUtilities/ring_direction.gd" id="3_oe3tu"]
 [ext_resource type="Texture2D" uid="uid://cowopgmei7pv4" path="res://Assets/Graphics/Particles/speed_particle.png" id="4_b3lal"]
-[ext_resource type="Script" path="res://Scenes/Player/particles/SpeedLines.gd" id="5_ffaj3"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/ParticleUtilities/SpeedLines.gd" id="5_ffaj3"]
 
 [sub_resource type="Gradient" id="Gradient_w02w3"]
 offsets = PackedFloat32Array(0.185792, 1)

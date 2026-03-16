@@ -827,6 +827,10 @@ func spawn_landing_dust():
 
 	generic_spawn_particles(LANDING_DUST, landing_dust_spawner)
 
+func spawn_rings():
+	
+	generic_spawn_particles(CROUCH_JUMP_DUST, jump_dust_spawner)
+
 func spawn_getup_dust(left: bool):
 
 	var new_particle = GET_UP_LEDGE.instantiate()
@@ -1143,8 +1147,15 @@ func kill():
 	hazard_detector.set_collision_mask_value(5, false)
 
 	# Restart and disable the glow mechanic
-	glow_manager.reset_glow()
-	glow_manager.GLOW_ENABLED = false
+	var could_glow: bool = false
+	
+	# Check if we have unlocked glow
+	if can_glow():
+		
+		glow_manager.reset_glow()
+		glow_manager.GLOW_ENABLED = false
+		
+		could_glow = true
 
 	# Wait 1.5 seconds
 	await get_tree().create_timer(1.5).timeout
@@ -1170,8 +1181,9 @@ func kill():
 	# Wait 0.7 seconds
 	await get_tree().create_timer(0.7).timeout
 
-	# Renable the player
-	glow_manager.GLOW_ENABLED = true
+	# Renable the player to glow, if they could
+	if could_glow:
+		glow_manager.GLOW_ENABLED = true
 
 	# Make Flyph Visible, then immediately squash them
 	squish_node.visible = true

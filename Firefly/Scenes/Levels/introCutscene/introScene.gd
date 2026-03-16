@@ -30,6 +30,8 @@ func local_ready():
 	_discord.update_state("Explorin' the main menu")
 	_discord.hide_jar_count()
 	
+	
+	await get_tree().create_timer(10.0).timeout
 	animation_player.play("MoveCamera")
 	
 	_audio.set_level_effects([])

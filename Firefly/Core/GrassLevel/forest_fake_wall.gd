@@ -164,7 +164,7 @@ func force_update_all_shader_parameters():
 	update_shader_parameters()
 	dirty_parameters = false
 
-func _process(delta):
+func _process(_delta):
 	if not Player or not shader_mat:
 		return
 	

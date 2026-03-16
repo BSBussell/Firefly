@@ -223,6 +223,8 @@ func plat_launch(player: Flyph, forced: bool = false) -> bool:
 	# player.launched = true
 	player.launch(launch_vector, -1, Vector2(0.7, 1.3))
 	
+	player.spawn_rings()
+	
 	# Set the jump flag to true, so that we are using jump gravity
 	# when launching. 
 	player.jumping = true

@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://c3x5r1wtj5xyu"]
 
 [ext_resource type="Texture2D" uid="uid://cqqfidjcaytqw" path="res://Assets/Graphics/Particles/dust.png" id="1_kpo3v"]
-[ext_resource type="Script" path="res://Scenes/Player/particles/burst_particle.gd" id="2_x3ihk"]
+[ext_resource type="Script" path="res://Scripts/Player/Visuals/ParticleUtilities/burst_particle.gd" id="2_x3ihk"]
 
 [sub_resource type="Curve" id="Curve_txael"]
 min_value = 2.13163e-14

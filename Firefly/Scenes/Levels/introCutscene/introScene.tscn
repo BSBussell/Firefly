@@ -647,7 +647,7 @@ is_actor = true
 MusicPlayer = NodePath("../LevelAudio/Music")
 
 [node name="Camera" type="Camera2D" parent="."]
-position = Vector2(-5411.76, 100)
+position = Vector2(2.08165e-12, 100)
 offset = Vector2(2.08165e-12, -25)
 process_callback = 0
 limit_smoothed = true
@@ -840,7 +840,6 @@ position = Vector2(97, 43)
 sprite_frames = SubResource("SpriteFrames_j65e3")
 autoplay = "default"
 frame_progress = 0.864491
-flip_h = true
 
 [node name="DeParent" type="Node2D" parent="."]
 

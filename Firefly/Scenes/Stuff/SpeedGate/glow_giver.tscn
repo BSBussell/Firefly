@@ -1,0 +1,156 @@
+[gd_scene load_steps=11 format=3 uid="uid://ejcx3fvuxsgj"]
+
+[ext_resource type="Script" path="res://Scenes/Levels/TutorialArea/GlowGiver.gd" id="1_0qug2"]
+[ext_resource type="Texture2D" uid="uid://dxidc1ets4khy" path="res://Assets/Graphics/MISC/speed_ring.png" id="2_qoncl"]
+[ext_resource type="PackedScene" uid="uid://cx4t8kl7lykab" path="res://Scenes/Levels/SecretIndicator/SecretParticles.tscn" id="3_ijmq0"]
+[ext_resource type="Texture2D" uid="uid://cip5u06l4ir2v" path="res://Assets/Graphics/Particles/ring.png" id="4_qe0m7"]
+[ext_resource type="AudioStream" uid="uid://dssvymp3qupk4" path="res://Assets/SFX/ambience/swoosh_3_shortened.wav" id="5_gos1q"]
+
+[sub_resource type="Animation" id="Animation_452yw"]
+resource_name = "Use"
+length = 3.0
+step = 0.02
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.16),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.16),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(2, 2)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(3.02),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ringEmitter:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_wlfe4"]
+resource_name = "bob"
+length = 3.0
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.9, 0.9)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0nxou"]
+_data = {
+"Use": SubResource("Animation_452yw"),
+"bob": SubResource("Animation_wlfe4")
+}
+
+[sub_resource type="Curve" id="Curve_631qg"]
+max_value = 2.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2(1, 1.4), 0.0, 0.0, 0, 0]
+point_count = 3
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_747qi"]
+offsets = PackedFloat32Array(0, 0.1, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.294118, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+
+[node name="GlowGiver" type="Area2D" node_paths=PackedStringArray("animation_player", "swoosh")]
+position = Vector2(-3163, -634)
+script = ExtResource("1_0qug2")
+animation_player = NodePath("Sprite2D/AnimationPlayer")
+swoosh = NodePath("Sprite2D/AudioStreamPlayer2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -3.62909)
+scale = Vector2(0.934443, 0.934443)
+texture = ExtResource("2_qoncl")
+
+[node name="FireFlyParticles9" parent="Sprite2D" instance=ExtResource("3_ijmq0")]
+amount = 3
+emission_sphere_radius = 30.0
+Disable_Camera_Target = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_0nxou")
+}
+autoplay = "bob"
+
+[node name="ringEmitter" type="CPUParticles2D" parent="Sprite2D"]
+z_index = 4
+emitting = false
+amount = 2
+lifetime = 0.27
+one_shot = true
+explosiveness = 0.2
+texture = ExtResource("4_qe0m7")
+direction = Vector2(-1, 2.08165e-12)
+spread = 0.0
+gravity = Vector2(2.08165e-12, 2.08165e-12)
+initial_velocity_min = 3.0
+initial_velocity_max = 3.0
+scale_amount_min = 0.7
+scale_amount_max = 0.7
+scale_amount_curve = SubResource("Curve_631qg")
+color_ramp = SubResource("Gradient_747qi")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Sprite2D"]
+stream = ExtResource("5_gos1q")
+volume_db = 1.052
+pitch_scale = 2.0
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

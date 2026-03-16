@@ -97,7 +97,7 @@ func _on_challenge_start() -> void:
 	# Power tablets on while the challenge is active
 	_set_tablets_powered(true)
 	
-	await _init_guide()  # Wait for guide initialization
+	_init_guide()  # Wait for guide initialization
 	_start_guide_movement()
 	
 	# Debug guide state after start
